@@ -1,0 +1,6 @@
+.sidebar {
+  /* 그림자 부분 */
+  height: 100vh;
+  box-shadow: 3px 3px 3px 3px gray;
+  
+}

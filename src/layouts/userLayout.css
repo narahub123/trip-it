@@ -1,0 +1,6 @@
+.userLayout {
+  display: flex;
+  main {
+    margin-left: 10px; /*사이드바와의 거리*/
+  }
+}

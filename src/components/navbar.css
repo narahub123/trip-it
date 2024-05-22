@@ -1,0 +1,35 @@
+.navbar {
+  display: flex;
+  align-items: center;
+  position: fixed;
+  width: 100%;
+  box-shadow: 0 10px 35px rgba(0, 0, 0, 0.05);
+
+  .nav-logo {
+    width: 50px;
+    height: 50px;
+    border: 1px solid black;
+    /* border-radius: 50%; */
+    img {
+    }
+  }
+
+  nav {
+    margin-left: 30px;
+    /* display: flex;
+    justify-content: space-evenly; */
+    a {
+      padding: 25px;
+      color: black;
+    }
+
+    a:hover {
+      color: gray;
+    }
+
+    a.active {
+      color: blue;
+      cursor: text;
+    }
+  }
+}
