@@ -1,2 +1,21 @@
 .procedure {
+  figure.proc-nav {
+    a {
+      img {
+      }
+    }
+  }
+  nav {
+    ul {
+      li {
+        a.link {
+          color: black;
+        }
+
+        a.active {
+          color: aquamarine;
+        }
+      }
+    }
+  }
 }
