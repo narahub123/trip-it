@@ -9,17 +9,11 @@ import { getMetro } from "../../store/slices/metroSlice";
 
 interface HomeCardProps {
   metro: MetroType;
-  setActive: (value: boolean) => void;
-  setArea: (value: MetroType) => void;
 }
 
 const HomeCard = ({ metro }: HomeCardProps) => {
   const dispatch = useDispatch();
-  // const handleModal = (areaCode: string) => {
-  //   const selectedArea = metros.find((metro) => metro.areaCode === areaCode);
-  //   setActive(true);
-  //   selectedArea && setArea(selectedArea);
-  // };
+
   const handleModal = (areacode: string) => {
     dispatch(setActive());
     dispatch(getMetro(areacode));
@@ -30,14 +24,12 @@ const HomeCard = ({ metro }: HomeCardProps) => {
       onClick={() => handleModal(metro.areaCode)}
       className="homeCard"
     >
-      <Link to={`/#${metro.areaCode}`}>
-        <figure>
-          <img src={metro.imgUrl} alt={metro.name} />
-        </figure>
-        <div>
-          <p>{metro.name}</p>
-        </div>
-      </Link>
+      <figure>
+        <img src={metro.imgUrl} alt={metro.name} />
+      </figure>
+      <div>
+        <p>{metro.name}</p>
+      </div>
     </li>
   );
 };
