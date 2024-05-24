@@ -9,22 +9,26 @@ import Login from "./pages/login/Login";
 import SignIn from "./pages/signin/SignIn";
 import ScheduleLayout from "./layouts/ScheduleLayout";
 import UserLayout from "./layouts/UserLayout";
+import { Provider } from "react-redux";
+import { store } from "./store/store";
 
 function App() {
   return (
-    <Routes>
-      <Route path="/" element={<RootLayout />}>
-        <Route index element={<Home />} />
-        <Route path="/community" element={<Community />} />
-        <Route element={<UserLayout />}>
-          <Route path="/mypage" element={<MyPage />} />
-          <Route path="/admin" element={<Admin />} />
+    <Provider store={store}>
+      <Routes>
+        <Route path="/" element={<RootLayout />}>
+          <Route index element={<Home />} />
+          <Route path="/community" element={<Community />} />
+          <Route element={<UserLayout />}>
+            <Route path="/mypage" element={<MyPage />} />
+            <Route path="/admin" element={<Admin />} />
+          </Route>
+          <Route path="/login" element={<Login />} />
+          <Route path="/signin" element={<SignIn />} />
         </Route>
-        <Route path="/login" element={<Login />} />
-        <Route path="/signin" element={<SignIn />} />
-      </Route>
-      <Route path="/schedule" element={<ScheduleLayout />}></Route>
-    </Routes>
+        <Route path="/schedule" element={<ScheduleLayout />}></Route>
+      </Routes>
+    </Provider>
   );
 }
 

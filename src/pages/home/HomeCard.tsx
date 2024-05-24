@@ -2,6 +2,10 @@ import React from "react";
 import "./homeCard.css";
 import { MetroType } from "../../types/schedules";
 import { metros } from "../../data/metros";
+import { Link } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { setActive } from "../../store/slices/modalSlice";
+import { getMetro } from "../../store/slices/metroSlice";
 
 interface HomeCardProps {
   metro: MetroType;
@@ -9,11 +13,16 @@ interface HomeCardProps {
   setArea: (value: MetroType) => void;
 }
 
-const HomeCard = ({ metro, setActive, setArea }: HomeCardProps) => {
-  const handleModal = (areaCode: string) => {
-    const selectedArea = metros.find((metro) => metro.areaCode === areaCode);
-    setActive(true);
-    selectedArea && setArea(selectedArea);
+const HomeCard = ({ metro }: HomeCardProps) => {
+  const dispatch = useDispatch();
+  // const handleModal = (areaCode: string) => {
+  //   const selectedArea = metros.find((metro) => metro.areaCode === areaCode);
+  //   setActive(true);
+  //   selectedArea && setArea(selectedArea);
+  // };
+  const handleModal = (areacode: string) => {
+    dispatch(setActive());
+    dispatch(getMetro(areacode));
   };
   return (
     <li
@@ -21,12 +30,14 @@ const HomeCard = ({ metro, setActive, setArea }: HomeCardProps) => {
       onClick={() => handleModal(metro.areaCode)}
       className="homeCard"
     >
-      <figure>
-        <img src={metro.imgUrl} alt={metro.name} />
-      </figure>
-      <div>
-        <p>{metro.name}</p>
-      </div>
+      <Link to={`/#${metro.areaCode}`}>
+        <figure>
+          <img src={metro.imgUrl} alt={metro.name} />
+        </figure>
+        <div>
+          <p>{metro.name}</p>
+        </div>
+      </Link>
     </li>
   );
 };
