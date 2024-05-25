@@ -1,2 +1,50 @@
 .dates {
+  width: 700px;
+  .container {
+    margin: 60px auto;
+    .explanation {
+      padding: 20px;
+      text-align: center;
+      .line1 {
+        font-size: 24px;
+      }
+      .line2 {
+        text-decoration: underline;
+        font-size: 14px;
+        padding-top: 10px;
+      }
+      .line3 {
+        text-decoration: underline;
+        font-size: 14px;
+      }
+    }
+    .calendar-container {
+      .months {
+        display: flex;
+        justify-content: center;
+        .curMonth {
+          div {
+            display: flex;
+            justify-content: space-around;
+            nav.before {
+              cursor: pointer;
+            }
+            p.curMon {
+            }
+          }
+        }
+        .nextMonth {
+          div {
+            display: flex;
+            justify-content: space-around;
+            nav.after {
+              cursor: pointer;
+            }
+            p.nextMon {
+            }
+          }
+        }
+      }
+    }
+  }
 }

@@ -1,0 +1,55 @@
+.calendar {
+  margin-top: 20px;
+  table {
+    thead {
+      tr {
+        th {
+          width: 40px;
+          padding: 4px;
+          line-height: 40px;
+        }
+        th.sun {
+          color: red;
+        }
+        th.sat {
+          color: blue;
+        }
+      }
+    }
+    tbody {
+      tr {
+        td {
+          text-align: center;
+          width: 40px;
+          line-height: 40px;
+          padding: 4px;
+          cursor: pointer;
+        }
+        td.date {
+          transition-property: background-color, color, border-radius;
+          transition-duration: 0.5s;
+        }
+        td.ex {
+          color: gray;
+          pointer-events: none;
+        }
+        td.sun {
+          color: red;
+        }
+        td.sat {
+          color: blue;
+        }
+        td.selected {
+          background-color: black;
+          color: white;
+          border-radius: 20%;
+        }
+        td.possible {
+          background-color: grey;
+          color: white;
+          border-radius: 20%;
+        }
+      }
+    }
+  }
+}
