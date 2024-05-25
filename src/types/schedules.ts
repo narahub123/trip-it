@@ -10,7 +10,6 @@ export interface ScheduleDetailType {
   start_time?: Date;
   end_time?: Date;
   content_id?: string;
-  content_type_id?: string;
   createdAt?: Date;
 }
 

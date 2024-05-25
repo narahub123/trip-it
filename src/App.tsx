@@ -26,7 +26,10 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/signin" element={<SignIn />} />
         </Route>
-        <Route path="/schedule" element={<ScheduleLayout />}></Route>
+        <Route
+          path="/schedule/:metro_name"
+          element={<ScheduleLayout />}
+        ></Route>
       </Routes>
     </Provider>
   );
