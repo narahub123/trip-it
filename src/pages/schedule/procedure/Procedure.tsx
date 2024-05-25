@@ -23,8 +23,10 @@ const Procedure = () => {
                 hash === "" || hash === "#step1" ? "link active" : "link"
               }
             >
-              STEP 1 <br />
-              날짜 선택
+              <div className="step-container">
+                <p className="step">STEP 1 </p>
+                <p className="desc">날짜 선택</p>
+              </div>
             </Link>
           </li>
           <li>
@@ -32,8 +34,10 @@ const Procedure = () => {
               to="#step2"
               className={hash === "#step2" ? "link active" : "link"}
             >
-              STEP 2 <br />
-              장소 선택
+              <div className="step-container">
+                <p className="step">STEP 2 </p>
+                <p className="desc">장소 선택</p>
+              </div>
             </Link>
           </li>
           <li>
@@ -41,8 +45,10 @@ const Procedure = () => {
               to="#step3"
               className={hash === "#step3" ? "link active" : "link"}
             >
-              STEP 3 <br />
-              숙소 선택
+              <div className="step-container">
+                <p className="step">STEP 3 </p>
+                <p className="desc">숙소 선택</p>
+              </div>
             </Link>
           </li>
           <li>
@@ -50,8 +56,10 @@ const Procedure = () => {
               to="#step4"
               className={hash === "#step4" ? "link active" : "link"}
             >
-              STEP 4 <br />
-              일정 결정
+              <div className="step-container">
+                <p className="step">STEP 4 </p>
+                <p className="desc">일정 결정</p>
+              </div>
             </Link>
           </li>
         </ul>
