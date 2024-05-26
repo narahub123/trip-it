@@ -1,2 +1,118 @@
 .placesList {
+  padding: 0 10px;
+  max-width: 400px;
+  min-width: 300px;
+  .info {
+    p.areaName {
+      font-size: 18px;
+      font-weight: 700;
+    }
+    p.duration {
+      font-size: 14px;
+      color: gray;
+    }
+  }
+  .search {
+    padding: 20px 0;
+    input {
+      width: 100%;
+      padding: 5px;
+    }
+  }
+  .category {
+    padding-bottom: 20px;
+    ul {
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      li {
+        border: 1px solid gray;
+        color: gray;
+        font-size: 13px;
+        padding: 5px 10px;
+        border-radius: 7px;
+        cursor: pointer;
+        user-select: none;
+      }
+
+      li.active {
+        border: 1px solid aquamarine;
+        background-color: aquamarine;
+        color: white;
+        font-weight: bold;
+      }
+    }
+  }
+  .list {
+    ul.listContainer {
+      height: 460px;
+      overflow: scroll;
+      overflow-x: hidden;
+
+      li.placeCard {
+        display: flex;
+        align-items: center;
+        margin: 10px 0;
+        span.placeInfo {
+          display: flex;
+
+          border-radius: 10px;
+          background-color: rgba(221, 220, 220, 0.182);
+          padding: 10px;
+          figure {
+            width: 45px;
+            height: 45px;
+            border: 1px solid black;
+            border-radius: 5px;
+            img {
+            }
+          }
+          span.info {
+            margin-left: 10px;
+            p.placeName {
+              padding: 2px;
+              font-size: 14px;
+              font-weight: bold;
+            }
+            span {
+              padding: 2px;
+            }
+            span.type {
+              font-size: 12px;
+            }
+            span.addr {
+              font-size: 12px;
+            }
+          }
+        }
+        span.placeEvent {
+          margin-left: 10px;
+          p.btn {
+            cursor: pointer;
+            padding: 22px 8px;
+            margin-top: -4px;
+            font-weight: bold;
+            border-radius: 7px;
+            background-color: rgb(243, 243, 243);
+            color: gray;
+          }
+        }
+      }
+    }
+
+    ul.listContainer::-webkit-scrollbar {
+      width: 10px;
+    }
+    ul.listContainer::-webkit-scrollbar-track {
+      background-color: transparent;
+    }
+    ul.listContainer::-webkit-scrollbar-thumb {
+      background-color: rgb(220, 220, 220);
+      height: 20%;
+      border-radius: 10px;
+    }
+    ul.listContainer::-webkit-scrollbar-button {
+      display: none;
+    }
+  }
 }

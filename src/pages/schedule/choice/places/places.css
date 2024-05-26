@@ -1,2 +1,4 @@
 .places {
+  display: flex;
+  padding-top: 20px;
 }
