@@ -1,5 +1,7 @@
 import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { PlaceApiType } from "../../types/place";
+import { ScheduleType } from "../../types/schedules";
+import { Rootstate, store } from "../store";
 
 export interface PlaceState {
   places: PlaceApiType[];
@@ -14,14 +16,18 @@ const initialState: PlaceState = {
 };
 
 interface PlaceProps {
-  areacode: string;
   hash: string;
   contentTypeId: string;
 }
 
 export const fetchPlaces = createAsyncThunk(
   "placeSlice/fetchPlaces",
-  async ({ areacode, hash, contentTypeId }: PlaceProps) => {
+  async ({ hash, contentTypeId }: PlaceProps, { getState }) => {
+    //다른 slice의 값 가져오기
+    const { schedule } = getState() as Rootstate;
+
+    const areacode = schedule.schedule.metro_id || "1";
+
     try {
       if (hash === "#link3") {
         contentTypeId = "32";

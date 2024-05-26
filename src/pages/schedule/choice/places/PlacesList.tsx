@@ -17,7 +17,7 @@ const PlacesList = () => {
   const { hash } = location;
 
   useEffect(() => {
-    dispatch(fetchPlaces({ areacode, hash, contentTypeId: "1" }) as any);
+    dispatch(fetchPlaces({ hash, contentTypeId: "1" }) as any);
   }, [dispatch, areacode, hash]);
 
   const start =
