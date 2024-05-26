@@ -28,11 +28,13 @@ export const fetchPlaces = createAsyncThunk(
 
     const areacode = schedule.schedule.metro_id || "1";
 
+    console.log(hash);
+
     try {
-      if (hash === "#link3") {
+      if (hash === "#step3") {
         contentTypeId = "32";
       } else if (
-        hash === "#link2" &&
+        hash === "#step2" &&
         contentTypeId !== "12" &&
         contentTypeId !== "14" &&
         contentTypeId !== "39"
@@ -41,6 +43,7 @@ export const fetchPlaces = createAsyncThunk(
       }
 
       const url = `http://localhost:8080/places/${areacode}/${contentTypeId}`;
+      console.log(url);
 
       const response = await fetch(url);
       const jsonData = await response.json();

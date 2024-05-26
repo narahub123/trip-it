@@ -2,6 +2,7 @@
   padding: 0 10px;
   max-width: 400px;
   min-width: 300px;
+
   .info {
     p.areaName {
       font-size: 18px;
@@ -48,6 +49,7 @@
       height: 460px;
       overflow: scroll;
       overflow-x: hidden;
+      padding-right: 10px;
 
       li.placeCard {
         display: flex;

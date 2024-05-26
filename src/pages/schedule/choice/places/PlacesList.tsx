@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import "./placesList.css";
 import { useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -6,8 +6,10 @@ import { Rootstate } from "../../../../store/store";
 import { fetchPlaces } from "../../../../store/slices/placeSlice";
 import { metros } from "../../../../data/metros";
 import { dateMidFormatter, destrucDate, getWeek } from "../../../../utils/date";
+import { contentTypeIds } from "../../../../data/contentTypeIds";
 
 const PlacesList = () => {
+  const [contentTypeId, setContentTypeId] = useState("1");
   const dispatch = useDispatch();
   const places = useSelector((state: Rootstate) => state.place.places);
   const areacode =
@@ -17,8 +19,8 @@ const PlacesList = () => {
   const { hash } = location;
 
   useEffect(() => {
-    dispatch(fetchPlaces({ hash, contentTypeId: "1" }) as any);
-  }, [dispatch, areacode, hash]);
+    dispatch(fetchPlaces({ hash, contentTypeId }) as any);
+  }, [dispatch, hash, contentTypeId]);
 
   const start =
     schedule.start_date &&
@@ -77,7 +79,22 @@ const PlacesList = () => {
                     <p>{place.title}</p>
                   </div>
                   <div className="addrContainer">
-                    <span className="type">{place.contenttypeid}</span>
+                    <span
+                      className="type"
+                      style={
+                        place.contenttypeid === "12"
+                          ? { color: "red" }
+                          : place.contenttypeid === "14"
+                          ? { color: "blue" }
+                          : place.contenttypeid === "32"
+                          ? { color: "violet" }
+                          : place.contenttypeid === "39"
+                          ? { color: "green" }
+                          : {}
+                      }
+                    >
+                      {contentTypeIds[Number(place.contenttypeid)]}
+                    </span>
                     <span className="addr">{place.addr1}</span>
                   </div>
                 </span>
