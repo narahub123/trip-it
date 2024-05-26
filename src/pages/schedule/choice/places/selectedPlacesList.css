@@ -61,7 +61,7 @@
               font-weight: bold;
               padding: 3px;
             }
-            p.detail {
+            .detail {
               display: flex;
               p {
                 padding: 3px;

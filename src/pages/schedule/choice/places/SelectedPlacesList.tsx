@@ -22,10 +22,10 @@ const SelectedPlacesList = () => {
               </figure>
               <span className="info">
                 <p className="name">꼬스덴뇨</p>
-                <p className="detail">
+                <div className="detail">
                   <p className="category">카페</p>
                   <p className="addr">대한민국 제주특별시</p>
-                </p>
+                </div>
               </span>
             </span>
             <span className="delete">

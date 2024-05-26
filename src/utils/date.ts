@@ -68,3 +68,11 @@ export const tenDaysLater = (start: Date) => {
   const date = new Date(startDate.setDate(startDate.getDate() + 10));
   return date;
 };
+
+export const getWeek = (origin: Date) => {
+  const date = new Date(origin);
+
+  const week = date.getDay();
+
+  return weekOfDay[week];
+};

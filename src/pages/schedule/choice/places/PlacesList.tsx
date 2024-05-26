@@ -1,16 +1,49 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "./placesList.css";
 import { useLocation } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { Rootstate } from "../../../../store/store";
+import { fetchPlaces } from "../../../../store/slices/placeSlice";
+import { metros } from "../../../../data/metros";
+import { dateMidFormatter, destrucDate, getWeek } from "../../../../utils/date";
 
 const PlacesList = () => {
+  const dispatch = useDispatch();
+  const places = useSelector((state: Rootstate) => state.place.places);
+  const areacode =
+    useSelector((state: Rootstate) => state.schedule.schedule.metro_id) || "1";
+  const schedule = useSelector((state: Rootstate) => state.schedule.schedule);
   const location = useLocation();
   const { hash } = location;
+
+  useEffect(() => {
+    dispatch(fetchPlaces({ areacode, hash, contentTypeId: "1" }) as any);
+  }, [dispatch, areacode, hash]);
+
+  const start =
+    schedule.start_date &&
+    destrucDate(dateMidFormatter(new Date(schedule.start_date)));
+  const end =
+    schedule.end_date &&
+    destrucDate(dateMidFormatter(new Date(schedule.end_date)));
 
   return (
     <div className="placesList">
       <div className="info">
-        <p className="areaName">어디</p>
-        <p className="duration">2024.05.26(일) - 2024.05.27(월)</p>
+        <p className="areaName">
+          {metros.find((metro) => metro.areaCode === areacode)?.name}
+        </p>
+        <p className="duration">
+          {start &&
+            schedule.start_date &&
+            end &&
+            schedule.end_date &&
+            `${start.year}.${start.month + 1}.${start.date}(${getWeek(
+              new Date(schedule.start_date)
+            )}) - ${end.year}.${end.month + 1}.${end.date}(${getWeek(
+              new Date(schedule.end_date)
+            )})`}
+        </p>
       </div>
       <div className="search">
         <input type="search" placeholder="장소명을 입력하세요" />
@@ -18,10 +51,12 @@ const PlacesList = () => {
       <div className="category">
         {hash === "#step2" ? (
           <ul>
-            <li className="active">전체</li>
-            <li>관광</li>
-            <li>문화</li>
-            <li>식당</li>
+            <li className="active" key={1}>
+              전체
+            </li>
+            <li key={12}>관광</li>
+            <li key={14}>문화</li>
+            <li key={39}>식당</li>
           </ul>
         ) : (
           <ul>
@@ -31,96 +66,27 @@ const PlacesList = () => {
       </div>
       <div className="list">
         <ul className="listContainer">
-          <li className="placeCard">
-            <span className="placeInfo">
-              <figure className="photo">
-                <img src="" alt="사진" />
-              </figure>
-              <span className="info">
-                <p className="placeName">섭지코지</p>
-                <span className="type">관광</span>
-                <span className="addr">대한민국 제주특별자치도</span>
+          {places.map((place) => (
+            <li className="placeCard" key={place.contentid}>
+              <span className="placeInfo">
+                <figure className="photo">
+                  <img src={place.firstimage} alt={place.title} />
+                </figure>
+                <span className="info">
+                  <div className="placeName">
+                    <p>{place.title}</p>
+                  </div>
+                  <div className="addrContainer">
+                    <span className="type">{place.contenttypeid}</span>
+                    <span className="addr">{place.addr1}</span>
+                  </div>
+                </span>
               </span>
-            </span>
-            <span className="placeEvent">
-              <p className="btn">+</p>
-            </span>
-          </li>
-          <li className="placeCard">
-            <span className="placeInfo">
-              <figure className="photo">
-                <img src="" alt="사진" />
-              </figure>
-              <span className="info">
-                <p className="placeName">섭지코지</p>
-                <span className="type">관광</span>
-                <span className="addr">대한민국 제주특별자치도</span>
+              <span className="placeEvent">
+                <p className="btn">+</p>
               </span>
-            </span>
-            <span className="placeEvent">
-              <p className="btn">+</p>
-            </span>
-          </li>
-          <li className="placeCard">
-            <span className="placeInfo">
-              <figure className="photo">
-                <img src="" alt="사진" />
-              </figure>
-              <span className="info">
-                <p className="placeName">섭지코지</p>
-                <span className="type">관광</span>
-                <span className="addr">대한민국 제주특별자치도</span>
-              </span>
-            </span>
-            <span className="placeEvent">
-              <p className="btn">+</p>
-            </span>
-          </li>
-          <li className="placeCard">
-            <span className="placeInfo">
-              <figure className="photo">
-                <img src="" alt="사진" />
-              </figure>
-              <span className="info">
-                <p className="placeName">섭지코지</p>
-                <span className="type">관광</span>
-                <span className="addr">대한민국 제주특별자치도</span>
-              </span>
-            </span>
-            <span className="placeEvent">
-              <p className="btn">+</p>
-            </span>
-          </li>
-          <li className="placeCard">
-            <span className="placeInfo">
-              <figure className="photo">
-                <img src="" alt="사진" />
-              </figure>
-              <span className="info">
-                <p className="placeName">섭지코지</p>
-                <span className="type">관광</span>
-                <span className="addr">대한민국 제주특별자치도</span>
-              </span>
-            </span>
-            <span className="placeEvent">
-              <p className="btn">+</p>
-            </span>
-          </li>
-          <li className="placeCard">
-            <span className="placeInfo">
-              <figure className="photo">
-                <img src="" alt="사진" />
-              </figure>
-              <span className="info">
-                <p className="placeName">섭지코지</p>
-                <span className="type">관광</span>
-                <span className="addr">대한민국 제주특별자치도</span>
-              </span>
-            </span>
-            <span className="placeEvent">
-              <p className="btn">+</p>
-            </span>
-          </li>
+            </li>
+          ))}
         </ul>
       </div>
     </div>
