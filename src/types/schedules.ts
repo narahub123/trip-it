@@ -7,8 +7,8 @@ export interface MetroType {
 
 export interface ScheduleDetailType {
   schedule_order?: string;
-  start_time?: Date;
-  end_time?: Date;
+  start_time?: string;
+  end_time?: string;
   content_id?: string;
   createdAt?: Date;
 }
@@ -16,8 +16,8 @@ export interface ScheduleDetailType {
 export interface ScheduleType {
   schedule_id?: string;
   metro_id?: string;
-  start_date?: Date;
-  end_date?: Date;
+  start_date?: string;
+  end_date?: string;
   schedule_name?: string;
   schedule_detail?: ScheduleDetailType[] | [];
 }
