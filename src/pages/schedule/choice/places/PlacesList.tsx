@@ -12,8 +12,10 @@ import { LuRefreshCcw } from "react-icons/lu";
 const PlacesList = () => {
   const [contentTypeId, setContentTypeId] = useState("1");
   const [pageNo, setPageNo] = useState(0);
-  // const target = useRef<HTMLLIElement>(null);
+  const target = useRef<HTMLLIElement>(null);
+  const [isFirst, setIsFirst] = useState(true);
   const [isEnd, setIsEnd] = useState<boolean>(false); // 불러온 데이터 NumberOfRow보다 작은 경우 end로 변경하는 것 추가 필요
+  const [count, setCount] = useState(1);
   const dispatch = useDispatch();
   const places = useSelector((state: Rootstate) => state.place.places);
   const status = useSelector((state: Rootstate) => state.place.status);
@@ -28,6 +30,9 @@ const PlacesList = () => {
     dispatch(clearPlaces());
   }, [hash, contentTypeId]);
   useEffect(() => {
+    setCount((pre) => pre + 1);
+    if (pageNo === 0) return;
+
     dispatch(fetchPlaces({ hash, contentTypeId, pageNo }) as any);
   }, [dispatch, hash, contentTypeId, pageNo]);
 
@@ -39,33 +44,36 @@ const PlacesList = () => {
     destrucDate(dateMidFormatter(new Date(schedule.end_date)));
 
   // 무한 스크롤
-  let options = {
-    root: document.querySelector("body"),
-    rootMargin: "0px",
-    threshold: 1.0,
-  };
-
-  let observer = new IntersectionObserver((items) => {
-    items.forEach((item) => {
-      if (item.isIntersecting) {
-        console.log(item);
-        setPageNo((prev) => prev + 1);
-      }
-    });
-  }, options);
-
-  console.log(pageNo);
-
-  const target = document.querySelector("#target");
-
   useEffect(() => {
+    let options = {
+      root: document.querySelector("body"),
+      rootMargin: "0px",
+      threshold: 1.0,
+    };
+
+    let observer = new IntersectionObserver((items) => {
+      if (isFirst) {
+        setIsFirst(false);
+        return;
+      }
+      items.forEach((item) => {
+        if (item.isIntersecting) {
+          console.log(item);
+          setPageNo((prev) => prev + 1);
+        }
+      });
+    }, options);
+
+    console.log(pageNo);
+    console.log("count", count);
+
     console.log(target, "visible");
 
-    target && observer.observe(target);
+    target.current && observer.observe(target.current);
     return () => {
-      target && observer.unobserve(target);
+      target.current && observer.unobserve(target.current);
     };
-  }, [target]);
+  }, [isFirst]);
 
   const defaultImage = metros.find(
     (metro) => metro.areaCode === areacode
@@ -181,7 +189,7 @@ const PlacesList = () => {
                 <li className="warning">데이터 연결 실패</li>
               )}
           {!isEnd && (
-            <li key={"target"} id="target" style={{ visibility: "hidden" }}>
+            <li key={"target"} ref={target} style={{ visibility: "hidden" }}>
               target
             </li>
           )}
