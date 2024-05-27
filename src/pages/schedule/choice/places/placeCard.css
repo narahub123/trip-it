@@ -4,6 +4,7 @@
   border-radius: 10px;
   background-color: rgba(221, 220, 220, 0.182);
   padding: 10px;
+  cursor: pointer;
   figure {
     width: 45px;
     height: 45px;

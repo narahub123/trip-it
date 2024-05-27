@@ -92,7 +92,7 @@ const PlacesList = () => {
   const handleSelection = (contentId: string) => {
     console.log(contentId);
     dispatch(addContentId(contentId));
-    dispatch(fetchPlace({ contentId }) as any);
+    dispatch(fetchPlace({ contentId, info: false }) as any);
   };
 
   const handleDeselection = (contentId: string) => {

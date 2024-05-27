@@ -9,6 +9,7 @@ export interface PlaceState {
   error?: string;
   contentIds?: string[];
   selectedPlaces?: PlaceApiType[];
+  place?: PlaceApiType;
 }
 
 const initialState: PlaceState = {
@@ -26,6 +27,7 @@ interface PlacesProps {
 
 interface PlaceProps {
   contentId: string;
+  info: boolean;
 }
 
 // 지역 코드로 장소들 불러오기
@@ -63,21 +65,25 @@ export const fetchPlaces = createAsyncThunk(
 );
 
 // 컨텐츠아이디로 장소 불러오기
-export const fetchPlace = createAsyncThunk(
-  "placeSlice/fetchPlace",
-  async ({ contentId }: PlaceProps) => {
-    try {
-      const url = `http://localhost:8080/places/${contentId}`;
+export const fetchPlace = createAsyncThunk<
+  {
+    places: PlaceApiType[];
+    info: boolean;
+  },
+  PlaceProps
+>("placeSlice/fetchPlace", async ({ contentId, info = false }: PlaceProps) => {
+  try {
+    const url = `http://localhost:8080/places/${contentId}`;
 
-      const response = await fetch(url);
-      const jsonData = await response.json();
+    const response = await fetch(url);
+    const jsonData = await response.json();
 
-      return jsonData;
-    } catch (error) {
-      console.log(error);
-    }
+    return { places: jsonData, info };
+  } catch (error) {
+    console.log(error);
+    return { places: [], info: false };
   }
-);
+});
 
 const placeSlice = createSlice({
   name: "place",
@@ -138,12 +144,23 @@ const placeSlice = createSlice({
       })
       .addCase(
         fetchPlace.fulfilled,
-        (state, action: PayloadAction<PlaceApiType[]>) => {
+        (
+          state,
+          action: PayloadAction<{ places: PlaceApiType[]; info: boolean }>
+        ) => {
           state.status = "succeeded";
-          if (state.selectedPlaces) {
-            state.selectedPlaces = [...state.selectedPlaces, ...action.payload];
+          console.log(action.payload.info);
+          if (!action.payload.info) {
+            if (state.selectedPlaces) {
+              state.selectedPlaces = [
+                ...state.selectedPlaces,
+                ...action.payload.places,
+              ];
+            } else {
+              state.selectedPlaces = [...action.payload.places];
+            }
           } else {
-            state.selectedPlaces = [...action.payload];
+            state.place = action.payload.places[0];
           }
         }
       )

@@ -1,24 +1,36 @@
-import React from "react";
+import React, { useCallback, useEffect } from "react";
 import "./placeCard.css";
 import { PlaceApiType } from "../../../../types/place";
 import { metros } from "../../../../data/metros";
 import { Rootstate } from "../../../../store/store";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { contentTypeIds } from "../../../../data/contentTypeIds";
+import { fetchPlace } from "../../../../store/slices/placeSlice";
 
 interface PlaceCardProps {
   place: PlaceApiType;
 }
 
 const PlaceCard = ({ place }: PlaceCardProps) => {
+  const dispatch = useDispatch();
   const areacode =
     useSelector((state: Rootstate) => state.schedule.schedule.metro_id) || "1";
+
   // 기본 이미지
   const defaultImage = metros.find(
     (metro) => metro.areaCode === areacode
   )?.imgUrl;
+
+  const handleModal = useCallback(
+    (contentId: string) => {
+      console.log(contentId);
+      dispatch(fetchPlace({ contentId, info: true }) as any);
+    },
+    [dispatch]
+  );
+
   return (
-    <div className="placeCard">
+    <div className="placeCard" onClick={() => handleModal(place.contentid)}>
       <figure className="photo">
         <img src={place.firstimage || defaultImage} alt={place.title} />
       </figure>
