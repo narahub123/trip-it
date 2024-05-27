@@ -8,6 +8,7 @@ export interface PlaceState {
   status: string;
   error?: string;
   contentIds?: string[];
+  selectedPlaces?: PlaceApiType[];
 }
 
 const initialState: PlaceState = {
@@ -23,6 +24,11 @@ interface PlacesProps {
   pageNo: number;
 }
 
+interface PlaceProps {
+  contentId: string;
+}
+
+// 지역 코드로 장소들 불러오기
 export const fetchPlaces = createAsyncThunk(
   "placeSlice/fetchPlaces",
   async ({ hash, contentTypeId, pageNo = 1 }: PlacesProps, { getState }) => {
@@ -56,6 +62,23 @@ export const fetchPlaces = createAsyncThunk(
   }
 );
 
+// 컨텐츠아이디로 장소 불러오기
+export const fetchPlace = createAsyncThunk(
+  "placeSlice/fetchPlace",
+  async ({ contentId }: PlaceProps) => {
+    try {
+      const url = `http://localhost:8080/places/${contentId}`;
+
+      const response = await fetch(url);
+      const jsonData = await response.json();
+
+      return jsonData;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+);
+
 const placeSlice = createSlice({
   name: "place",
   initialState,
@@ -66,6 +89,9 @@ const placeSlice = createSlice({
     clearContentId: (state) => {
       state.contentIds = [];
     },
+    clearSelectedPlaces: (state) => {
+      state.selectedPlaces = [];
+    },
     addContentId: (state, action: PayloadAction<string>) => {
       if (state.contentIds)
         state.contentIds = [...state.contentIds, action.payload];
@@ -75,6 +101,13 @@ const placeSlice = createSlice({
       if (state.contentIds) {
         state.contentIds = state.contentIds.filter(
           (contentId) => contentId !== action.payload
+        );
+      }
+    },
+    removeSelectedPlace: (state, action: PayloadAction<string>) => {
+      if (state.selectedPlaces) {
+        state.selectedPlaces = state.selectedPlaces.filter(
+          (selectedPlace) => selectedPlace.contentid !== action.payload
         );
       }
     },
@@ -99,11 +132,35 @@ const placeSlice = createSlice({
       .addCase(fetchPlaces.rejected, (state, action) => {
         state.status = "failed";
         state.error = action.error.message;
+      })
+      .addCase(fetchPlace.pending, (state) => {
+        state.status = "loading";
+      })
+      .addCase(
+        fetchPlace.fulfilled,
+        (state, action: PayloadAction<PlaceApiType[]>) => {
+          state.status = "succeeded";
+          if (state.selectedPlaces) {
+            state.selectedPlaces = [...state.selectedPlaces, ...action.payload];
+          } else {
+            state.selectedPlaces = [...action.payload];
+          }
+        }
+      )
+      .addCase(fetchPlace.rejected, (state, action) => {
+        state.status = "failed";
+        state.error = action.error.message;
       });
   },
 });
 
-export const { clearPlaces, addContentId, clearContentId, removeContentId } =
-  placeSlice.actions;
+export const {
+  clearPlaces,
+  addContentId,
+  clearContentId,
+  removeContentId,
+  clearSelectedPlaces,
+  removeSelectedPlace,
+} = placeSlice.actions;
 
 export default placeSlice.reducer;

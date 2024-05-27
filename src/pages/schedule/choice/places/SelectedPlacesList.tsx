@@ -1,37 +1,86 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "./selectedPlacesList.css";
 import { LuTrash2 } from "react-icons/lu";
+import { useDispatch, useSelector } from "react-redux";
+import { Rootstate } from "../../../../store/store";
+import {
+  clearContentId,
+  clearSelectedPlaces,
+  fetchPlace,
+  removeContentId,
+  removeSelectedPlace,
+} from "../../../../store/slices/placeSlice";
+import { contentTypeIds } from "../../../../data/contentTypeIds";
+import { metros } from "../../../../data/metros";
 
 const SelectedPlacesList = () => {
+  const dispatch = useDispatch();
+  const selectedPlaces = useSelector(
+    (state: Rootstate) => state.place.selectedPlaces
+  );
+  const areacode = useSelector(
+    (state: Rootstate) => state.schedule.schedule.metro_id || "1"
+  );
+  const contentIds = useSelector((state: Rootstate) => state.place.contentIds);
+
+  // 기본 이미지
+  const defaultImage = metros.find(
+    (metro) => metro.areaCode === areacode
+  )?.imgUrl;
+
+  const handleDeselection = (contentId: string) => {
+    dispatch(removeContentId(contentId));
+    dispatch(removeSelectedPlace(contentId));
+  };
+
+  const handleReset = () => {
+    dispatch(clearSelectedPlaces());
+    dispatch(clearContentId());
+  };
+  console.log("selectedPlaces", selectedPlaces);
+
   return (
     <div className="selectedPlacesList">
       <div className="listInfo">
-        <p className="count">1</p>
-        <p className="reset">장소 설정 초기화</p>
+        <p className="count">{selectedPlaces?.length || 0}</p>
+        <p className="reset" onClick={handleReset}>
+          장소 설정 초기화
+        </p>
       </div>
       <div className="selectedList">
-        <div className="indicator">장소를 선택해주세요.</div>
+        {(selectedPlaces?.length === 0 || !selectedPlaces) && (
+          <div className="indicator">장소를 선택해주세요.</div>
+        )}
         <ul>
-          <li>
-            <span className="index">
-              <p>1</p>
-            </span>
-            <span className="infoContainer">
-              <figure className="photo">
-                <img src="" alt="사진" />
-              </figure>
-              <span className="info">
-                <p className="name">꼬스덴뇨</p>
-                <div className="detail">
-                  <p className="category">카페</p>
-                  <p className="addr">대한민국 제주특별시</p>
-                </div>
-              </span>
-            </span>
-            <span className="delete">
-              <LuTrash2 />
-            </span>
-          </li>
+          {selectedPlaces &&
+            selectedPlaces?.length > 0 &&
+            selectedPlaces.map((place, index) => (
+              <li key={place.contentid}>
+                <span className="index">
+                  <p>{index + 1}</p>
+                </span>
+                <span className="infoContainer">
+                  <figure className="photo">
+                    <img src={place.firstimage || defaultImage} alt="사진" />
+                  </figure>
+                  <span className="info">
+                    <p className="name">{place.title}</p>
+                    <div className="detail">
+                      <p className="category">
+                        {contentTypeIds[Number(place.contenttypeid)]}
+                      </p>
+                      <p className="addr">{place.addr1}</p>
+                    </div>
+                  </span>
+                </span>
+                <span
+                  className="delete"
+                  onClick={() => handleDeselection(place.contentid)}
+                >
+                  <LuTrash2 />
+                </span>
+              </li>
+            ))}
         </ul>
       </div>
     </div>

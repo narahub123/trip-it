@@ -6,13 +6,17 @@ import { Rootstate } from "../../../../store/store";
 import {
   addContentId,
   clearPlaces,
+  fetchPlace,
   fetchPlaces,
   removeContentId,
+  removeSelectedPlace,
 } from "../../../../store/slices/placeSlice";
 import { metros } from "../../../../data/metros";
 import { dateMidFormatter, destrucDate, getWeek } from "../../../../utils/date";
 import { contentTypeIds } from "../../../../data/contentTypeIds";
 import { LuRefreshCcw } from "react-icons/lu";
+
+import { PlaceApiType } from "../../../../types/place";
 
 const PlacesList = () => {
   const [contentTypeId, setContentTypeId] = useState("1");
@@ -33,13 +37,14 @@ const PlacesList = () => {
   // 해시나 종류가 달라지는 경우 기존 places를 비움
   useEffect(() => {
     dispatch(clearPlaces());
+    setPageNo(0);
   }, [hash, contentTypeId]);
-  useEffect(() => {
-    setCount((pre) => pre + 1);
-    if (pageNo === 0) return;
 
+  useEffect(() => {
+    if (pageNo === 0) return;
+    setCount((pre) => pre + 1);
     dispatch(fetchPlaces({ hash, contentTypeId, pageNo }) as any);
-  }, [dispatch, hash, contentTypeId, pageNo]);
+  }, [dispatch, pageNo]);
 
   const start =
     schedule.start_date &&
@@ -91,13 +96,13 @@ const PlacesList = () => {
   const handleSelection = (contentId: string) => {
     console.log(contentId);
     dispatch(addContentId(contentId));
+    dispatch(fetchPlace({ contentId }) as any);
   };
 
   const handleDeselection = (contentId: string) => {
     dispatch(removeContentId(contentId));
+    dispatch(removeSelectedPlace(contentId));
   };
-
-  console.log("contentIds", contentIds);
 
   return (
     <div className="placesList">

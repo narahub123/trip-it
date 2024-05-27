@@ -20,4 +20,5 @@ export interface PlaceApiType {
   tel: string;
   title: string;
   zipcode: string;
+  overview?: string;
 }
