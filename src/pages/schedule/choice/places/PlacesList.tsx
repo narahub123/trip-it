@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import "./placesList.css";
 import { useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { Rootstate } from "../../../../store/store";
-import { fetchPlaces } from "../../../../store/slices/placeSlice";
+import { clearPlaces, fetchPlaces } from "../../../../store/slices/placeSlice";
 import { metros } from "../../../../data/metros";
 import { dateMidFormatter, destrucDate, getWeek } from "../../../../utils/date";
 import { contentTypeIds } from "../../../../data/contentTypeIds";
@@ -11,7 +11,9 @@ import { LuRefreshCcw } from "react-icons/lu";
 
 const PlacesList = () => {
   const [contentTypeId, setContentTypeId] = useState("1");
-  const [pageNo, setPageNo] = useState(1);
+  const [pageNo, setPageNo] = useState(0);
+  // const target = useRef<HTMLLIElement>(null);
+  const [isEnd, setIsEnd] = useState<boolean>(false);
   const dispatch = useDispatch();
   const places = useSelector((state: Rootstate) => state.place.places);
   const status = useSelector((state: Rootstate) => state.place.status);
@@ -21,6 +23,10 @@ const PlacesList = () => {
   const location = useLocation();
   const { hash } = location;
 
+  // 해시나 종류가 달라지는 경우 기존 places를 비움
+  useEffect(() => {
+    dispatch(clearPlaces());
+  }, [hash, contentTypeId]);
   useEffect(() => {
     dispatch(fetchPlaces({ hash, contentTypeId, pageNo }) as any);
   }, [dispatch, hash, contentTypeId, pageNo]);
@@ -31,6 +37,35 @@ const PlacesList = () => {
   const end =
     schedule.end_date &&
     destrucDate(dateMidFormatter(new Date(schedule.end_date)));
+
+  // 무한 스크롤
+  let options = {
+    root: document.querySelector("body"),
+    rootMargin: "0px",
+    threshold: 1.0,
+  };
+
+  let observer = new IntersectionObserver((items) => {
+    items.forEach((item) => {
+      if (item.isIntersecting) {
+        console.log(item);
+        setPageNo((prev) => prev + 1);
+      }
+    });
+  }, options);
+
+  console.log(pageNo);
+
+  const target = document.querySelector("#target");
+
+  useEffect(() => {
+    console.log(target, "visible");
+
+    target && observer.observe(target);
+    return () => {
+      target && observer.unobserve(target);
+    };
+  }, [target]);
 
   return (
     <div className="placesList">
@@ -124,11 +159,18 @@ const PlacesList = () => {
                 </li>
               ))
             : status !== "loading" && (
-                <li>loading..(the connection might be wrong)</li>
+                <li className="warning">데이터 연결 실패</li>
               )}
-          <li key={"target"} id="target" style={{ border: "1px solid black" }}>
-            target
-          </li>
+          {!isEnd && (
+            <li
+              key={"target"}
+              id="target"
+              // ref={target}
+              style={{ border: "1px solid black" }}
+            >
+              target
+            </li>
+          )}
         </ul>
       </div>
     </div>

@@ -29,8 +29,6 @@ export const fetchPlaces = createAsyncThunk(
 
     const areacode = schedule.schedule.metro_id || "1";
 
-    console.log(hash);
-
     try {
       if (hash === "#step3") {
         contentTypeId = "32";
@@ -43,7 +41,7 @@ export const fetchPlaces = createAsyncThunk(
         contentTypeId = "1";
       }
 
-      const url = `http://localhost:8080/places/${areacode}/${contentTypeId}/${pageNo}`;
+      const url = `http://localhost:8080/places/${areacode}/${contentTypeId}/${pageNo.toString()}`;
       console.log(url);
 
       const response = await fetch(url);
@@ -59,7 +57,11 @@ export const fetchPlaces = createAsyncThunk(
 const placeSlice = createSlice({
   name: "place",
   initialState,
-  reducers: {},
+  reducers: {
+    clearPlaces: (state) => {
+      state.places = [];
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(fetchPlaces.pending, (state) => {
@@ -69,7 +71,12 @@ const placeSlice = createSlice({
         fetchPlaces.fulfilled,
         (state, action: PayloadAction<PlaceApiType[]>) => {
           state.status = "succeeded";
-          state.places = action.payload;
+
+          if (state.places == null || state.places.length === 0) {
+            state.places = action.payload;
+          } else {
+            state.places = [...state.places, ...action.payload];
+          }
         }
       )
       .addCase(fetchPlaces.rejected, (state, action) => {
@@ -79,6 +86,6 @@ const placeSlice = createSlice({
   },
 });
 
-export const {} = placeSlice.actions;
+export const { clearPlaces } = placeSlice.actions;
 
 export default placeSlice.reducer;

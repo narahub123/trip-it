@@ -57,6 +57,12 @@
         animation: rotate 1s linear infinite;
       }
 
+      li.warning {
+        padding: 20px 0;
+        text-align: center;
+        /* height: 500px; */
+      }
+
       li.placeCard {
         display: flex;
         align-items: center;
