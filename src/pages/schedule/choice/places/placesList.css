@@ -60,6 +60,7 @@
       li.warning {
         padding: 20px 0;
         text-align: center;
+        visibility: hidden;
         /* height: 500px; */
       }
 

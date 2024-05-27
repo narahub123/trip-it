@@ -13,7 +13,7 @@ const PlacesList = () => {
   const [contentTypeId, setContentTypeId] = useState("1");
   const [pageNo, setPageNo] = useState(0);
   // const target = useRef<HTMLLIElement>(null);
-  const [isEnd, setIsEnd] = useState<boolean>(false);
+  const [isEnd, setIsEnd] = useState<boolean>(false); // 불러온 데이터 NumberOfRow보다 작은 경우 end로 변경하는 것 추가 필요
   const dispatch = useDispatch();
   const places = useSelector((state: Rootstate) => state.place.places);
   const status = useSelector((state: Rootstate) => state.place.status);
@@ -162,12 +162,7 @@ const PlacesList = () => {
                 <li className="warning">데이터 연결 실패</li>
               )}
           {!isEnd && (
-            <li
-              key={"target"}
-              id="target"
-              // ref={target}
-              style={{ border: "1px solid black" }}
-            >
+            <li key={"target"} id="target" style={{ visibility: "hidden" }}>
               target
             </li>
           )}
