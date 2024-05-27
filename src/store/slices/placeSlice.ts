@@ -15,14 +15,15 @@ const initialState: PlaceState = {
   error: undefined,
 };
 
-interface PlaceProps {
+interface PlacesProps {
   hash: string;
   contentTypeId: string;
+  pageNo: number;
 }
 
 export const fetchPlaces = createAsyncThunk(
   "placeSlice/fetchPlaces",
-  async ({ hash, contentTypeId }: PlaceProps, { getState }) => {
+  async ({ hash, contentTypeId, pageNo = 1 }: PlacesProps, { getState }) => {
     //다른 slice의 값 가져오기
     const { schedule } = getState() as Rootstate;
 
@@ -42,7 +43,7 @@ export const fetchPlaces = createAsyncThunk(
         contentTypeId = "1";
       }
 
-      const url = `http://localhost:8080/places/${areacode}/${contentTypeId}`;
+      const url = `http://localhost:8080/places/${areacode}/${contentTypeId}/${pageNo}`;
       console.log(url);
 
       const response = await fetch(url);

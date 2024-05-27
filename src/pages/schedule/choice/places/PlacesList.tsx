@@ -10,6 +10,7 @@ import { contentTypeIds } from "../../../../data/contentTypeIds";
 
 const PlacesList = () => {
   const [contentTypeId, setContentTypeId] = useState("1");
+  const [pageNo, setPageNo] = useState(1);
   const dispatch = useDispatch();
   const places = useSelector((state: Rootstate) => state.place.places);
   const areacode =
@@ -19,8 +20,8 @@ const PlacesList = () => {
   const { hash } = location;
 
   useEffect(() => {
-    dispatch(fetchPlaces({ hash, contentTypeId }) as any);
-  }, [dispatch, hash, contentTypeId]);
+    dispatch(fetchPlaces({ hash, contentTypeId, pageNo }) as any);
+  }, [dispatch, hash, contentTypeId, pageNo]);
 
   const start =
     schedule.start_date &&

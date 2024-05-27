@@ -58,7 +58,7 @@
         user-select: none;
         span.placeInfo {
           display: flex;
-
+          width: 270px;
           border-radius: 10px;
           background-color: rgba(221, 220, 220, 0.182);
           padding: 10px;
