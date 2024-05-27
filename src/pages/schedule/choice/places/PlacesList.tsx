@@ -67,6 +67,10 @@ const PlacesList = () => {
     };
   }, [target]);
 
+  const defaultImage = metros.find(
+    (metro) => metro.areaCode === areacode
+  )?.imgUrl;
+
   return (
     <div className="placesList">
       <div className="info">
@@ -126,7 +130,10 @@ const PlacesList = () => {
                 <li className="placeCard" key={place.contentid}>
                   <span className="placeInfo">
                     <figure className="photo">
-                      <img src={place.firstimage} alt={place.title} />
+                      <img
+                        src={place.firstimage || defaultImage}
+                        alt={place.title}
+                      />
                     </figure>
                     <span className="info">
                       <div className="placeName">
