@@ -12,6 +12,7 @@ import {
 } from "../../../../store/slices/placeSlice";
 import { contentTypeIds } from "../../../../data/contentTypeIds";
 import { metros } from "../../../../data/metros";
+import PlaceCard from "./PlaceCard";
 
 const SelectedPlacesList = () => {
   const dispatch = useDispatch();
@@ -59,20 +60,7 @@ const SelectedPlacesList = () => {
                 <span className="index">
                   <p>{index + 1}</p>
                 </span>
-                <span className="infoContainer">
-                  <figure className="photo">
-                    <img src={place.firstimage || defaultImage} alt="사진" />
-                  </figure>
-                  <span className="info">
-                    <p className="name">{place.title}</p>
-                    <div className="detail">
-                      <p className="category">
-                        {contentTypeIds[Number(place.contenttypeid)]}
-                      </p>
-                      <p className="addr">{place.addr1}</p>
-                    </div>
-                  </span>
-                </span>
+                <PlaceCard place={place} />
                 <span
                   className="delete"
                   onClick={() => handleDeselection(place.contentid)}

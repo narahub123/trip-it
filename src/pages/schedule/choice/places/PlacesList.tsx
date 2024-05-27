@@ -17,6 +17,7 @@ import { contentTypeIds } from "../../../../data/contentTypeIds";
 import { LuRefreshCcw } from "react-icons/lu";
 
 import { PlaceApiType } from "../../../../types/place";
+import PlaceCard from "./PlaceCard";
 
 const PlacesList = () => {
   const [contentTypeId, setContentTypeId] = useState("1");
@@ -84,11 +85,6 @@ const PlacesList = () => {
       target.current && observer.unobserve(target.current);
     };
   }, [isFirst]);
-
-  // 기본 이미지
-  const defaultImage = metros.find(
-    (metro) => metro.areaCode === areacode
-  )?.imgUrl;
 
   // 장소 추가하기
   const contentIds = useSelector((state: Rootstate) => state.place.contentIds);
@@ -172,38 +168,9 @@ const PlacesList = () => {
           )}
           {places
             ? places.map((place) => (
-                <li className="placeCard" key={place.contentid}>
+                <li className="placeListCard" key={place.contentid}>
                   <span className="placeInfo">
-                    <figure className="photo">
-                      <img
-                        src={place.firstimage || defaultImage}
-                        alt={place.title}
-                      />
-                    </figure>
-                    <span className="info">
-                      <div className="placeName">
-                        <p>{place.title}</p>
-                      </div>
-                      <div className="addrContainer">
-                        <span
-                          className="type"
-                          style={
-                            place.contenttypeid === "12"
-                              ? { color: "red" }
-                              : place.contenttypeid === "14"
-                              ? { color: "blue" }
-                              : place.contenttypeid === "32"
-                              ? { color: "violet" }
-                              : place.contenttypeid === "39"
-                              ? { color: "green" }
-                              : {}
-                          }
-                        >
-                          {contentTypeIds[Number(place.contenttypeid)]}
-                        </span>
-                        <span className="addr">{place.addr1}</span>
-                      </div>
-                    </span>
+                    <PlaceCard place={place} />
                   </span>
                   {!contentIds?.find(
                     (contentId) => contentId === place.contentid
