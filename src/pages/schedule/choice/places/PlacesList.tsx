@@ -3,7 +3,12 @@ import "./placesList.css";
 import { useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { Rootstate } from "../../../../store/store";
-import { clearPlaces, fetchPlaces } from "../../../../store/slices/placeSlice";
+import {
+  addContentId,
+  clearPlaces,
+  fetchPlaces,
+  removeContentId,
+} from "../../../../store/slices/placeSlice";
 import { metros } from "../../../../data/metros";
 import { dateMidFormatter, destrucDate, getWeek } from "../../../../utils/date";
 import { contentTypeIds } from "../../../../data/contentTypeIds";
@@ -75,9 +80,24 @@ const PlacesList = () => {
     };
   }, [isFirst]);
 
+  // 기본 이미지
   const defaultImage = metros.find(
     (metro) => metro.areaCode === areacode
   )?.imgUrl;
+
+  // 장소 추가하기
+  const contentIds = useSelector((state: Rootstate) => state.place.contentIds);
+
+  const handleSelection = (contentId: string) => {
+    console.log(contentId);
+    dispatch(addContentId(contentId));
+  };
+
+  const handleDeselection = (contentId: string) => {
+    dispatch(removeContentId(contentId));
+  };
+
+  console.log("contentIds", contentIds);
 
   return (
     <div className="placesList">
@@ -180,9 +200,23 @@ const PlacesList = () => {
                       </div>
                     </span>
                   </span>
-                  <span className="placeEvent">
-                    <p className="btn">+</p>
-                  </span>
+                  {!contentIds?.find(
+                    (contentId) => contentId === place.contentid
+                  ) ? (
+                    <span
+                      className="placeEvent"
+                      onClick={() => handleSelection(place.contentid)}
+                    >
+                      <p className="btn">+</p>
+                    </span>
+                  ) : (
+                    <span
+                      className="placeEventActive"
+                      onClick={() => handleDeselection(place.contentid)}
+                    >
+                      <p className="btn">🗸</p>
+                    </span>
+                  )}
                 </li>
               ))
             : status !== "loading" && (

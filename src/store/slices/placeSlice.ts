@@ -7,12 +7,14 @@ export interface PlaceState {
   places: PlaceApiType[];
   status: string;
   error?: string;
+  contentIds?: string[];
 }
 
 const initialState: PlaceState = {
   places: [],
   status: "idle",
   error: undefined,
+  contentIds: [],
 };
 
 interface PlacesProps {
@@ -61,6 +63,21 @@ const placeSlice = createSlice({
     clearPlaces: (state) => {
       state.places = [];
     },
+    clearContentId: (state) => {
+      state.contentIds = [];
+    },
+    addContentId: (state, action: PayloadAction<string>) => {
+      if (state.contentIds)
+        state.contentIds = [...state.contentIds, action.payload];
+      else state.contentIds = [action.payload];
+    },
+    removeContentId: (state, action: PayloadAction<string>) => {
+      if (state.contentIds) {
+        state.contentIds = state.contentIds.filter(
+          (contentId) => contentId !== action.payload
+        );
+      }
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -86,6 +103,7 @@ const placeSlice = createSlice({
   },
 });
 
-export const { clearPlaces } = placeSlice.actions;
+export const { clearPlaces, addContentId, clearContentId, removeContentId } =
+  placeSlice.actions;
 
 export default placeSlice.reducer;

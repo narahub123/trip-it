@@ -132,6 +132,18 @@
             color: gray;
           }
         }
+        span.placeEventActive {
+          margin-left: 10px;
+          p.btn {
+            cursor: pointer;
+            padding: 22px 8px;
+            margin-top: -4px;
+            font-weight: bold;
+            border-radius: 7px;
+            background-color: pink;
+            color: white;
+          }
+        }
       }
     }
 
