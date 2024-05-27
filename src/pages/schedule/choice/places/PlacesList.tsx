@@ -96,19 +96,31 @@ const PlacesList = () => {
         {hash === "#step2" ? (
           <ul>
             <li
-              className="active"
+              className={contentTypeId === "1" ? "active" : ""}
               key={1}
               onClick={() => setContentTypeId("1")}
             >
               전체
             </li>
-            <li key={12} onClick={() => setContentTypeId("12")}>
+            <li
+              className={contentTypeId === "12" ? "active" : ""}
+              key={12}
+              onClick={() => setContentTypeId("12")}
+            >
               관광
             </li>
-            <li key={14} onClick={() => setContentTypeId("14")}>
+            <li
+              className={contentTypeId === "14" ? "active" : ""}
+              key={14}
+              onClick={() => setContentTypeId("14")}
+            >
               문화
             </li>
-            <li key={39} onClick={() => setContentTypeId("39")}>
+            <li
+              className={contentTypeId === "39" ? "active" : ""}
+              key={39}
+              onClick={() => setContentTypeId("39")}
+            >
               식당
             </li>
           </ul>
