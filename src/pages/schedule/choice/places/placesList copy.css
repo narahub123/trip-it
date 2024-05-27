@@ -51,12 +51,6 @@
     ul.listContainer {
       padding-right: 10px;
 
-      li.loading {
-        padding: 20px 0;
-        text-align: center;
-        animation: rotate 1s linear infinite;
-      }
-
       li.placeCard {
         display: flex;
         align-items: center;
@@ -143,14 +137,5 @@
     ul.listContainer::-webkit-scrollbar-button {
       display: none;
     }
-  }
-}
-
-@keyframes rotate {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
   }
 }

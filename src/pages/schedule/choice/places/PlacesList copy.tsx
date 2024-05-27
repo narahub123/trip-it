@@ -7,14 +7,12 @@ import { fetchPlaces } from "../../../../store/slices/placeSlice";
 import { metros } from "../../../../data/metros";
 import { dateMidFormatter, destrucDate, getWeek } from "../../../../utils/date";
 import { contentTypeIds } from "../../../../data/contentTypeIds";
-import { LuRefreshCcw } from "react-icons/lu";
 
 const PlacesList = () => {
   const [contentTypeId, setContentTypeId] = useState("1");
   const [pageNo, setPageNo] = useState(1);
   const dispatch = useDispatch();
   const places = useSelector((state: Rootstate) => state.place.places);
-  const status = useSelector((state: Rootstate) => state.place.status);
   const areacode =
     useSelector((state: Rootstate) => state.schedule.schedule.metro_id) || "1";
   const schedule = useSelector((state: Rootstate) => state.schedule.schedule);
@@ -56,22 +54,12 @@ const PlacesList = () => {
       <div className="category">
         {hash === "#step2" ? (
           <ul>
-            <li
-              className="active"
-              key={1}
-              onClick={() => setContentTypeId("1")}
-            >
+            <li className="active" key={1}>
               전체
             </li>
-            <li key={12} onClick={() => setContentTypeId("12")}>
-              관광
-            </li>
-            <li key={14} onClick={() => setContentTypeId("14")}>
-              문화
-            </li>
-            <li key={39} onClick={() => setContentTypeId("39")}>
-              식당
-            </li>
+            <li key={12}>관광</li>
+            <li key={14}>문화</li>
+            <li key={39}>식당</li>
           </ul>
         ) : (
           <ul>
@@ -81,51 +69,42 @@ const PlacesList = () => {
       </div>
       <div className="list">
         <ul className="listContainer" id="listContainer">
-          {status === "loading" && (
-            <li key={"loading"} className="loading">
-              <LuRefreshCcw />
-            </li>
-          )}
-          {places
-            ? places.map((place) => (
-                <li className="placeCard" key={place.contentid}>
-                  <span className="placeInfo">
-                    <figure className="photo">
-                      <img src={place.firstimage} alt={place.title} />
-                    </figure>
-                    <span className="info">
-                      <div className="placeName">
-                        <p>{place.title}</p>
-                      </div>
-                      <div className="addrContainer">
-                        <span
-                          className="type"
-                          style={
-                            place.contenttypeid === "12"
-                              ? { color: "red" }
-                              : place.contenttypeid === "14"
-                              ? { color: "blue" }
-                              : place.contenttypeid === "32"
-                              ? { color: "violet" }
-                              : place.contenttypeid === "39"
-                              ? { color: "green" }
-                              : {}
-                          }
-                        >
-                          {contentTypeIds[Number(place.contenttypeid)]}
-                        </span>
-                        <span className="addr">{place.addr1}</span>
-                      </div>
+          {places.map((place) => (
+            <li className="placeCard" key={place.contentid}>
+              <span className="placeInfo">
+                <figure className="photo">
+                  <img src={place.firstimage} alt={place.title} />
+                </figure>
+                <span className="info">
+                  <div className="placeName">
+                    <p>{place.title}</p>
+                  </div>
+                  <div className="addrContainer">
+                    <span
+                      className="type"
+                      style={
+                        place.contenttypeid === "12"
+                          ? { color: "red" }
+                          : place.contenttypeid === "14"
+                          ? { color: "blue" }
+                          : place.contenttypeid === "32"
+                          ? { color: "violet" }
+                          : place.contenttypeid === "39"
+                          ? { color: "green" }
+                          : {}
+                      }
+                    >
+                      {contentTypeIds[Number(place.contenttypeid)]}
                     </span>
-                  </span>
-                  <span className="placeEvent">
-                    <p className="btn">+</p>
-                  </span>
-                </li>
-              ))
-            : status !== "loading" && (
-                <li>loading..(the connection might be wrong)</li>
-              )}
+                    <span className="addr">{place.addr1}</span>
+                  </div>
+                </span>
+              </span>
+              <span className="placeEvent">
+                <p className="btn">+</p>
+              </span>
+            </li>
+          ))}
           <li key={"target"} id="target" style={{ border: "1px solid black" }}>
             target
           </li>
