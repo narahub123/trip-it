@@ -10,6 +10,7 @@ export interface PlaceState {
   contentIds?: string[];
   selectedPlaces?: PlaceApiType[];
   place?: PlaceApiType;
+  modal?: boolean;
 }
 
 const initialState: PlaceState = {
@@ -17,6 +18,7 @@ const initialState: PlaceState = {
   status: "idle",
   error: undefined,
   contentIds: [],
+  modal: false,
 };
 
 interface PlacesProps {
@@ -117,6 +119,9 @@ const placeSlice = createSlice({
         );
       }
     },
+    modalToggle: (state) => {
+      state.modal = !state.modal;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -178,6 +183,7 @@ export const {
   removeContentId,
   clearSelectedPlaces,
   removeSelectedPlace,
+  modalToggle,
 } = placeSlice.actions;
 
 export default placeSlice.reducer;

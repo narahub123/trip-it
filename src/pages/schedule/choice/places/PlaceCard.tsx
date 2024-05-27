@@ -5,7 +5,7 @@ import { metros } from "../../../../data/metros";
 import { Rootstate } from "../../../../store/store";
 import { useDispatch, useSelector } from "react-redux";
 import { contentTypeIds } from "../../../../data/contentTypeIds";
-import { fetchPlace } from "../../../../store/slices/placeSlice";
+import { fetchPlace, modalToggle } from "../../../../store/slices/placeSlice";
 
 interface PlaceCardProps {
   place: PlaceApiType;
@@ -24,6 +24,7 @@ const PlaceCard = ({ place }: PlaceCardProps) => {
   const handleModal = useCallback(
     (contentId: string) => {
       console.log(contentId);
+      dispatch(modalToggle());
       dispatch(fetchPlace({ contentId, info: true }) as any);
     },
     [dispatch]
