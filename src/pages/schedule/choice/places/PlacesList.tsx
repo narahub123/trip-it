@@ -13,78 +13,63 @@ import {
 } from "../../../../store/slices/placeSlice";
 import { metros } from "../../../../data/metros";
 import { dateMidFormatter, destrucDate, getWeek } from "../../../../utils/date";
-import { contentTypeIds } from "../../../../data/contentTypeIds";
 import { LuRefreshCcw } from "react-icons/lu";
 
-import { PlaceApiType } from "../../../../types/place";
 import PlaceCard from "./PlaceCard";
 
 const PlacesList = () => {
-  const [contentTypeId, setContentTypeId] = useState("1");
-  const [pageNo, setPageNo] = useState(0);
-  const target = useRef<HTMLLIElement>(null);
-  const [isFirst, setIsFirst] = useState(true);
-  const [isEnd, setIsEnd] = useState<boolean>(false); // 불러온 데이터 NumberOfRow보다 작은 경우 end로 변경하는 것 추가 필요
-  const [count, setCount] = useState(1);
+  const listRef = useRef<HTMLDivElement>(null);
+  const target = useRef<HTMLDivElement>(null);
   const dispatch = useDispatch();
   const places = useSelector((state: Rootstate) => state.place.places);
   const status = useSelector((state: Rootstate) => state.place.status);
+  const isEnd = useSelector((state: Rootstate) => state.place.isEnd);
   const areacode =
     useSelector((state: Rootstate) => state.schedule.schedule.metro_id) || "1";
   const schedule = useSelector((state: Rootstate) => state.schedule.schedule);
   const location = useLocation();
   const { hash } = location;
 
+  const [pageNo, setPageNo] = useState(1);
+  const [contentTypeId, setContentTypeId] = useState("1");
+
   // 해시나 종류가 달라지는 경우 기존 places를 비움
   useEffect(() => {
+    console.log("셋팅 호출됨");
+
     dispatch(clearPlaces());
-    setPageNo(0);
+    setPageNo(1);
   }, [hash, contentTypeId]);
 
+  // 목록
   useEffect(() => {
-    if (pageNo === 0) return;
-    setCount((pre) => pre + 1);
     dispatch(fetchPlaces({ hash, contentTypeId, pageNo }) as any);
-  }, [dispatch, pageNo]);
 
-  const start =
-    schedule.start_date &&
-    destrucDate(dateMidFormatter(new Date(schedule.start_date)));
-  const end =
-    schedule.end_date &&
-    destrucDate(dateMidFormatter(new Date(schedule.end_date)));
+    console.log("목록 호출됨", contentTypeId);
+  }, [hash, contentTypeId, pageNo]);
 
-  // 무한 스크롤
+  // 무한 스크롤링
   useEffect(() => {
-    let options = {
-      root: document.querySelector("body"),
-      rootMargin: "0px",
-      threshold: 1.0,
-    };
-
-    let observer = new IntersectionObserver((items) => {
-      if (isFirst) {
-        setIsFirst(false);
-        return;
-      }
-      items.forEach((item) => {
-        if (item.isIntersecting) {
-          console.log(item);
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          console.log("만남");
           setPageNo((prev) => prev + 1);
         }
       });
-    }, options);
-
-    console.log(pageNo);
-    console.log("count", count);
-
-    console.log(target, "visible");
+    });
 
     target.current && observer.observe(target.current);
+
     return () => {
       target.current && observer.unobserve(target.current);
     };
-  }, [isFirst]);
+  }, []);
+
+  console.log("contentTypeId", contentTypeId);
+  console.log("pageNo", pageNo);
+
+  console.log("isend", isEnd);
 
   // 장소 추가하기
   const contentIds = useSelector((state: Rootstate) => state.place.contentIds);
@@ -98,6 +83,25 @@ const PlacesList = () => {
   const handleDeselection = (contentId: string) => {
     dispatch(removeContentId(contentId));
     dispatch(removeSelectedPlace(contentId));
+  };
+
+  // 날짜
+  const start =
+    schedule.start_date &&
+    destrucDate(dateMidFormatter(new Date(schedule.start_date)));
+  const end =
+    schedule.end_date &&
+    destrucDate(dateMidFormatter(new Date(schedule.end_date)));
+
+  // 카테고리 변경하기
+  const handleClick = (contentTypeId: string) => {
+    listRef.current &&
+      listRef.current.scroll({
+        top: 0,
+        behavior: "auto",
+      });
+    setContentTypeId(contentTypeId);
+    setPageNo(1);
   };
 
   return (
@@ -118,8 +122,15 @@ const PlacesList = () => {
             )})`}
         </p>
       </div>
-      <div className="search">
-        <input type="search" placeholder="장소명을 입력하세요" />
+      <div className="place-search-container">
+        <form>
+          <input
+            id="search"
+            name="name"
+            type="search"
+            placeholder="장소명을 입력하세요"
+          />
+        </form>
       </div>
       <div className="category">
         {hash === "#step2" ? (
@@ -127,28 +138,28 @@ const PlacesList = () => {
             <li
               className={contentTypeId === "1" ? "active" : ""}
               key={1}
-              onClick={() => setContentTypeId("1")}
+              onClick={() => handleClick("1")}
             >
               전체
             </li>
             <li
               className={contentTypeId === "12" ? "active" : ""}
               key={12}
-              onClick={() => setContentTypeId("12")}
+              onClick={() => handleClick("12")}
             >
               관광
             </li>
             <li
               className={contentTypeId === "14" ? "active" : ""}
               key={14}
-              onClick={() => setContentTypeId("14")}
+              onClick={() => handleClick("14")}
             >
               문화
             </li>
             <li
               className={contentTypeId === "39" ? "active" : ""}
               key={39}
-              onClick={() => setContentTypeId("39")}
+              onClick={() => handleClick("39")}
             >
               식당
             </li>
@@ -159,7 +170,7 @@ const PlacesList = () => {
           </ul>
         )}
       </div>
-      <div className="list">
+      <div className="list" ref={listRef}>
         <ul className="listContainer" id="listContainer">
           {status === "loading" && (
             <li key={"loading"} className="loading">
@@ -194,12 +205,12 @@ const PlacesList = () => {
             : status !== "loading" && (
                 <li className="warning">데이터 연결 실패</li>
               )}
-          {!isEnd && (
-            <li key={"target"} ref={target} style={{ visibility: "hidden" }}>
-              target
-            </li>
-          )}
         </ul>
+        {!isEnd && (
+          <div key={"target"} ref={target}>
+            target
+          </div>
+        )}
       </div>
     </div>
   );

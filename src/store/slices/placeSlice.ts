@@ -11,6 +11,7 @@ export interface PlaceState {
   selectedPlaces?: PlaceApiType[];
   place?: PlaceApiType;
   modal?: boolean;
+  isEnd: boolean;
 }
 
 const initialState: PlaceState = {
@@ -19,12 +20,17 @@ const initialState: PlaceState = {
   error: undefined,
   contentIds: [],
   modal: false,
+  isEnd: false,
 };
 
 interface PlacesProps {
   hash: string;
   contentTypeId: string;
   pageNo: number;
+}
+
+interface PlaceSearchProps extends PlacesProps {
+  keyword: string;
 }
 
 interface PlaceProps {
@@ -87,6 +93,48 @@ export const fetchPlace = createAsyncThunk<
   }
 });
 
+// 키워드로 장소들 불러오기
+export const fetchSearchedPlaces = createAsyncThunk(
+  "placeSlice/fetchSearchedPlaces",
+  async (
+    { keyword, hash, contentTypeId, pageNo = 1 }: PlaceSearchProps,
+    { getState }
+  ) => {
+    //다른 slice의 값 가져오기
+    const { schedule } = getState() as Rootstate;
+
+    console.log(keyword);
+
+    const areacode = schedule.schedule.metro_id || "1";
+
+    try {
+      if (hash === "#step3") {
+        contentTypeId = "32";
+      } else if (
+        hash === "#step2" &&
+        contentTypeId !== "12" &&
+        contentTypeId !== "14" &&
+        contentTypeId !== "39"
+      ) {
+        contentTypeId = "1";
+      }
+
+      const url = `http://localhost:8080/places/search/${areacode}/${contentTypeId}/${keyword}/${pageNo.toString()}`;
+      console.log(url);
+
+      const response = await fetch(url);
+      console.log(response);
+
+      const jsonData = await response.json();
+      console.log("결과", jsonData);
+
+      return jsonData;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+);
+
 const placeSlice = createSlice({
   name: "place",
   initialState,
@@ -133,6 +181,12 @@ const placeSlice = createSlice({
         (state, action: PayloadAction<PlaceApiType[]>) => {
           state.status = "succeeded";
 
+          if (action.payload.length < 8) {
+            state.isEnd = true;
+          } else {
+            state.isEnd = false;
+          }
+
           if (state.places == null || state.places.length === 0) {
             state.places = action.payload;
           } else {
@@ -172,6 +226,32 @@ const placeSlice = createSlice({
       .addCase(fetchPlace.rejected, (state, action) => {
         state.status = "failed";
         state.error = action.error.message;
+      })
+      .addCase(fetchSearchedPlaces.pending, (state) => {
+        state.status = "loading";
+      })
+      .addCase(
+        fetchSearchedPlaces.fulfilled,
+        (state, action: PayloadAction<PlaceApiType[]>) => {
+          state.status = "succeeded";
+
+          if (action.payload.length < 8) {
+            state.isEnd = true;
+          } else {
+            state.isEnd = false;
+          }
+
+          if (state.places == null || state.places.length === 0) {
+            state.places = action.payload;
+          } else {
+            state.places = [...state.places, ...action.payload];
+          }
+        }
+      )
+      .addCase(fetchSearchedPlaces.rejected, (state, action) => {
+        state.status = "failed";
+        state.error = action.error.message;
+        state.places = [];
       });
   },
 });

@@ -13,7 +13,7 @@
       color: gray;
     }
   }
-  .search {
+  .place-search-container {
     padding: 20px 0;
     input {
       width: 100%;
@@ -50,6 +50,7 @@
     overflow-x: hidden;
     ul.listContainer {
       padding-right: 10px;
+      min-height: 500px;
 
       li.loading {
         padding: 20px 0;
@@ -61,7 +62,6 @@
         padding: 20px 0;
         text-align: center;
         visibility: hidden;
-        /* height: 500px; */
       }
 
       li.placeListCard {
