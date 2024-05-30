@@ -113,7 +113,8 @@ const columnPlacesSlice = createSlice({
     addDraggedPlace: (state) => {
       console.log(state.goalRow);
 
-      if (state.curCol === state.goalCol) {
+      // 같은 컬럼이면서 이동 장소가 목표 위치랑 같지 않는 경우에 이동 장소를 지움
+      if (state.curCol === state.goalCol && state.curRow !== state.goalRow) {
         columnPlacesSlice.caseReducers.removeDraggedPlace(state);
       }
       const key =
@@ -130,17 +131,22 @@ const columnPlacesSlice = createSlice({
           if (state.goalRow === "_1") {
             // 목표 위치가 최상단일 경우
             state.columnPlaces[key] = [state.draggedPlace, ...goalColumnPlaces];
+          } else if (state.curRow === state.goalRow) {
+            console.log("hi");
           } else if (state.goalRow !== "_1") {
             console.log("here");
 
             // 목표 위치가 최상단이 아닐 경우
-            // 목표 위치 찾기
+            // 목표 위치 찾기:
             const index = goalColumnPlaces?.findIndex(
               (place) => place.contentid === state.goalRow
             );
+            //goalRow가 이동하려는 장소의 뒤의 dropIndicator를 의미하기 때문에
+            // goalRow에 해당되는 장소가 포함되어야 함
+            // 목표 장소가 마지막인 배열
             const beforeColumn = goalColumnPlaces?.slice(0, index + 1);
-            console.log(beforeColumn);
-
+            
+            // 목표 장소의 위의 배열
             const afterColumn = goalColumnPlaces?.slice(index + 1);
 
             state.columnPlaces[key] = [
