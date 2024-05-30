@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "./drags.css";
 import { useDispatch, useSelector } from "react-redux";
 import { Rootstate } from "../../../../store/store";
@@ -9,28 +9,55 @@ import {
 import PlaceCard from "../places/PlaceCard";
 import { LuTrash2 } from "react-icons/lu";
 import DropIndicator from "./DropIndicator";
+import {
+  dragBtwColumn,
+  dragInColumn,
+  fetchSelectedPlaces,
+  setDraggedPlace,
+  setGoalCol,
+  setGoalRow,
+  setcurCol,
+  setcurRow,
+} from "../../../../store/slices/columnPlacesSlice";
 
 const Drags = () => {
   const dispatch = useDispatch();
-  const draggablePlaces = useSelector(
-    (state: Rootstate) => state.place.selectedPlaces
+
+  const column_1 = useSelector(
+    (state: Rootstate) => state.columnPlaces.columnPlaces.columnPlaces_1
   );
 
+  const curRow = useSelector((state: Rootstate) => state.columnPlaces.curRow);
+  const goalRow = useSelector((state: Rootstate) => state.columnPlaces.goalRow);
+  const curCol = useSelector((state: Rootstate) => state.columnPlaces.curCol);
+  const goalCol = useSelector((state: Rootstate) => state.columnPlaces.goalCol);
+  const columnarry = useSelector(
+    (state: Rootstate) => state.columnPlaces.columnPlaces
+  );
+
+  const draggedPlace = useSelector(
+    (state: Rootstate) => state.columnPlaces.draggedPlace
+  );
+
+  console.log(column_1);
+
+  useEffect(() => {
+    dispatch(fetchSelectedPlaces() as any);
+  }, []);
   // 장소 삭제
   const handleDelete = (contentId: string) => {
     dispatch(removeSelectedPlace(contentId));
     dispatch(removeContentId(contentId));
+    // 해당 컬럼 배열에서도 삭제
   };
 
   // 드래그 시작
   const handleDragStart = (e: React.DragEvent<HTMLLIElement>) => {
-    const xRow = e.currentTarget.dataset.row;
-    const xCol = e.currentTarget.dataset.col;
-
-    e.dataTransfer.setData("xRow-xCol", xRow + "-" + xCol);
-
-    console.log("xRow", xRow);
-    console.log("xcol", xCol);
+    const curRow = e.currentTarget.dataset.row;
+    const curCol = e.currentTarget.dataset.col;
+    if (curRow) dispatch(setcurRow(curRow));
+    if (curCol) dispatch(setcurCol(curCol));
+    if (curRow && curCol) dispatch(setDraggedPlace({ curRow, curCol }));
   };
 
   const handleDragLeave = (e: React.DragEvent<HTMLLIElement>) => {
@@ -42,27 +69,34 @@ const Drags = () => {
   };
   const handleDrop = (e: React.DragEvent<HTMLLIElement>) => {
     e.preventDefault();
-    const curRow = e.currentTarget.dataset.row;
-    const curCol = e.currentTarget.dataset.col;
+    // 현재 위치
+    const goalRow = e.currentTarget.dataset.row;
+    const goalCol = e.currentTarget.dataset.col;
+    if (goalRow) dispatch(setGoalRow(goalRow));
+    if (goalCol) dispatch(setGoalCol(goalCol));
 
-    const receievedData = e.dataTransfer.getData("xRow-xCol").split("-");
-    const xRow = receievedData[0];
-    const xCol = receievedData[1];
-    console.log("xRow", xRow);
-    console.log("xCol", xCol);
-    console.log("curRow", curRow);
-    console.log("curCol", curCol);
-    console.log(receievedData);
+    console.log("같은 컬럼", curCol === goalCol);
 
-    console.log("drop");
+    // 현재 컬럼과 이동 컬럼이 동일한 경우 칼럼은 신경 쓸 필요 없음
+    if (curCol === goalCol) {
+      dispatch(dragInColumn());
+    } else {
+      dispatch(dragBtwColumn());
+    }
   };
+
+  console.log(curRow);
+
+  console.log(draggedPlace);
+  console.log(columnarry);
+
   return (
     <div className="dragColumn">
       <div className="picksIntro">
         <p>저장된 장소들</p>
       </div>
       <div className="draggablePlacesList">
-        {(draggablePlaces?.length === 0 || !draggablePlaces) && (
+        {(column_1?.length === 0 || !column_1) && (
           <div className="indicator">
             <p>장소 선택이 되지 않았습니다.</p>
             <p>장소를 먼저 선택해주세요.</p>
@@ -76,9 +110,9 @@ const Drags = () => {
             onDragOver={handleDragOver}
             onDrop={handleDrop}
           />
-          {draggablePlaces &&
-            draggablePlaces.length > 0 &&
-            draggablePlaces.map((draggablePlace) => (
+          {column_1 &&
+            column_1.length > 0 &&
+            column_1.map((draggablePlace) => (
               <>
                 <li
                   className="draggableCard"

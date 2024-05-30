@@ -4,6 +4,7 @@ import metroSlice from "./slices/metroSlice";
 import scheduleSlice from "./slices/scheduleSlice";
 import dateSlice from "./slices/dateSlice";
 import placeSlice from "./slices/placeSlice";
+import columnPlacesSlice from "./slices/columnPlacesSlice";
 
 export const store = configureStore({
   reducer: {
@@ -12,6 +13,7 @@ export const store = configureStore({
     schedule: scheduleSlice,
     date: dateSlice,
     place: placeSlice,
+    columnPlaces: columnPlacesSlice,
   },
 });
 
