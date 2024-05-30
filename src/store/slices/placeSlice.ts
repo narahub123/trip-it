@@ -12,6 +12,7 @@ export interface PlaceState {
   place?: PlaceApiType;
   modal?: boolean;
   isEnd: boolean;
+  pageNo: number;
 }
 
 const initialState: PlaceState = {
@@ -21,6 +22,7 @@ const initialState: PlaceState = {
   contentIds: [],
   modal: false,
   isEnd: false,
+  pageNo: 1,
 };
 
 interface PlacesProps {
@@ -149,6 +151,12 @@ const placeSlice = createSlice({
     clearSelectedPlaces: (state) => {
       state.selectedPlaces = [];
     },
+    clearPageNo: (state) => {
+      state.pageNo = 1;
+    },
+    addPageNo: (state) => {
+      state.pageNo += 1;
+    },
     addContentId: (state, action: PayloadAction<string>) => {
       if (state.contentIds)
         state.contentIds = [...state.contentIds, action.payload];
@@ -265,6 +273,8 @@ export const {
   clearSelectedPlaces,
   removeSelectedPlace,
   modalToggle,
+  addPageNo,
+  clearPageNo,
 } = placeSlice.actions;
 
 export default placeSlice.reducer;

@@ -5,6 +5,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { Rootstate } from "../../../../store/store";
 import {
   addContentId,
+  addPageNo,
+  clearPageNo,
   clearPlaces,
   fetchPlace,
   fetchPlaces,
@@ -29,6 +31,7 @@ const PlacesList = () => {
   const dispatch = useDispatch();
   const places = useSelector((state: Rootstate) => state.place.places);
   const status = useSelector((state: Rootstate) => state.place.status);
+  const pageNo = useSelector((state: Rootstate) => state.place.pageNo);
   const isEnd = useSelector((state: Rootstate) => state.place.isEnd);
   const areacode =
     useSelector((state: Rootstate) => state.schedule.schedule.metro_id) || "1";
@@ -36,7 +39,6 @@ const PlacesList = () => {
   const location = useLocation();
   const { hash } = location;
 
-  const [pageNo, setPageNo] = useState(1);
   const [contentTypeId, setContentTypeId] = useState("1");
   const [keyword, setKeyword] = useState("");
 
@@ -47,7 +49,7 @@ const PlacesList = () => {
     listRef.current &&
       listRef.current.scroll({
         top: 0,
-        behavior: "smooth",
+        behavior: "auto",
       });
 
     // 기존 목록을 비움
@@ -74,7 +76,8 @@ const PlacesList = () => {
     isSearchable(keyword) && setKeyword(keyword);
     console.log("검색어 설정 완료");
 
-    setPageNo(1);
+    // setPageNo(1);
+    dispatch(clearPageNo());
   };
 
   const debounceOnChange = debounce<typeof onChange>(onChange, 500);
@@ -85,7 +88,8 @@ const PlacesList = () => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
           console.log("만남");
-          setPageNo((prev) => prev + 1);
+          // setPageNo((prev) => prev + 1);
+          dispatch(addPageNo());
         }
       });
     });
@@ -132,7 +136,8 @@ const PlacesList = () => {
     console.log("카테고리 변경");
 
     setContentTypeId(contentTypeId);
-    setPageNo(1);
+    // setPageNo(1);
+    dispatch(clearPageNo());
   };
 
   return (

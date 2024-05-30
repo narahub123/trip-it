@@ -1,11 +1,14 @@
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
 import "./procedure.css";
+import { useDispatch } from "react-redux";
+import { clearPageNo } from "../../../store/slices/placeSlice";
 
 const Procedure = () => {
   const location = useLocation();
   // url의 해시 정보를 가져옴
   const { hash } = location;
+  const dispatch = useDispatch();
 
   return (
     <aside className="procedure">
@@ -33,6 +36,9 @@ const Procedure = () => {
             <Link
               to="#step2"
               className={hash === "#step2" ? "link active" : "link"}
+              onClick={() => {
+                dispatch(clearPageNo());
+              }}
             >
               <div className="step-container">
                 <p className="step">STEP 2 </p>
@@ -44,6 +50,9 @@ const Procedure = () => {
             <Link
               to="#step3"
               className={hash === "#step3" ? "link active" : "link"}
+              onClick={() => {
+                dispatch(clearPageNo());
+              }}
             >
               <div className="step-container">
                 <p className="step">STEP 3 </p>
