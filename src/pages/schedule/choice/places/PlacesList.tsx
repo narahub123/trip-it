@@ -19,8 +19,11 @@ import { LuLoader } from "react-icons/lu";
 import PlaceCard from "./PlaceCard";
 import { isSearchable } from "../../../../data/hangul";
 import { debounce } from "../../../../utils/debounce";
+import { useRenderCount } from "@uidotdev/usehooks";
 
 const PlacesList = () => {
+  // 렌더링 개수
+  const count = useRenderCount();
   const listRef = useRef<HTMLDivElement>(null);
   const target = useRef<HTMLDivElement>(null);
   const dispatch = useDispatch();
@@ -37,17 +40,17 @@ const PlacesList = () => {
   const [contentTypeId, setContentTypeId] = useState("1");
   const [keyword, setKeyword] = useState("");
 
-  const [count, setCount] = useState(1);
-  const renderRef = useRef(1);
   // 해시나 종류가 달라지는 경우 기존 places를 비움
   useEffect(() => {
     console.log("셋팅 호출됨");
+    // 스크롤 위치를 target보다 높게 설정
     listRef.current &&
       listRef.current.scroll({
         top: 0,
-        behavior: "auto",
+        behavior: "smooth",
       });
 
+    // 기존 목록을 비움
     dispatch(clearPlaces());
   }, [hash, contentTypeId, keyword]);
 
@@ -94,19 +97,14 @@ const PlacesList = () => {
     };
   }, [isEnd]);
 
-  useEffect(() => {
-    renderRef.current += 1;
-    setCount(renderRef.current);
-  }, [contentTypeId]);
-
-  console.log("----------------------", count);
+  console.log(`----- 렌더링 횟수 ${count} -----`);
 
   console.log(keyword);
   console.log("contentTypeId", contentTypeId);
   console.log("pageNo", pageNo);
 
   console.log("isend", isEnd);
-  console.log("----------------------");
+  console.log("--------------------------");
   // 장소 추가하기
   const contentIds = useSelector((state: Rootstate) => state.place.contentIds);
 
