@@ -64,6 +64,7 @@ export const fetchPlaces = createAsyncThunk(
 
       const response = await fetch(url);
       const jsonData = await response.json();
+      // console.log("결과", jsonData);
 
       return jsonData;
     } catch (error) {
@@ -103,7 +104,7 @@ export const fetchSearchedPlaces = createAsyncThunk(
     //다른 slice의 값 가져오기
     const { schedule } = getState() as Rootstate;
 
-    console.log(keyword);
+    // console.log(keyword);
 
     const areacode = schedule.schedule.metro_id || "1";
 
@@ -123,10 +124,10 @@ export const fetchSearchedPlaces = createAsyncThunk(
       console.log(url);
 
       const response = await fetch(url);
-      console.log(response);
+      // console.log(response);
 
       const jsonData = await response.json();
-      console.log("결과", jsonData);
+      // console.log("결과", jsonData);
 
       return jsonData;
     } catch (error) {

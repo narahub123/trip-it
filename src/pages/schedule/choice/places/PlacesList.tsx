@@ -8,14 +8,17 @@ import {
   clearPlaces,
   fetchPlace,
   fetchPlaces,
+  fetchSearchedPlaces,
   removeContentId,
   removeSelectedPlace,
 } from "../../../../store/slices/placeSlice";
 import { metros } from "../../../../data/metros";
 import { dateMidFormatter, destrucDate, getWeek } from "../../../../utils/date";
-import { LuRefreshCcw } from "react-icons/lu";
+import { LuLoader } from "react-icons/lu";
 
 import PlaceCard from "./PlaceCard";
+import { isSearchable } from "../../../../data/hangul";
+import { debounce } from "../../../../utils/debounce";
 
 const PlacesList = () => {
   const listRef = useRef<HTMLDivElement>(null);
@@ -32,21 +35,46 @@ const PlacesList = () => {
 
   const [pageNo, setPageNo] = useState(1);
   const [contentTypeId, setContentTypeId] = useState("1");
+  const [keyword, setKeyword] = useState("");
 
+  const [count, setCount] = useState(1);
+  const renderRef = useRef(1);
   // 해시나 종류가 달라지는 경우 기존 places를 비움
   useEffect(() => {
     console.log("셋팅 호출됨");
+    listRef.current &&
+      listRef.current.scroll({
+        top: 0,
+        behavior: "auto",
+      });
 
     dispatch(clearPlaces());
-    setPageNo(1);
-  }, [hash, contentTypeId]);
+  }, [hash, contentTypeId, keyword]);
 
   // 목록
   useEffect(() => {
-    dispatch(fetchPlaces({ hash, contentTypeId, pageNo }) as any);
+    if (keyword !== "") {
+      console.log("검색이 호출됨");
+      dispatch(
+        fetchSearchedPlaces({ keyword, hash, contentTypeId, pageNo }) as any
+      );
+    } else {
+      console.log("목록 호출됨", contentTypeId);
+      dispatch(fetchPlaces({ hash, contentTypeId, pageNo }) as any);
+    }
+  }, [hash, contentTypeId, pageNo, keyword]);
 
-    console.log("목록 호출됨", contentTypeId);
-  }, [hash, contentTypeId, pageNo]);
+  // 검색
+  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const keyword = e.target.value;
+
+    isSearchable(keyword) && setKeyword(keyword);
+    console.log("검색어 설정 완료");
+
+    setPageNo(1);
+  };
+
+  const debounceOnChange = debounce<typeof onChange>(onChange, 500);
 
   // 무한 스크롤링
   useEffect(() => {
@@ -64,13 +92,21 @@ const PlacesList = () => {
     return () => {
       target.current && observer.unobserve(target.current);
     };
-  }, []);
+  }, [isEnd]);
 
+  useEffect(() => {
+    renderRef.current += 1;
+    setCount(renderRef.current);
+  }, [contentTypeId]);
+
+  console.log("----------------------", count);
+
+  console.log(keyword);
   console.log("contentTypeId", contentTypeId);
   console.log("pageNo", pageNo);
 
   console.log("isend", isEnd);
-
+  console.log("----------------------");
   // 장소 추가하기
   const contentIds = useSelector((state: Rootstate) => state.place.contentIds);
 
@@ -95,11 +131,8 @@ const PlacesList = () => {
 
   // 카테고리 변경하기
   const handleClick = (contentTypeId: string) => {
-    listRef.current &&
-      listRef.current.scroll({
-        top: 0,
-        behavior: "auto",
-      });
+    console.log("카테고리 변경");
+
     setContentTypeId(contentTypeId);
     setPageNo(1);
   };
@@ -123,14 +156,13 @@ const PlacesList = () => {
         </p>
       </div>
       <div className="place-search-container">
-        <form>
-          <input
-            id="search"
-            name="name"
-            type="search"
-            placeholder="장소명을 입력하세요"
-          />
-        </form>
+        <input
+          id="search"
+          name="name"
+          type="text"
+          placeholder="장소명을 입력하세요"
+          onChange={debounceOnChange}
+        />
       </div>
       <div className="category">
         {hash === "#step2" ? (
@@ -172,11 +204,6 @@ const PlacesList = () => {
       </div>
       <div className="list" ref={listRef}>
         <ul className="listContainer" id="listContainer">
-          {status === "loading" && (
-            <li key={"loading"} className="loading">
-              <LuRefreshCcw />
-            </li>
-          )}
           {places
             ? places.map((place) => (
                 <li className="placeListCard" key={place.contentid}>
@@ -205,10 +232,15 @@ const PlacesList = () => {
             : status !== "loading" && (
                 <li className="warning">데이터 연결 실패</li>
               )}
+          {status === "loading" && (
+            <li key={"loading"} className="loading">
+              <LuLoader />
+            </li>
+          )}
         </ul>
         {!isEnd && (
-          <div key={"target"} ref={target}>
-            target
+          <div key={"target"} ref={target} style={{ textAlign: "center" }}>
+            장소 더 불러오기
           </div>
         )}
       </div>

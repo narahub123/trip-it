@@ -46,16 +46,19 @@
   }
   .list {
     height: 460px;
-    overflow: scroll;
+    overflow-y: auto;
     overflow-x: hidden;
     ul.listContainer {
       padding-right: 10px;
-      min-height: 500px;
+      min-height: 461px;
 
       li.loading {
         padding: 20px 0;
+        font-size: 20px;
         text-align: center;
-        animation: rotate 1s linear infinite;
+        vertical-align: middle;
+        transform-origin: 50% 48%;
+        animation: rotate 1.5s linear infinite;
       }
 
       li.warning {
@@ -96,22 +99,21 @@
         }
       }
     }
-
-    ul.listContainer::-webkit-scrollbar {
-      width: 10px;
-      padding-left: 10px;
-    }
-    ul.listContainer::-webkit-scrollbar-track {
-      background-color: transparent;
-    }
-    ul.listContainer::-webkit-scrollbar-thumb {
-      background-color: rgb(220, 220, 220);
-      height: 20%;
-      border-radius: 10px;
-    }
-    ul.listContainer::-webkit-scrollbar-button {
-      display: none;
-    }
+  }
+  .list::-webkit-scrollbar {
+    width: 10px;
+  }
+  .list::-webkit-scrollbar-track {
+    background-color: transparent;
+  }
+  .list::-webkit-scrollbar-thumb {
+    background-color: rgba(127, 255, 212, 0.644);
+    height: 20%;
+    border-radius: 10px;
+  }
+  .list::-webkit-scrollbar-button {
+    display: transparent;
+    height: 10px;
   }
 }
 
