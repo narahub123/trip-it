@@ -120,9 +120,6 @@ const Drags = () => {
                   data-row={draggablePlace.contentid}
                   data-col={"_1"}
                   onDragStart={(e) => handleDragStart(e)}
-                  onDragLeave={(e) => handleDragLeave(e)}
-                  onDragOver={(e) => handleDragOver(e)}
-                  onDrop={(e) => handleDrop(e)}
                 >
                   <PlaceCard place={draggablePlace} />
                   <span
