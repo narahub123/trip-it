@@ -1,1 +1,30 @@
-.drags {}
+.dragColumn {
+  .picksInfo {
+    p {
+    }
+  }
+
+  .draggablePlacesList {
+    .indicator {
+      p {
+      }
+    }
+
+    ul {
+      li.draggableCard {
+        display: flex;
+        align-items: center;
+        margin: 20px 0;
+        cursor: grab;
+        span.delete {
+          cursor: pointer;
+          margin-left: 10px;
+          padding: 21.5px 6.5px;
+          background-color: rgba(128, 128, 128, 0.173);
+          border-radius: 7px;
+          color: gray;
+        }
+      }
+    }
+  }
+}

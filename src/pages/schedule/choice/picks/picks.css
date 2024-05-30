@@ -1,2 +1,6 @@
 .picks {
+  display: flex;
+
+  .kanban {
+  }
 }
