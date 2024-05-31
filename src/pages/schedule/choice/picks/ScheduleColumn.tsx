@@ -13,7 +13,14 @@ interface ScheduleColumnProps {
 
 const ScheduleColumn = ({ date, index }: ScheduleColumnProps) => {
   const [isActive, setIsActive] = useState(false);
-  const goalCol = useSelector((state: Rootstate) => state.columnPlaces.goalCol);
+
+  const columnPlaces = useSelector(
+    (state: Rootstate) =>
+      state.columnPlaces.columnPlaces[
+        `columnPlaces${index}` as keyof typeof state.columnPlaces.columnPlaces
+      ]
+  );
+
   const handleDragOver = (
     e: React.DragEvent<HTMLDivElement> | React.DragEvent<HTMLLIElement>
   ) => {
@@ -38,6 +45,8 @@ const ScheduleColumn = ({ date, index }: ScheduleColumnProps) => {
     setIsActive(false);
   };
 
+  console.log(columnPlaces);
+
   return (
     <div className="schedule-column">
       <div className="schedule-column-date">
@@ -54,11 +63,12 @@ const ScheduleColumn = ({ date, index }: ScheduleColumnProps) => {
         onDrop={(e) => handleDrop(e)}
       >
         <ul>
-          {!isActive && (
+          {!isActive && columnPlaces?.length === 0 && (
             <li className="place-indicator">
               <p>원하는 장소를 드래그 해주세요</p>
             </li>
           )}
+          {columnPlaces && columnPlaces?.map((place) => <li>{place.title}</li>)}
           <DropIndicator
             row="_1"
             col="0"
