@@ -1,34 +1,12 @@
 .drops {
   max-width: 700px;
   height: 92vh;
-  overflow-x: scroll;
+  overflow-x: auto;
+  overflow-y: hidden;
   .schedule-info {
   }
   .schedule-columns {
     display: flex;
-    .schedule-column {
-      width: 314px;
-      padding: 0 10px;
-      .schedule-column-date {
-      }
-      .schedule-column-list {
-        margin-top: 10px;
-        width: 300px;
-        height: 100%;
-        ul {
-          li.place-indicator {
-            text-align: center;
-
-            padding: 30px 0px;
-            margin: 20px 0;
-            background-color: rgba(245, 245, 245, 0.772);
-            border-radius: 10px;
-            p {
-              font-size: 13px;
-            }
-          }
-        }
-      }
-    }
+    margin-top: 20px;
   }
 }

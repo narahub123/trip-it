@@ -3,6 +3,7 @@ import "./drops.css";
 import { useSelector } from "react-redux";
 import { Rootstate } from "../../../../store/store";
 import { dateMidFormatter, destrucDate, getWeek } from "../../../../utils/date";
+import ScheduleColumn from "./ScheduleColumn";
 const Drops = () => {
   const schedule = useSelector((state: Rootstate) => state.schedule.schedule);
   // 일정
@@ -32,42 +33,9 @@ const Drops = () => {
         </div>
       </div>
       <div className="schedule-columns">
-        <div className="schedule-column">
-          <div className="schedule-column-date">
-            <p>날짜1</p>
-          </div>
-          <div className="schedule-column-list">
-            <ul>
-              <li className="place-indicator">
-                <p>원하는 장소를 드래그 해주세요</p>
-              </li>
-            </ul>
-          </div>
-        </div>
-        <div className="schedule-column">
-          <div className="schedule-column-date">
-            <p>날짜1</p>
-          </div>
-          <div className="schedule-column-list">
-            <ul>
-              <li className="place-indicator">
-                <p>원하는 장소를 드래그 해주세요</p>
-              </li>
-            </ul>
-          </div>
-        </div>
-        <div className="schedule-column">
-          <div className="schedule-column-date">
-            <p>날짜1</p>
-          </div>
-          <div className="schedule-column-list">
-            <ul>
-              <li className="place-indicator">
-                <p>원하는 장소를 드래그 해주세요</p>
-              </li>
-            </ul>
-          </div>
-        </div>
+        <ScheduleColumn />
+        <ScheduleColumn />
+        <ScheduleColumn />
       </div>
     </div>
   );
