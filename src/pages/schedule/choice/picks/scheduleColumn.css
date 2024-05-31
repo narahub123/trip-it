@@ -1,11 +1,11 @@
 .schedule-column {
-  width: 314px;
+  width: 381px;
   padding: 0 10px;
   .schedule-column-date {
   }
   .schedule-column-list {
     margin-top: 10px;
-    width: 300px;
+
     height: 90vh;
     ul {
       li.place-indicator {
@@ -17,6 +17,31 @@
         border-radius: 10px;
         p {
           font-size: 13px;
+        }
+      }
+
+      li.dropCard {
+        display: flex;
+        align-items: center;
+
+        span.index {
+          margin: 0 20px;
+          p {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 50%;
+            background-color: aquamarine;
+            padding: 5px;
+            width: 10px;
+            height: 10px;
+            color: white;
+          }
+        }
+
+        span.delete {
+          margin: 15px;
+          cursor: pointer;
         }
       }
     }

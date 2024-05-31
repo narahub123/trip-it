@@ -163,7 +163,8 @@ const columnPlacesSlice = createSlice({
     },
 
     dragBtwColumn: (state) => {
-      console.log(state.curCol !== state.goalCol);
+      columnPlacesSlice.caseReducers.addDraggedPlace(state);
+      columnPlacesSlice.caseReducers.removeDraggedPlace(state);
     },
   },
   extraReducers: (builder) => {

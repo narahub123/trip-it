@@ -39,7 +39,7 @@ const Drags = () => {
     (state: Rootstate) => state.columnPlaces.draggedPlace
   );
 
-  console.log(column_1);
+  // console.log(column_1);
 
   useEffect(() => {
     dispatch(fetchSelectedPlaces() as any);
@@ -69,7 +69,7 @@ const Drags = () => {
   };
   const handleDrop = (e: React.DragEvent<HTMLLIElement>) => {
     e.preventDefault();
-    // 현재 위치
+    // 이동하고자하는 위치
     const goalRow = e.currentTarget.dataset.row;
     const goalCol = e.currentTarget.dataset.col;
     if (goalRow) dispatch(setGoalRow(goalRow));
@@ -85,10 +85,10 @@ const Drags = () => {
     }
   };
 
-  console.log(curRow);
+  // console.log(curRow);
 
-  console.log(draggedPlace);
-  console.log(columnarry);
+  // console.log(draggedPlace);
+  // console.log(columnarry);
 
   return (
     <div className="dragColumn">
