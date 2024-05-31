@@ -2,6 +2,7 @@ import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { PlaceApiType } from "../../types/place";
 import { ScheduleType } from "../../types/schedules";
 import { Rootstate, store } from "../store";
+import { convertStringToJson } from "../../utils/convertStringToJson";
 
 export interface PlaceState {
   places: PlaceApiType[];
@@ -65,10 +66,19 @@ export const fetchPlaces = createAsyncThunk(
       console.log(url);
 
       const response = await fetch(url);
-      const jsonData = await response.json();
-      // console.log("결과", jsonData);
 
-      return jsonData;
+      try {
+        const jsonData = await response.json();
+
+        return jsonData;
+      } catch (error) {
+        try {
+          const textData = await response.text();
+          const jsonData = convertStringToJson(textData);
+
+          return jsonData;
+        } catch (error) {}
+      }
     } catch (error) {
       console.log(error);
     }
