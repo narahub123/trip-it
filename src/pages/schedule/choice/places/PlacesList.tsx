@@ -123,7 +123,7 @@ const PlacesList = () => {
     dispatch(removeSelectedPlace(contentId));
   };
 
-  // 날짜
+  // 일정
   const start =
     schedule.start_date &&
     destrucDate(dateMidFormatter(new Date(schedule.start_date)));
@@ -147,6 +147,7 @@ const PlacesList = () => {
           {metros.find((metro) => metro.areaCode === areacode)?.name}
         </p>
         <p className="duration">
+          
           {start &&
             schedule.start_date &&
             end &&

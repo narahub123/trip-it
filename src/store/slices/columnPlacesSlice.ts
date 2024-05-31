@@ -145,7 +145,7 @@ const columnPlacesSlice = createSlice({
             // goalRow에 해당되는 장소가 포함되어야 함
             // 목표 장소가 마지막인 배열
             const beforeColumn = goalColumnPlaces?.slice(0, index + 1);
-            
+
             // 목표 장소의 위의 배열
             const afterColumn = goalColumnPlaces?.slice(index + 1);
 
@@ -161,8 +161,9 @@ const columnPlacesSlice = createSlice({
     dragInColumn: (state) => {
       columnPlacesSlice.caseReducers.addDraggedPlace(state);
     },
+
     dragBtwColumn: (state) => {
-      console.log(state.curCol === state.goalCol);
+      console.log(state.curCol !== state.goalCol);
     },
   },
   extraReducers: (builder) => {
