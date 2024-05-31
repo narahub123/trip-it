@@ -2,7 +2,12 @@ import React from "react";
 import "./drops.css";
 import { useSelector } from "react-redux";
 import { Rootstate } from "../../../../store/store";
-import { dateMidFormatter, destrucDate, getWeek } from "../../../../utils/date";
+import {
+  CalculateDuration,
+  dateMidFormatter,
+  destrucDate,
+  getWeek,
+} from "../../../../utils/date";
 import ScheduleColumn from "./ScheduleColumn";
 const Drops = () => {
   const schedule = useSelector((state: Rootstate) => state.schedule.schedule);
@@ -13,6 +18,13 @@ const Drops = () => {
   const end =
     schedule.end_date &&
     destrucDate(dateMidFormatter(new Date(schedule.end_date)));
+
+  const dates =
+    schedule.start_date &&
+    schedule.end_date &&
+    CalculateDuration(schedule.start_date, schedule.end_date);
+
+  console.log(dates);
 
   return (
     <div className="drops">
@@ -33,9 +45,10 @@ const Drops = () => {
         </div>
       </div>
       <div className="schedule-columns">
-        <ScheduleColumn />
-        <ScheduleColumn />
-        <ScheduleColumn />
+        {dates &&
+          dates.map((date: any, index: number) => (
+            <ScheduleColumn date={date} index={index} />
+          ))}
       </div>
     </div>
   );

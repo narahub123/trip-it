@@ -11,12 +11,14 @@ import { Rootstate } from "../../../../store/store";
 import { addEnd, addStart } from "../../../../store/slices/dateSlice";
 import { addDates } from "../../../../store/slices/scheduleSlice";
 
+export interface DestrucDateType {
+  year: number;
+  month: number;
+  date: number;
+}
+
 interface CalendarProps {
-  month: {
-    year: number;
-    month: number;
-    date: number;
-  };
+  month: DestrucDateType;
 }
 
 const Calendar = ({ month }: CalendarProps) => {

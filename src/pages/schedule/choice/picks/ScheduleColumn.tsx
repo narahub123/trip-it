@@ -3,7 +3,15 @@ import "./scheduleColumn.css";
 import { useSelector } from "react-redux";
 import { Rootstate } from "../../../../store/store";
 import DropIndicator from "./DropIndicator";
-const ScheduleColumn = () => {
+import { getWeek } from "../../../../utils/date";
+import { DestrucDateType } from "../dates/Calendar";
+
+interface ScheduleColumnProps {
+  date: DestrucDateType;
+  index: number;
+}
+
+const ScheduleColumn = ({ date, index }: ScheduleColumnProps) => {
   const [isActive, setIsActive] = useState(false);
   const goalCol = useSelector((state: Rootstate) => state.columnPlaces.goalCol);
   const handleDragOver = (
@@ -23,11 +31,6 @@ const ScheduleColumn = () => {
     setIsActive(false);
   };
 
-  //   const handleDragEnd = (e: React.DragEvent<HTMLDivElement>) => {
-  //     console.log("end");
-  //     setIsActive(false);
-  //   };
-
   const handleDrop = (
     e: React.DragEvent<HTMLDivElement> | React.DragEvent<HTMLLIElement>
   ) => {
@@ -38,7 +41,9 @@ const ScheduleColumn = () => {
   return (
     <div className="schedule-column">
       <div className="schedule-column-date">
-        <p>날짜1</p>
+        <p>{`${date.year}.${date.month + 1}.${date.date}(${getWeek(
+          new Date(date.year, date.month, date.date)
+        )}, ${index + 1}일차)`}</p>
       </div>
       <div
         className={
