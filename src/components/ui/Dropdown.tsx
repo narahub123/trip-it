@@ -2,19 +2,21 @@ import React, { useState } from "react";
 import "./dropdown.css";
 
 interface DropdownProps {
+  init: number;
   contents: string[];
   style?: number;
   scroll?: string;
 }
 
 const Dropdown = ({
+  init,
   contents,
   style = -29,
   scroll = "auto",
 }: DropdownProps) => {
   const [isActive, setIsActive] = useState<boolean>(false);
-  const [selected, setSelected] = useState<string>(contents[0]);
-  console.log(selected);
+  const [selected, setSelected] = useState<string>(contents[init]);
+  // console.log(selected);
 
   const handleClick = (content: string) => {
     setSelected(content);

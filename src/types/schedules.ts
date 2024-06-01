@@ -6,11 +6,11 @@ export interface MetroType {
 }
 
 export interface ScheduleDetailType {
-  schedule_order?: string;
-  start_time?: string;
-  end_time?: string;
-  content_id?: string;
-  createdAt?: Date;
+  schedule_order: string; // column
+  start_time: string;
+  end_time: string;
+  content_id: string;
+  createdAt?: string;
 }
 
 export interface ScheduleType {
@@ -19,5 +19,5 @@ export interface ScheduleType {
   start_date?: string;
   end_date?: string;
   schedule_name?: string;
-  schedule_detail?: ScheduleDetailType[] | [];
+  schedule_details?: ScheduleDetailType[];
 }

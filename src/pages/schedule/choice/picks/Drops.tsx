@@ -1,6 +1,6 @@
-import React from "react";
+import React, { useState } from "react";
 import "./drops.css";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Rootstate } from "../../../../store/store";
 import {
   CalculateDuration,
@@ -9,7 +9,11 @@ import {
   getWeek,
 } from "../../../../utils/date";
 import ScheduleColumn from "./ScheduleColumn";
+import { debounce } from "../../../../utils/debounce";
+import { addTitle } from "../../../../store/slices/scheduleSlice";
 const Drops = () => {
+  const [title, setTitle] = useState("");
+  const dispatch = useDispatch();
   const schedule = useSelector((state: Rootstate) => state.schedule.schedule);
   // 일정
   const start =
@@ -24,13 +28,21 @@ const Drops = () => {
     schedule.end_date &&
     CalculateDuration(schedule.start_date, schedule.end_date);
 
-  console.log(dates);
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const title = e.target.value;
+
+    setTitle(title.trim());
+    dispatch(addTitle(title.trim()));
+  };
+
+  const debounceOnChange = debounce<typeof handleChange>(handleChange, 500);
 
   return (
     <div className="drops">
       <div className="schedule-info">
         <div className="schedule-title">
-          제목 : <input type="text" />
+          제목 :
+          <input type="text" defaultValue={title} onChange={debounceOnChange} />
         </div>
         <div className="schedule-duration">
           {start &&
@@ -47,7 +59,7 @@ const Drops = () => {
       <div className="schedule-columns">
         {dates &&
           dates.map((date: any, index: number) => (
-            <ScheduleColumn date={date} index={index} />
+            <ScheduleColumn date={date} index={index} key={index} />
           ))}
       </div>
     </div>

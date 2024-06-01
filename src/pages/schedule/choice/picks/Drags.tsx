@@ -117,6 +117,7 @@ const Drags = () => {
             column_1.map((draggablePlace) => (
               <>
                 <li
+                  key={draggablePlace.contentid}
                   className="draggableCard"
                   draggable
                   data-row={draggablePlace.contentid}

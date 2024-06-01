@@ -24,6 +24,19 @@ const DropCard = ({ place }: DropCardProps) => {
   const areacode =
     useSelector((state: Rootstate) => state.schedule.schedule.metro_id) || "1";
 
+  const details = useSelector(
+    (state: Rootstate) => state.schedule.schedule.schedule_details
+  );
+
+  const detail = details?.find((d) => d.content_id === place.contentid);
+
+  const startHourInit = detail ? new Date(detail?.start_time).getHours() : 7;
+  const startMinuteInit = detail
+    ? new Date(detail?.start_time).getMinutes()
+    : 0;
+  const endHourInit = detail ? new Date(detail?.end_time).getHours() : 9;
+  const endMinuteInit = detail ? new Date(detail?.end_time).getMinutes() : 0;
+
   // 기본 이미지
   const defaultImage = metros.find(
     (metro) => metro.areaCode === areacode
@@ -72,22 +85,22 @@ const DropCard = ({ place }: DropCardProps) => {
             <Dropdown contents={timeFormat} style={-22} scroll="hidden" />
           </span> */}
           <span>
-            <Dropdown contents={hourFormat2} />
+            <Dropdown contents={hourFormat2} init={startHourInit - 1} />
           </span>
           :
           <span>
-            <Dropdown contents={minuteFormat2} />
+            <Dropdown contents={minuteFormat2} init={startMinuteInit} />
           </span>
           -
           {/* <span>
             <Dropdown contents={timeFormat} style={-22} scroll="hidden" />
           </span> */}
           <span>
-            <Dropdown contents={hourFormat2} />
+            <Dropdown contents={hourFormat2} init={endHourInit - 1} />
           </span>
           :
           <span>
-            <Dropdown contents={minuteFormat2} />
+            <Dropdown contents={minuteFormat2} init={endMinuteInit} />
           </span>
         </div>
       </span>

@@ -21,6 +21,10 @@ import {
   removeContentId,
   removeSelectedPlace,
 } from "../../../../store/slices/placeSlice";
+import {
+  addScheduleDetail,
+  removeScheduleDetail,
+} from "../../../../store/slices/scheduleSlice";
 
 interface ScheduleColumnProps {
   date: DestrucDateType;
@@ -31,11 +35,6 @@ const ScheduleColumn = ({ date, index }: ScheduleColumnProps) => {
   const [isActive, setIsActive] = useState(false);
   const dispatch = useDispatch();
   const curCol = useSelector((state: Rootstate) => state.columnPlaces.curCol);
-  const goalCol = useSelector((state: Rootstate) => state.columnPlaces.goalCol);
-
-  const draggedPlace = useSelector(
-    (state: Rootstate) => state.columnPlaces.draggedPlace
-  );
 
   const columnPlaces = useSelector(
     (state: Rootstate) =>
@@ -73,15 +72,6 @@ const ScheduleColumn = ({ date, index }: ScheduleColumnProps) => {
     setIsActive(false);
   };
 
-  // const handleDragEnd = (
-  //   e: React.DragEvent<HTMLDivElement> | React.DragEvent<HTMLLIElement>
-  // ) => {
-  //   e.preventDefault();
-  //   console.log("끝");
-
-  //   setIsActive(false);
-  // };
-
   const handleDrop = (
     e: React.DragEvent<HTMLDivElement> | React.DragEvent<HTMLLIElement>
   ) => {
@@ -92,34 +82,26 @@ const ScheduleColumn = ({ date, index }: ScheduleColumnProps) => {
     const goalCol = e.currentTarget.dataset.col;
     if (goalRow) dispatch(setGoalRow(goalRow));
     if (goalCol) dispatch(setGoalCol(goalCol));
-    console.log("drop");
-    console.log("goalRow", goalRow);
-    console.log("goalCol", goalCol);
+
     setIsActive(false);
 
     // 현재 컬럼과 이동 컬럼이 동일한 경우 칼럼은 신경 쓸 필요 없음
     if (curCol === goalCol) {
       dispatch(dragInColumn()); // 컬럼 내 드래그 앤 드롭
+      dispatch(addScheduleDetail(date) as any);
     } else {
       dispatch(dragBtwColumn()); // 컬럼 간 드래그 앤 드롭
+      dispatch(addScheduleDetail(date) as any);
     }
   };
 
   // 장소 삭제
   const handleDelete = (contentId: string) => {
-    console.log("hi");
-    console.log(contentId);
-    console.log(index);
-
     dispatch(removeSelectedPlace(contentId));
     dispatch(removeContentId(contentId));
     dispatch(removePlaceFromColumn({ column: index.toString(), contentId }));
+    dispatch(removeScheduleDetail(contentId));
   };
-
-  console.log(columnPlaces);
-
-  console.log(curCol === goalCol);
-  console.log(draggedPlace);
 
   return (
     <div className="schedule-column">
@@ -140,7 +122,7 @@ const ScheduleColumn = ({ date, index }: ScheduleColumnProps) => {
       >
         <ul>
           {!isActive && columnPlaces?.length === 0 && (
-            <li className="place-indicator">
+            <li className="place-indicator" key={0}>
               <p>원하는 장소를 드래그 해주세요</p>
             </li>
           )}
@@ -151,6 +133,7 @@ const ScheduleColumn = ({ date, index }: ScheduleColumnProps) => {
             onDragLeave={handleDragLeave}
             onDragOver={handleDragOver}
             onDrop={handleDrop}
+            key={"_1"}
           />
 
           {columnPlaces &&
@@ -183,6 +166,7 @@ const ScheduleColumn = ({ date, index }: ScheduleColumnProps) => {
                     onDragLeave={handleDragLeave}
                     onDragOver={handleDragOver}
                     onDrop={handleDrop}
+                    key={i}
                   />
                 )}
               </>
