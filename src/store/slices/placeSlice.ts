@@ -1,7 +1,6 @@
 import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { PlaceApiType } from "../../types/place";
-import { ScheduleType } from "../../types/schedules";
-import { Rootstate, store } from "../store";
+import { Rootstate } from "../store";
 import { convertStringToJson } from "../../utils/convertStringToJson";
 
 export interface PlaceState {

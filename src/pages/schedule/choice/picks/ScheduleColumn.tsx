@@ -14,8 +14,8 @@ import {
   setcurCol,
   setcurRow,
 } from "../../../../store/slices/columnPlacesSlice";
-import PlaceCard from "../places/PlaceCard";
 import { LuTrash2 } from "react-icons/lu";
+import DropCard from "./DropCard";
 
 interface ScheduleColumnProps {
   date: DestrucDateType;
@@ -151,7 +151,7 @@ const ScheduleColumn = ({ date, index }: ScheduleColumnProps) => {
                   <span className="index">
                     <p>{i + 1}</p>
                   </span>
-                  <PlaceCard place={place} />
+                  <DropCard place={place} />
                   <span className="delete" onClick={() => {}}>
                     <LuTrash2 />
                   </span>
