@@ -36,8 +36,11 @@ const ScheduleColumn = ({ date, index }: ScheduleColumnProps) => {
     (state: Rootstate) =>
       state.columnPlaces.columnPlaces[
         `columnPlaces${index}` as keyof typeof state.columnPlaces.columnPlaces
-      ]
+      ] || []
   );
+
+  const length = columnPlaces && columnPlaces?.length;
+  const last = columnPlaces[length - 1];
 
   // 드래그 시작
   const handleDragStart = (e: React.DragEvent<HTMLLIElement>) => {
@@ -65,10 +68,20 @@ const ScheduleColumn = ({ date, index }: ScheduleColumnProps) => {
     setIsActive(false);
   };
 
+  // const handleDragEnd = (
+  //   e: React.DragEvent<HTMLDivElement> | React.DragEvent<HTMLLIElement>
+  // ) => {
+  //   e.preventDefault();
+  //   console.log("끝");
+
+  //   setIsActive(false);
+  // };
+
   const handleDrop = (
     e: React.DragEvent<HTMLDivElement> | React.DragEvent<HTMLLIElement>
   ) => {
     e.preventDefault();
+
     // 이동하고자하는 위치
     const goalRow = e.currentTarget.dataset.row;
     const goalCol = e.currentTarget.dataset.col;
@@ -83,11 +96,12 @@ const ScheduleColumn = ({ date, index }: ScheduleColumnProps) => {
     if (curCol === goalCol) {
       dispatch(dragInColumn()); // 컬럼 내 드래그 앤 드롭
     } else {
-      dispatch(dragBtwColumn()); // 컬럼 간 드래그 앤 드롭 
+      dispatch(dragBtwColumn()); // 컬럼 간 드래그 앤 드롭
     }
   };
 
   console.log(columnPlaces);
+
   console.log(curCol === goalCol);
   console.log(draggedPlace);
 
@@ -102,10 +116,11 @@ const ScheduleColumn = ({ date, index }: ScheduleColumnProps) => {
         className={
           isActive ? "schedule-column-list active" : "schedule-column-list"
         }
-        data-col={columnPlaces?.length === 0 && index.toString()}
-        data-row={columnPlaces?.length === 0 && "_1"}
+        data-col={index.toString()}
+        data-row={columnPlaces?.length === 0 ? "_1" : last.contentid}
         onDragOver={(e) => handleDragOver(e)}
         onDragLeave={(e) => handleDragLeave(e)}
+        onDrop={(e) => handleDrop(e)}
       >
         <ul>
           {!isActive && columnPlaces?.length === 0 && (
@@ -141,13 +156,16 @@ const ScheduleColumn = ({ date, index }: ScheduleColumnProps) => {
                     <LuTrash2 />
                   </span>
                 </li>
-                <DropIndicator
-                  col={index.toString()}
-                  row={place.contentid}
-                  onDragLeave={handleDragLeave}
-                  onDragOver={handleDragOver}
-                  onDrop={handleDrop}
-                />
+
+                {i !== length - 1 && (
+                  <DropIndicator
+                    col={index.toString()}
+                    row={place.contentid}
+                    onDragLeave={handleDragLeave}
+                    onDragOver={handleDragOver}
+                    onDrop={handleDrop}
+                  />
+                )}
               </>
             ))}
         </ul>
