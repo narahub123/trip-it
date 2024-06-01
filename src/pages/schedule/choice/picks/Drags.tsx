@@ -13,6 +13,7 @@ import {
   dragBtwColumn,
   dragInColumn,
   fetchSelectedPlaces,
+  removePlaceFromColumn,
   setDraggedPlace,
   setGoalCol,
   setGoalRow,
@@ -49,6 +50,7 @@ const Drags = () => {
     dispatch(removeSelectedPlace(contentId));
     dispatch(removeContentId(contentId));
     // 해당 컬럼 배열에서도 삭제
+    dispatch(removePlaceFromColumn({ column: "_1", contentId: contentId }));
   };
 
   // 드래그 시작

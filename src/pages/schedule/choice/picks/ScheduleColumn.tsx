@@ -8,6 +8,7 @@ import { DestrucDateType } from "../dates/Calendar";
 import {
   dragBtwColumn,
   dragInColumn,
+  removePlaceFromColumn,
   setDraggedPlace,
   setGoalCol,
   setGoalRow,
@@ -16,6 +17,10 @@ import {
 } from "../../../../store/slices/columnPlacesSlice";
 import { LuTrash2 } from "react-icons/lu";
 import DropCard from "./DropCard";
+import {
+  removeContentId,
+  removeSelectedPlace,
+} from "../../../../store/slices/placeSlice";
 
 interface ScheduleColumnProps {
   date: DestrucDateType;
@@ -100,6 +105,17 @@ const ScheduleColumn = ({ date, index }: ScheduleColumnProps) => {
     }
   };
 
+  // 장소 삭제
+  const handleDelete = (contentId: string) => {
+    console.log("hi");
+    console.log(contentId);
+    console.log(index);
+
+    dispatch(removeSelectedPlace(contentId));
+    dispatch(removeContentId(contentId));
+    dispatch(removePlaceFromColumn({ column: index.toString(), contentId }));
+  };
+
   console.log(columnPlaces);
 
   console.log(curCol === goalCol);
@@ -152,7 +168,10 @@ const ScheduleColumn = ({ date, index }: ScheduleColumnProps) => {
                     <p>{i + 1}</p>
                   </span>
                   <DropCard place={place} />
-                  <span className="delete" onClick={() => {}}>
+                  <span
+                    className="delete"
+                    onClick={() => handleDelete(place.contentid)}
+                  >
                     <LuTrash2 />
                   </span>
                 </li>

@@ -110,6 +110,24 @@ const columnPlacesSlice = createSlice({
       if (filteredCurColumn) state.columnPlaces[key] = [...filteredCurColumn];
     },
 
+    removePlaceFromColumn: (
+      state,
+      action: PayloadAction<{ column: string; contentId: string }>
+    ) => {
+      const key =
+        `columnPlaces${action.payload.column}` as keyof typeof state.columnPlaces;
+      const columnPlaces = state.columnPlaces[key];
+      console.log(key);
+      console.log(columnPlaces);
+
+      const filteredColumnPlaces = columnPlaces?.filter(
+        (place) => place.contentid !== action.payload.contentId
+      );
+
+      if (filteredColumnPlaces)
+        state.columnPlaces[key] = [...filteredColumnPlaces];
+    },
+
     addDraggedPlace: (state) => {
       console.log(state.goalRow);
 
@@ -189,6 +207,7 @@ export const {
   setDraggedPlace,
   dragInColumn,
   dragBtwColumn,
+  removePlaceFromColumn,
 } = columnPlacesSlice.actions;
 
 export default columnPlacesSlice.reducer;
