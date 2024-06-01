@@ -147,7 +147,7 @@ const ScheduleColumn = ({ date, index }: ScheduleColumnProps) => {
                   <span className="index">
                     <p>{i + 1}</p>
                   </span>
-                  <DropCard place={place} />
+                  <DropCard place={place} date={date} />
                   <span
                     className="delete"
                     onClick={() => handleDelete(place.contentid)}

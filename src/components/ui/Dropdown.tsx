@@ -6,6 +6,10 @@ interface DropdownProps {
   contents: string[];
   style?: number;
   scroll?: string;
+  setStartHourInit?: (value: number) => void;
+  setStartMinuteInit?: (value: number) => void;
+  setEndHourInit?: (value: number) => void;
+  setEndMinuteInit?: (value: number) => void;
 }
 
 const Dropdown = ({
@@ -13,15 +17,23 @@ const Dropdown = ({
   contents,
   style = -29,
   scroll = "auto",
+  setStartHourInit,
+  setStartMinuteInit,
+  setEndHourInit,
+  setEndMinuteInit,
 }: DropdownProps) => {
   const [isActive, setIsActive] = useState<boolean>(false);
   const [selected, setSelected] = useState<string>(contents[init]);
   // console.log(selected);
 
-  const handleClick = (content: string) => {
+  function handleClick(content: string) {
     setSelected(content);
     setIsActive(false);
-  };
+    setStartHourInit && setStartHourInit(Number(content));
+    setStartMinuteInit && setStartMinuteInit(Number(content));
+    setEndHourInit && setEndHourInit(Number(content));
+    setEndMinuteInit && setEndMinuteInit(Number(content));
+  }
 
   return (
     <>

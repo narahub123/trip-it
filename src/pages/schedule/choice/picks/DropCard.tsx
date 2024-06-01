@@ -14,12 +14,18 @@ import {
   minuteFormat2,
   timeFormat,
 } from "../../../../data/time";
+import { DestrucDateType } from "../dates/Calendar";
+import {
+  updateEndTime,
+  updateStartTime,
+} from "../../../../store/slices/scheduleSlice";
 
 interface DropCardProps {
   place: PlaceApiType;
+  date: DestrucDateType;
 }
 
-const DropCard = ({ place }: DropCardProps) => {
+const DropCard = ({ place, date }: DropCardProps) => {
   const dispatch = useDispatch();
   const areacode =
     useSelector((state: Rootstate) => state.schedule.schedule.metro_id) || "1";
@@ -30,12 +36,55 @@ const DropCard = ({ place }: DropCardProps) => {
 
   const detail = details?.find((d) => d.content_id === place.contentid);
 
-  const startHourInit = detail ? new Date(detail?.start_time).getHours() : 7;
-  const startMinuteInit = detail
-    ? new Date(detail?.start_time).getMinutes()
-    : 0;
-  const endHourInit = detail ? new Date(detail?.end_time).getHours() : 9;
-  const endMinuteInit = detail ? new Date(detail?.end_time).getMinutes() : 0;
+  const [startHourInit, setStartHourInit] = useState(
+    detail ? new Date(detail?.start_time).getHours() : 7
+  );
+
+  const [startMinuteInit, setStartMinuteInit] = useState(
+    detail ? new Date(detail?.start_time).getMinutes() : 0
+  );
+
+  const [endHourInit, setEndHourInit] = useState(
+    detail ? new Date(detail?.end_time).getHours() : 9
+  );
+
+  const [endMinuteInit, setEndMinuteInit] = useState(
+    detail ? new Date(detail?.end_time).getMinutes() : 0
+  );
+
+  useEffect(() => {
+    const start_time = new Date(
+      date.year,
+      date.month,
+      date.date,
+      startHourInit,
+      startMinuteInit
+    );
+
+    dispatch(
+      updateStartTime({
+        contendId: place.contentid,
+        date: start_time.toISOString(),
+      })
+    );
+  }, [startHourInit, startMinuteInit]);
+
+  useEffect(() => {
+    const end_time = new Date(
+      date.year,
+      date.month,
+      date.date,
+      endHourInit,
+      endMinuteInit
+    );
+
+    dispatch(
+      updateEndTime({
+        contendId: place.contentid,
+        date: end_time.toISOString(),
+      })
+    );
+  }, [endHourInit, endMinuteInit]);
 
   // 기본 이미지
   const defaultImage = metros.find(
@@ -50,6 +99,8 @@ const DropCard = ({ place }: DropCardProps) => {
     },
     [dispatch]
   );
+
+  console.log(startHourInit, startMinuteInit, endHourInit, endMinuteInit);
 
   return (
     <div className="dropPlaceCard">
@@ -85,22 +136,38 @@ const DropCard = ({ place }: DropCardProps) => {
             <Dropdown contents={timeFormat} style={-22} scroll="hidden" />
           </span> */}
           <span>
-            <Dropdown contents={hourFormat2} init={startHourInit - 1} />
+            <Dropdown
+              contents={hourFormat2}
+              init={startHourInit - 1}
+              setStartHourInit={setStartHourInit}
+            />
           </span>
           :
           <span>
-            <Dropdown contents={minuteFormat2} init={startMinuteInit} />
+            <Dropdown
+              contents={minuteFormat2}
+              init={startMinuteInit}
+              setStartMinuteInit={setStartMinuteInit}
+            />
           </span>
           -
           {/* <span>
             <Dropdown contents={timeFormat} style={-22} scroll="hidden" />
           </span> */}
           <span>
-            <Dropdown contents={hourFormat2} init={endHourInit - 1} />
+            <Dropdown
+              contents={hourFormat2}
+              init={endHourInit - 1}
+              setEndHourInit={setEndHourInit}
+            />
           </span>
           :
           <span>
-            <Dropdown contents={minuteFormat2} init={endMinuteInit} />
+            <Dropdown
+              contents={minuteFormat2}
+              init={endMinuteInit}
+              setEndMinuteInit={setEndMinuteInit}
+            />
           </span>
         </div>
       </span>

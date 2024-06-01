@@ -79,9 +79,46 @@ const scheduleSlice = createSlice({
         state.schedule.end_date = action.payload.end;
       }
     },
+    // 제목 추가
     addTitle: (state, action: PayloadAction<string>) => {
       state.schedule.schedule_name = action.payload;
     },
+    // 날짜 변경
+    updateStartTime: (
+      state,
+      action: PayloadAction<{ contendId: string; date: string }>
+    ) => {
+      const modifiedPlace = state.schedule.schedule_details?.find(
+        (d) => d.content_id === action.payload.contendId
+      );
+      const restPlaces = state.schedule.schedule_details?.filter(
+        (d) => d.content_id !== action.payload.contendId
+      );
+
+      if (modifiedPlace) modifiedPlace.start_time = action.payload.date;
+
+      if (restPlaces && modifiedPlace) {
+        state.schedule.schedule_details = [...restPlaces, modifiedPlace];
+      }
+    },
+    updateEndTime: (
+      state,
+      action: PayloadAction<{ contendId: string; date: string }>
+    ) => {
+      const modifiedPlace = state.schedule.schedule_details?.find(
+        (d) => d.content_id === action.payload.contendId
+      );
+      const restPlaces = state.schedule.schedule_details?.filter(
+        (d) => d.content_id !== action.payload.contendId
+      );
+
+      if (modifiedPlace) modifiedPlace.end_time = action.payload.date;
+
+      if (restPlaces && modifiedPlace) {
+        state.schedule.schedule_details = [...restPlaces, modifiedPlace];
+      }
+    },
+
     // schedule_detail 삭제
     removeScheduleDetail: (state, action: PayloadAction<string>) => {
       const newDetailArray = state.schedule.schedule_details?.filter(
@@ -118,7 +155,13 @@ const scheduleSlice = createSlice({
   },
 });
 
-export const { addAreaCode, addDates, removeScheduleDetail, addTitle } =
-  scheduleSlice.actions;
+export const {
+  addAreaCode,
+  addDates,
+  removeScheduleDetail,
+  addTitle,
+  updateStartTime,
+  updateEndTime,
+} = scheduleSlice.actions;
 
 export default scheduleSlice.reducer;
