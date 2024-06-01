@@ -1,14 +1,28 @@
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
 import "./procedure.css";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { clearPageNo } from "../../../store/slices/placeSlice";
+import { Rootstate } from "../../../store/store";
+import axios from "axios";
+import { ScheduleFinal } from "../../../types/schedules";
 
 const Procedure = () => {
   const location = useLocation();
   // url의 해시 정보를 가져옴
   const { hash } = location;
   const dispatch = useDispatch();
+
+  const schedule = useSelector((state: Rootstate) => state.schedule.schedule);
+
+  const handleSubmit = () => {
+    axios
+      .post(`http://localhost:8080/schedules`, schedule)
+      .then((response) => {
+        console.log(response.data);
+      })
+      .catch((error) => console.log(error.response.data));
+  };
 
   return (
     <aside className="procedure">
@@ -70,6 +84,9 @@ const Procedure = () => {
                 <p className="desc">일정 결정</p>
               </div>
             </Link>
+          </li>
+          <li>
+            <button onClick={() => handleSubmit()}>등록</button>
           </li>
         </ul>
       </nav>

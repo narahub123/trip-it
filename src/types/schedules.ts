@@ -10,7 +10,7 @@ export interface ScheduleDetailType {
   start_time: string;
   end_time: string;
   content_id: string;
-  createdAt?: string;
+  createdAt: string;
 }
 
 export interface ScheduleType {
@@ -18,6 +18,15 @@ export interface ScheduleType {
   metro_id?: string;
   start_date?: string;
   end_date?: string;
+  schedule_name?: string;
+  schedule_details?: ScheduleDetailType[];
+}
+
+export interface ScheduleFinal {
+  schedule_id?: string;
+  metro_id: string;
+  start_date: string;
+  end_date: string;
   schedule_name?: string;
   schedule_details?: ScheduleDetailType[];
 }
