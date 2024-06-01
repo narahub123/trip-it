@@ -59,7 +59,7 @@ const Drops = () => {
       <div className="schedule-columns">
         {dates &&
           dates.map((date: any, index: number) => (
-            <ScheduleColumn date={date} index={index} key={index} />
+            <ScheduleColumn date={date} index={index} key={`col${index}`} />
           ))}
       </div>
     </div>

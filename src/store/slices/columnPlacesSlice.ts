@@ -77,9 +77,6 @@ const columnPlacesSlice = createSlice({
       state,
       action: PayloadAction<{ curRow: string; curCol: string }>
     ) => {
-      console.log(action.payload.curRow);
-      console.log(action.payload.curCol);
-
       const key =
         `columnPlaces${action.payload.curCol}` as keyof typeof state.columnPlaces;
 
@@ -117,8 +114,6 @@ const columnPlacesSlice = createSlice({
       const key =
         `columnPlaces${action.payload.column}` as keyof typeof state.columnPlaces;
       const columnPlaces = state.columnPlaces[key];
-      console.log(key);
-      console.log(columnPlaces);
 
       const filteredColumnPlaces = columnPlaces?.filter(
         (place) => place.contentid !== action.payload.contentId
@@ -129,8 +124,6 @@ const columnPlacesSlice = createSlice({
     },
 
     addDraggedPlace: (state) => {
-      console.log(state.goalRow);
-
       // 같은 컬럼이면서 이동 장소가 목표 위치랑 같지 않는 경우에 이동 장소를 지움
       if (state.curCol === state.goalCol && state.curRow !== state.goalRow) {
         columnPlacesSlice.caseReducers.removeDraggedPlace(state);
@@ -150,10 +143,7 @@ const columnPlacesSlice = createSlice({
             // 목표 위치가 최상단일 경우
             state.columnPlaces[key] = [state.draggedPlace, ...goalColumnPlaces];
           } else if (state.curRow === state.goalRow) {
-            console.log("hi");
           } else if (state.goalRow !== "_1") {
-            console.log("here");
-
             // 목표 위치가 최상단이 아닐 경우
             // 목표 위치 찾기:
             const index = goalColumnPlaces?.findIndex(

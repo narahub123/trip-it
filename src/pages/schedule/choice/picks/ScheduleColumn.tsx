@@ -53,9 +53,6 @@ const ScheduleColumn = ({ date, index }: ScheduleColumnProps) => {
     if (curRow) dispatch(setcurRow(curRow));
     if (curCol) dispatch(setcurCol(curCol));
 
-    console.log("curRow", curRow);
-    console.log("curCol", curCol);
-
     if (curRow && curCol) dispatch(setDraggedPlace({ curRow, curCol }));
   };
   const handleDragOver = (
@@ -104,7 +101,7 @@ const ScheduleColumn = ({ date, index }: ScheduleColumnProps) => {
   };
 
   return (
-    <div className="schedule-column">
+    <div className="schedule-column" key={`col${index}`}>
       <div className="schedule-column-date">
         <p>{`${date.year}.${date.month + 1}.${date.date}(${getWeek(
           new Date(date.year, date.month, date.date)
@@ -122,7 +119,7 @@ const ScheduleColumn = ({ date, index }: ScheduleColumnProps) => {
       >
         <ul>
           {!isActive && columnPlaces?.length === 0 && (
-            <li className="place-indicator" key={0}>
+            <li className="place-indicator" key={"indicator"}>
               <p>원하는 장소를 드래그 해주세요</p>
             </li>
           )}

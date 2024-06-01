@@ -15,6 +15,7 @@ const initialState: ScheduleState = {
     schedule_name: "",
     start_date: undefined,
     end_date: undefined,
+    schedule_details: [],
   },
 };
 

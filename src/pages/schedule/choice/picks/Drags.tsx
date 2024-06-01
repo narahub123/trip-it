@@ -133,6 +133,7 @@ const Drags = () => {
                   </span>
                 </li>
                 <DropIndicator
+                  key={`drop_${draggablePlace.contentid}`}
                   row={draggablePlace.contentid}
                   col={"_1"}
                   onDragLeave={handleDragLeave}
