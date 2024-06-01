@@ -5,7 +5,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { clearPageNo } from "../../../store/slices/placeSlice";
 import { Rootstate } from "../../../store/store";
 import axios from "axios";
-import { ScheduleFinal } from "../../../types/schedules";
 
 const Procedure = () => {
   const location = useLocation();
