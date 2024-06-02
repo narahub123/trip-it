@@ -68,10 +68,13 @@ export const fetchPlaces = createAsyncThunk(
         contentTypeId = "1";
       }
 
-      const url = `http://localhost:8080/places/${areacode}/${contentTypeId}/${pageNo.toString()}`;
+      const url = `http://192.168.23.135:8080/places/${areacode}/${contentTypeId}/${pageNo.toString()}`;
+      // const url = `http://192.168.0.130:8080/home/test/${areacode}/${pageNo}`;
       console.log(url);
 
       const response = await fetch(url);
+
+      console.log(response);
 
       try {
         const jsonData = await response.json();
