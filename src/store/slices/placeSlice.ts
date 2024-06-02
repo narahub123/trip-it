@@ -3,14 +3,20 @@ import { PlaceApiType } from "../../types/place";
 import { Rootstate } from "../store";
 import { convertStringToJson } from "../../utils/convertStringToJson";
 
+export interface ContentIdsType {
+  contentId: string;
+  column?: number;
+}
+
 export interface PlaceState {
   places: PlaceApiType[];
   status: string;
   error?: string;
-  contentIds?: string[];
+  contentIds?: ContentIdsType[];
   selectedPlaces?: PlaceApiType[];
   place?: PlaceApiType;
   modal?: boolean;
+  accomoModal?: boolean;
   isEnd: boolean;
   pageNo: number;
 }
@@ -21,6 +27,7 @@ const initialState: PlaceState = {
   error: undefined,
   contentIds: [],
   modal: false,
+  accomoModal: false,
   isEnd: false,
   pageNo: 1,
 };
@@ -166,15 +173,32 @@ const placeSlice = createSlice({
     addPageNo: (state) => {
       state.pageNo += 1;
     },
-    addContentId: (state, action: PayloadAction<string>) => {
+    addContentId: (
+      state,
+      action: PayloadAction<{ contentId: string; column?: number }>
+    ) => {
+      console.log("컬럼", action.payload.column);
+
       if (state.contentIds)
-        state.contentIds = [...state.contentIds, action.payload];
-      else state.contentIds = [action.payload];
+        state.contentIds = [
+          ...state.contentIds,
+          {
+            contentId: action.payload.contentId,
+            column: action.payload.column,
+          },
+        ];
+      else
+        state.contentIds = [
+          {
+            contentId: action.payload.contentId,
+            column: action.payload.column,
+          },
+        ];
     },
     removeContentId: (state, action: PayloadAction<string>) => {
       if (state.contentIds) {
         state.contentIds = state.contentIds.filter(
-          (contentId) => contentId !== action.payload
+          (contentId) => contentId.contentId !== action.payload
         );
       }
     },
@@ -187,6 +211,9 @@ const placeSlice = createSlice({
     },
     modalToggle: (state) => {
       state.modal = !state.modal;
+    },
+    accommoToggle: (state) => {
+      state.accomoModal = !state.accomoModal;
     },
   },
   extraReducers: (builder) => {
@@ -282,6 +309,7 @@ export const {
   clearSelectedPlaces,
   removeSelectedPlace,
   modalToggle,
+  accommoToggle,
   addPageNo,
   clearPageNo,
 } = placeSlice.actions;

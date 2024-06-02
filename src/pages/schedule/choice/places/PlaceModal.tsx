@@ -16,7 +16,7 @@ const PlaceModal = () => {
 
   const handleSelect = (contentId: string) => {
     dispatch(fetchPlace({ contentId, info: false }) as any);
-    dispatch(addContentId(contentId));
+    dispatch(addContentId({ contentId }));
   };
   return (
     <div

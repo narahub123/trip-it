@@ -4,6 +4,7 @@ import { useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { Rootstate } from "../../../../store/store";
 import {
+  accommoToggle,
   addContentId,
   addPageNo,
   clearPageNo,
@@ -112,13 +113,18 @@ const PlacesList = () => {
   // 장소 추가하기
   const contentIds = useSelector((state: Rootstate) => state.place.contentIds);
 
-  const handleSelection = (contentId: string) => {
+  const handleSelection = (contentId: string, contentTypeId: string) => {
+    if (contentTypeId == "32") {
+      dispatch(accommoToggle());
+      dispatch(fetchPlace({ contentId, info: true }) as any);
+      return;
+    }
     console.log(contentId);
-    dispatch(addContentId(contentId));
+    dispatch(addContentId({ contentId }));
     dispatch(fetchPlace({ contentId, info: false }) as any);
   };
 
-  const handleDeselection = (contentId: string) => {
+  const handleDeselection = (contentId: string, contentTypeId: string) => {
     dispatch(removeContentId(contentId));
     dispatch(removeSelectedPlace(contentId));
   };
@@ -147,7 +153,6 @@ const PlacesList = () => {
           {metros.find((metro) => metro.areaCode === areacode)?.name}
         </p>
         <p className="duration">
-          
           {start &&
             schedule.start_date &&
             end &&
@@ -215,18 +220,22 @@ const PlacesList = () => {
                     <PlaceCard place={place} />
                   </span>
                   {!contentIds?.find(
-                    (contentId) => contentId === place.contentid
+                    (contentId) => contentId.contentId === place.contentid
                   ) ? (
                     <span
                       className="placeEvent"
-                      onClick={() => handleSelection(place.contentid)}
+                      onClick={() =>
+                        handleSelection(place.contentid, place.contenttypeid)
+                      }
                     >
                       <p className="btn">+</p>
                     </span>
                   ) : (
                     <span
                       className="placeEventActive"
-                      onClick={() => handleDeselection(place.contentid)}
+                      onClick={() =>
+                        handleDeselection(place.contentid, place.contenttypeid)
+                      }
                     >
                       <p className="btn">🗸</p>
                     </span>
