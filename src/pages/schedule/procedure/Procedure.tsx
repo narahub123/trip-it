@@ -1,5 +1,5 @@
 import React from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import "./procedure.css";
 import { useDispatch, useSelector } from "react-redux";
 import { clearPageNo } from "../../../store/slices/placeSlice";
@@ -11,14 +11,39 @@ const Procedure = () => {
   // url의 해시 정보를 가져옴
   const { hash } = location;
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const schedule = useSelector((state: Rootstate) => state.schedule.schedule);
 
   const handleSubmit = () => {
+    // 유효성 검사
+    if (schedule.metro_id === "") {
+      console.log("여행지를 선택해주세요");
+      return;
+    }
+
+    if (schedule.start_date === undefined || schedule.end_date === undefined) {
+      console.log("여행 일자를 선택해주세요");
+      return;
+    }
+
+    if (schedule.schedule_name === "") {
+      console.log("여행의 제목을 작성해주세요");
+      return;
+    }
+
+    if (schedule.schedule_details?.length === 0) {
+      console.log("여행할 장소를 선택해주세요");
+      return;
+    }
+
     axios
       .post(`http://localhost:8080/schedules`, schedule)
       .then((response) => {
-        console.log(response.data);
+        if (response.status === 200 || response.status === 201) {
+          console.log("정상적으로 처리되었습니다.");
+          navigate("/mypage");
+        }
       })
       .catch((error) => console.log(error.response.data));
   };

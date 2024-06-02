@@ -4,13 +4,22 @@ import { useLocation } from "react-router-dom";
 import Dates from "./dates/Dates";
 import Places from "./places/Places";
 import Picks from "./picks/Picks";
-import { useSelector } from "react-redux";
-import { Rootstate } from "../../../store/store";
-import PlaceModal from "./places/PlaceModal";
+import { useDispatch } from "react-redux";
+import { metros } from "../../../data/metros";
+import { addAreaCode } from "../../../store/slices/scheduleSlice";
 
 const Choice = () => {
+  const dispatch = useDispatch();
   const location = useLocation();
-  const { hash } = location;
+  const { hash, pathname } = location;
+
+  const encodedAreaName = pathname.split("/")[2];
+
+  const areaname = decodeURIComponent(encodedAreaName);
+
+  const areaCode = metros.find((metro) => metro.name === areaname)?.areaCode;
+
+  if (areaCode) dispatch(addAreaCode(areaCode));
 
   return (
     <main className="choice">
