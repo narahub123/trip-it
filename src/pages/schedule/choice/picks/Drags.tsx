@@ -5,7 +5,6 @@ import { Rootstate } from "../../../../store/store";
 import {
   removeContentId,
   removeSelectedPlace,
-  setColumns,
 } from "../../../../store/slices/placeSlice";
 import PlaceCard from "../places/PlaceCard";
 import { LuTrash2 } from "react-icons/lu";
@@ -21,6 +20,7 @@ import {
   setcurCol,
   setcurRow,
 } from "../../../../store/slices/columnPlacesSlice";
+import { setColumns } from "../../../../store/slices/accommoSlice";
 
 const Drags = () => {
   const dispatch = useDispatch();
@@ -37,7 +37,7 @@ const Drags = () => {
     (state: Rootstate) => state.columnPlaces.columnPlaces
   );
 
-  const columns = useSelector((state: Rootstate) => state.place.columns);
+  const columns = useSelector((state: Rootstate) => state.accommo.columns);
 
   const draggedPlace = useSelector(
     (state: Rootstate) => state.columnPlaces.draggedPlace

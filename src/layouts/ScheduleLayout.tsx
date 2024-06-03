@@ -12,16 +12,10 @@ import AccommModal from "../pages/schedule/choice/places/AccommModal";
 const ScheduleLayout = () => {
   // 새로 고침 방지
   usePreventRefresh();
-
-  // 일정 확인용(불필요)
-  const schedule = useSelector((state: Rootstate) => state.schedule);
-  console.log(schedule.schedule);
   const modalToggle = useSelector((state: Rootstate) => state.place.modal);
   const accommoToggle = useSelector(
     (state: Rootstate) => state.place.accomoModal
   );
-  const columns = useSelector((state: Rootstate) => state.place.columns);
-  console.log("컬럼들", columns);
 
   return (
     <div className="scheduleLayout">

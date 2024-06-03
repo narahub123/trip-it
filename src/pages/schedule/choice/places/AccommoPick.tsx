@@ -3,15 +3,14 @@ import { LuPlus } from "react-icons/lu";
 import { DestrucDateType } from "../dates/Calendar";
 import { useDispatch, useSelector } from "react-redux";
 import { Rootstate } from "../../../../store/store";
-import { setColumns } from "../../../../store/slices/placeSlice";
+import { setColumns } from "../../../../store/slices/accommoSlice";
 
 interface AccommoPickProps {
-  date: string;
+  date: DestrucDateType;
   index: number;
-  setColumn: (value: number | undefined) => void;
 }
 
-const AccommoPick = ({ date, index, setColumn }: AccommoPickProps) => {
+const AccommoPick = ({ date, index }: AccommoPickProps) => {
   const [inserted, setInserted] = useState(false);
   const dispatch = useDispatch();
   const place = useSelector((state: Rootstate) => state.place.place);
@@ -31,7 +30,6 @@ const AccommoPick = ({ date, index, setColumn }: AccommoPickProps) => {
     if (!inserted) {
       console.log("저기");
 
-      setColumn(index);
       const updatedColumns = columns.map((col) =>
         col.column === index ? { ...col, contentId: place?.contentid } : col
       );
@@ -41,7 +39,6 @@ const AccommoPick = ({ date, index, setColumn }: AccommoPickProps) => {
     if (inserted) {
       console.log("여기");
 
-      setColumn(undefined);
       const updatedColumns = columns.map((col) =>
         col.column === index ? { ...col, contentId: "" } : col
       );
@@ -51,8 +48,10 @@ const AccommoPick = ({ date, index, setColumn }: AccommoPickProps) => {
     setInserted(!inserted);
   };
   return (
-    <li className="accommo" key={date}>
-      <p className="date">{date}</p>
+    <li className="accommo" key={date.date}>
+      <p className="date">{`${
+        date.month < 10 ? "0" + date.month : date.month
+      }.${date.date < 10 ? "0" + date.date : date.date}`}</p>
       <figure className="image">
         {matched && !inserted && (
           <img

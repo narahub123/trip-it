@@ -10,6 +10,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Rootstate } from "../../../../store/store";
 import { addEnd, addStart } from "../../../../store/slices/dateSlice";
 import { addDates } from "../../../../store/slices/scheduleSlice";
+import { calcColumns } from "../../../../store/slices/accommoSlice";
 
 export interface DestrucDateType {
   year: number;
@@ -48,6 +49,7 @@ const Calendar = ({ month }: CalendarProps) => {
     if (date) {
       dispatch(addStart(date));
       dispatch(addEnd(""));
+      dispatch(calcColumns() as any);
     }
   };
 

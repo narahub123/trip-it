@@ -5,6 +5,7 @@ import scheduleSlice from "./slices/scheduleSlice";
 import dateSlice from "./slices/dateSlice";
 import placeSlice from "./slices/placeSlice";
 import columnPlacesSlice from "./slices/columnPlacesSlice";
+import accommoSlice from "./slices/accommoSlice";
 
 export const store = configureStore({
   reducer: {
@@ -14,6 +15,7 @@ export const store = configureStore({
     date: dateSlice,
     place: placeSlice,
     columnPlaces: columnPlacesSlice,
+    accommo: accommoSlice,
   },
 });
 

@@ -14,7 +14,6 @@ import {
   fetchSearchedPlaces,
   removeContentId,
   removeSelectedPlace,
-  setColumns,
 } from "../../../../store/slices/placeSlice";
 import { metros } from "../../../../data/metros";
 import { dateMidFormatter, destrucDate, getWeek } from "../../../../utils/date";
@@ -24,6 +23,7 @@ import PlaceCard from "./PlaceCard";
 import { isSearchable } from "../../../../data/hangul";
 import { debounce } from "../../../../utils/debounce";
 import { useRenderCount } from "@uidotdev/usehooks";
+import { setColumns } from "../../../../store/slices/accommoSlice";
 
 const PlacesList = () => {
   // 렌더링 개수
@@ -35,7 +35,7 @@ const PlacesList = () => {
   const status = useSelector((state: Rootstate) => state.place.status);
   const pageNo = useSelector((state: Rootstate) => state.place.pageNo);
   const isEnd = useSelector((state: Rootstate) => state.place.isEnd);
-  const columns = useSelector((state: Rootstate) => state.place.columns);
+  const columns = useSelector((state: Rootstate) => state.accommo.columns);
   const areacode =
     useSelector((state: Rootstate) => state.schedule.schedule.metro_id) || "1";
   const schedule = useSelector((state: Rootstate) => state.schedule.schedule);

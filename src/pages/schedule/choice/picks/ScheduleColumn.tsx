@@ -20,12 +20,12 @@ import DropCard from "./DropCard";
 import {
   removeContentId,
   removeSelectedPlace,
-  setColumns,
 } from "../../../../store/slices/placeSlice";
 import {
   addScheduleDetail,
   removeScheduleDetail,
 } from "../../../../store/slices/scheduleSlice";
+import { setColumns } from "../../../../store/slices/accommoSlice";
 
 interface ScheduleColumnProps {
   date: DestrucDateType;
@@ -36,7 +36,7 @@ const ScheduleColumn = ({ date, index }: ScheduleColumnProps) => {
   const [isActive, setIsActive] = useState(false);
   const dispatch = useDispatch();
   const curCol = useSelector((state: Rootstate) => state.columnPlaces.curCol);
-  const columns = useSelector((state: Rootstate) => state.place.columns);
+  const columns = useSelector((state: Rootstate) => state.accommo.columns);
 
   const columnPlaces = useSelector(
     (state: Rootstate) =>

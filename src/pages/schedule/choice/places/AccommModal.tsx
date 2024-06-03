@@ -5,19 +5,19 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   accommoToggle,
   addContentId,
-  calcColumns,
   fetchPlace,
 } from "../../../../store/slices/placeSlice";
 import { Rootstate, store } from "../../../../store/store";
-import { CalculateDuration } from "../../../../utils/date";
+
 import AccommoPick from "./AccommoPick";
+import { calcColumns } from "../../../../store/slices/accommoSlice";
 
 const AccommModal = () => {
   const [column, setColumn] = useState<number | undefined>(undefined);
   const dispatch = useDispatch();
   const place = useSelector((state: Rootstate) => state.place.place);
-  const schedule = useSelector((state: Rootstate) => state.schedule.schedule);
-  const columns = useSelector((state: Rootstate) => state.place.columns);
+
+  const columns = useSelector((state: Rootstate) => state.accommo.columns);
 
   useEffect(() => {
     const isExisted = columns.findIndex((column) => column.contentId !== "");
@@ -57,9 +57,8 @@ const AccommModal = () => {
               {columns.map((column) => (
                 <AccommoPick
                   date={column.date}
-                  index={column.column}
-                  setColumn={setColumn}
-                  key={column.date}
+                  index={column.index}
+                  key={column.date.date}
                 />
               ))}
             </ul>
