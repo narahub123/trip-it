@@ -1,18 +1,15 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./accommoModal.css";
 
 import { useDispatch, useSelector } from "react-redux";
 import {
   accommoToggle,
   addContentId,
+  calcColumns,
   fetchPlace,
 } from "../../../../store/slices/placeSlice";
-import { Rootstate } from "../../../../store/store";
-import {
-  CalculateDuration,
-  dateMidFormatter,
-  destrucDate,
-} from "../../../../utils/date";
+import { Rootstate, store } from "../../../../store/store";
+import { CalculateDuration } from "../../../../utils/date";
 import AccommoPick from "./AccommoPick";
 
 const AccommModal = () => {
@@ -20,22 +17,14 @@ const AccommModal = () => {
   const dispatch = useDispatch();
   const place = useSelector((state: Rootstate) => state.place.place);
   const schedule = useSelector((state: Rootstate) => state.schedule.schedule);
+  const columns = useSelector((state: Rootstate) => state.place.columns);
+
+  useEffect(() => {
+    const isExisted = columns.findIndex((column) => column.contentId !== "");
+    if (isExisted === -1) store.dispatch(calcColumns());
+  }, []);
 
   // 일정
-  const start =
-    schedule.start_date &&
-    destrucDate(dateMidFormatter(new Date(schedule.start_date)));
-  const end =
-    schedule.end_date &&
-    destrucDate(dateMidFormatter(new Date(schedule.end_date)));
-
-  const dates =
-    schedule.start_date &&
-    schedule.end_date &&
-    CalculateDuration(schedule.start_date, schedule.end_date);
-
-  const filteredDates = dates?.slice(0, dates.length - 1);
-
   const handleToggle = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     e.stopPropagation();
 
@@ -44,8 +33,6 @@ const AccommModal = () => {
     }
   };
 
-  console.log("컬럼", column);
-
   const handleSelection = () => {
     if (place) {
       dispatch(addContentId({ contentId: place?.contentid, column }));
@@ -53,6 +40,12 @@ const AccommModal = () => {
     }
     dispatch(accommoToggle());
   };
+
+  console.log("column", column);
+
+  console.log("columns", columns);
+  console.log("열림");
+
   return (
     <div className="accommo-modal" onClick={(e) => handleToggle(e)}>
       <div className="accommo-container" onClick={(e) => handleToggle(e)}>
@@ -61,25 +54,28 @@ const AccommModal = () => {
           <div className="accommo-title">{place?.title}</div>
           <div className="accommo-list-container">
             <ul>
-              {filteredDates &&
-                typeof filteredDates !== "string" &&
-                filteredDates.map((date, index) => (
-                  <AccommoPick
-                    date={date}
-                    index={index}
-                    setColumn={setColumn}
-                  />
-                ))}
+              {columns.map((column) => (
+                <AccommoPick
+                  date={column.date}
+                  index={column.column}
+                  setColumn={setColumn}
+                  key={column.date}
+                />
+              ))}
             </ul>
           </div>
           <div className="select-all">전체 선택</div>
           <div
             className="done"
-            onClick={() => {
-              handleSelection();
-            }}
+            onClick={
+              typeof column === "number"
+                ? () => {
+                    handleSelection();
+                  }
+                : () => dispatch(accommoToggle())
+            }
           >
-            완료
+            {typeof column === "number" ? "완료" : "되돌가기"}
           </div>
         </div>
       </div>

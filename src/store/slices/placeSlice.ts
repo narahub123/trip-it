@@ -2,6 +2,7 @@ import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { PlaceApiType } from "../../types/place";
 import { Rootstate } from "../store";
 import { convertStringToJson } from "../../utils/convertStringToJson";
+import { CalculateDuration } from "../../utils/date";
 
 export interface ContentIdsType {
   contentId: string;
@@ -19,6 +20,7 @@ export interface PlaceState {
   accomoModal?: boolean;
   isEnd: boolean;
   pageNo: number;
+  columns: Array<{ contentId: string; column: number; date: string }>;
 }
 
 const initialState: PlaceState = {
@@ -30,6 +32,7 @@ const initialState: PlaceState = {
   accomoModal: false,
   isEnd: false,
   pageNo: 1,
+  columns: [],
 };
 
 interface PlacesProps {
@@ -46,6 +49,38 @@ interface PlaceProps {
   contentId: string;
   info: boolean;
 }
+
+// accomoMadal 내 컬럼 개수
+export const calcColumns = createAsyncThunk(
+  "placeSlice/calcColumns",
+  async (_, { getState, dispatch }) => {
+    const { schedule } = getState() as Rootstate;
+
+    const dates =
+      schedule.schedule.start_date &&
+      schedule.schedule.end_date &&
+      CalculateDuration(
+        schedule.schedule.start_date,
+        schedule.schedule.end_date
+      );
+
+    if (!dates) {
+      return undefined;
+    }
+
+    const filteredDates = dates.slice(0, dates.length - 1);
+
+    const columns = filteredDates.map((date, index) => ({
+      date: `${date.month < 10 ? "0" + date.month : date.month}.${
+        date.date < 10 ? "0" + date.date : date.date
+      }`,
+      contentId: "",
+      column: index,
+    }));
+
+    dispatch(setColumns(columns));
+  }
+);
 
 // 지역 코드로 장소들 불러오기
 export const fetchPlaces = createAsyncThunk(
@@ -161,6 +196,9 @@ const placeSlice = createSlice({
   name: "place",
   initialState,
   reducers: {
+    setColumns: (state, action) => {
+      state.columns = action.payload;
+    },
     clearPlaces: (state) => {
       state.places = [];
     },
@@ -300,11 +338,13 @@ const placeSlice = createSlice({
         state.status = "failed";
         state.error = action.error.message;
         state.places = [];
-      });
+      })
+      .addCase(calcColumns.fulfilled, (state, action) => {});
   },
 });
 
 export const {
+  setColumns,
   clearPlaces,
   addContentId,
   clearContentId,

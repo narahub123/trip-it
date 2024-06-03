@@ -5,6 +5,7 @@ import { Rootstate } from "../../../../store/store";
 import {
   removeContentId,
   removeSelectedPlace,
+  setColumns,
 } from "../../../../store/slices/placeSlice";
 import PlaceCard from "../places/PlaceCard";
 import { LuTrash2 } from "react-icons/lu";
@@ -36,6 +37,8 @@ const Drags = () => {
     (state: Rootstate) => state.columnPlaces.columnPlaces
   );
 
+  const columns = useSelector((state: Rootstate) => state.place.columns);
+
   const draggedPlace = useSelector(
     (state: Rootstate) => state.columnPlaces.draggedPlace
   );
@@ -51,6 +54,11 @@ const Drags = () => {
     dispatch(removeContentId(contentId));
     // 해당 컬럼 배열에서도 삭제
     dispatch(removePlaceFromColumn({ column: "_1", contentId: contentId }));
+    // 숙소의 경우 숙소 배열에서 제거 필요
+    const updatedColumns = columns.map((column) =>
+      column.contentId === contentId ? { ...column, contentId: "" } : column
+    );
+    dispatch(setColumns(updatedColumns));
   };
 
   // 드래그 시작

@@ -20,6 +20,7 @@ import DropCard from "./DropCard";
 import {
   removeContentId,
   removeSelectedPlace,
+  setColumns,
 } from "../../../../store/slices/placeSlice";
 import {
   addScheduleDetail,
@@ -35,6 +36,7 @@ const ScheduleColumn = ({ date, index }: ScheduleColumnProps) => {
   const [isActive, setIsActive] = useState(false);
   const dispatch = useDispatch();
   const curCol = useSelector((state: Rootstate) => state.columnPlaces.curCol);
+  const columns = useSelector((state: Rootstate) => state.place.columns);
 
   const columnPlaces = useSelector(
     (state: Rootstate) =>
@@ -98,6 +100,11 @@ const ScheduleColumn = ({ date, index }: ScheduleColumnProps) => {
     dispatch(removeContentId(contentId));
     dispatch(removePlaceFromColumn({ column: index.toString(), contentId }));
     dispatch(removeScheduleDetail(contentId));
+    // 숙소의 경우 숙소 배열에서 제거 필요
+    const updatedColumns = columns.map((column) =>
+      column.contentId === contentId ? { ...column, contentId: "" } : column
+    );
+    dispatch(setColumns(updatedColumns));
   };
 
   return (

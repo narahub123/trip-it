@@ -14,6 +14,7 @@ import {
   fetchSearchedPlaces,
   removeContentId,
   removeSelectedPlace,
+  setColumns,
 } from "../../../../store/slices/placeSlice";
 import { metros } from "../../../../data/metros";
 import { dateMidFormatter, destrucDate, getWeek } from "../../../../utils/date";
@@ -34,6 +35,7 @@ const PlacesList = () => {
   const status = useSelector((state: Rootstate) => state.place.status);
   const pageNo = useSelector((state: Rootstate) => state.place.pageNo);
   const isEnd = useSelector((state: Rootstate) => state.place.isEnd);
+  const columns = useSelector((state: Rootstate) => state.place.columns);
   const areacode =
     useSelector((state: Rootstate) => state.schedule.schedule.metro_id) || "1";
   const schedule = useSelector((state: Rootstate) => state.schedule.schedule);
@@ -104,12 +106,12 @@ const PlacesList = () => {
 
   console.log(`----- 렌더링 횟수 ${count} -----`);
 
-  console.log(keyword);
-  console.log("contentTypeId", contentTypeId);
-  console.log("pageNo", pageNo);
+  // console.log(keyword);
+  // console.log("contentTypeId", contentTypeId);
+  // console.log("pageNo", pageNo);
 
-  console.log("isend", isEnd);
-  console.log("--------------------------");
+  // console.log("isend", isEnd);
+  // console.log("--------------------------");
   // 장소 추가하기
   const contentIds = useSelector((state: Rootstate) => state.place.contentIds);
 
@@ -124,9 +126,14 @@ const PlacesList = () => {
     dispatch(fetchPlace({ contentId, info: false }) as any);
   };
 
-  const handleDeselection = (contentId: string, contentTypeId: string) => {
+  const handleDeselection = (contentId: string) => {
     dispatch(removeContentId(contentId));
     dispatch(removeSelectedPlace(contentId));
+    // 숙소의 경우 숙소 배열에서 제거 필요
+    const updatedColumns = columns.map((column) =>
+      column.contentId === contentId ? { ...column, contentId: "" } : column
+    );
+    dispatch(setColumns(updatedColumns));
   };
 
   // 일정
@@ -233,9 +240,7 @@ const PlacesList = () => {
                   ) : (
                     <span
                       className="placeEventActive"
-                      onClick={() =>
-                        handleDeselection(place.contentid, place.contenttypeid)
-                      }
+                      onClick={() => handleDeselection(place.contentid)}
                     >
                       <p className="btn">🗸</p>
                     </span>

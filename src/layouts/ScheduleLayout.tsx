@@ -20,6 +20,9 @@ const ScheduleLayout = () => {
   const accommoToggle = useSelector(
     (state: Rootstate) => state.place.accomoModal
   );
+  const columns = useSelector((state: Rootstate) => state.place.columns);
+  console.log("컬럼들", columns);
+
   return (
     <div className="scheduleLayout">
       {accommoToggle && <AccommModal />}

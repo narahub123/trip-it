@@ -19,15 +19,6 @@ const SelectedPlacesList = () => {
   const selectedPlaces = useSelector(
     (state: Rootstate) => state.place.selectedPlaces
   );
-  const areacode = useSelector(
-    (state: Rootstate) => state.schedule.schedule.metro_id || "1"
-  );
-  const contentIds = useSelector((state: Rootstate) => state.place.contentIds);
-
-  // 기본 이미지
-  const defaultImage = metros.find(
-    (metro) => metro.areaCode === areacode
-  )?.imgUrl;
 
   const handleDeselection = (contentId: string) => {
     dispatch(removeContentId(contentId));
