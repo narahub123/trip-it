@@ -4,16 +4,16 @@ import { Rootstate } from "../store";
 
 export interface ColumnPlacesType {
   columnPlaces_1: PlaceApiType[];
-  columnPlaces0?: PlaceApiType[];
-  columnPlaces1?: PlaceApiType[];
-  columnPlaces2?: PlaceApiType[];
-  columnPlaces3?: PlaceApiType[];
-  columnPlaces4?: PlaceApiType[];
-  columnPlaces5?: PlaceApiType[];
-  columnPlaces6?: PlaceApiType[];
-  columnPlaces7?: PlaceApiType[];
-  columnPlaces8?: PlaceApiType[];
-  columnPlaces9?: PlaceApiType[];
+  columnPlaces0: PlaceApiType[];
+  columnPlaces1: PlaceApiType[];
+  columnPlaces2: PlaceApiType[];
+  columnPlaces3: PlaceApiType[];
+  columnPlaces4: PlaceApiType[];
+  columnPlaces5: PlaceApiType[];
+  columnPlaces6: PlaceApiType[];
+  columnPlaces7: PlaceApiType[];
+  columnPlaces8: PlaceApiType[];
+  columnPlaces9: PlaceApiType[];
 }
 
 interface columnPlacesState {
@@ -109,18 +109,16 @@ const columnPlacesSlice = createSlice({
 
     removePlaceFromColumn: (
       state,
-      action: PayloadAction<{ column: string; contentId: string }>
+      action: PayloadAction<{ column: string; index: number }>
     ) => {
       const key =
         `columnPlaces${action.payload.column}` as keyof typeof state.columnPlaces;
       const columnPlaces = state.columnPlaces[key];
 
-      const filteredColumnPlaces = columnPlaces?.filter(
-        (place) => place.contentid !== action.payload.contentId
-      );
+      const beforeColumn = columnPlaces.slice(0, action.payload.index);
+      const afterColumn = columnPlaces.slice(action.payload.index + 1);
 
-      if (filteredColumnPlaces)
-        state.columnPlaces[key] = [...filteredColumnPlaces];
+      state.columnPlaces[key] = [...beforeColumn, ...afterColumn];
     },
 
     addDraggedPlace: (state) => {
@@ -174,6 +172,22 @@ const columnPlacesSlice = createSlice({
       columnPlacesSlice.caseReducers.addDraggedPlace(state);
       columnPlacesSlice.caseReducers.removeDraggedPlace(state);
     },
+
+    addPlaceToColumn: (
+      state,
+      action: PayloadAction<{
+        column: number;
+        place: PlaceApiType;
+        order: number;
+      }>
+    ) => {
+      const key =
+        `columnPlaces${action.payload.column}` as keyof typeof state.columnPlaces;
+
+      const columnPlaces = state.columnPlaces[key];
+
+      columnPlaces[action.payload.order] = action.payload.place;
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(
@@ -198,6 +212,7 @@ export const {
   dragInColumn,
   dragBtwColumn,
   removePlaceFromColumn,
+  addPlaceToColumn,
 } = columnPlacesSlice.actions;
 
 export default columnPlacesSlice.reducer;

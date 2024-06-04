@@ -1,11 +1,12 @@
-import React, { useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import "./scheduleColumn.css";
 import { useDispatch, useSelector } from "react-redux";
 import { Rootstate } from "../../../../store/store";
 import DropIndicator from "./DropIndicator";
-import { getWeek } from "../../../../utils/date";
+import { destrucDate, getWeek } from "../../../../utils/date";
 import { DestrucDateType } from "../dates/Calendar";
 import {
+  addPlaceToColumn,
   dragBtwColumn,
   dragInColumn,
   removePlaceFromColumn,
@@ -17,15 +18,9 @@ import {
 } from "../../../../store/slices/columnPlacesSlice";
 import { LuTrash2 } from "react-icons/lu";
 import DropCard from "./DropCard";
-import {
-  removeContentId,
-  removeSelectedPlace,
-} from "../../../../store/slices/placeSlice";
-import {
-  addScheduleDetail,
-  removeScheduleDetail,
-} from "../../../../store/slices/scheduleSlice";
+import { removeSelectedPlace } from "../../../../store/slices/placeSlice";
 import { setColumns } from "../../../../store/slices/accommoSlice";
+import { useRenderCount } from "@uidotdev/usehooks";
 
 interface ScheduleColumnProps {
   date: DestrucDateType;
@@ -37,6 +32,50 @@ const ScheduleColumn = ({ date, index }: ScheduleColumnProps) => {
   const dispatch = useDispatch();
   const curCol = useSelector((state: Rootstate) => state.columnPlaces.curCol);
   const columns = useSelector((state: Rootstate) => state.accommo.columns);
+  // 렌더링 개수
+  const count = useRenderCount();
+  const selectedPlaces = useSelector(
+    (state: Rootstate) => state.place.selectedPlaces
+  );
+  const selectedAccommo = columns.find((column) => column.index === index);
+
+  const accommo = selectedPlaces?.find(
+    (place) => place.contentid === selectedAccommo?.contentId
+  );
+
+  console.log("렌더링 개수", count);
+
+  useEffect(() => {
+    const newDate = new Date(date.year, date.month, date.date + 1);
+    const destDate = destrucDate(newDate);
+    if (accommo) {
+      if (index === 0) {
+        dispatch(
+          addPlaceToColumn({
+            column: index,
+            place: accommo,
+            order: 0,
+          })
+        );
+      }
+
+      dispatch(
+        addPlaceToColumn({
+          column: index,
+          place: accommo,
+          order: 1,
+        })
+      );
+
+      dispatch(
+        addPlaceToColumn({
+          column: index + 1,
+          place: accommo,
+          order: 0,
+        })
+      );
+    }
+  }, []);
 
   const columnPlaces = useSelector(
     (state: Rootstate) =>
@@ -87,22 +126,27 @@ const ScheduleColumn = ({ date, index }: ScheduleColumnProps) => {
     // 현재 컬럼과 이동 컬럼이 동일한 경우 칼럼은 신경 쓸 필요 없음
     if (curCol === goalCol) {
       dispatch(dragInColumn()); // 컬럼 내 드래그 앤 드롭
-      dispatch(addScheduleDetail(date) as any);
+
+      // dispatch(addScheduleDetail(date) as any);
     } else {
       dispatch(dragBtwColumn()); // 컬럼 간 드래그 앤 드롭
-      dispatch(addScheduleDetail(date) as any);
+      // dispatch(addScheduleDetail(date) as any);
     }
   };
 
   // 장소 삭제
-  const handleDelete = (contentId: string) => {
+  const handleDelete = (contentId: string, order: number) => {
+    console.log("number of item", order);
+
+    // 선택된 장소들에서 삭제하기
     dispatch(removeSelectedPlace(contentId));
-    dispatch(removeContentId(contentId));
-    dispatch(removePlaceFromColumn({ column: index.toString(), contentId }));
-    dispatch(removeScheduleDetail(contentId));
+
+    // 컬럼 목록에서 삭제하기
+    dispatch(removePlaceFromColumn({ column: index.toString(), index: order }));
+
     // 숙소의 경우 숙소 배열에서 제거 필요
     const updatedColumns = columns.map((column) =>
-      column.contentId === contentId ? { ...column, contentId: "" } : column
+      column.index === index ? { ...column, contentId: "" } : column
     );
     dispatch(setColumns(updatedColumns));
   };
@@ -154,10 +198,10 @@ const ScheduleColumn = ({ date, index }: ScheduleColumnProps) => {
                   <span className="index">
                     <p>{i + 1}</p>
                   </span>
-                  <DropCard place={place} date={date} />
+                  <DropCard place={place} date={date} column={index} />
                   <span
                     className="delete"
-                    onClick={() => handleDelete(place.contentid)}
+                    onClick={() => handleDelete(place.contentid, i)}
                   >
                     <LuTrash2 />
                   </span>

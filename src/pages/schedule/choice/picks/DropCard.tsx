@@ -23,9 +23,10 @@ import {
 interface DropCardProps {
   place: PlaceApiType;
   date: DestrucDateType;
+  column: number;
 }
 
-const DropCard = ({ place, date }: DropCardProps) => {
+const DropCard = ({ place, date, column }: DropCardProps) => {
   const dispatch = useDispatch();
   const areacode =
     useSelector((state: Rootstate) => state.schedule.schedule.metro_id) || "1";
@@ -65,6 +66,7 @@ const DropCard = ({ place, date }: DropCardProps) => {
       updateStartTime({
         contendId: place.contentid,
         date: start_time.toISOString(),
+        column: column,
       })
     );
   }, [startHourInit, startMinuteInit]);
@@ -82,6 +84,7 @@ const DropCard = ({ place, date }: DropCardProps) => {
       updateEndTime({
         contendId: place.contentid,
         date: end_time.toISOString(),
+        column: column,
       })
     );
   }, [endHourInit, endMinuteInit]);
@@ -100,7 +103,7 @@ const DropCard = ({ place, date }: DropCardProps) => {
     [dispatch]
   );
 
-  console.log(startHourInit, startMinuteInit, endHourInit, endMinuteInit);
+  // console.log(startHourInit, startMinuteInit, endHourInit, endMinuteInit);
 
   return (
     <div className="dropPlaceCard">

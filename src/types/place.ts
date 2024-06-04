@@ -16,6 +16,7 @@ export interface PlaceApiType {
   mapy: string;
   mlevel: string;
   modifiedtime: string;
+  showflag?: string;
   sigungucode: string;
   tel: string;
   title: string;

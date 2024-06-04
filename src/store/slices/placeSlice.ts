@@ -12,7 +12,7 @@ export interface PlaceState {
   places: PlaceApiType[];
   status: string;
   error?: string;
-  contentIds?: ContentIdsType[];
+
   selectedPlaces?: PlaceApiType[];
   place?: PlaceApiType;
   modal?: boolean;
@@ -26,7 +26,7 @@ const initialState: PlaceState = {
   places: [],
   status: "idle",
   error: undefined,
-  contentIds: [],
+
   modal: false,
   accomoModal: false,
   isEnd: false,
@@ -71,13 +71,14 @@ export const fetchPlaces = createAsyncThunk(
       }
 
       const url = `http://localhost:8080/places/${areacode}/${contentTypeId}/${pageNo.toString()}`;
-      // const url = `http://192.168.0.130:8080/home/test/${areacode}/${pageNo}`;
+      // const url = `http://172.16.1.147:8080/home/test/${areacode}/${pageNo}`;
       console.log(url);
 
       const response = await fetch(url);
 
-      console.log(response);
+      // console.log(response);
 
+      // url를 변경하는 경우 try문은 지워야 함
       try {
         const jsonData = await response.json();
 
@@ -85,7 +86,11 @@ export const fetchPlaces = createAsyncThunk(
       } catch (error) {
         try {
           const textData = await response.text();
-          const jsonData = convertStringToJson(textData);
+          console.log(textData);
+
+          const jsonData: PlaceApiType[] | [] = convertStringToJson(textData);
+
+          console.log(jsonData);
 
           return jsonData;
         } catch (error) {}
@@ -166,9 +171,7 @@ const placeSlice = createSlice({
     clearPlaces: (state) => {
       state.places = [];
     },
-    clearContentId: (state) => {
-      state.contentIds = [];
-    },
+
     clearSelectedPlaces: (state) => {
       state.selectedPlaces = [];
     },
@@ -178,35 +181,7 @@ const placeSlice = createSlice({
     addPageNo: (state) => {
       state.pageNo += 1;
     },
-    addContentId: (
-      state,
-      action: PayloadAction<{ contentId: string; column?: number }>
-    ) => {
-      console.log("컬럼", action.payload.column);
 
-      if (state.contentIds)
-        state.contentIds = [
-          ...state.contentIds,
-          {
-            contentId: action.payload.contentId,
-            column: action.payload.column,
-          },
-        ];
-      else
-        state.contentIds = [
-          {
-            contentId: action.payload.contentId,
-            column: action.payload.column,
-          },
-        ];
-    },
-    removeContentId: (state, action: PayloadAction<string>) => {
-      if (state.contentIds) {
-        state.contentIds = state.contentIds.filter(
-          (contentId) => contentId.contentId !== action.payload
-        );
-      }
-    },
     removeSelectedPlace: (state, action: PayloadAction<string>) => {
       if (state.selectedPlaces) {
         state.selectedPlaces = state.selectedPlaces.filter(
@@ -228,8 +203,10 @@ const placeSlice = createSlice({
       })
       .addCase(
         fetchPlaces.fulfilled,
-        (state, action: PayloadAction<PlaceApiType[]>) => {
+        (state, action: PayloadAction<PlaceApiType[] | undefined>) => {
           state.status = "succeeded";
+
+          if (action.payload === undefined) action.payload = [];
 
           if (action.payload.length < 8) {
             state.isEnd = true;
@@ -308,9 +285,6 @@ const placeSlice = createSlice({
 
 export const {
   clearPlaces,
-  addContentId,
-  clearContentId,
-  removeContentId,
   clearSelectedPlaces,
   removeSelectedPlace,
   modalToggle,

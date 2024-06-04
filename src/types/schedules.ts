@@ -6,6 +6,8 @@ export interface MetroType {
 }
 
 export interface ScheduleDetailType {
+  schedule_detail_id?: number;
+  scheduel_id?: number;
   schedule_order: string; // column
   start_time: string;
   end_time: string;

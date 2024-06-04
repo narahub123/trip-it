@@ -5,14 +5,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { Rootstate } from "../../../../store/store";
 import {
   accommoToggle,
-  addContentId,
   addPageNo,
   clearPageNo,
   clearPlaces,
   fetchPlace,
   fetchPlaces,
   fetchSearchedPlaces,
-  removeContentId,
   removeSelectedPlace,
 } from "../../../../store/slices/placeSlice";
 import { metros } from "../../../../data/metros";
@@ -44,6 +42,11 @@ const PlacesList = () => {
 
   const [contentTypeId, setContentTypeId] = useState("1");
   const [keyword, setKeyword] = useState("");
+
+  // 장소 추가하기
+  const selectedPlaces = useSelector(
+    (state: Rootstate) => state.place.selectedPlaces
+  );
 
   // 해시나 종류가 달라지는 경우 기존 places를 비움
   useEffect(() => {
@@ -112,8 +115,6 @@ const PlacesList = () => {
 
   // console.log("isend", isEnd);
   // console.log("--------------------------");
-  // 장소 추가하기
-  const contentIds = useSelector((state: Rootstate) => state.place.contentIds);
 
   const handleSelection = (contentId: string, contentTypeId: string) => {
     if (contentTypeId == "32") {
@@ -121,13 +122,11 @@ const PlacesList = () => {
       dispatch(fetchPlace({ contentId, info: true }) as any);
       return;
     }
-    console.log(contentId);
-    dispatch(addContentId({ contentId }));
+
     dispatch(fetchPlace({ contentId, info: false }) as any);
   };
 
   const handleDeselection = (contentId: string) => {
-    dispatch(removeContentId(contentId));
     dispatch(removeSelectedPlace(contentId));
     // 숙소의 경우 숙소 배열에서 제거 필요
     const updatedColumns = columns.map((column) =>
@@ -226,8 +225,8 @@ const PlacesList = () => {
                   <span className="placeInfo">
                     <PlaceCard place={place} />
                   </span>
-                  {!contentIds?.find(
-                    (contentId) => contentId.contentId === place.contentid
+                  {!selectedPlaces?.find(
+                    (contentId) => contentId.contentid === place.contentid
                   ) ? (
                     <span
                       className="placeEvent"

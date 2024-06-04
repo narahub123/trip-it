@@ -3,7 +3,11 @@ import { LuPlus } from "react-icons/lu";
 import { DestrucDateType } from "../dates/Calendar";
 import { useDispatch, useSelector } from "react-redux";
 import { Rootstate } from "../../../../store/store";
-import { setColumns } from "../../../../store/slices/accommoSlice";
+import {
+  setColumns,
+  setCurColumn,
+  setSelected,
+} from "../../../../store/slices/accommoSlice";
 
 interface AccommoPickProps {
   date: DestrucDateType;
@@ -12,41 +16,39 @@ interface AccommoPickProps {
 
 const AccommoPick = ({ date, index }: AccommoPickProps) => {
   const [inserted, setInserted] = useState(false);
+
   const dispatch = useDispatch();
+
   const place = useSelector((state: Rootstate) => state.place.place);
   const selectedPlaces = useSelector(
     (state: Rootstate) => state.place.selectedPlaces
   );
 
-  const columns = useSelector((state: Rootstate) => state.place.columns);
+  const columns = useSelector((state: Rootstate) => state.accommo.columns);
 
-  const match = columns.find((column) => column.column === index);
+  const match = columns.find((column) => column.index === index);
 
   const matched = selectedPlaces?.find(
     (place) => place.contentid === match?.contentId
   );
 
-  const handleInsertImage = (index: number) => {
-    if (!inserted) {
-      console.log("저기");
+  const handleInsertImage = (
+    e: React.MouseEvent<HTMLImageElement | HTMLDivElement, MouseEvent>
+  ) => {
+    const selectedColumn = e.currentTarget.id;
 
-      const updatedColumns = columns.map((col) =>
-        col.column === index ? { ...col, contentId: place?.contentid } : col
-      );
-      dispatch(setColumns(updatedColumns));
-    }
+    const updateColumns = columns.map((col) =>
+      col.index.toString() === selectedColumn
+        ? { ...col, contentId: place?.contentid }
+        : col
+    );
 
-    if (inserted) {
-      console.log("여기");
+    dispatch(setColumns(updateColumns));
 
-      const updatedColumns = columns.map((col) =>
-        col.column === index ? { ...col, contentId: "" } : col
-      );
-      dispatch(setColumns(updatedColumns));
-    }
-
+    dispatch(setSelected(true));
     setInserted(!inserted);
   };
+
   return (
     <li className="accommo" key={date.date}>
       <p className="date">{`${
@@ -57,26 +59,29 @@ const AccommoPick = ({ date, index }: AccommoPickProps) => {
           <img
             src={matched?.firstimage}
             alt="호텔"
-            onClick={() => {
-              handleInsertImage(index);
+            onClick={(e) => {
+              handleInsertImage(e);
             }}
+            id={index.toString()}
           />
         )}
         {inserted && (
           <img
             src={place?.firstimage}
             alt="호텔"
-            onClick={() => {
-              handleInsertImage(index);
+            onClick={(e) => {
+              handleInsertImage(e);
             }}
+            id={index.toString()}
           />
         )}
         {!inserted && !matched && (
           <div
             className="plus"
-            onClick={() => {
-              handleInsertImage(index);
+            onClick={(e) => {
+              handleInsertImage(e);
             }}
+            id={index.toString()}
           >
             <LuPlus />
           </div>

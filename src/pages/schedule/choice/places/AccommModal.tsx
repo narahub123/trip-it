@@ -2,15 +2,14 @@ import React, { useEffect, useState } from "react";
 import "./accommoModal.css";
 
 import { useDispatch, useSelector } from "react-redux";
-import {
-  accommoToggle,
-  addContentId,
-  fetchPlace,
-} from "../../../../store/slices/placeSlice";
+import { accommoToggle, fetchPlace } from "../../../../store/slices/placeSlice";
 import { Rootstate, store } from "../../../../store/store";
 
 import AccommoPick from "./AccommoPick";
-import { calcColumns } from "../../../../store/slices/accommoSlice";
+import {
+  calcColumns,
+  setSelected,
+} from "../../../../store/slices/accommoSlice";
 
 const AccommModal = () => {
   const [column, setColumn] = useState<number | undefined>(undefined);
@@ -18,9 +17,12 @@ const AccommModal = () => {
   const place = useSelector((state: Rootstate) => state.place.place);
 
   const columns = useSelector((state: Rootstate) => state.accommo.columns);
+  const selected = useSelector((state: Rootstate) => state.accommo.selected);
 
   useEffect(() => {
+    // contentId가 ''아닌 요소가 존재하는 여부 확인
     const isExisted = columns.findIndex((column) => column.contentId !== "");
+    // 존재하지 않는다면 컬럼 리셋
     if (isExisted === -1) store.dispatch(calcColumns());
   }, []);
 
@@ -35,16 +37,15 @@ const AccommModal = () => {
 
   const handleSelection = () => {
     if (place) {
-      dispatch(addContentId({ contentId: place?.contentid, column }));
       dispatch(fetchPlace({ contentId: place?.contentid, info: false }) as any);
     }
     dispatch(accommoToggle());
+    dispatch(setSelected(false));
   };
-
-  console.log("column", column);
 
   console.log("columns", columns);
   console.log("열림");
+  console.log(selected);
 
   return (
     <div className="accommo-modal" onClick={(e) => handleToggle(e)}>
@@ -67,14 +68,14 @@ const AccommModal = () => {
           <div
             className="done"
             onClick={
-              typeof column === "number"
+              selected
                 ? () => {
                     handleSelection();
                   }
                 : () => dispatch(accommoToggle())
             }
           >
-            {typeof column === "number" ? "완료" : "되돌가기"}
+            {selected ? "완료" : "되돌가기"}
           </div>
         </div>
       </div>

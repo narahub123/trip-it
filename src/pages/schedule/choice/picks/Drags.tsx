@@ -2,10 +2,7 @@ import React, { useEffect, useState } from "react";
 import "./drags.css";
 import { useDispatch, useSelector } from "react-redux";
 import { Rootstate } from "../../../../store/store";
-import {
-  removeContentId,
-  removeSelectedPlace,
-} from "../../../../store/slices/placeSlice";
+import { removeSelectedPlace } from "../../../../store/slices/placeSlice";
 import PlaceCard from "../places/PlaceCard";
 import { LuTrash2 } from "react-icons/lu";
 import DropIndicator from "./DropIndicator";
@@ -39,6 +36,9 @@ const Drags = () => {
 
   const columns = useSelector((state: Rootstate) => state.accommo.columns);
 
+  const filteredPlaces = column_1.filter(
+    (column) => !columns.map((c) => c.contentId).includes(column.contentid)
+  );
   const draggedPlace = useSelector(
     (state: Rootstate) => state.columnPlaces.draggedPlace
   );
@@ -49,11 +49,11 @@ const Drags = () => {
     dispatch(fetchSelectedPlaces() as any);
   }, []);
   // 장소 삭제
-  const handleDelete = (contentId: string) => {
+  const handleDelete = (contentId: string, index: number) => {
     dispatch(removeSelectedPlace(contentId));
-    dispatch(removeContentId(contentId));
+
     // 해당 컬럼 배열에서도 삭제
-    dispatch(removePlaceFromColumn({ column: "_1", contentId: contentId }));
+    dispatch(removePlaceFromColumn({ column: "_1", index }));
     // 숙소의 경우 숙소 배열에서 제거 필요
     const updatedColumns = columns.map((column) =>
       column.contentId === contentId ? { ...column, contentId: "" } : column
@@ -106,7 +106,7 @@ const Drags = () => {
         <p>저장된 장소들</p>
       </div>
       <div className="draggablePlacesList">
-        {(column_1?.length === 0 || !column_1) && (
+        {(filteredPlaces?.length === 0 || !filteredPlaces) && (
           <div className="indicator">
             <p>장소 선택이 되지 않았습니다.</p>
             <p>장소를 먼저 선택해주세요.</p>
@@ -120,9 +120,9 @@ const Drags = () => {
             onDragOver={handleDragOver}
             onDrop={handleDrop}
           />
-          {column_1 &&
-            column_1.length > 0 &&
-            column_1.map((draggablePlace) => (
+          {filteredPlaces &&
+            filteredPlaces.length > 0 &&
+            filteredPlaces.map((draggablePlace, index) => (
               <>
                 <li
                   key={draggablePlace.contentid}
@@ -135,7 +135,9 @@ const Drags = () => {
                   <PlaceCard place={draggablePlace} />
                   <span
                     className="delete"
-                    onClick={() => handleDelete(draggablePlace.contentid)}
+                    onClick={() =>
+                      handleDelete(draggablePlace.contentid, index)
+                    }
                   >
                     <LuTrash2 />
                   </span>

@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { DestrucDateType } from "../../pages/schedule/choice/dates/Calendar";
 import { Rootstate } from "../store";
 import { CalculateDuration } from "../../utils/date";
@@ -9,10 +9,13 @@ export interface AccommoState {
     contentId: string;
     date: DestrucDateType;
   }[];
+  curColumn?: number;
+  selected: boolean;
 }
 
 const initialState: AccommoState = {
   columns: [],
+  selected: false,
 };
 
 // accommoModal 내에 컬럼 개수
@@ -38,7 +41,7 @@ export const calcColumns = createAsyncThunk(
     const columns = filteredDates.map((date, index) => ({
       date: date,
       contentId: "",
-      column: index,
+      index: index,
     }));
 
     dispatch(setColumns(columns));
@@ -52,12 +55,18 @@ const accommoSlice = createSlice({
     setColumns: (state, action) => {
       state.columns = action.payload;
     },
+    setCurColumn: (state, action: PayloadAction<number>) => {
+      state.curColumn = action.payload;
+    },
+    setSelected: (state, action: PayloadAction<boolean>) => {
+      state.selected = action.payload;
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(calcColumns.fulfilled, (state, action) => {});
   },
 });
 
-export const { setColumns } = accommoSlice.actions;
+export const { setColumns, setCurColumn, setSelected } = accommoSlice.actions;
 
 export default accommoSlice.reducer;

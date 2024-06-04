@@ -4,10 +4,8 @@ import { LuTrash2 } from "react-icons/lu";
 import { useDispatch, useSelector } from "react-redux";
 import { Rootstate } from "../../../../store/store";
 import {
-  clearContentId,
   clearSelectedPlaces,
   fetchPlace,
-  removeContentId,
   removeSelectedPlace,
 } from "../../../../store/slices/placeSlice";
 import { contentTypeIds } from "../../../../data/contentTypeIds";
@@ -21,13 +19,11 @@ const SelectedPlacesList = () => {
   );
 
   const handleDeselection = (contentId: string) => {
-    dispatch(removeContentId(contentId));
     dispatch(removeSelectedPlace(contentId));
   };
 
   const handleReset = () => {
     dispatch(clearSelectedPlaces());
-    dispatch(clearContentId());
   };
   console.log("selectedPlaces", selectedPlaces);
 
