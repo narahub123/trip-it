@@ -22,6 +22,7 @@ import { isSearchable } from "../../../../data/hangul";
 import { debounce } from "../../../../utils/debounce";
 import { useRenderCount } from "@uidotdev/usehooks";
 import { setColumns } from "../../../../store/slices/accommoSlice";
+import {} from "../../../../store/slices/columnPlacesSlice";
 
 const PlacesList = () => {
   // 렌더링 개수
@@ -127,6 +128,7 @@ const PlacesList = () => {
   };
 
   const handleDeselection = (contentId: string) => {
+    // columnPlaces에서 제거
     dispatch(removeSelectedPlace(contentId));
     // 숙소의 경우 숙소 배열에서 제거 필요
     const updatedColumns = columns.map((column) =>

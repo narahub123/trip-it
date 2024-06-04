@@ -5,11 +5,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { Rootstate } from "../../../../store/store";
 import {
   clearSelectedPlaces,
-  fetchPlace,
   removeSelectedPlace,
 } from "../../../../store/slices/placeSlice";
-import { contentTypeIds } from "../../../../data/contentTypeIds";
-import { metros } from "../../../../data/metros";
+
 import PlaceCard from "./PlaceCard";
 
 const SelectedPlacesList = () => {
@@ -17,6 +15,8 @@ const SelectedPlacesList = () => {
   const selectedPlaces = useSelector(
     (state: Rootstate) => state.place.selectedPlaces
   );
+
+  useEffect(() => {}, []);
 
   const handleDeselection = (contentId: string) => {
     dispatch(removeSelectedPlace(contentId));

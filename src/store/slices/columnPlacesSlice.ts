@@ -51,7 +51,7 @@ export const fetchSelectedPlaces = createAsyncThunk(
   "columnPlaces/fetchSelectedPlaces",
   async (_, { getState }) => {
     const { place } = getState() as Rootstate;
-    const selectedPlaces = place.selectedPlaces;
+    const selectedPlaces = place.columnPlaces_1;
 
     return selectedPlaces;
   }

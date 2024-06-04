@@ -12,7 +12,6 @@ export interface PlaceState {
   places: PlaceApiType[];
   status: string;
   error?: string;
-
   selectedPlaces?: PlaceApiType[];
   place?: PlaceApiType;
   modal?: boolean;
@@ -20,6 +19,7 @@ export interface PlaceState {
   isEnd: boolean;
   pageNo: number;
   columns: Array<{ contentId: string; column: number; date: string }>;
+  columnPlaces_1: PlaceApiType[];
 }
 
 const initialState: PlaceState = {
@@ -32,6 +32,7 @@ const initialState: PlaceState = {
   isEnd: false,
   pageNo: 1,
   columns: [],
+  columnPlaces_1: [],
 };
 
 interface PlacesProps {
@@ -104,7 +105,7 @@ export const fetchPlaces = createAsyncThunk(
 // 컨텐츠아이디로 장소 불러오기
 export const fetchPlace = createAsyncThunk<
   {
-    places: PlaceApiType[];
+    place: PlaceApiType;
     info: boolean;
   },
   PlaceProps
@@ -115,10 +116,12 @@ export const fetchPlace = createAsyncThunk<
     const response = await fetch(url);
     const jsonData = await response.json();
 
-    return { places: jsonData, info };
+    const place = jsonData[0];
+
+    return { place: place, info };
   } catch (error) {
     console.log(error);
-    return { places: [], info: false };
+    return { place: undefined, info: false };
   }
 });
 
@@ -187,6 +190,9 @@ const placeSlice = createSlice({
         state.selectedPlaces = state.selectedPlaces.filter(
           (selectedPlace) => selectedPlace.contentid !== action.payload
         );
+        state.columnPlaces_1 = state.columnPlaces_1.filter(
+          (place) => place.contentid !== action.payload
+        );
       }
     },
     modalToggle: (state) => {
@@ -232,7 +238,10 @@ const placeSlice = createSlice({
         fetchPlace.fulfilled,
         (
           state,
-          action: PayloadAction<{ places: PlaceApiType[]; info: boolean }>
+          action: PayloadAction<{
+            place: PlaceApiType;
+            info: boolean;
+          }>
         ) => {
           state.status = "succeeded";
           console.log(action.payload.info);
@@ -240,13 +249,23 @@ const placeSlice = createSlice({
             if (state.selectedPlaces) {
               state.selectedPlaces = [
                 ...state.selectedPlaces,
-                ...action.payload.places,
+                action.payload.place,
               ];
+
+              if (action.payload.place.contenttypeid !== "32") {
+                state.columnPlaces_1 = [
+                  ...state.columnPlaces_1,
+                  action.payload.place,
+                ];
+              }
             } else {
-              state.selectedPlaces = [...action.payload.places];
+              state.selectedPlaces = [action.payload.place];
+              if (action.payload.place.contenttypeid !== "32") {
+                state.columnPlaces_1 = [action.payload.place];
+              }
             }
           } else {
-            state.place = action.payload.places[0];
+            state.place = action.payload.place;
           }
         }
       )

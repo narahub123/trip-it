@@ -30,18 +30,8 @@ const Drags = () => {
   const goalRow = useSelector((state: Rootstate) => state.columnPlaces.goalRow);
   const curCol = useSelector((state: Rootstate) => state.columnPlaces.curCol);
   const goalCol = useSelector((state: Rootstate) => state.columnPlaces.goalCol);
-  const columnarry = useSelector(
-    (state: Rootstate) => state.columnPlaces.columnPlaces
-  );
 
   const columns = useSelector((state: Rootstate) => state.accommo.columns);
-
-  const filteredPlaces = column_1.filter(
-    (column) => !columns.map((c) => c.contentId).includes(column.contentid)
-  );
-  const draggedPlace = useSelector(
-    (state: Rootstate) => state.columnPlaces.draggedPlace
-  );
 
   // console.log(column_1);
 
@@ -106,7 +96,7 @@ const Drags = () => {
         <p>저장된 장소들</p>
       </div>
       <div className="draggablePlacesList">
-        {(filteredPlaces?.length === 0 || !filteredPlaces) && (
+        {(column_1?.length === 0 || !column_1) && (
           <div className="indicator">
             <p>장소 선택이 되지 않았습니다.</p>
             <p>장소를 먼저 선택해주세요.</p>
@@ -120,9 +110,9 @@ const Drags = () => {
             onDragOver={handleDragOver}
             onDrop={handleDrop}
           />
-          {filteredPlaces &&
-            filteredPlaces.length > 0 &&
-            filteredPlaces.map((draggablePlace, index) => (
+          {column_1 &&
+            column_1.length > 0 &&
+            column_1.map((draggablePlace, index) => (
               <>
                 <li
                   key={draggablePlace.contentid}

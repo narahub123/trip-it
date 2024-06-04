@@ -151,6 +151,8 @@ const ScheduleColumn = ({ date, index }: ScheduleColumnProps) => {
     dispatch(setColumns(updatedColumns));
   };
 
+  console.log("columnPlaces", columnPlaces);
+
   return (
     <div className="schedule-column" key={`col${index}`}>
       <div className="schedule-column-date">

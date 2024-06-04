@@ -3,11 +3,7 @@ import { LuPlus } from "react-icons/lu";
 import { DestrucDateType } from "../dates/Calendar";
 import { useDispatch, useSelector } from "react-redux";
 import { Rootstate } from "../../../../store/store";
-import {
-  setColumns,
-  setCurColumn,
-  setSelected,
-} from "../../../../store/slices/accommoSlice";
+import { setColumns, setSelected } from "../../../../store/slices/accommoSlice";
 
 interface AccommoPickProps {
   date: DestrucDateType;
@@ -36,17 +32,28 @@ const AccommoPick = ({ date, index }: AccommoPickProps) => {
     e: React.MouseEvent<HTMLImageElement | HTMLDivElement, MouseEvent>
   ) => {
     const selectedColumn = e.currentTarget.id;
+    if (!inserted) {
+      const updateColumns = columns.map((col) =>
+        col.index.toString() === selectedColumn
+          ? { ...col, contentId: place?.contentid }
+          : col
+      );
 
-    const updateColumns = columns.map((col) =>
-      col.index.toString() === selectedColumn
-        ? { ...col, contentId: place?.contentid }
-        : col
-    );
+      dispatch(setColumns(updateColumns));
+      dispatch(setSelected(true));
+      setInserted(!inserted);
+    }
+    if (inserted) {
+      const updateColumns = columns.map((col) =>
+        col.index.toString() === selectedColumn
+          ? { ...col, contentId: "" }
+          : col
+      );
 
-    dispatch(setColumns(updateColumns));
-
-    dispatch(setSelected(true));
-    setInserted(!inserted);
+      dispatch(setColumns(updateColumns));
+      dispatch(setSelected(false));
+      setInserted(!inserted);
+    }
   };
 
   return (
