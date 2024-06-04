@@ -114,6 +114,7 @@ const ScheduleColumn = ({ date, index }: ScheduleColumnProps) => {
     e: React.DragEvent<HTMLDivElement> | React.DragEvent<HTMLLIElement>
   ) => {
     e.preventDefault();
+    e.stopPropagation();
 
     // 이동하고자하는 위치
     const goalRow = e.currentTarget.dataset.row;

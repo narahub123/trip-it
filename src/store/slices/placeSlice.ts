@@ -245,13 +245,14 @@ const placeSlice = createSlice({
         ) => {
           state.status = "succeeded";
           console.log(action.payload.info);
+          // selectedPlaces에 장소를 추가할 때 columnPlaces_1에도 추가함
           if (!action.payload.info) {
             if (state.selectedPlaces) {
               state.selectedPlaces = [
                 ...state.selectedPlaces,
                 action.payload.place,
               ];
-
+              // columnPlaces_1에는 숙소는 추가하지 않음
               if (action.payload.place.contenttypeid !== "32") {
                 state.columnPlaces_1 = [
                   ...state.columnPlaces_1,
@@ -259,6 +260,7 @@ const placeSlice = createSlice({
                 ];
               }
             } else {
+              // columnPlaces_1에는 숙소는 추가하지 않음
               state.selectedPlaces = [action.payload.place];
               if (action.payload.place.contenttypeid !== "32") {
                 state.columnPlaces_1 = [action.payload.place];

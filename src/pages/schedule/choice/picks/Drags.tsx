@@ -98,8 +98,8 @@ const Drags = () => {
       <div className="draggablePlacesList">
         {(column_1?.length === 0 || !column_1) && (
           <div className="indicator">
-            <p>장소 선택이 되지 않았습니다.</p>
-            <p>장소를 먼저 선택해주세요.</p>
+            <p key={1}>장소 선택이 되지 않았습니다.</p>
+            <p key={2}>장소를 먼저 선택해주세요.</p>
           </div>
         )}
         <ul>
