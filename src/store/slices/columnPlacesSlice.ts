@@ -193,7 +193,9 @@ const columnPlacesSlice = createSlice({
   extraReducers: (builder) => {
     builder.addCase(fetchPlace.fulfilled, (state, action) => {
       const place = action.payload.place;
-      state.columnPlaces.columnPlaces_1.push(place);
+      const contentTypeId = place.contenttypeid;
+
+      if (contentTypeId !== "32") state.columnPlaces.columnPlaces_1.push(place);
     });
   },
 });
