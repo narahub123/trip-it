@@ -2,7 +2,10 @@ import React from "react";
 import "./placeModal.css";
 import { useDispatch, useSelector } from "react-redux";
 import { Rootstate } from "../../../../store/store";
-import { fetchPlace, modalToggle } from "../../../../store/slices/placeSlice";
+import {
+  addSelectedPlace,
+  modalToggle,
+} from "../../../../store/slices/placeSlice";
 const PlaceModal = () => {
   const place = useSelector((state: Rootstate) => state.place.place);
   const dispatch = useDispatch();
@@ -10,8 +13,8 @@ const PlaceModal = () => {
     dispatch(modalToggle());
   };
 
-  const handleSelect = (contentId: string) => {
-    dispatch(fetchPlace({ contentId, info: false }) as any);
+  const handleSelect = () => {
+    place && dispatch(addSelectedPlace(place));
   };
   return (
     <div
@@ -29,9 +32,10 @@ const PlaceModal = () => {
           <p className="desc">{place?.overview}</p>
         </div>
         <div className="buttons">
-          <button onClick={place && (() => handleSelect(place?.contentid))}>
-            선택
-          </button>
+          {place?.contenttypeid !== "32" && (
+            <button onClick={place && (() => handleSelect())}>선택</button>
+          )}
+          {place?.contenttypeid === "32" && <></>}
         </div>
       </div>
     </div>

@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from "react";
+import React, { useCallback } from "react";
 import "./placeCard.css";
 import { PlaceApiType } from "../../../../types/place";
 import { metros } from "../../../../data/metros";
@@ -25,7 +25,7 @@ const PlaceCard = ({ place }: PlaceCardProps) => {
     (contentId: string) => {
       console.log(contentId);
       dispatch(modalToggle());
-      dispatch(fetchPlace({ contentId, info: true }) as any);
+      dispatch(fetchPlace({ contentId }) as any);
     },
     [dispatch]
   );

@@ -6,6 +6,7 @@ import { Rootstate } from "../../../../store/store";
 import {
   accommoToggle,
   addPageNo,
+  addSelectedPlace,
   clearPageNo,
   clearPlaces,
   fetchPlace,
@@ -38,6 +39,7 @@ const PlacesList = () => {
   const areacode =
     useSelector((state: Rootstate) => state.schedule.schedule.metro_id) || "1";
   const schedule = useSelector((state: Rootstate) => state.schedule.schedule);
+  const place = useSelector((state: Rootstate) => state.place.place);
   const location = useLocation();
   const { hash } = location;
 
@@ -110,21 +112,17 @@ const PlacesList = () => {
 
   console.log(`----- 렌더링 횟수 ${count} -----`);
 
-  // console.log(keyword);
-  // console.log("contentTypeId", contentTypeId);
-  // console.log("pageNo", pageNo);
-
-  // console.log("isend", isEnd);
-  // console.log("--------------------------");
-
   const handleSelection = (contentId: string, contentTypeId: string) => {
     if (contentTypeId == "32") {
       dispatch(accommoToggle());
-      dispatch(fetchPlace({ contentId, info: true }) as any);
+      // 불러만 와야 함
+      dispatch(fetchPlace({ contentId, addToSelectedPlaces: false }) as any);
+
       return;
     }
 
-    dispatch(fetchPlace({ contentId, info: false }) as any);
+    // 장소 추가까지 해야 함
+    dispatch(fetchPlace({ contentId, addToSelectedPlaces: true }) as any);
   };
 
   const handleDeselection = (contentId: string) => {

@@ -34,46 +34,12 @@ const ScheduleColumn = ({ date, index }: ScheduleColumnProps) => {
   const columns = useSelector((state: Rootstate) => state.accommo.columns);
   // 렌더링 개수
   const count = useRenderCount();
+  console.log("렌더링 개수", count);
+
+  // 이부분을 바꿔야 함
   const selectedPlaces = useSelector(
     (state: Rootstate) => state.place.selectedPlaces
   );
-  const selectedAccommo = columns.find((column) => column.index === index);
-
-  const accommo = selectedPlaces?.find(
-    (place) => place.contentid === selectedAccommo?.contentId
-  );
-
-  console.log("렌더링 개수", count);
-
-  useEffect(() => {
-    if (accommo) {
-      if (index === 0) {
-        dispatch(
-          addPlaceToColumn({
-            column: index,
-            place: accommo,
-            order: 0,
-          })
-        );
-      }
-
-      dispatch(
-        addPlaceToColumn({
-          column: index,
-          place: accommo,
-          order: 1,
-        })
-      );
-
-      dispatch(
-        addPlaceToColumn({
-          column: index + 1,
-          place: accommo,
-          order: 0,
-        })
-      );
-    }
-  }, []);
 
   const columnPlaces = useSelector(
     (state: Rootstate) =>

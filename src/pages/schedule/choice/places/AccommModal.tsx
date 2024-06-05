@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import "./accommoModal.css";
 
 import { useDispatch, useSelector } from "react-redux";
-import { accommoToggle, fetchPlace } from "../../../../store/slices/placeSlice";
+import { accommoToggle } from "../../../../store/slices/placeSlice";
 import { Rootstate, store } from "../../../../store/store";
 
 import AccommoPick from "./AccommoPick";
@@ -36,9 +36,6 @@ const AccommModal = () => {
   };
 
   const handleSelection = () => {
-    if (place) {
-      dispatch(fetchPlace({ contentId: place?.contentid, info: false }) as any);
-    }
     dispatch(accommoToggle());
     dispatch(setSelected(false));
   };

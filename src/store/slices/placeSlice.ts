@@ -12,7 +12,7 @@ export interface PlaceState {
   places: PlaceApiType[];
   status: string;
   error?: string;
-  selectedPlaces?: PlaceApiType[];
+  selectedPlaces: PlaceApiType[];
   place?: PlaceApiType;
   modal?: boolean;
   accomoModal?: boolean;
@@ -26,7 +26,7 @@ const initialState: PlaceState = {
   places: [],
   status: "idle",
   error: undefined,
-
+  selectedPlaces: [],
   modal: false,
   accomoModal: false,
   isEnd: false,
@@ -47,7 +47,7 @@ interface PlaceSearchProps extends PlacesProps {
 
 interface PlaceProps {
   contentId: string;
-  info: boolean;
+  addToSelectedPlaces?: boolean;
 }
 
 // 지역 코드로 장소들 불러오기
@@ -106,24 +106,27 @@ export const fetchPlaces = createAsyncThunk(
 export const fetchPlace = createAsyncThunk<
   {
     place: PlaceApiType;
-    info: boolean;
+    addToSelectedPlaces: boolean;
   },
   PlaceProps
->("placeSlice/fetchPlace", async ({ contentId, info = false }: PlaceProps) => {
-  try {
-    const url = `http://localhost:8080/places/${contentId}`;
+>(
+  "placeSlice/fetchPlace",
+  async ({ contentId, addToSelectedPlaces = false }: PlaceProps) => {
+    try {
+      const url = `http://localhost:8080/places/${contentId}`;
 
-    const response = await fetch(url);
-    const jsonData = await response.json();
+      const response = await fetch(url);
+      const jsonData = await response.json();
 
-    const place = jsonData[0];
+      const place = jsonData[0];
 
-    return { place: place, info };
-  } catch (error) {
-    console.log(error);
-    return { place: undefined, info: false };
+      return { place: place, addToSelectedPlaces };
+    } catch (error) {
+      console.log(error);
+      return { place: undefined, addToSelectedPlaces: false };
+    }
   }
-});
+);
 
 // 키워드로 장소들 불러오기
 export const fetchSearchedPlaces = createAsyncThunk(
@@ -185,6 +188,12 @@ const placeSlice = createSlice({
       state.pageNo += 1;
     },
 
+    addSelectedPlace: (state, action: PayloadAction<PlaceApiType>) => {
+      console.log(action.payload);
+
+      state.selectedPlaces?.push(action.payload);
+    },
+
     removeSelectedPlace: (state, action: PayloadAction<string>) => {
       if (state.selectedPlaces) {
         state.selectedPlaces = state.selectedPlaces.filter(
@@ -240,34 +249,15 @@ const placeSlice = createSlice({
           state,
           action: PayloadAction<{
             place: PlaceApiType;
-            info: boolean;
+            addToSelectedPlaces: boolean;
           }>
         ) => {
           state.status = "succeeded";
-          console.log(action.payload.info);
-          // selectedPlaces에 장소를 추가할 때 columnPlaces_1에도 추가함
-          if (!action.payload.info) {
-            if (state.selectedPlaces) {
-              state.selectedPlaces = [
-                ...state.selectedPlaces,
-                action.payload.place,
-              ];
-              // columnPlaces_1에는 숙소는 추가하지 않음
-              if (action.payload.place.contenttypeid !== "32") {
-                state.columnPlaces_1 = [
-                  ...state.columnPlaces_1,
-                  action.payload.place,
-                ];
-              }
-            } else {
-              // columnPlaces_1에는 숙소는 추가하지 않음
-              state.selectedPlaces = [action.payload.place];
-              if (action.payload.place.contenttypeid !== "32") {
-                state.columnPlaces_1 = [action.payload.place];
-              }
-            }
-          } else {
-            state.place = action.payload.place;
+
+          state.place = action.payload.place;
+
+          if (action.payload.addToSelectedPlaces) {
+            state.selectedPlaces.push(action.payload.place);
           }
         }
       )
@@ -307,6 +297,7 @@ const placeSlice = createSlice({
 export const {
   clearPlaces,
   clearSelectedPlaces,
+  addSelectedPlace,
   removeSelectedPlace,
   modalToggle,
   accommoToggle,

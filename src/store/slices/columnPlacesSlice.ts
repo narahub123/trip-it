@@ -84,6 +84,21 @@ const columnPlacesSlice = createSlice({
       state.draggedPlace = draggedPlace;
     },
 
+    removeAccommoFromColumn: (
+      state,
+      action: PayloadAction<{ column: string; contentId: string }>
+    ) => {
+      const key =
+        `columnPlaces${action.payload.column}` as keyof typeof state.columnPlaces;
+      const columnPlaces = state.columnPlaces[key];
+
+      const filterColumpPlaces = columnPlaces.filter(
+        (place) => place.contentid !== action.payload.contentId
+      );
+
+      state.columnPlaces[key] = [...filterColumpPlaces];
+    },
+
     removePlaceFromColumn: (
       state,
       action: PayloadAction<{ column: string; index: number }>
@@ -187,6 +202,12 @@ const columnPlacesSlice = createSlice({
 
       const columnPlaces = state.columnPlaces[key];
 
+      const length = columnPlaces.length;
+
+      if (action.payload.order === -1) {
+        columnPlaces[length] = action.payload.place;
+      }
+
       columnPlaces[action.payload.order] = action.payload.place;
     },
   },
@@ -209,6 +230,7 @@ export const {
   dragInColumn,
   dragBtwColumn,
   removePlaceFromColumn,
+  removeAccommoFromColumn,
   addPlaceToColumn,
 } = columnPlacesSlice.actions;
 

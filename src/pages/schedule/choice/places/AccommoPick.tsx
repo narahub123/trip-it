@@ -4,6 +4,15 @@ import { DestrucDateType } from "../dates/Calendar";
 import { useDispatch, useSelector } from "react-redux";
 import { Rootstate } from "../../../../store/store";
 import { setColumns, setSelected } from "../../../../store/slices/accommoSlice";
+import {
+  addPlaceToColumn,
+  removeAccommoFromColumn,
+} from "../../../../store/slices/columnPlacesSlice";
+import {
+  addSelectedPlace,
+  fetchPlace,
+  removeSelectedPlace,
+} from "../../../../store/slices/placeSlice";
 
 interface AccommoPickProps {
   date: DestrucDateType;
@@ -11,33 +20,92 @@ interface AccommoPickProps {
 }
 
 const AccommoPick = ({ date, index }: AccommoPickProps) => {
+  const selectedPlaces = useSelector(
+    (state: Rootstate) => state.place.selectedPlaces
+  );
+  const columns = useSelector((state: Rootstate) => state.accommo.columns);
+  const match = columns.find((column) => column.index === index);
+  // 이전에 선택했던 장소
+  const [matched, setMatched] = useState(
+    selectedPlaces?.find((place) => place.contentid === match?.contentId)
+  );
   const [inserted, setInserted] = useState(false);
 
   const dispatch = useDispatch();
 
+  // 현재 선택한 장소
   const place = useSelector((state: Rootstate) => state.place.place);
-  const selectedPlaces = useSelector(
-    (state: Rootstate) => state.place.selectedPlaces
-  );
 
-  const columns = useSelector((state: Rootstate) => state.accommo.columns);
+  console.log("place", place);
 
-  const match = columns.find((column) => column.index === index);
-
-  const matched = selectedPlaces?.find(
-    (place) => place.contentid === match?.contentId
-  );
-
+  console.log("matched", matched);
   const handleInsertImage = (
     e: React.MouseEvent<HTMLImageElement | HTMLDivElement, MouseEvent>
   ) => {
-    const selectedColumn = e.currentTarget.id;
+    const selectedColumn = Number(e.currentTarget.id);
+    console.log(selectedColumn);
+
     if (!inserted) {
       const updateColumns = columns.map((col) =>
-        col.index.toString() === selectedColumn
+        col.index === selectedColumn
           ? { ...col, contentId: place?.contentid }
           : col
       );
+
+      // 미리 저장된 장소가 있다면 columnPlaces에서 삭제
+      if (matched) {
+        matched?.contentid &&
+          dispatch(
+            removeAccommoFromColumn({
+              column: selectedColumn.toString(),
+              contentId: matched?.contentid,
+            })
+          );
+        matched?.contentid &&
+          dispatch(
+            removeAccommoFromColumn({
+              column: (selectedColumn + 1).toString(),
+              contentId: matched?.contentid,
+            })
+          );
+
+        // selectedPlaces에서 삭제
+        dispatch(removeSelectedPlace(matched.contentid));
+      }
+
+      // 숙소 추가시 columnPlaces에 추가해야 함
+      if (place) {
+        if (selectedColumn === 0) {
+          dispatch(
+            addPlaceToColumn({
+              column: selectedColumn,
+              place: place,
+              order: 0,
+            })
+          );
+        }
+
+        dispatch(
+          addPlaceToColumn({
+            column: selectedColumn,
+            place: place,
+            order: -1,
+          })
+        );
+
+        dispatch(
+          addPlaceToColumn({
+            column: selectedColumn + 1,
+            place: place,
+            order: 0,
+          })
+        );
+
+        // 현재 장소 추가
+        if (place) {
+          dispatch(addSelectedPlace(place));
+        }
+      }
 
       dispatch(setColumns(updateColumns));
       dispatch(setSelected(true));
@@ -45,10 +113,31 @@ const AccommoPick = ({ date, index }: AccommoPickProps) => {
     }
     if (inserted) {
       const updateColumns = columns.map((col) =>
-        col.index.toString() === selectedColumn
-          ? { ...col, contentId: "" }
-          : col
+        col.index === selectedColumn ? { ...col, contentId: "" } : col
       );
+
+      place?.contentid &&
+        dispatch(
+          removeAccommoFromColumn({
+            column: selectedColumn.toString(),
+            contentId: place?.contentid,
+          })
+        );
+      place?.contentid &&
+        dispatch(
+          removeAccommoFromColumn({
+            column: (selectedColumn + 1).toString(),
+            contentId: place?.contentid,
+          })
+        );
+
+      // 이미 저장된 장소가 있다면 다시 추가
+      if (matched) {
+        dispatch(addSelectedPlace(matched));
+      }
+
+      // 추가된 장소 삭제
+      place && dispatch(removeSelectedPlace(place?.contentid));
 
       dispatch(setColumns(updateColumns));
       dispatch(setSelected(false));
@@ -72,7 +161,8 @@ const AccommoPick = ({ date, index }: AccommoPickProps) => {
             id={index.toString()}
           />
         )}
-        {inserted && (
+        {/* 클릭하고 matched가 있는 경우 */}
+        {inserted && matched && (
           <img
             src={place?.firstimage}
             alt="호텔"
@@ -82,6 +172,7 @@ const AccommoPick = ({ date, index }: AccommoPickProps) => {
             id={index.toString()}
           />
         )}
+
         {!inserted && !matched && (
           <div
             className="plus"

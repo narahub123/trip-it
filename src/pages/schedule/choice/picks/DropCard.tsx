@@ -5,7 +5,11 @@ import { metros } from "../../../../data/metros";
 import { Rootstate } from "../../../../store/store";
 import { useDispatch, useSelector } from "react-redux";
 import { contentTypeIds } from "../../../../data/contentTypeIds";
-import { fetchPlace, modalToggle } from "../../../../store/slices/placeSlice";
+import {
+  addSelectedPlace,
+  fetchPlace,
+  modalToggle,
+} from "../../../../store/slices/placeSlice";
 import Dropdown from "../../../../components/ui/Dropdown";
 import {
   hourFormat1,
@@ -98,7 +102,7 @@ const DropCard = ({ place, date, column }: DropCardProps) => {
     (contentId: string) => {
       console.log(contentId);
       dispatch(modalToggle());
-      dispatch(fetchPlace({ contentId, info: true }) as any);
+      dispatch(fetchPlace({ contentId }) as any);
     },
     [dispatch]
   );
