@@ -9,17 +9,13 @@ import {
 } from "../../../../store/slices/placeSlice";
 
 import PlaceCard from "./PlaceCard";
-import { fetchSelectedPlaces } from "../../../../store/slices/columnPlacesSlice";
+// import { fetchSelectedPlaces } from "../../../../store/slices/columnPlacesSlice";
 
 const SelectedPlacesList = () => {
   const dispatch = useDispatch();
   const selectedPlaces = useSelector(
     (state: Rootstate) => state.place.selectedPlaces
   );
-
-  useEffect(() => {
-    dispatch(fetchSelectedPlaces() as any);
-  }, [selectedPlaces]);
 
   const handleDeselection = (contentId: string) => {
     dispatch(removeSelectedPlace(contentId));

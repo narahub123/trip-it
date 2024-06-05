@@ -1,6 +1,7 @@
 import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { PlaceApiType } from "../../types/place";
 import { Rootstate } from "../store";
+import { fetchPlace } from "./placeSlice";
 
 export interface ColumnPlacesType {
   columnPlaces_1: PlaceApiType[];
@@ -45,17 +46,6 @@ const initialState: columnPlacesState = {
   goalRow: "_1",
   goalCol: "_1",
 };
-
-// selectedPlaces의 정보를 가져와서 첫 컬럼에 넣기
-export const fetchSelectedPlaces = createAsyncThunk(
-  "columnPlaces/fetchSelectedPlaces",
-  async (_, { getState }) => {
-    const { place } = (await getState()) as Rootstate;
-    const selectedPlaces = place.columnPlaces_1;
-
-    return selectedPlaces;
-  }
-);
 
 const columnPlacesSlice = createSlice({
   name: "columnPlaces",
@@ -201,16 +191,10 @@ const columnPlacesSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    builder.addCase(
-      fetchSelectedPlaces.fulfilled,
-      (state, action: PayloadAction<PlaceApiType[] | undefined>) => {
-        if (action.payload) {
-          state.columnPlaces.columnPlaces_1 = [...action.payload];
-        } else {
-          state.columnPlaces.columnPlaces_1 = [];
-        }
-      }
-    );
+    builder.addCase(fetchPlace.fulfilled, (state, action) => {
+      const place = action.payload.place;
+      state.columnPlaces.columnPlaces_1.push(place);
+    });
   },
 });
 
