@@ -60,6 +60,7 @@ const DropCard = ({ place, date, column }: DropCardProps) => {
     (state: Rootstate) => state.schedule.schedule.schedule_details
   );
 
+  // 동일한 것도 있기 때문에 contentId로 찾으면 안됨
   const detail = details?.find((d) => d.content_id === place.contentid);
 
   const [startHourInit, setStartHourInit] = useState(

@@ -19,7 +19,6 @@ export interface PlaceState {
   isEnd: boolean;
   pageNo: number;
   columns: Array<{ contentId: string; column: number; date: string }>;
-  columnPlaces_1: PlaceApiType[];
 }
 
 const initialState: PlaceState = {
@@ -32,7 +31,6 @@ const initialState: PlaceState = {
   isEnd: false,
   pageNo: 1,
   columns: [],
-  columnPlaces_1: [],
 };
 
 interface PlacesProps {
@@ -194,13 +192,11 @@ const placeSlice = createSlice({
       state.selectedPlaces?.push(action.payload);
     },
 
+    // selectedPlaces에서 제거
     removeSelectedPlace: (state, action: PayloadAction<string>) => {
       if (state.selectedPlaces) {
         state.selectedPlaces = state.selectedPlaces.filter(
           (selectedPlace) => selectedPlace.contentid !== action.payload
-        );
-        state.columnPlaces_1 = state.columnPlaces_1.filter(
-          (place) => place.contentid !== action.payload
         );
       }
     },

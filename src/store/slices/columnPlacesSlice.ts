@@ -99,6 +99,13 @@ const columnPlacesSlice = createSlice({
       state.columnPlaces[key] = [...filterColumpPlaces];
     },
 
+    removePlaceFromColumnPlaces_1: (state, action: PayloadAction<string>) => {
+      state.columnPlaces.columnPlaces_1 =
+        state.columnPlaces.columnPlaces_1.filter(
+          (place) => place.contentid !== action.payload
+        );
+    },
+
     removePlaceFromColumn: (
       state,
       action: PayloadAction<{ column: string; index: number }>
@@ -231,6 +238,7 @@ export const {
   dragBtwColumn,
   removePlaceFromColumn,
   removeAccommoFromColumn,
+  removePlaceFromColumnPlaces_1,
   addPlaceToColumn,
 } = columnPlacesSlice.actions;
 

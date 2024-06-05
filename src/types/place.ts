@@ -22,4 +22,11 @@ export interface PlaceApiType {
   title: string;
   zipcode: string;
   overview?: string;
+  start_time?: string;
+  end_time?: string;
+}
+
+export interface PlaceApiTypeColumnPlaces extends PlaceApiType {
+  start_time: string;
+  end_time: string;
 }
