@@ -32,6 +32,27 @@ interface DropCardProps {
 
 const DropCard = ({ place, date, column }: DropCardProps) => {
   const dispatch = useDispatch();
+  const [dropdownStates, setDropdownStates] = useState<boolean[]>([
+    false,
+    false,
+    false,
+    false,
+  ]);
+
+  const toggleDropdown = (index: number) => {
+    const newDropdownStates = [...dropdownStates];
+    newDropdownStates[index] = !newDropdownStates[index];
+    setDropdownStates(newDropdownStates);
+
+    // 열린 드롭다운 외의 다른 드롭다운 닫기
+    for (let i = 0; i < newDropdownStates.length; i++) {
+      if (i !== index && newDropdownStates[i] === true) {
+        newDropdownStates[i] = false;
+      }
+    }
+    setDropdownStates(newDropdownStates);
+  };
+
   const areacode =
     useSelector((state: Rootstate) => state.schedule.schedule.metro_id) || "1";
 
@@ -147,6 +168,8 @@ const DropCard = ({ place, date, column }: DropCardProps) => {
               contents={hourFormat2}
               init={startHourInit - 1}
               setStartHourInit={setStartHourInit}
+              isActive={dropdownStates[0]}
+              toggleDropdown={() => toggleDropdown(0)}
             />
           </span>
           :
@@ -155,6 +178,8 @@ const DropCard = ({ place, date, column }: DropCardProps) => {
               contents={minuteFormat2}
               init={startMinuteInit}
               setStartMinuteInit={setStartMinuteInit}
+              isActive={dropdownStates[1]}
+              toggleDropdown={() => toggleDropdown(1)}
             />
           </span>
           -
@@ -166,6 +191,8 @@ const DropCard = ({ place, date, column }: DropCardProps) => {
               contents={hourFormat2}
               init={endHourInit - 1}
               setEndHourInit={setEndHourInit}
+              isActive={dropdownStates[2]}
+              toggleDropdown={() => toggleDropdown(2)}
             />
           </span>
           :
@@ -174,6 +201,8 @@ const DropCard = ({ place, date, column }: DropCardProps) => {
               contents={minuteFormat2}
               init={endMinuteInit}
               setEndMinuteInit={setEndMinuteInit}
+              isActive={dropdownStates[3]}
+              toggleDropdown={() => toggleDropdown(3)}
             />
           </span>
         </div>

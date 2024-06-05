@@ -12,25 +12,13 @@ button {
   box-shadow: 2px 3px 3px hsl(0deg 0% 0% / 0.2);
 
   li {
+    overflow: hidden;
     padding: 5px;
     text-align: center;
-    animation: all dropEffect 1s ease-in-out;
   }
 
   li:hover {
     background-color: rgba(127, 255, 212, 0.307);
-  }
-}
-
-@keyframes dropEffect {
-  0% {
-    max-height: 0;
-    background-color: rgba(255, 255, 255, 0);
-  }
-
-  100% {
-    max-height: 82px;
-    background-color: rgba(255, 255, 255, 1);
   }
 }
 

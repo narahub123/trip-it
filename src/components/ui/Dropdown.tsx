@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./dropdown.css";
 
 interface DropdownProps {
@@ -10,6 +10,8 @@ interface DropdownProps {
   setStartMinuteInit?: (value: number) => void;
   setEndHourInit?: (value: number) => void;
   setEndMinuteInit?: (value: number) => void;
+  isActive: boolean;
+  toggleDropdown: () => void;
 }
 
 const Dropdown = ({
@@ -21,14 +23,42 @@ const Dropdown = ({
   setStartMinuteInit,
   setEndHourInit,
   setEndMinuteInit,
+  isActive,
+  toggleDropdown,
 }: DropdownProps) => {
-  const [isActive, setIsActive] = useState<boolean>(false);
   const [selected, setSelected] = useState<string>(contents[init]);
-  // console.log(selected);
+  const [isAnimating, setIsAnimating] = useState<boolean>(false);
+
+  useEffect(() => {
+    if (isActive) {
+      const dropdown = document.getElementById("dropdown");
+      if (dropdown instanceof HTMLElement) {
+        const selectedElement = dropdown.querySelector(
+          ".dropdown-option.selected"
+        );
+        if (selectedElement instanceof HTMLElement) {
+          const dropdownHeight = dropdown.clientHeight;
+          const selectedItemHeight = selectedElement.clientHeight;
+          const scrollTop =
+            selectedElement.offsetTop -
+            dropdownHeight / 2 +
+            selectedItemHeight / 2;
+          setIsAnimating(true);
+          dropdown.scrollTo({
+            top: scrollTop,
+            behavior: "smooth",
+          });
+          setTimeout(() => {
+            setIsAnimating(false);
+          }, 2000); // 애니메이션 시간 (1000ms = 1초)
+        }
+      }
+    }
+  }, [isActive, selected]);
 
   function handleClick(content: string) {
     setSelected(content);
-    setIsActive(false);
+    toggleDropdown();
     setStartHourInit && setStartHourInit(Number(content));
     setStartMinuteInit && setStartMinuteInit(Number(content));
     setEndHourInit && setEndHourInit(Number(content));
@@ -37,12 +67,12 @@ const Dropdown = ({
 
   return (
     <>
-      <button type="button" onClick={() => setIsActive(!isActive)}>
+      <button type="button" onClick={() => toggleDropdown()}>
         {selected}
       </button>
       {isActive && (
         <ul
-          className="dropdown"
+          className={`dropdown ${isAnimating ? "animating" : ""}`}
           id="dropdown"
           style={{
             transform: `translate(${style}%, 5px)`,
@@ -51,7 +81,9 @@ const Dropdown = ({
         >
           {contents.map((content) => (
             <li
-              className="dropdown-option"
+              className={`dropdown-option ${
+                content === selected ? "selected" : ""
+              }`}
               key={content}
               id={content}
               style={
