@@ -46,8 +46,6 @@ const ScheduleColumn = ({ date, index }: ScheduleColumnProps) => {
   console.log("렌더링 개수", count);
 
   useEffect(() => {
-    const newDate = new Date(date.year, date.month, date.date + 1);
-    const destDate = destrucDate(newDate);
     if (accommo) {
       if (index === 0) {
         dispatch(
@@ -85,16 +83,21 @@ const ScheduleColumn = ({ date, index }: ScheduleColumnProps) => {
   );
 
   const length = columnPlaces && columnPlaces?.length;
-  const last = columnPlaces[length - 1];
 
   // 드래그 시작
   const handleDragStart = (e: React.DragEvent<HTMLLIElement>) => {
     const curRow = e.currentTarget.dataset.row;
     const curCol = e.currentTarget.dataset.col;
+    const contentId = e.currentTarget.dataset.content;
+
     if (curRow) dispatch(setcurRow(curRow));
     if (curCol) dispatch(setcurCol(curCol));
+    if (contentId && curCol)
+      dispatch(setDraggedPlace({ curRow: contentId, curCol }));
 
-    if (curRow && curCol) dispatch(setDraggedPlace({ curRow, curCol }));
+    console.log("curRow)", curRow);
+    console.log("curCol", curCol);
+    console.log("contentId", contentId);
   };
   const handleDragOver = (
     e: React.DragEvent<HTMLDivElement> | React.DragEvent<HTMLLIElement>
@@ -119,8 +122,12 @@ const ScheduleColumn = ({ date, index }: ScheduleColumnProps) => {
     // 이동하고자하는 위치
     const goalRow = e.currentTarget.dataset.row;
     const goalCol = e.currentTarget.dataset.col;
+
     if (goalRow) dispatch(setGoalRow(goalRow));
     if (goalCol) dispatch(setGoalCol(goalCol));
+
+    console.log("goalRow", goalRow);
+    console.log("goalCol", goalCol);
 
     setIsActive(false);
 
@@ -166,7 +173,7 @@ const ScheduleColumn = ({ date, index }: ScheduleColumnProps) => {
           isActive ? "schedule-column-list active" : "schedule-column-list"
         }
         data-col={index.toString()}
-        data-row={columnPlaces?.length === 0 ? "_1" : last.contentid}
+        data-row={columnPlaces?.length === 0 ? "_1" : (length - 1).toString()}
         onDragOver={(e) => handleDragOver(e)}
         onDragLeave={(e) => handleDragLeave(e)}
         onDrop={(e) => handleDrop(e)}
@@ -194,7 +201,8 @@ const ScheduleColumn = ({ date, index }: ScheduleColumnProps) => {
                   className="dropCard"
                   key={place.contentid}
                   data-col={index.toString()}
-                  data-row={place.contentid}
+                  data-row={i.toString()}
+                  data-content={place.contentid}
                   onDragStart={(e) => handleDragStart(e)}
                   draggable
                 >
@@ -213,7 +221,7 @@ const ScheduleColumn = ({ date, index }: ScheduleColumnProps) => {
                 {i !== length - 1 && (
                   <DropIndicator
                     col={index.toString()}
-                    row={place.contentid}
+                    row={i.toString()}
                     onDragLeave={handleDragLeave}
                     onDragOver={handleDragOver}
                     onDrop={handleDrop}

@@ -20,7 +20,7 @@ export interface ScheduleType {
   metro_id?: string;
   start_date?: string;
   end_date?: string;
-  schedule_name?: string;
+  schedule_title?: string;
   schedule_details?: ScheduleDetailType[];
 }
 

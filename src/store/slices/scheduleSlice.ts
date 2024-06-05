@@ -16,7 +16,7 @@ export interface ScheduleState {
 const initialState: ScheduleState = {
   schedule: {
     metro_id: "",
-    schedule_name: "",
+    schedule_title: "",
     start_date: undefined,
     end_date: undefined,
     schedule_details: [],
@@ -87,7 +87,7 @@ const scheduleSlice = createSlice({
     },
     // 제목 추가
     addTitle: (state, action: PayloadAction<string>) => {
-      state.schedule.schedule_name = action.payload;
+      state.schedule.schedule_title = action.payload;
     },
     // 날짜 변경
     updateStartTime: (

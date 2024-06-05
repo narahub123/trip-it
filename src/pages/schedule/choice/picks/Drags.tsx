@@ -9,7 +9,7 @@ import DropIndicator from "./DropIndicator";
 import {
   dragBtwColumn,
   dragInColumn,
-  fetchSelectedPlaces,
+  // fetchSelectedPlaces,
   removePlaceFromColumn,
   setDraggedPlace,
   setGoalCol,
@@ -35,9 +35,6 @@ const Drags = () => {
 
   // console.log(column_1);
 
-  useEffect(() => {
-    dispatch(fetchSelectedPlaces() as any);
-  }, []);
   // 장소 삭제
   const handleDelete = (contentId: string, index: number) => {
     dispatch(removeSelectedPlace(contentId));
@@ -55,9 +52,14 @@ const Drags = () => {
   const handleDragStart = (e: React.DragEvent<HTMLLIElement>) => {
     const curRow = e.currentTarget.dataset.row;
     const curCol = e.currentTarget.dataset.col;
+    const contentId = e.currentTarget.dataset.content;
     if (curRow) dispatch(setcurRow(curRow));
     if (curCol) dispatch(setcurCol(curCol));
-    if (curRow && curCol) dispatch(setDraggedPlace({ curRow, curCol }));
+    if (contentId && curCol)
+      dispatch(setDraggedPlace({ curRow: contentId, curCol }));
+
+    console.log("curRow)", curRow);
+    console.log("curCol", curCol);
   };
 
   const handleDragLeave = (e: React.DragEvent<HTMLLIElement>) => {
@@ -118,7 +120,8 @@ const Drags = () => {
                   key={draggablePlace.contentid}
                   className="draggableCard"
                   draggable
-                  data-row={draggablePlace.contentid}
+                  data-content={draggablePlace.contentid}
+                  data-row={index.toString()}
                   data-col={"_1"}
                   onDragStart={(e) => handleDragStart(e)}
                 >
