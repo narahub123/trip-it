@@ -2,6 +2,7 @@ import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { PlaceApiType } from "../../types/place";
 import { Rootstate } from "../store";
 import { convertStringToJson } from "../../utils/convertStringToJson";
+import { combineColumnPlaces } from "./columnPlacesSlice";
 
 export interface ContentIdsType {
   contentId: string;
@@ -286,7 +287,30 @@ const placeSlice = createSlice({
         state.status = "failed";
         state.error = action.error.message;
         state.places = [];
-      });
+      })
+      // 삭제된 장소가 columnPlaces 배열들에 존재하는지 여부를 확인하고
+      // 존재하지 않는 경우 selectedPlaces에서 삭제함
+      .addCase(
+        combineColumnPlaces.fulfilled,
+        (state, action: PayloadAction<{ contentId: string }>) => {
+          console.log(action.payload.contentId);
+
+          if (
+            action.payload.contentId !== "" ||
+            action.payload.contentId.length !== 0
+          ) {
+            const newSelectedPlaces = state.selectedPlaces.filter(
+              (place) => place.contentid !== action.payload.contentId
+            );
+
+            state.selectedPlaces = [...newSelectedPlaces];
+
+            return;
+          }
+
+          return;
+        }
+      );
   },
 });
 

@@ -4,17 +4,7 @@ import { Rootstate } from "../store";
 import { fetchPlace } from "./placeSlice";
 
 export interface ColumnPlacesType {
-  columnPlaces_1: PlaceApiType[];
-  columnPlaces0: PlaceApiType[];
-  columnPlaces1: PlaceApiType[];
-  columnPlaces2: PlaceApiType[];
-  columnPlaces3: PlaceApiType[];
-  columnPlaces4: PlaceApiType[];
-  columnPlaces5: PlaceApiType[];
-  columnPlaces6: PlaceApiType[];
-  columnPlaces7: PlaceApiType[];
-  columnPlaces8: PlaceApiType[];
-  columnPlaces9: PlaceApiType[];
+  [key: string]: PlaceApiType[];
 }
 
 interface columnPlacesState {
@@ -24,6 +14,7 @@ interface columnPlacesState {
   curCol: string;
   goalRow: string;
   goalCol: string;
+  [key: string]: any;
 }
 
 const initialState: columnPlacesState = {
@@ -46,6 +37,78 @@ const initialState: columnPlacesState = {
   goalRow: "_1",
   goalCol: "_1",
 };
+
+interface RemoveProps {
+  column: string;
+  index: number;
+}
+
+// 장소를 columnPlaces 배열에서 제거
+export const removePlaceFromColumn = createAsyncThunk(
+  "columnPlacesSlice/removePlaceFromColumn",
+  async ({ column, index }: RemoveProps, { getState, dispatch }) => {
+    const { columnPlaces } = getState() as Rootstate;
+    const key =
+      `columnPlaces${column}` as keyof typeof columnPlaces.columnPlaces;
+
+    const colPlaces = columnPlaces.columnPlaces[key];
+
+    const contentId = colPlaces[index].contentid;
+
+    const beforeColumn = colPlaces.slice(0, index);
+    const afterColumn = colPlaces.slice(index + 1);
+
+    const newColumnPlaces = {
+      ...columnPlaces,
+      columnPlaces: {
+        ...columnPlaces.columnPlaces,
+        [key]: [...beforeColumn, ...afterColumn],
+      },
+    };
+
+    dispatch(setColumnPlaces(newColumnPlaces));
+    dispatch(combineColumnPlaces(contentId));
+
+    return newColumnPlaces;
+  }
+);
+
+// 삭제된 장소가 columnPlaces 배열들에 존재하는지 여부 확인
+export const combineColumnPlaces = createAsyncThunk(
+  "columnPlacesSlice/combineColumnPlaces",
+  async (contentId: string, { getState }) => {
+    const { columnPlaces } = getState() as Rootstate;
+
+    const colPlacesObj = columnPlaces;
+
+    const keys = Object.keys(colPlacesObj);
+
+    const columnKey = keys[0];
+
+    const columnObj = colPlacesObj[columnKey];
+
+    const placeValues = Object.values(columnObj);
+
+    const placeObj = placeValues[0] as ColumnPlacesType;
+
+    const placeKey = Object.keys(placeObj);
+
+    for (const key of placeKey) {
+      const placeArray = placeObj[key];
+      for (const place of placeArray) {
+        if (place.contentid === contentId) {
+          return {
+            contentId: "",
+          };
+        }
+      }
+    }
+
+    return {
+      contentId,
+    };
+  }
+);
 
 const columnPlacesSlice = createSlice({
   name: "columnPlaces",
@@ -84,6 +147,10 @@ const columnPlacesSlice = createSlice({
       state.draggedPlace = draggedPlace;
     },
 
+    setColumnPlaces: (state, action) => {
+      state.columnPlaces = action.payload;
+    },
+
     removeAccommoFromColumn: (
       state,
       action: PayloadAction<{ column: string; contentId: string }>
@@ -106,19 +173,19 @@ const columnPlacesSlice = createSlice({
         );
     },
 
-    removePlaceFromColumn: (
-      state,
-      action: PayloadAction<{ column: string; index: number }>
-    ) => {
-      const key =
-        `columnPlaces${action.payload.column}` as keyof typeof state.columnPlaces;
-      const columnPlaces = state.columnPlaces[key];
+    // removePlaceFromColumn: (
+    //   state,
+    //   action: PayloadAction<{ column: string; index: number }>
+    // ) => {
+    //   const key =
+    //     `columnPlaces${action.payload.column}` as keyof typeof state.columnPlaces;
+    //   const columnPlaces = state.columnPlaces[key];
 
-      const beforeColumn = columnPlaces.slice(0, action.payload.index);
-      const afterColumn = columnPlaces.slice(action.payload.index + 1);
+    //   const beforeColumn = columnPlaces.slice(0, action.payload.index);
+    //   const afterColumn = columnPlaces.slice(action.payload.index + 1);
 
-      state.columnPlaces[key] = [...beforeColumn, ...afterColumn];
-    },
+    //   state.columnPlaces[key] = [...beforeColumn, ...afterColumn];
+    // },
 
     // 드래그한 장소를 기존 장소 배열에서 삭제
     removeDraggedPlace: (state) => {
@@ -219,12 +286,17 @@ const columnPlacesSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    builder.addCase(fetchPlace.fulfilled, (state, action) => {
-      const place = action.payload.place;
-      const contentTypeId = place.contenttypeid;
+    builder
+      .addCase(fetchPlace.fulfilled, (state, action) => {
+        const place = action.payload.place;
+        const contentTypeId = place.contenttypeid;
 
-      if (contentTypeId !== "32") state.columnPlaces.columnPlaces_1.push(place);
-    });
+        if (contentTypeId !== "32")
+          state.columnPlaces.columnPlaces_1.push(place);
+      })
+      .addCase(removePlaceFromColumn.fulfilled, (state, action) => {
+        state.columnPlaces = action.payload.columnPlaces;
+      });
   },
 });
 
@@ -236,10 +308,11 @@ export const {
   setDraggedPlace,
   dragInColumn,
   dragBtwColumn,
-  removePlaceFromColumn,
+  // removePlaceFromColumn,
   removeAccommoFromColumn,
   removePlaceFromColumnPlaces_1,
   addPlaceToColumn,
+  setColumnPlaces,
 } = columnPlacesSlice.actions;
 
 export default columnPlacesSlice.reducer;

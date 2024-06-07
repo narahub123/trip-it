@@ -112,10 +112,12 @@ const ScheduleColumn = ({ date, index }: ScheduleColumnProps) => {
     console.log("number of item", order);
 
     // 선택된 장소들에서 삭제하기
-    dispatch(removeSelectedPlace(contentId));
+    // dispatch(removeSelectedPlace(contentId));
 
     // 컬럼 목록에서 삭제하기
-    dispatch(removePlaceFromColumn({ column: index.toString(), index: order }));
+    dispatch(
+      removePlaceFromColumn({ column: index.toString(), index: order }) as any
+    );
 
     // 숙소의 경우 숙소 배열에서 제거 필요
     const updatedColumns = columns.map((column) =>
@@ -124,7 +126,7 @@ const ScheduleColumn = ({ date, index }: ScheduleColumnProps) => {
     dispatch(setColumns(updatedColumns));
   };
 
-  console.log("columnPlaces", columnPlaces);
+  console.log(`columnPlaces${index}`, columnPlaces);
 
   return (
     <div className="schedule-column" key={`col${index}`}>

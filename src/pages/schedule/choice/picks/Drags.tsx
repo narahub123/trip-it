@@ -41,7 +41,7 @@ const Drags = () => {
     dispatch(removeSelectedPlace(contentId));
 
     // 해당 컬럼 배열에서도 삭제
-    dispatch(removePlaceFromColumn({ column: "_1", index }));
+    dispatch(removePlaceFromColumn({ column: "_1", index }) as any);
 
     // 숙소의 경우 숙소 배열에서 제거 필요
     const updatedColumns = columns.map((column) =>
