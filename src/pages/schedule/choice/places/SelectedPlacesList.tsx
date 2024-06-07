@@ -9,6 +9,7 @@ import {
 } from "../../../../store/slices/placeSlice";
 
 import PlaceCard from "./PlaceCard";
+import { removePlaceFromColumnPlaces_1 } from "../../../../store/slices/columnPlacesSlice";
 // import { fetchSelectedPlaces } from "../../../../store/slices/columnPlacesSlice";
 
 const SelectedPlacesList = () => {
@@ -18,7 +19,10 @@ const SelectedPlacesList = () => {
   );
 
   const handleDeselection = (contentId: string) => {
+    // selectedPlaces에서 삭제
     dispatch(removeSelectedPlace(contentId));
+    // columnPlaces_1에서 삭제
+    dispatch(removePlaceFromColumnPlaces_1(contentId));
   };
 
   const handleReset = () => {

@@ -36,7 +36,6 @@ const ScheduleColumn = ({ date, index }: ScheduleColumnProps) => {
   const count = useRenderCount();
   console.log("렌더링 개수", count);
 
-  // 이부분을 바꿔야 함
   const selectedPlaces = useSelector(
     (state: Rootstate) => state.place.selectedPlaces
   );
