@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { clearPageNo } from "../../../store/slices/placeSlice";
 import { Rootstate } from "../../../store/store";
 import axios from "axios";
-import { destrucDate } from "../../../utils/date";
+import { dateFormatToLocalDate } from "../../../utils/date";
 
 const Procedure = () => {
   const location = useLocation();
@@ -39,15 +39,8 @@ const Procedure = () => {
     // }
 
     // db 저장 형식에 맞춰서 date 포멧 변경
-    const startDest = destrucDate(new Date(schedule.start_date));
-    const start = `${startDest.year}${
-      startDest.month < 10 ? "0" + startDest.month : startDest.month
-    }${startDest.date < 10 ? "0" + startDest.date : startDest.date}`;
-
-    const endDest = destrucDate(new Date(schedule.end_date));
-    const end = `${endDest.year}${
-      endDest.month < 10 ? "0" + endDest.month : endDest.month
-    }${endDest.date < 10 ? "0" + endDest.date : endDest.date}`;
+    const start = dateFormatToLocalDate(schedule.start_date);
+    const end = dateFormatToLocalDate(schedule.end_date);
 
     const value = {
       metro_id: schedule.metro_id,
@@ -57,8 +50,16 @@ const Procedure = () => {
       schedule_title: schedule.schedule_title,
     };
 
+    const valueNode = {
+      metro_id: schedule.metro_id,
+      user_id: 1,
+      start_date: schedule.start_date,
+      end_date: schedule.end_date,
+      schedule_title: schedule.schedule_title,
+    };
+
     axios
-      .post(`http://localhost:8080/schedules`, value)
+      .post(`http://localhost:8080/schedules`, valueNode)
       // .post(`http://172.16.1.88:8080/home/save`, value)
       .then((response) => {
         if (response.status === 200 || response.status === 201) {

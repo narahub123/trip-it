@@ -25,6 +25,25 @@ export const destrucDate = (origin: Date) => {
   return { year, month, date };
 };
 
+// 시간 분해하기
+const destructTime = (origin: Date) => {
+  const year = origin.getFullYear();
+  const month = origin.getMonth();
+  const date = origin.getDate();
+  const hour = origin.getHours();
+  const minute = origin.getMinutes();
+  const second = origin.getSeconds();
+
+  return {
+    year,
+    month,
+    date,
+    hour,
+    minute,
+    second,
+  };
+};
+
 // 달의 마지막 날 구하기
 const lastDayOfMonth = (origin: Date) => {
   const date = destrucDate(origin);
@@ -96,4 +115,62 @@ export const CalculateDuration = (
   }
 
   return dates;
+};
+
+// 날짜형식 자바에 맞게 변경하기(보낼 형식 : 240607)
+export const dateFormatToLocalDate = (origin: string) => {
+  const newDate = destrucDate(new Date(origin));
+
+  const date = `${newDate.year}${
+    newDate.month < 0 ? "0" + newDate.month : newDate.month
+  }${newDate.date < 0 ? "0" + newDate.date : newDate.date}`;
+
+  return date;
+};
+
+// 자바에서 받은 날짜 형식 자바스크립트에 맞게 변경하기(받는 형식 240607)
+export const dateFormatFromLocalDate = (origin: string) => {
+  const year = Number(origin.slice(0, 4)); // 2024
+  const month = Number(origin.slice(4, 6)) - 1; // 06 : date 객체에서 달의 시작은 0임을 주의!
+  const date = Number(origin.slice(6)); // 07
+
+  // date 형식으로 리턴 시
+  const newDate = new Date(year, month, date);
+
+  // destruct 형식으로 리턴시
+  const newDateDest = destrucDate(newDate);
+
+  return;
+};
+
+// 시간 형식을 자바에 맞게 변경하기 (240607102531)
+export const dateFormateToLocalDatetime = (origin: string) => {
+  const newDate = destructTime(new Date(origin));
+  const date = `${newDate.year}${
+    newDate.month < 0 ? "0" + newDate.month : newDate.month
+  }${newDate.date < 0 ? "0" + newDate.date : newDate.date}${
+    newDate.hour < 0 ? "0" + newDate.hour : newDate.hour
+  }${newDate.minute < 0 ? "0" + newDate.minute : newDate.minute}${
+    newDate.second < 0 ? "0" + newDate.second : newDate.second
+  }`;
+
+  return date;
+};
+
+// 자바에서 받은 시간 형식 자바스크립트에 맞게 변경하기(240607102531)
+export const dateFormateFromLocalDatetime = (origin: string) => {
+  const year = Number(origin.slice(0, 4)); // 2024
+  const month = Number(origin.slice(4, 6)) - 1; // 06 : date 객체에서 달의 시작은 0임을 주의!
+  const date = Number(origin.slice(6, 8)); // 07
+  const hour = Number(origin.slice(8, 10)); // 10
+  const minute = Number(origin.slice(10, 12)); // 25
+  const second = Number(origin.slice(12)); // 31
+
+  // date 객체 형식으로 리턴하는 경우
+  const newDate = new Date(year, month, date, hour, minute, second);
+
+  // destruct 형식으로 리턴하는 경우
+  const newDateDest = destructTime(newDate);
+
+  return newDate;
 };
