@@ -209,13 +209,13 @@ const columnPlacesSlice = createSlice({
 
       const columnPlaces = state.columnPlaces[key];
 
-      const length = columnPlaces.length;
-
       if (action.payload.order === -1) {
-        columnPlaces[length] = action.payload.place;
+        state.columnPlaces[key] = [...columnPlaces, action.payload.place];
       }
 
-      columnPlaces[action.payload.order] = action.payload.place;
+      if (action.payload.order === 0) {
+        state.columnPlaces[key] = [action.payload.place, ...columnPlaces];
+      }
     },
   },
   extraReducers: (builder) => {
