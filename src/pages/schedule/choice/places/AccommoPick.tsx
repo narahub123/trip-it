@@ -10,9 +10,9 @@ import {
 } from "../../../../store/slices/columnPlacesSlice";
 import {
   addSelectedPlace,
-  fetchPlace,
   removeSelectedPlace,
 } from "../../../../store/slices/placeSlice";
+import { destrucDate } from "../../../../utils/date";
 
 interface AccommoPickProps {
   date: DestrucDateType;
@@ -39,6 +39,7 @@ const AccommoPick = ({ date, index }: AccommoPickProps) => {
   console.log("place", place);
 
   console.log("matched", matched);
+
   const handleInsertImage = (
     e: React.MouseEvent<HTMLImageElement | HTMLDivElement, MouseEvent>
   ) => {
@@ -81,6 +82,7 @@ const AccommoPick = ({ date, index }: AccommoPickProps) => {
               column: selectedColumn,
               place: place,
               order: 0,
+              date: date,
             })
           );
         }
@@ -90,7 +92,12 @@ const AccommoPick = ({ date, index }: AccommoPickProps) => {
             column: selectedColumn,
             place: place,
             order: -1,
+            date: date,
           })
+        );
+
+        const datePlusOne = destrucDate(
+          new Date(date.year, date.month, date.date + 1)
         );
 
         dispatch(
@@ -98,6 +105,7 @@ const AccommoPick = ({ date, index }: AccommoPickProps) => {
             column: selectedColumn + 1,
             place: place,
             order: 0,
+            date: datePlusOne,
           })
         );
 

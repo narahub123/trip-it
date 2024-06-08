@@ -12,7 +12,6 @@ import {
 } from "../../../../store/slices/accommoSlice";
 
 const AccommModal = () => {
-  const [column, setColumn] = useState<number | undefined>(undefined);
   const dispatch = useDispatch();
   const place = useSelector((state: Rootstate) => state.place.place);
 

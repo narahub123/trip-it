@@ -1,15 +1,17 @@
 import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { PlaceApiType } from "../../types/place";
+import { ColumnPlaceType, PlaceApiType } from "../../types/place";
 import { Rootstate } from "../store";
 import { fetchPlace } from "./placeSlice";
+import { DestrucDateType } from "../../pages/schedule/choice/dates/Calendar";
+import { destrucDate } from "../../utils/date";
 
 export interface ColumnPlacesType {
-  [key: string]: PlaceApiType[];
+  [key: string]: ColumnPlaceType[];
 }
 
 interface columnPlacesState {
   columnPlaces: ColumnPlacesType;
-  draggedPlace?: PlaceApiType;
+  draggedPlace?: ColumnPlaceType;
   curRow: string;
   curCol: string;
   goalRow: string;
@@ -151,6 +153,70 @@ const columnPlacesSlice = createSlice({
       state.columnPlaces = action.payload;
     },
 
+    updateStartTime: (
+      state,
+      action: PayloadAction<{
+        column: number;
+        row: number;
+        hour: string;
+        minute: string;
+      }>
+    ) => {
+      const key =
+        `columnPlaces${action.payload.column}` as keyof typeof state.columnPlaces;
+
+      const curcolumnPlaces = state.columnPlaces[key];
+
+      const place = curcolumnPlaces[action.payload.row];
+
+      const date = destrucDate(new Date(place.start_time));
+
+      const start = new Date(
+        date.year,
+        date.month,
+        date.date,
+        Number(action.payload.hour),
+        Number(action.payload.minute)
+      ).toISOString();
+
+      state.columnPlaces[key][action.payload.row] = {
+        ...place,
+        start_time: start,
+      };
+    },
+
+    updateEndTime: (
+      state,
+      action: PayloadAction<{
+        column: number;
+        row: number;
+        hour: string;
+        minute: string;
+      }>
+    ) => {
+      const key =
+        `columnPlaces${action.payload.column}` as keyof typeof state.columnPlaces;
+
+      const curcolumnPlaces = state.columnPlaces[key];
+
+      const place = curcolumnPlaces[action.payload.row];
+
+      const date = destrucDate(new Date(place.end_time));
+
+      const end = new Date(
+        date.year,
+        date.month,
+        date.date,
+        Number(action.payload.hour),
+        Number(action.payload.minute)
+      ).toISOString();
+
+      state.columnPlaces[key][action.payload.row] = {
+        ...place,
+        end_time: end,
+      };
+    },
+
     removeAccommoFromColumn: (
       state,
       action: PayloadAction<{ column: string; contentId: string }>
@@ -173,20 +239,6 @@ const columnPlacesSlice = createSlice({
         );
     },
 
-    // removePlaceFromColumn: (
-    //   state,
-    //   action: PayloadAction<{ column: string; index: number }>
-    // ) => {
-    //   const key =
-    //     `columnPlaces${action.payload.column}` as keyof typeof state.columnPlaces;
-    //   const columnPlaces = state.columnPlaces[key];
-
-    //   const beforeColumn = columnPlaces.slice(0, action.payload.index);
-    //   const afterColumn = columnPlaces.slice(action.payload.index + 1);
-
-    //   state.columnPlaces[key] = [...beforeColumn, ...afterColumn];
-    // },
-
     // 드래그한 장소를 기존 장소 배열에서 삭제
     removeDraggedPlace: (state) => {
       const key =
@@ -202,7 +254,7 @@ const columnPlacesSlice = createSlice({
       else state.columnPlaces[key] = [];
     },
 
-    addDraggedPlace: (state) => {
+    addDraggedPlace: (state, action?: PayloadAction<DestrucDateType>) => {
       // 같은 컬럼이면서 이동 장소가 목표 위치랑 같지 않는 경우에 이동 장소를 지움
       if (state.curCol === state.goalCol && state.curRow !== state.goalRow) {
         columnPlacesSlice.caseReducers.removeDraggedPlace(state);
@@ -210,7 +262,9 @@ const columnPlacesSlice = createSlice({
       const key =
         `columnPlaces${state.goalCol}` as keyof typeof state.columnPlaces;
 
-      console.log(state.draggedPlace);
+      const date = action?.payload || destrucDate(new Date());
+      const start = new Date(date.year, date.month, date.date, 7).toISOString();
+      const end = new Date(date.year, date.month, date.date, 9).toISOString();
 
       // 이동할 컬럼 배열
       const goalColumnPlaces = state.columnPlaces[key];
@@ -218,12 +272,17 @@ const columnPlacesSlice = createSlice({
       if (state.draggedPlace)
         if (!goalColumnPlaces) {
           // 목표 배열에 요소가 없는 경우
-          state.columnPlaces[key] = [state.draggedPlace];
+          state.columnPlaces[key] = [
+            { ...state.draggedPlace, start_time: start, end_time: end },
+          ];
           // 목표 배열에 요소가 있는 경우
         } else {
           if (state.goalRow === "_1") {
             // 목표 위치가 최상단일 경우
-            state.columnPlaces[key] = [state.draggedPlace, ...goalColumnPlaces];
+            state.columnPlaces[key] = [
+              { ...state.draggedPlace, start_time: start, end_time: end },
+              ...goalColumnPlaces,
+            ];
           } else if (
             state.curRow === state.goalRow &&
             state.curCol === state.goalCol
@@ -247,7 +306,7 @@ const columnPlacesSlice = createSlice({
 
             state.columnPlaces[key] = [
               ...beforeColumn,
-              state.draggedPlace,
+              { ...state.draggedPlace, start_time: start, end_time: end },
               ...afterColumn,
             ];
           }
@@ -258,8 +317,19 @@ const columnPlacesSlice = createSlice({
       columnPlacesSlice.caseReducers.addDraggedPlace(state);
     },
 
-    dragBtwColumn: (state) => {
-      columnPlacesSlice.caseReducers.addDraggedPlace(state);
+    dragBtwColumn: (
+      state,
+      action: PayloadAction<DestrucDateType | undefined>
+    ) => {
+      const date = action.payload;
+      if (date) {
+        columnPlacesSlice.caseReducers.addDraggedPlace(state, {
+          payload: date,
+          type: "dragBtwColumn",
+        });
+      } else {
+        columnPlacesSlice.caseReducers.addDraggedPlace(state);
+      }
       columnPlacesSlice.caseReducers.removeDraggedPlace(state);
     },
 
@@ -269,6 +339,7 @@ const columnPlacesSlice = createSlice({
         column: number;
         place: PlaceApiType;
         order: number;
+        date?: DestrucDateType;
       }>
     ) => {
       const key =
@@ -276,19 +347,60 @@ const columnPlacesSlice = createSlice({
 
       const columnPlaces = state.columnPlaces[key];
 
+      const date = action.payload.date || destrucDate(new Date());
+
+      const start = new Date(
+        date?.year,
+        date?.month,
+        date?.date,
+        7
+      ).toISOString();
+      const end = new Date(
+        date?.year,
+        date?.month,
+        date?.date,
+        9
+      ).toISOString();
+
+      const place = {
+        ...action.payload.place,
+        start_time: start,
+        end_time: end,
+      };
+
       if (action.payload.order === -1) {
-        state.columnPlaces[key] = [...columnPlaces, action.payload.place];
+        state.columnPlaces[key] = [...columnPlaces, place];
       }
 
       if (action.payload.order === 0) {
-        state.columnPlaces[key] = [action.payload.place, ...columnPlaces];
+        state.columnPlaces[key] = [place, ...columnPlaces];
       }
     },
   },
   extraReducers: (builder) => {
     builder
       .addCase(fetchPlace.fulfilled, (state, action) => {
-        const place = action.payload.place;
+        // 숙소가 아닌 경우
+        // 장소를 columnPlaces배열에 추가할 때 start_time, end_time을 추가해서
+        // 타입을 PlaceApiType에서 ColumnPlaceType으로 변경
+
+        const date = destrucDate(new Date());
+
+        const start = new Date(
+          date.year,
+          date.month,
+          date.date,
+          7
+        ).toISOString();
+
+        const end = new Date(date.year, date.month, date.date, 9).toISOString();
+
+        const place = {
+          ...action.payload.place,
+          start_time: start,
+          end_time: end,
+        };
+
         const contentTypeId = place.contenttypeid;
 
         if (contentTypeId !== "32")
@@ -308,11 +420,12 @@ export const {
   setDraggedPlace,
   dragInColumn,
   dragBtwColumn,
-  // removePlaceFromColumn,
   removeAccommoFromColumn,
   removePlaceFromColumnPlaces_1,
   addPlaceToColumn,
   setColumnPlaces,
+  updateStartTime,
+  updateEndTime,
 } = columnPlacesSlice.actions;
 
 export default columnPlacesSlice.reducer;

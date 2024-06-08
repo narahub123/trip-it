@@ -6,10 +6,10 @@ interface DropdownProps {
   contents: string[];
   style?: number;
   scroll?: string;
-  setStartHourInit?: (value: number) => void;
-  setStartMinuteInit?: (value: number) => void;
-  setEndHourInit?: (value: number) => void;
-  setEndMinuteInit?: (value: number) => void;
+  setStartHourInit?: (value: string) => void;
+  setStartMinuteInit?: (value: string) => void;
+  setEndHourInit?: (value: string) => void;
+  setEndMinuteInit?: (value: string) => void;
   isActive: boolean;
   toggleDropdown: () => void;
 }
@@ -59,10 +59,10 @@ const Dropdown = ({
   function handleClick(content: string) {
     setSelected(content);
     toggleDropdown();
-    setStartHourInit && setStartHourInit(Number(content));
-    setStartMinuteInit && setStartMinuteInit(Number(content));
-    setEndHourInit && setEndHourInit(Number(content));
-    setEndMinuteInit && setEndMinuteInit(Number(content));
+    setStartHourInit && setStartHourInit(content);
+    setStartMinuteInit && setStartMinuteInit(content);
+    setEndHourInit && setEndHourInit(content);
+    setEndMinuteInit && setEndMinuteInit(content);
   }
 
   return (

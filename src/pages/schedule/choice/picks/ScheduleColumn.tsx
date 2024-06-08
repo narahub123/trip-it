@@ -6,7 +6,6 @@ import DropIndicator from "./DropIndicator";
 import { destrucDate, getWeek } from "../../../../utils/date";
 import { DestrucDateType } from "../dates/Calendar";
 import {
-  addPlaceToColumn,
   dragBtwColumn,
   dragInColumn,
   removePlaceFromColumn,
@@ -18,7 +17,6 @@ import {
 } from "../../../../store/slices/columnPlacesSlice";
 import { LuTrash2 } from "react-icons/lu";
 import DropCard from "./DropCard";
-import { removeSelectedPlace } from "../../../../store/slices/placeSlice";
 import { setColumns } from "../../../../store/slices/accommoSlice";
 import { useRenderCount } from "@uidotdev/usehooks";
 
@@ -99,11 +97,8 @@ const ScheduleColumn = ({ date, index }: ScheduleColumnProps) => {
     // 현재 컬럼과 이동 컬럼이 동일한 경우 칼럼은 신경 쓸 필요 없음
     if (curCol === goalCol) {
       dispatch(dragInColumn()); // 컬럼 내 드래그 앤 드롭
-
-      // dispatch(addScheduleDetail(date) as any);
     } else {
-      dispatch(dragBtwColumn()); // 컬럼 간 드래그 앤 드롭
-      // dispatch(addScheduleDetail(date) as any);
+      dispatch(dragBtwColumn(date)); // 컬럼 간 드래그 앤 드롭
     }
   };
 
@@ -176,7 +171,7 @@ const ScheduleColumn = ({ date, index }: ScheduleColumnProps) => {
                   <span className="index">
                     <p>{i + 1}</p>
                   </span>
-                  <DropCard place={place} date={date} column={index} />
+                  <DropCard place={place} date={date} column={index} row={i} />
                   <span
                     className="delete"
                     onClick={() => handleDelete(place.contentid, i)}
