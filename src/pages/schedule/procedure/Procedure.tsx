@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { clearPageNo } from "../../../store/slices/placeSlice";
 import { Rootstate } from "../../../store/store";
 import axios from "axios";
-import { dateFormatToLocalDate } from "../../../utils/date";
+import { CalculateDuration, dateFormatToLocalDate } from "../../../utils/date";
 
 const Procedure = () => {
   const location = useLocation();
@@ -15,6 +15,9 @@ const Procedure = () => {
   const navigate = useNavigate();
 
   const schedule = useSelector((state: Rootstate) => state.schedule.schedule);
+  const columnPlaces = useSelector(
+    (state: Rootstate) => state.columnPlaces.columnPlaces
+  );
 
   const handleSubmit = () => {
     // 유효성 검사
@@ -39,8 +42,30 @@ const Procedure = () => {
     // }
 
     // db 저장 형식에 맞춰서 date 포멧 변경
-    const start = dateFormatToLocalDate(schedule.start_date);
-    const end = dateFormatToLocalDate(schedule.end_date);
+    const start =
+      schedule.start_date && dateFormatToLocalDate(schedule.start_date);
+    const end = schedule.end_date && dateFormatToLocalDate(schedule.end_date);
+
+    const schedule_details = [];
+
+    const keys = Object.keys(columnPlaces);
+
+    for (const key of keys) {
+      const colPlaces = columnPlaces[key];
+      for (let i = 0; i < colPlaces.length; i++) {
+        const place = colPlaces[i];
+        const detail = {
+          schedule_order: key.split("columnPlaces")[1],
+          start_time: place.start_time,
+          end_time: place.end_time,
+          content_id: place.contentid,
+          createdAt: new Date().toISOString(),
+        };
+        schedule_details.push(detail);
+      }
+    }
+
+    console.log(schedule_details);
 
     const value = {
       metro_id: schedule.metro_id,
@@ -56,6 +81,7 @@ const Procedure = () => {
       start_date: schedule.start_date,
       end_date: schedule.end_date,
       schedule_title: schedule.schedule_title,
+      schedule_details,
     };
 
     axios
@@ -64,7 +90,7 @@ const Procedure = () => {
       .then((response) => {
         if (response.status === 200 || response.status === 201) {
           console.log("정상적으로 처리되었습니다.");
-          navigate("/mypage");
+          // navigate("/mypage");
         }
       })
       .catch((error) => console.log(error.response.data));
