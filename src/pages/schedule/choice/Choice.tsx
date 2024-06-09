@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "./choice.css";
 import { useLocation } from "react-router-dom";
 import Dates from "./dates/Dates";
@@ -19,7 +19,9 @@ const Choice = () => {
 
   const areaCode = metros.find((metro) => metro.name === areaname)?.areaCode;
 
-  if (areaCode) dispatch(addAreaCode(areaCode));
+  useEffect(() => {
+    if (areaCode) dispatch(addAreaCode(areaCode));
+  }, []);
 
   return (
     <main className="choice">
