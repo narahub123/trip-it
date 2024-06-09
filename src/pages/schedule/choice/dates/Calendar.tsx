@@ -11,6 +11,8 @@ import { Rootstate } from "../../../../store/store";
 import { addEnd, addStart } from "../../../../store/slices/dateSlice";
 import { addDates } from "../../../../store/slices/scheduleSlice";
 import { calcColumns } from "../../../../store/slices/accommoSlice";
+import { clearSelectedPlaces } from "../../../../store/slices/placeSlice";
+import { clearColumnPlaces } from "../../../../store/slices/columnPlacesSlice";
 
 export interface DestrucDateType {
   year: number;
@@ -54,6 +56,10 @@ const Calendar = ({ month }: CalendarProps) => {
       dispatch(addStart(date));
       dispatch(addEnd(""));
       dispatch(calcColumns() as any);
+      // selectedPlace 비우기
+      dispatch(clearSelectedPlaces());
+      // columnPlaces 비우기
+      dispatch(clearColumnPlaces());
     }
   };
 

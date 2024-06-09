@@ -116,6 +116,21 @@ const columnPlacesSlice = createSlice({
   name: "columnPlaces",
   initialState,
   reducers: {
+    clearColumnPlaces: (state) => {
+      state.columnPlaces = {
+        columnPlaces_1: [],
+        columnPlaces0: [],
+        columnPlaces1: [],
+        columnPlaces2: [],
+        columnPlaces3: [],
+        columnPlaces4: [],
+        columnPlaces5: [],
+        columnPlaces6: [],
+        columnPlaces7: [],
+        columnPlaces8: [],
+        columnPlaces9: [],
+      };
+    },
     setcurRow: (state, action: PayloadAction<string>) => {
       state.curRow = action.payload;
     },
@@ -426,6 +441,7 @@ export const {
   setColumnPlaces,
   updateStartTime,
   updateEndTime,
+  clearColumnPlaces,
 } = columnPlacesSlice.actions;
 
 export default columnPlacesSlice.reducer;
