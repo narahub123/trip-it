@@ -16,10 +16,9 @@ const Procedure = () => {
 
   const schedule = useSelector((state: Rootstate) => state.schedule.schedule);
   const endDate = useSelector((state: Rootstate) => state.date.end);
+  const accommos = useSelector((state: Rootstate) => state.accommo.columns);
 
-  console.log(schedule.start_date);
-  console.log(schedule.end_date);
-  console.log(endDate);
+  console.log(accommos);
 
   const columnPlaces = useSelector(
     (state: Rootstate) => state.columnPlaces.columnPlaces
@@ -102,6 +101,38 @@ const Procedure = () => {
       .catch((error) => console.log(error.response.data));
   };
 
+  // step 4 유효성 검사
+  const handleClickStep4 = (
+    e: React.MouseEvent<HTMLAnchorElement, MouseEvent>
+  ) => {
+    // 날짜 선택이 완료되지 않은 경우
+    if (endDate === undefined || (!endDate && endDate?.length === 0)) {
+      e.preventDefault();
+      window.alert("날짜 선택을 완료해주세요");
+    }
+
+    // 장소 선택이 일정 날수보다 적은지 여부 확인
+    const columnPlaces_1 = columnPlaces["columnPlaces_1"];
+
+    // accommos의 개수는 날수 -1이므로 +1하면 날 수와 동일함
+    if (accommos.length + 1 > columnPlaces_1.length) {
+      e.preventDefault();
+      alert(
+        `선택한 장소의 개수가 날 수 보다 적습니다. \n장소를 더 선택해주세요.`
+      );
+    }
+
+    // 숙소 선택 완료 여부 확인
+    const accommosObj = Object.values(accommos);
+    for (const accommo of accommosObj) {
+      if (accommo.contentId.length === 0) {
+        e.preventDefault();
+        alert("숙소 선택을 완료해주세요");
+        return;
+      }
+    }
+  };
+
   return (
     <aside className="procedure">
       <figure className="proc-nav">
@@ -172,16 +203,7 @@ const Procedure = () => {
             <Link
               to="#step4"
               className={hash === "#step4" ? "link active" : "link"}
-              onClick={(e) => {
-                // 날짜 선택이 완료되지 않은 경우
-                if (
-                  endDate === undefined ||
-                  (!endDate && endDate?.length === 0)
-                ) {
-                  e.preventDefault();
-                  window.alert("날짜 선택을 완료해주세요");
-                }
-              }}
+              onClick={(e) => handleClickStep4(e)}
             >
               <div className="step-container">
                 <p className="step">STEP 4 </p>
