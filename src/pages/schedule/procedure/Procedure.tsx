@@ -187,7 +187,7 @@ const Procedure = () => {
     <aside className="procedure">
       <figure className="proc-nav">
         <Link to="/">
-          <img src="" alt="로고" />
+          <img src="/images/trip-it-logo.png" alt="로고" />
         </Link>
       </figure>
       <nav>

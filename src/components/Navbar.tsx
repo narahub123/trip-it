@@ -7,7 +7,7 @@ const Navbar = () => {
     <div className="navbar">
       <div className="nav-logo">
         <NavLink to="/">
-          <img src="" alt="로고" />
+          <img src="/images/trip-it-logo.png" alt="로고" />
         </NavLink>
       </div>
       <nav>
