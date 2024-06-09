@@ -7,6 +7,7 @@ import { Rootstate } from "../../../store/store";
 import axios from "axios";
 import { CalculateDuration, dateFormatToLocalDate } from "../../../utils/date";
 import { contentTypeIds } from "../../../data/contentTypeIds";
+import usePreventRefresh from "../../../hooks/usePreventRefresh";
 
 const Procedure = () => {
   const location = useLocation();
@@ -34,6 +35,13 @@ const Procedure = () => {
     }
 
     return true;
+  };
+
+  const handleClickLogo = (
+    e: React.MouseEvent<HTMLAnchorElement, MouseEvent>
+  ) => {
+    e.preventDefault();
+    window.location.reload();
   };
 
   const handleClickStep1 = () => {};
@@ -186,7 +194,7 @@ const Procedure = () => {
   return (
     <aside className="procedure">
       <figure className="proc-nav">
-        <Link to="/">
+        <Link to="/" onClick={(e) => handleClickLogo(e)}>
           <img src="/images/trip-it-logo.png" alt="로고" />
         </Link>
       </figure>
