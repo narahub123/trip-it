@@ -37,13 +37,6 @@ const Procedure = () => {
     return true;
   };
 
-  const handleClickLogo = (
-    e: React.MouseEvent<HTMLAnchorElement, MouseEvent>
-  ) => {
-    e.preventDefault();
-    window.location.reload();
-  };
-
   const handleClickStep1 = () => {};
   const handleClickStep2 = (
     e: React.MouseEvent<HTMLAnchorElement, MouseEvent>
@@ -194,9 +187,9 @@ const Procedure = () => {
   return (
     <aside className="procedure">
       <figure className="proc-nav">
-        <Link to="/" onClick={(e) => handleClickLogo(e)}>
+        <a href="/">
           <img src="/images/trip-it-logo.png" alt="로고" />
-        </Link>
+        </a>{" "}
       </figure>
       <nav>
         <ul>
