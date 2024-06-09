@@ -43,7 +43,7 @@ const Dates = () => {
                   {`${curMonth.year}년 ${curMonth.month + 1}월`}
                 </p>
               </div>
-              <Calendar month={curMonth} />
+              <Calendar month={curMonth} key={"curMonth"} />
             </section>
             <section className="nextMonth">
               <div>
@@ -59,7 +59,7 @@ const Dates = () => {
                   <LuChevronRight />
                 </nav>
               </div>
-              <Calendar month={nextMonth} />
+              <Calendar month={nextMonth} key={"nextMonth"} />
             </section>
           </div>
         </section>

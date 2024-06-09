@@ -27,11 +27,17 @@ const Calendar = ({ month }: CalendarProps) => {
   const startDate = useSelector((state: Rootstate) => state.date.start);
   const endDate = useSelector((state: Rootstate) => state.date.end);
 
+  console.log("달 확인", month);
+
   const date = new Date(month.year, month.month, month.date);
 
   const dates = datesOfMonth(date);
 
-  const curDate = (date: number) => new Date(month.year, month.month, date);
+  const curDate = (date: number) => {
+    const curDate = new Date(month.year, month.month, date);
+
+    return curDate;
+  };
 
   const exDate = (date: number) => new Date(month.year, month.month - 1, date);
 
@@ -97,7 +103,7 @@ const Calendar = ({ month }: CalendarProps) => {
                         <td
                           key={i}
                           data-date={
-                            i > date
+                            i >= date
                               ? curDate(date).toDateString()
                               : exDate(date).toDateString()
                           }
