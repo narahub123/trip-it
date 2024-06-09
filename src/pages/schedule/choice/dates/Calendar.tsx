@@ -62,12 +62,14 @@ const Calendar = ({ month }: CalendarProps) => {
   const start = startDate && new Date(startDate);
   const end = endDate && new Date(endDate);
 
-  // start와 end가 존재하는 경우 일정 슬라이스에 날짜 추가
-  if (start && end) {
-    dispatch(
-      addDates({ start: start.toDateString(), end: end.toDateString() })
-    );
-  }
+  useEffect(() => {
+    // start와 end가 존재하는 경우 일정 슬라이스에 날짜 추가
+    if (start && end) {
+      dispatch(
+        addDates({ start: start.toDateString(), end: end.toDateString() })
+      );
+    }
+  }, []);
 
   return (
     <div className="calendar">
