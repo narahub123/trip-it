@@ -39,7 +39,6 @@ const PlacesList = () => {
   const areacode =
     useSelector((state: Rootstate) => state.schedule.schedule.metro_id) || "1";
   const schedule = useSelector((state: Rootstate) => state.schedule.schedule);
-  const place = useSelector((state: Rootstate) => state.place.place);
   const location = useLocation();
   const { hash } = location;
 
@@ -154,6 +153,8 @@ const PlacesList = () => {
     dispatch(clearPageNo());
   };
 
+  console.log("결과", places);
+
   return (
     <div className="placesList">
       <div className="info">
@@ -221,36 +222,43 @@ const PlacesList = () => {
       </div>
       <div className="list" ref={listRef}>
         <ul className="listContainer" id="listContainer">
-          {places
-            ? places.map((place) => (
-                <li className="placeListCard" key={place.contentid}>
-                  <span className="placeInfo">
-                    <PlaceCard place={place} />
+          {places && places.length > 0 ? (
+            places.map((place) => (
+              <li className="placeListCard" key={place.contentid}>
+                <span className="placeInfo">
+                  <PlaceCard place={place} />
+                </span>
+                {!selectedPlaces?.find(
+                  (contentId) => contentId.contentid === place.contentid
+                ) ? (
+                  <span
+                    className="placeEvent"
+                    onClick={() =>
+                      handleSelection(place.contentid, place.contenttypeid)
+                    }
+                  >
+                    <p className="btn">+</p>
                   </span>
-                  {!selectedPlaces?.find(
-                    (contentId) => contentId.contentid === place.contentid
-                  ) ? (
-                    <span
-                      className="placeEvent"
-                      onClick={() =>
-                        handleSelection(place.contentid, place.contenttypeid)
-                      }
-                    >
-                      <p className="btn">+</p>
-                    </span>
-                  ) : (
-                    <span
-                      className="placeEventActive"
-                      onClick={() => handleDeselection(place.contentid)}
-                    >
-                      <p className="btn">🗸</p>
-                    </span>
-                  )}
-                </li>
-              ))
-            : status !== "loading" && (
-                <li className="warning">데이터 연결 실패</li>
-              )}
+                ) : (
+                  <span
+                    className="placeEventActive"
+                    onClick={() => handleDeselection(place.contentid)}
+                  >
+                    <p className="btn">🗸</p>
+                  </span>
+                )}
+              </li>
+            ))
+          ) : places.length == 0 && status !== "loading" ? (
+            <div className="empty">
+              <img src="/images/trip-it-logo.png" alt="" />
+              <p>검색결과가 없습니다.</p>
+            </div>
+          ) : (
+            status !== "loading" && (
+              <li className="warning">데이터 연결 실패</li>
+            )
+          )}
           {status === "loading" && (
             <li key={"loading"} className="loading">
               <LuLoader />

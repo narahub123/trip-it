@@ -62,6 +62,13 @@
     ul.listContainer {
       padding-right: 10px;
       min-height: 461px;
+      .empty {
+        text-align: center;
+        img {
+          width: 150px;
+          height: 150px;
+        }
+      }
 
       li.loading {
         padding: 20px 0;
