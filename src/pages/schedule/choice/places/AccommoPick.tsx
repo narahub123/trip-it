@@ -110,9 +110,9 @@ const AccommoPick = ({ date, index }: AccommoPickProps) => {
         );
 
         // 현재 장소 추가
-        if (place) {
-          dispatch(addSelectedPlace(place));
-        }
+        // if (place) {
+        //   dispatch(addSelectedPlace(place));
+        // }
       }
 
       dispatch(setColumns(updateColumns));
