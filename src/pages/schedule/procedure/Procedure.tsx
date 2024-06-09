@@ -189,7 +189,7 @@ const Procedure = () => {
       <figure className="proc-nav">
         <a href="/">
           <img src="/images/trip-it-logo.png" alt="로고" />
-        </a>{" "}
+        </a>
       </figure>
       <nav>
         <ul>
