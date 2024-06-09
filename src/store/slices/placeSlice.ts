@@ -188,9 +188,12 @@ const placeSlice = createSlice({
     },
 
     addSelectedPlace: (state, action: PayloadAction<PlaceApiType>) => {
-      console.log(action.payload);
+      // 장소의 중복 여부 확인
+      const place = state.selectedPlaces.findIndex(
+        (place) => place.contentid === action.payload.contentid
+      );
 
-      state.selectedPlaces?.push(action.payload);
+      if (place === -1) state.selectedPlaces?.push(action.payload);
     },
 
     // selectedPlaces에서 제거
