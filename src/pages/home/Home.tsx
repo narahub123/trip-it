@@ -7,9 +7,9 @@ import { filteredMetros } from "../../store/slices/metroSlice";
 import { Rootstate } from "../../store/store";
 
 const Home = () => {
+  const dispatch = useDispatch();
   const [search, setSearch] = useState("");
   const metros = useSelector((state: Rootstate) => state.metro.filteredMetros);
-  const dispatch = useDispatch();
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
 
@@ -41,11 +41,20 @@ const Home = () => {
           />
         </div>
         <div className="home-list-container">
-          <ul>
-            {metros?.map((metro) => (
-              <HomeCard key={metro.areaCode} metro={metro} />
-            ))}
-          </ul>
+          {metros?.length === 0 ? (
+            <>
+              <div className="logo">
+                <img src={`/images/trip-it-logo.png`} alt="" />
+              </div>
+              <p>검색결과가 없습니다.</p>
+            </>
+          ) : (
+            <ul>
+              {metros?.map((metro) => (
+                <HomeCard key={metro.areaCode} metro={metro} />
+              ))}
+            </ul>
+          )}
         </div>
       </div>
     </>

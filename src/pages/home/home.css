@@ -6,6 +6,17 @@
     }
   }
   .home-list-container {
+    .logo {
+      text-align: center;
+      margin: 0 auto;
+      img {
+        width: 180px;
+        height: 180px;
+      }
+    }
+    p {
+      text-align: center;
+    }
     ul {
       display: flex;
       flex-wrap: wrap;
