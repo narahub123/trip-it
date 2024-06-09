@@ -4,6 +4,7 @@ const usePreventRefresh = () => {
   const preventClose = (e: BeforeUnloadEvent) => {
     e.preventDefault();
     e.returnValue = "";
+    localStorage.setItem("redirect", "true");
   };
 
   useEffect(() => {
