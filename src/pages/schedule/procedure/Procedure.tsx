@@ -15,6 +15,12 @@ const Procedure = () => {
   const navigate = useNavigate();
 
   const schedule = useSelector((state: Rootstate) => state.schedule.schedule);
+  const endDate = useSelector((state: Rootstate) => state.date.end);
+
+  console.log(schedule.start_date);
+  console.log(schedule.end_date);
+  console.log(endDate);
+
   const columnPlaces = useSelector(
     (state: Rootstate) => state.columnPlaces.columnPlaces
   );
@@ -122,7 +128,15 @@ const Procedure = () => {
             <Link
               to="#step2"
               className={hash === "#step2" ? "link active" : "link"}
-              onClick={() => {
+              onClick={(e) => {
+                // 날짜 선택이 완료되지 않은 경우
+                if (
+                  endDate === undefined ||
+                  (!endDate && endDate?.length === 0)
+                ) {
+                  e.preventDefault();
+                  window.alert("날짜 선택을 완료해주세요");
+                }
                 dispatch(clearPageNo());
               }}
             >
@@ -136,7 +150,15 @@ const Procedure = () => {
             <Link
               to="#step3"
               className={hash === "#step3" ? "link active" : "link"}
-              onClick={() => {
+              onClick={(e) => {
+                // 날짜 선택이 완료되지 않은 경우
+                if (
+                  endDate === undefined ||
+                  (!endDate && endDate?.length === 0)
+                ) {
+                  e.preventDefault();
+                  window.alert("날짜 선택을 완료해주세요");
+                }
                 dispatch(clearPageNo());
               }}
             >
@@ -150,6 +172,16 @@ const Procedure = () => {
             <Link
               to="#step4"
               className={hash === "#step4" ? "link active" : "link"}
+              onClick={(e) => {
+                // 날짜 선택이 완료되지 않은 경우
+                if (
+                  endDate === undefined ||
+                  (!endDate && endDate?.length === 0)
+                ) {
+                  e.preventDefault();
+                  window.alert("날짜 선택을 완료해주세요");
+                }
+              }}
             >
               <div className="step-container">
                 <p className="step">STEP 4 </p>
