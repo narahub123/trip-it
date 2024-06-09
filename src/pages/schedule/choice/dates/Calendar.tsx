@@ -27,8 +27,6 @@ const Calendar = ({ month }: CalendarProps) => {
   const startDate = useSelector((state: Rootstate) => state.date.start);
   const endDate = useSelector((state: Rootstate) => state.date.end);
 
-  console.log("달 확인", month);
-
   const date = new Date(month.year, month.month, month.date);
 
   const dates = datesOfMonth(date);
@@ -69,7 +67,7 @@ const Calendar = ({ month }: CalendarProps) => {
         addDates({ start: start.toDateString(), end: end.toDateString() })
       );
     }
-  }, []);
+  }, [start, end]);
 
   return (
     <div className="calendar">

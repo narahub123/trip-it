@@ -22,8 +22,6 @@ const scheduleSlice = createSlice({
   reducers: {
     // 지역 코드 추가
     addAreaCode: (state, action: PayloadAction<string>) => {
-      console.log(action.payload);
-
       if (action.payload) state.schedule.metro_id = action.payload;
     },
     // 날짜 추가
@@ -31,7 +29,6 @@ const scheduleSlice = createSlice({
       state,
       action: PayloadAction<{ start: string; end: string }>
     ) => {
-      console.log(action.payload);
       if (action.payload) {
         state.schedule.start_date = action.payload.start;
         state.schedule.end_date = action.payload.end;
