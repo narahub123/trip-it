@@ -25,6 +25,11 @@ const Procedure = () => {
     (state: Rootstate) => state.columnPlaces.columnPlaces
   );
 
+  // 로고를 눌러 이동할 때
+  const handleLogo = () => {
+    dispatch(setBackToggle());
+  };
+
   // 날짜 선택이 완료되지 않은 경우
   const checkDates = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
     if (endDate === undefined || (!endDate && endDate?.length === 0)) {
@@ -181,10 +186,6 @@ const Procedure = () => {
         }
       })
       .catch((error) => console.log(error.response.data));
-  };
-
-  const handleLogo = () => {
-    dispatch(setBackToggle());
   };
 
   return (

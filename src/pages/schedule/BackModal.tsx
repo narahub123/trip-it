@@ -19,12 +19,12 @@ const BackModal = () => {
           <p>변경사항이 저장되지 않을 수 있습니다.</p>
         </div>
         <div className="btns">
-          <p className="close" onClick={() => dispatch(setBackToggle())}>
+          <button className="close" onClick={() => dispatch(setBackToggle())}>
             취소
-          </p>
-          <p className="confirm" onClick={() => handleGoBack()}>
+          </button>
+          <button className="confirm" onClick={() => handleGoBack()} autoFocus>
             확인
-          </p>
+          </button>
         </div>
       </div>
     </div>

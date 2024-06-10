@@ -10,12 +10,17 @@ import PlaceModal from "../pages/schedule/choice/places/PlaceModal";
 import AccommModal from "../pages/schedule/choice/places/AccommModal";
 import { useLocation, useNavigate } from "react-router-dom";
 import BackModal from "../pages/schedule/BackModal";
+import { setBackToggle } from "../store/slices/uiSlice";
+import { useRenderCount } from "@uidotdev/usehooks";
 
 const ScheduleLayout = () => {
+  const rendering = useRenderCount();
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { pathname } = useLocation();
   const backToggle = useSelector((state: Rootstate) => state.ui.BackToggle);
+
+  console.log("렌더링 횟수", rendering);
 
   // 새로 고침 방지
   usePreventRefresh();
@@ -30,6 +35,21 @@ const ScheduleLayout = () => {
       navigate(`${pathnameDecoded}#step1`);
     }
   }, []);
+
+  // 뒤로가기 방지
+  const preventGoBack = () => {
+    dispatch(setBackToggle());
+  };
+
+  useEffect(() => {
+    window.history.pushState(null, "", window.location.href);
+
+    window.addEventListener("popstate", preventGoBack);
+
+    return () => {
+      window.removeEventListener("popstate", preventGoBack);
+    };
+  }, [setBackToggle]);
 
   const modalToggle = useSelector((state: Rootstate) => state.place.modal);
   const accommoToggle = useSelector(
