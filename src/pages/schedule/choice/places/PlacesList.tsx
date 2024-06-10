@@ -154,7 +154,6 @@ const PlacesList = () => {
   };
 
   console.log("결과", places);
-  console.log(status);
 
   return (
     <div className="placesList">
@@ -252,14 +251,13 @@ const PlacesList = () => {
                 )}
               </li>
             ))
-          ) : places.length == 0 && status !== "loading" ? (
-            <div className="empty">
-              <img src="/images/trip-it-logo.png" alt="" />
-              <p>검색결과가 없습니다.</p>
-            </div>
           ) : (
+            places.length == 0 &&
             status !== "loading" && (
-              <li className="warning">데이터 연결 실패</li>
+              <div className="empty">
+                <img src="/images/trip-it-logo.png" alt="" />
+                <p>검색결과가 없습니다.</p>
+              </div>
             )
           )}
           {status === "loading" && (
