@@ -7,6 +7,7 @@ import { Rootstate } from "../../../store/store";
 import axios from "axios";
 import { CalculateDuration, dateFormatToLocalDate } from "../../../utils/date";
 import { setBackToggle } from "../../../store/slices/uiSlice";
+import Button from "../../../components/ui/Button";
 
 const Procedure = () => {
   const location = useLocation();
@@ -269,9 +270,11 @@ const Procedure = () => {
               </div>
             </Link>
           </li>
-          <li>
-            <button onClick={() => handleSubmit()}>등록</button>
-          </li>
+          {hash === "#step4" && (
+            <li onClick={() => handleSubmit()}>
+              <Button name="등록" />
+            </li>
+          )}
         </ul>
       </nav>
     </aside>

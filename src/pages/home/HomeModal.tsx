@@ -7,6 +7,7 @@ import { Rootstate } from "../../store/store";
 import { setActive } from "../../store/slices/modalSlice";
 import { getMetro } from "../../store/slices/metroSlice";
 import { addAreaCode } from "../../store/slices/scheduleSlice";
+import Button from "../../components/ui/Button";
 
 const HomeModal = () => {
   const navigate = useNavigate();
@@ -25,7 +26,9 @@ const HomeModal = () => {
 
     const classname = Target.className;
 
-    if (classname === "modal") {
+    console.log(classname);
+
+    if (classname === "home-modal") {
       dispatch(setActive());
       dispatch(getMetro(""));
     }
@@ -58,10 +61,16 @@ const HomeModal = () => {
           <p className="desc">{metro?.description}</p>
         </div>
         <div className="buttons">
-          <button onClick={handleToggle}>이전</button>
-          <button onClick={metro && (() => handleSelect(metro?.areaCode))}>
-            선택
-          </button>
+          <div onClick={handleToggle}>
+            <Button
+              name="이전"
+              backgroundColor="transparent"
+              autofocus={false}
+            />
+          </div>
+          <div onClick={metro && (() => handleSelect(metro?.areaCode))}>
+            <Button name="선택" backgroundColor="transparent" color="red" />
+          </div>
         </div>
       </div>
     </div>

@@ -3,6 +3,7 @@ import "./backModal.css";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { setBackToggle } from "../../store/slices/uiSlice";
+import Button from "../../components/ui/Button";
 
 const BackModal = () => {
   const navigate = useNavigate();
@@ -33,12 +34,16 @@ const BackModal = () => {
           <p>변경사항이 저장되지 않을 수 있습니다.</p>
         </div>
         <div className="btns">
-          <button className="close" onClick={() => handleCancel()}>
-            취소
-          </button>
-          <button className="confirm" onClick={() => handleGoBack()} autoFocus>
-            확인
-          </button>
+          <div className="close" onClick={() => handleCancel()}>
+            <Button
+              name="취소"
+              backgroundColor="transparent"
+              autofocus={false}
+            />
+          </div>
+          <div className="confirm" onClick={() => handleGoBack()}>
+            <Button name="확인" backgroundColor="transparent" color="red" />
+          </div>
         </div>
       </div>
     </div>

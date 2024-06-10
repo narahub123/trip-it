@@ -6,6 +6,7 @@ import {
   addSelectedPlace,
   modalToggle,
 } from "../../../../store/slices/placeSlice";
+import Button from "../../../../components/ui/Button";
 const PlaceModal = () => {
   const place = useSelector((state: Rootstate) => state.place.place);
   const dispatch = useDispatch();
@@ -33,7 +34,9 @@ const PlaceModal = () => {
         </div>
         <div className="buttons">
           {place?.contenttypeid !== "32" && (
-            <button onClick={place && (() => handleSelect())}>선택</button>
+            <div onClick={place && (() => handleSelect())}>
+              <Button name="추가" />
+            </div>
           )}
           {place?.contenttypeid === "32" && <></>}
         </div>
