@@ -17,9 +17,13 @@ const BackModal = () => {
   ) => {
     e.stopPropagation();
     const classname = e.currentTarget.className;
-    console.log(classname);
 
     if (classname === "back-modal") dispatch(setBackToggle());
+  };
+
+  const handleCancel = () => {
+    window.history.pushState(null, "", window.location.href);
+    dispatch(setBackToggle());
   };
 
   return (
@@ -29,7 +33,7 @@ const BackModal = () => {
           <p>변경사항이 저장되지 않을 수 있습니다.</p>
         </div>
         <div className="btns">
-          <button className="close" onClick={() => dispatch(setBackToggle())}>
+          <button className="close" onClick={() => handleCancel()}>
             취소
           </button>
           <button className="confirm" onClick={() => handleGoBack()} autoFocus>

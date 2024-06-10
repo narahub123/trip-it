@@ -17,7 +17,7 @@ const ScheduleLayout = () => {
   const rendering = useRenderCount();
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { pathname } = useLocation();
+  const { hash, pathname } = useLocation();
   const backToggle = useSelector((state: Rootstate) => state.ui.BackToggle);
 
   console.log("렌더링 횟수", rendering);
@@ -38,10 +38,18 @@ const ScheduleLayout = () => {
 
   // 뒤로가기 방지
   const preventGoBack = () => {
+    console.log("저기는요?");
+
     dispatch(setBackToggle());
   };
 
   useEffect(() => {
+    const handleHashChange = () => {
+      console.log("여기 옴?");
+      window.history.pushState(null, "", window.location.href);
+    };
+    window.addEventListener("hashchange", handleHashChange);
+
     window.history.pushState(null, "", window.location.href);
 
     window.addEventListener("popstate", preventGoBack);
@@ -49,7 +57,7 @@ const ScheduleLayout = () => {
     return () => {
       window.removeEventListener("popstate", preventGoBack);
     };
-  }, [setBackToggle]);
+  }, [hash]);
 
   const modalToggle = useSelector((state: Rootstate) => state.place.modal);
   const accommoToggle = useSelector(
