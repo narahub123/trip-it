@@ -20,6 +20,8 @@ const scheduleSlice = createSlice({
   name: "schedule",
   initialState,
   reducers: {
+    // 리셋하기
+    resetSchedule: () => initialState,
     // 지역 코드 추가
     addAreaCode: (state, action: PayloadAction<string>) => {
       if (action.payload) state.schedule.metro_id = action.payload;
@@ -41,6 +43,7 @@ const scheduleSlice = createSlice({
   },
 });
 
-export const { addAreaCode, addDates, addTitle } = scheduleSlice.actions;
+export const { addAreaCode, addDates, addTitle, resetSchedule } =
+  scheduleSlice.actions;
 
 export default scheduleSlice.reducer;

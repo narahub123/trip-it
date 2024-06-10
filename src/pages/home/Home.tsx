@@ -5,6 +5,8 @@ import HomeCard from "./HomeCard";
 import { useDispatch, useSelector } from "react-redux";
 import { filteredMetros } from "../../store/slices/metroSlice";
 import { Rootstate } from "../../store/store";
+import { resetSchedule } from "../../store/slices/scheduleSlice";
+import { resetDates } from "../../store/slices/dateSlice";
 
 const Home = () => {
   const dispatch = useDispatch();
@@ -17,6 +19,12 @@ const Home = () => {
 
     setSearch(search);
   };
+
+  // 리덕스 초기화 
+  useEffect(() => {
+    dispatch(resetSchedule());
+    dispatch(resetDates());
+  }, []);
 
   useEffect(() => {
     dispatch(filteredMetros(search));

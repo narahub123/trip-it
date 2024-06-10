@@ -33,6 +33,8 @@ const dateSlice = createSlice({
   name: "dates",
   initialState,
   reducers: {
+    // 리셋하기
+    resetDates: () => initialState,
     plusMonth: (state) => {
       const nextMonth = monthLater(new Date(state.base));
       return {
@@ -62,6 +64,7 @@ const dateSlice = createSlice({
   },
 });
 
-export const { plusMonth, minusMonth, addStart, addEnd } = dateSlice.actions;
+export const { plusMonth, minusMonth, addStart, addEnd, resetDates } =
+  dateSlice.actions;
 
 export default dateSlice.reducer;
