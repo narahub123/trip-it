@@ -65,16 +65,35 @@ const Procedure = () => {
     if (!checkDates(e)) return;
 
     // 장소 선택이 일정 날수보다 적은지 여부 확인
-    const columnPlaces_1 = columnPlaces["columnPlaces_1"];
 
-    // accommos의 개수는 날수 -1이므로 +1하면 날 수와 동일함
-    if (accommos.length + 1 > columnPlaces_1.length) {
-      e.preventDefault();
-      alert(
-        `선택한 장소의 개수가 날 수 보다 적습니다. \n장소를 더 선택해주세요.`
-      );
+    if (schedule.start_date === undefined || schedule.end_date === undefined) {
+      return;
     }
 
+    const dates = CalculateDuration(schedule.start_date, schedule.end_date).map(
+      (_, index) => index
+    );
+
+    const keys = Object.keys(columnPlaces);
+
+    let placeCount = 0;
+    let accommoCount = 0;
+    for (const dateKey of keys) {
+      const colPlaces = columnPlaces[dateKey];
+      for (let i = 0; i < colPlaces.length; i++) {
+        const place = colPlaces[i];
+
+        if (place.contenttypeid === "32") accommoCount++;
+        else placeCount++;
+      }
+    }
+
+    if (placeCount < dates.length) {
+      e.preventDefault();
+      alert("장소 개수가 부족합니다.");
+
+      return;
+    }
     // 숙소 선택 완료 여부 확인
     const accommosObj = Object.values(accommos);
     for (const accommo of accommosObj) {
