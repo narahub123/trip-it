@@ -13,6 +13,7 @@ import {
   removeSelectedPlace,
 } from "../../../../store/slices/placeSlice";
 import { destrucDate } from "../../../../utils/date";
+import { metros } from "../../../../data/metros";
 
 interface AccommoPickProps {
   date: DestrucDateType;
@@ -23,7 +24,9 @@ const AccommoPick = ({ date, index }: AccommoPickProps) => {
   const selectedPlaces = useSelector(
     (state: Rootstate) => state.place.selectedPlaces
   );
+
   const columns = useSelector((state: Rootstate) => state.accommo.columns);
+  const place = useSelector((state: Rootstate) => state.place.place);
   const match = columns.find((column) => column.index === index);
   // 이전에 선택했던 장소
   const [matched, setMatched] = useState(
@@ -34,11 +37,11 @@ const AccommoPick = ({ date, index }: AccommoPickProps) => {
   const dispatch = useDispatch();
 
   // 현재 선택한 장소
-  const place = useSelector((state: Rootstate) => state.place.place);
 
-  console.log("place", place);
-
-  console.log("matched", matched);
+  // 기본 이미지
+  const defaultImage = metros.find(
+    (metro) => metro.areaCode === place?.areacode
+  )?.imgUrl;
 
   const handleInsertImage = (
     e: React.MouseEvent<HTMLImageElement | HTMLDivElement, MouseEvent>
@@ -159,9 +162,10 @@ const AccommoPick = ({ date, index }: AccommoPickProps) => {
         date.month < 10 ? "0" + date.month : date.month
       }.${date.date < 10 ? "0" + date.date : date.date}`}</p>
       <figure className="image">
+        {/* 기존 선택한 장소가 있는 경우 */}
         {matched && !inserted && (
           <img
-            src={matched?.firstimage}
+            src={matched?.firstimage || defaultImage}
             alt="호텔"
             onClick={(e) => {
               handleInsertImage(e);
@@ -169,10 +173,10 @@ const AccommoPick = ({ date, index }: AccommoPickProps) => {
             id={index.toString()}
           />
         )}
-        {/* 클릭하고 matched가 있는 경우 */}
-        {inserted && matched && (
+        {/* 클릭하고 place가 있는 경우 */}
+        {inserted && place && (
           <img
-            src={place?.firstimage}
+            src={place?.firstimage || defaultImage}
             alt="호텔"
             onClick={(e) => {
               handleInsertImage(e);
@@ -180,7 +184,7 @@ const AccommoPick = ({ date, index }: AccommoPickProps) => {
             id={index.toString()}
           />
         )}
-
+        {/* 클릭 안하고 기존 장소도 없음 */}
         {!inserted && !matched && (
           <div
             className="plus"
