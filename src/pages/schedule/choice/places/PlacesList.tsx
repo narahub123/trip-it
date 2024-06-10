@@ -153,8 +153,6 @@ const PlacesList = () => {
     dispatch(clearPageNo());
   };
 
-  console.log("결과", places);
-
   return (
     <div className="placesList">
       <div className="info">

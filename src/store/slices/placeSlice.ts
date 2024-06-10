@@ -221,8 +221,6 @@ const placeSlice = createSlice({
         (state, action: PayloadAction<PlaceApiType[] | undefined>) => {
           state.status = "succeeded";
 
-          console.log("결과", action.payload);
-
           if (action.payload === undefined) action.payload = [];
           if (action.payload === null) {
             state.status = "connection-error";

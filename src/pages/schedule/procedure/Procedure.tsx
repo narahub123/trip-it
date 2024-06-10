@@ -6,6 +6,7 @@ import { clearPageNo } from "../../../store/slices/placeSlice";
 import { Rootstate } from "../../../store/store";
 import axios from "axios";
 import { CalculateDuration, dateFormatToLocalDate } from "../../../utils/date";
+import { setBackToggle } from "../../../store/slices/uiSlice";
 
 const Procedure = () => {
   const location = useLocation();
@@ -182,12 +183,16 @@ const Procedure = () => {
       .catch((error) => console.log(error.response.data));
   };
 
+  const handleLogo = () => {
+    dispatch(setBackToggle());
+  };
+
   return (
     <aside className="procedure">
       <figure className="proc-nav">
-        <a href="/">
+        <div onClick={() => handleLogo()}>
           <img src="/images/trip-it-logo.png" alt="로고" />
-        </a>
+        </div>
       </figure>
       <nav>
         <ul>
@@ -197,6 +202,7 @@ const Procedure = () => {
               className={
                 hash === "" || hash === "#step1" ? "link active" : "link"
               }
+              replace={true}
             >
               <div className="step-container">
                 <p className="step">STEP 1 </p>
@@ -209,6 +215,7 @@ const Procedure = () => {
               to="#step2"
               className={hash === "#step2" ? "link active" : "link"}
               onClick={(e) => handleClickStep2(e)}
+              replace={true}
             >
               <div className="step-container">
                 <p className="step">STEP 2 </p>
@@ -221,6 +228,7 @@ const Procedure = () => {
               to="#step3"
               className={hash === "#step3" ? "link active" : "link"}
               onClick={(e) => handleClickStep3(e)}
+              replace={true}
             >
               <div className="step-container">
                 <p className="step">STEP 3 </p>
@@ -233,6 +241,7 @@ const Procedure = () => {
               to="#step4"
               className={hash === "#step4" ? "link active" : "link"}
               onClick={(e) => handleClickStep4(e)}
+              replace={true}
             >
               <div className="step-container">
                 <p className="step">STEP 4 </p>
