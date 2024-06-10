@@ -6,8 +6,6 @@ import { clearPageNo } from "../../../store/slices/placeSlice";
 import { Rootstate } from "../../../store/store";
 import axios from "axios";
 import { CalculateDuration, dateFormatToLocalDate } from "../../../utils/date";
-import { contentTypeIds } from "../../../data/contentTypeIds";
-import usePreventRefresh from "../../../hooks/usePreventRefresh";
 
 const Procedure = () => {
   const location = useLocation();
