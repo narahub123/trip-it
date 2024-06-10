@@ -1,8 +1,6 @@
 import React from "react";
 import "./homeCard.css";
 import { MetroType } from "../../types/schedules";
-import { metros } from "../../data/metros";
-import { Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { setActive } from "../../store/slices/modalSlice";
 import { getMetro } from "../../store/slices/metroSlice";

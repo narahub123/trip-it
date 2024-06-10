@@ -3,9 +3,10 @@ import { Outlet } from "react-router-dom";
 
 import "./rootLayout.css";
 import Navbar from "../components/Navbar";
-import Modal from "../components/Modal";
+
 import { Rootstate } from "../store/store";
 import { useSelector } from "react-redux";
+import HomeModal from "../pages/home/HomeModal";
 
 const RootLayout = () => {
   // 모달 활성화 확인
@@ -16,7 +17,7 @@ const RootLayout = () => {
 
   return (
     <div className="rootLayout">
-      {active && <Modal />}
+      {active && <HomeModal />}
       <Navbar />
       <div className="blank" />
       <main>
