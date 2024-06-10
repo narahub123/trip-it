@@ -12,9 +12,19 @@ const BackModal = () => {
     navigate("/", { replace: true });
   };
 
+  const handleBackground = (
+    e: React.MouseEvent<HTMLDivElement, MouseEvent>
+  ) => {
+    e.stopPropagation();
+    const classname = e.currentTarget.className;
+    console.log(classname);
+
+    if (classname === "back-modal") dispatch(setBackToggle());
+  };
+
   return (
-    <div className="back-modal">
-      <div className="container">
+    <div className="back-modal" onClick={(e) => handleBackground(e)}>
+      <div className="container" onClick={(e) => handleBackground(e)}>
         <div className="info">
           <p>변경사항이 저장되지 않을 수 있습니다.</p>
         </div>
