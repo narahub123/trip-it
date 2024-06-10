@@ -82,7 +82,7 @@
       li.warning {
         padding: 20px 0;
         text-align: center;
-        visibility: hidden;
+        /* visibility: hidden; */
       }
 
       li.placeListCard {

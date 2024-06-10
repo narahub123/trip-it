@@ -154,6 +154,7 @@ const PlacesList = () => {
   };
 
   console.log("결과", places);
+  console.log(status);
 
   return (
     <div className="placesList">
@@ -222,7 +223,9 @@ const PlacesList = () => {
       </div>
       <div className="list" ref={listRef}>
         <ul className="listContainer" id="listContainer">
-          {places && places.length > 0 ? (
+          {status === "connection-error" ? (
+            <li className="warning">데이터 연결 실패</li>
+          ) : places && places.length > 0 ? (
             places.map((place) => (
               <li className="placeListCard" key={place.contentid}>
                 <span className="placeInfo">
