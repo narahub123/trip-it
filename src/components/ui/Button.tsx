@@ -5,13 +5,17 @@ interface ButtonProps {
   backgroundColor?: string;
   color?: string;
   autofocus?: boolean;
+  padding?: string | number;
+  width?: string | number;
 }
 
 const Button = ({
   name,
   backgroundColor = "aquamarine",
+  padding = "20px",
   color = "black",
   autofocus = true,
+  width,
 }: ButtonProps) => {
   return (
     <button
@@ -20,10 +24,11 @@ const Button = ({
       style={{
         border: "0",
         outline: "none",
-        padding: "20px",
+        padding: `${padding}`,
         borderRadius: "13px",
         backgroundColor: `${backgroundColor}`,
         color: `${color}`,
+        width: `${width}`,
       }}
       autoFocus={autofocus}
     >

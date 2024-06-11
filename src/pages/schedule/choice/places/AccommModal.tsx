@@ -13,6 +13,7 @@ import {
   calcColumns,
   setSelected,
 } from "../../../../store/slices/accommoSlice";
+import Button from "../../../../components/ui/Button";
 
 const AccommModal = () => {
   const dispatch = useDispatch();
@@ -33,6 +34,8 @@ const AccommModal = () => {
     e.stopPropagation();
 
     if (e.currentTarget.className === "accommo-modal") {
+      // 토글이 작동하는 경우 selected를 품
+      dispatch(setSelected(false));
       dispatch(accommoToggle());
     }
   };
@@ -75,7 +78,23 @@ const AccommModal = () => {
                 : () => dispatch(accommoToggle())
             }
           >
-            {selected ? "완료" : "되돌가기"}
+            {selected ? (
+              <Button
+                name="선택"
+                padding={`15px 0px`}
+                backgroundColor="black"
+                color="white"
+                width={"70%"}
+              />
+            ) : (
+              <Button
+                name="되돌아기기"
+                padding={`15px 0px`}
+                backgroundColor="black"
+                color="white"
+                width={"70%"}
+              />
+            )}
           </div>
         </div>
       </div>

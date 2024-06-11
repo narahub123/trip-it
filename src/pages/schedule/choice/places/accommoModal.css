@@ -74,12 +74,7 @@
         margin: 10px auto;
       }
       .done {
-        width: 70%;
-        background-color: black;
-        color: white;
-        padding: 10px 0;
         margin: 10px auto;
-        border-radius: 10px;
       }
     }
   }
