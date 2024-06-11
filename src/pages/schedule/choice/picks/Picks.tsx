@@ -52,7 +52,11 @@ const Picks = () => {
     <div
       className="picks"
       style={
-        columnPlaces_1.length > 0 ? { width: "741px" } : { width: "530px" }
+        columnPlaces_1 === undefined
+          ? undefined
+          : columnPlaces_1.length > 0
+          ? { width: "741px" }
+          : { width: "530px" }
       }
     >
       <Drags />
