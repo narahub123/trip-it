@@ -3,4 +3,8 @@
 
   .kanban {
   }
+  .edge {
+    border: 1px solid black;
+    cursor: col-resize;
+  }
 }
