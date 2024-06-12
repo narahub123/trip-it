@@ -45,9 +45,12 @@ const Map = () => {
   useEffect(() => {
     if (window.kakao) {
       window.kakao.maps.load(() => {
+        const container = document.getElementById("map");
         // 주소-좌표 변환 객체를 생성합니다
-        var geocoder = new window.kakao.maps.services.Geocoder();
+        const geocoder = new window.kakao.maps.services.Geocoder();
 
+        let latitude = 0;
+        let longitude = 0;
         // 달력으로 이동할 때의 주소
         // 주소로 좌표를 검색합니다
         geocoder.addressSearch(
@@ -55,19 +58,25 @@ const Map = () => {
           function (result: ResultType[], status: kakao.maps.services.Status) {
             // 정상적으로 검색이 완료됐으면
             if (status === kakao.maps.services.Status.OK) {
-              var coords = new kakao.maps.LatLng(
+              const coords = new kakao.maps.LatLng(
                 Number(result[0].y),
                 Number(result[0].x)
               );
+
+              latitude = Number(result[0].y);
+              longitude = Number(result[0].x);
 
               // 지도의 중심을 결과값으로 받은 위치로 이동시킵니다
               map.setCenter(coords);
             }
           }
         );
-        const container = document.getElementById("map");
+
+        console.log(latitude);
+        console.log(longitude);
+
         const options = {
-          center: new kakao.maps.LatLng(33.450701, 126.570667),
+          center: new kakao.maps.LatLng(latitude, longitude),
           level: 8,
         };
 
@@ -98,7 +107,7 @@ const Map = () => {
         const MARKER_HEIGHT = 42.5;
         const OFFSET_X = 6;
         const OFFSET_Y = MARKER_HEIGHT;
-        const SPRITE_MARKER_SRC = "/images/kakao-markers.png";
+        const SPRITE_MARKER_SRC = "/images/kakao-markers2.png";
         const SPRITE_WIDTH = 330;
         const SPRITE_HEIGHT = 425;
 
@@ -217,12 +226,12 @@ const Map = () => {
                     const num = Number(key.split("columnPlaces")[1]);
 
                     // 인포윈도우로 장소에 대한 설명을 표시합니다
-                    // var infowindow = new window.kakao.maps.InfoWindow({
-                    //   content: `<div style="width:150px;text-align:center;padding:6px 0; background-color: ${
-                    //     colors[num]
-                    //   }">${text} ${place.title} ${i + 1}번째 장소</div>`,
-                    // });
-                    // infowindow.open(map, marker);
+                    var infowindow = new window.kakao.maps.InfoWindow({
+                      content: `<div style="width:150px;text-align:center;padding:6px 0; background-color: ${
+                        colors[num]
+                      }">${text} ${place.title} ${i + 1}번째 장소</div>`,
+                    });
+                    infowindow.open(map, marker);
 
                     // LatLngBounds 객체에 추가된 좌표들을 기준으로 지도의 범위를 재설정합니다
                     // 이때 지도의 중심좌표와 레벨이 변경될 수 있습니다

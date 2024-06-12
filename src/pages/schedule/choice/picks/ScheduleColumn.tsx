@@ -26,6 +26,7 @@ interface ScheduleColumnProps {
 }
 
 const ScheduleColumn = ({ date, index }: ScheduleColumnProps) => {
+  const limitOfPlaces = 10;
   const [isActive, setIsActive] = useState(false);
   const dispatch = useDispatch();
   const curCol = useSelector((state: Rootstate) => state.columnPlaces.curCol);
@@ -82,6 +83,11 @@ const ScheduleColumn = ({ date, index }: ScheduleColumnProps) => {
     e.preventDefault();
     e.stopPropagation();
 
+    if (columnPlaces.length === limitOfPlaces) {
+      alert(`하루 최대 허용 장소 개수 ${limitOfPlaces}개를 초과하였습니다.`);
+      return;
+    }
+
     // 이동하고자하는 위치
     const goalRow = e.currentTarget.dataset.row;
     const goalCol = e.currentTarget.dataset.col;
@@ -126,9 +132,14 @@ const ScheduleColumn = ({ date, index }: ScheduleColumnProps) => {
   return (
     <div className="schedule-column" key={`col${index}`}>
       <div className="schedule-column-date">
-        <p>{`${date.year}.${date.month + 1}.${date.date}(${getWeek(
-          new Date(date.year, date.month, date.date)
-        )}, ${index + 1}일차)`}</p>
+        <p>
+          {`${date.year}.${date.month + 1}.${date.date}(${getWeek(
+            new Date(date.year, date.month, date.date)
+          )}, ${index + 1}일차)`}
+          {columnPlaces.length === limitOfPlaces
+            ? `: 하루 허용 장소 수 ${limitOfPlaces}개 초과`
+            : ` : ${columnPlaces.length}군데`}
+        </p>
       </div>
       <div
         className={
@@ -147,14 +158,16 @@ const ScheduleColumn = ({ date, index }: ScheduleColumnProps) => {
             </li>
           )}
 
-          <DropIndicator
-            row="_1"
-            col={index.toString()}
-            onDragLeave={handleDragLeave}
-            onDragOver={handleDragOver}
-            onDrop={handleDrop}
-            key={"_1"}
-          />
+          {columnPlaces.length < limitOfPlaces && (
+            <DropIndicator
+              row="_1"
+              col={index.toString()}
+              onDragLeave={handleDragLeave}
+              onDragOver={handleDragOver}
+              onDrop={handleDrop}
+              key={"_1"}
+            />
+          )}
 
           {columnPlaces &&
             columnPlaces?.map((place, i) => (
@@ -180,7 +193,7 @@ const ScheduleColumn = ({ date, index }: ScheduleColumnProps) => {
                   </span>
                 </li>
 
-                {i !== length - 1 && (
+                {i !== length - 1 && columnPlaces.length < limitOfPlaces && (
                   <DropIndicator
                     col={index.toString()}
                     row={i.toString()}
