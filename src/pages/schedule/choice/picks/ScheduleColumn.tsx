@@ -19,6 +19,7 @@ import { LuTrash2 } from "react-icons/lu";
 import DropCard from "./DropCard";
 import { setColumns } from "../../../../store/slices/accommoSlice";
 import { useRenderCount } from "@uidotdev/usehooks";
+import PossibleCard from "./PossibleCard";
 
 interface ScheduleColumnProps {
   date: DestrucDateType;
@@ -27,17 +28,26 @@ interface ScheduleColumnProps {
 
 const ScheduleColumn = ({ date, index }: ScheduleColumnProps) => {
   const limitOfPlaces = 10;
+  const [possible, setPossible] = useState<string | undefined>(undefined);
   const [isActive, setIsActive] = useState(false);
   const dispatch = useDispatch();
   const curCol = useSelector((state: Rootstate) => state.columnPlaces.curCol);
+  const curRow = useSelector((state: Rootstate) => state.columnPlaces.curRow);
+  const goalRow = useSelector((state: Rootstate) => state.columnPlaces.goalRow);
   const columns = useSelector((state: Rootstate) => state.accommo.columns);
   // 렌더링 개수
   const count = useRenderCount();
   console.log("렌더링 개수", count);
 
-  const selectedPlaces = useSelector(
-    (state: Rootstate) => state.place.selectedPlaces
+  const selectedPlaceColumn = useSelector(
+    (state: Rootstate) =>
+      state.columnPlaces.columnPlaces[
+        `columnPlaces${curCol}` as keyof typeof state.columnPlaces.columnPlaces
+      ]
   );
+
+  // drag한 장소
+  const selectedPlace = selectedPlaceColumn[Number(curRow)];
 
   const columnPlaces = useSelector(
     (state: Rootstate) =>
@@ -58,15 +68,15 @@ const ScheduleColumn = ({ date, index }: ScheduleColumnProps) => {
     if (curCol) dispatch(setcurCol(curCol));
     if (contentId && curCol)
       dispatch(setDraggedPlace({ curRow: contentId, curCol }));
-
-    console.log("curRow)", curRow);
-    console.log("curCol", curCol);
-    console.log("contentId", contentId);
   };
   const handleDragOver = (
     e: React.DragEvent<HTMLDivElement> | React.DragEvent<HTMLLIElement>
   ) => {
     e.preventDefault();
+    console.log(e.currentTarget.dataset.row);
+    const overRow = e.currentTarget.dataset.row;
+
+    setPossible(overRow);
 
     setIsActive(true);
   };
@@ -75,6 +85,7 @@ const ScheduleColumn = ({ date, index }: ScheduleColumnProps) => {
     e: React.DragEvent<HTMLDivElement> | React.DragEvent<HTMLLIElement>
   ) => {
     setIsActive(false);
+    setPossible(undefined);
   };
 
   const handleDrop = (
@@ -82,6 +93,8 @@ const ScheduleColumn = ({ date, index }: ScheduleColumnProps) => {
   ) => {
     e.preventDefault();
     e.stopPropagation();
+
+    setPossible(undefined);
 
     if (columnPlaces.length === limitOfPlaces) {
       alert(`하루 최대 허용 장소 개수 ${limitOfPlaces}개를 초과하였습니다.`);
@@ -127,8 +140,6 @@ const ScheduleColumn = ({ date, index }: ScheduleColumnProps) => {
     dispatch(setColumns(updatedColumns));
   };
 
-  console.log(`columnPlaces${index}`, columnPlaces);
-
   return (
     <div className="schedule-column" key={`col${index}`}>
       <div className="schedule-column-date">
@@ -141,72 +152,141 @@ const ScheduleColumn = ({ date, index }: ScheduleColumnProps) => {
             : ` : ${columnPlaces.length}군데`}
         </p>
       </div>
-      <div
-        className={
-          isActive ? "schedule-column-list active" : "schedule-column-list"
-        }
-        data-col={index.toString()}
-        data-row={columnPlaces?.length === 0 ? "_1" : (length - 1).toString()}
-        onDragOver={(e) => handleDragOver(e)}
-        onDragLeave={(e) => handleDragLeave(e)}
-        onDrop={(e) => handleDrop(e)}
-      >
-        <ul>
-          {!isActive && columnPlaces?.length === 0 && (
-            <li className="place-indicator" key={"indicator"}>
-              <p>원하는 장소를 드래그 해주세요</p>
-            </li>
-          )}
+      {columnPlaces.length === 0 ? (
+        <div
+          className={
+            isActive ? "schedule-column-list active" : "schedule-column-list"
+          }
+          data-col={index.toString()}
+          data-row={"_1"}
+          onDragOver={(e) => handleDragOver(e)}
+          onDragLeave={(e) => handleDragLeave(e)}
+          onDrop={(e) => handleDrop(e)}
+        >
+          <ul>
+            {!isActive && columnPlaces?.length === 0 && (
+              <li className="place-indicator" key={"indicator"}>
+                <p>원하는 장소를 드래그 해주세요</p>
+              </li>
+            )}
+          </ul>
+        </div>
+      ) : (
+        <div
+          className={
+            isActive ? "schedule-column-list active" : "schedule-column-list"
+          }
+        >
+          <ul>
+            {!isActive && columnPlaces?.length === 0 && (
+              <li className="place-indicator" key={"indicator"}>
+                <p>원하는 장소를 드래그 해주세요</p>
+              </li>
+            )}
 
-          {columnPlaces.length < limitOfPlaces && (
-            <DropIndicator
-              row="_1"
-              col={index.toString()}
-              onDragLeave={handleDragLeave}
-              onDragOver={handleDragOver}
-              onDrop={handleDrop}
-              key={"_1"}
-            />
-          )}
-
-          {columnPlaces &&
-            columnPlaces?.map((place, i) => (
+            {columnPlaces.length < limitOfPlaces && (
               <>
-                <li
-                  className="dropCard"
-                  key={place.contentid}
-                  data-col={index.toString()}
-                  data-row={i.toString()}
-                  data-content={place.contentid}
-                  onDragStart={(e) => handleDragStart(e)}
-                  draggable
-                >
-                  <span className="index">
-                    <p>{i + 1}</p>
-                  </span>
-                  <DropCard place={place} date={date} column={index} row={i} />
-                  <span
-                    className="delete"
-                    onClick={() => handleDelete(place.contentid, i)}
-                  >
-                    <LuTrash2 />
-                  </span>
-                </li>
-
-                {i !== length - 1 && columnPlaces.length < limitOfPlaces && (
-                  <DropIndicator
-                    col={index.toString()}
-                    row={i.toString()}
-                    onDragLeave={handleDragLeave}
-                    onDragOver={handleDragOver}
-                    onDrop={handleDrop}
-                    key={i}
-                  />
+                <DropIndicator
+                  row="_1"
+                  col={index.toString()}
+                  onDragLeave={handleDragLeave}
+                  onDragOver={handleDragOver}
+                  onDrop={handleDrop}
+                  key={"_1"}
+                />
+                {possible === "_1" && selectedPlace && (
+                  <li className="dropCard">
+                    <span className="index">
+                      <p>{1}</p>
+                    </span>
+                    <PossibleCard place={selectedPlace} />
+                    <span
+                      className="delete"
+                      onClick={() => handleDelete(selectedPlace.contentid, 0)}
+                    >
+                      <LuTrash2 />
+                    </span>
+                  </li>
                 )}
               </>
-            ))}
-        </ul>
-      </div>
+            )}
+            {columnPlaces &&
+              columnPlaces?.map((place, i) => (
+                <>
+                  <li
+                    className="dropCard"
+                    key={place.contentid}
+                    data-col={index.toString()}
+                    data-row={i.toString()}
+                    data-content={place.contentid}
+                    onDragStart={(e) => handleDragStart(e)}
+                    draggable
+                  >
+                    <span className="index">
+                      <p>{i + 1}</p>
+                    </span>
+                    <DropCard
+                      place={place}
+                      date={date}
+                      column={index}
+                      row={i}
+                    />
+                    <span
+                      className="delete"
+                      onClick={() => handleDelete(place.contentid, i)}
+                    >
+                      <LuTrash2 />
+                    </span>
+                  </li>
+
+                  {columnPlaces.length < limitOfPlaces && (
+                    <DropIndicator
+                      col={index.toString()}
+                      row={i.toString()}
+                      onDragLeave={handleDragLeave}
+                      onDragOver={handleDragOver}
+                      onDrop={handleDrop}
+                      key={i}
+                    />
+                  )}
+                  {curCol === index.toString()
+                    ? possible === i.toString() &&
+                      curRow !== i.toString() &&
+                      i.toString() !== (Number(curRow) - 1).toString() &&
+                      selectedPlace && (
+                        <li className="dropCard">
+                          <span className="index">
+                            <p>{i + 2}</p>
+                          </span>
+                          <PossibleCard place={selectedPlace} />
+                          <span
+                            className="delete"
+                            onClick={() => handleDelete(place.contentid, i)}
+                          >
+                            <LuTrash2 />
+                          </span>
+                        </li>
+                      )
+                    : possible === i.toString() &&
+                      selectedPlace && (
+                        <li className="dropCard">
+                          <span className="index">
+                            <p>{i + 2}</p>
+                          </span>
+                          <PossibleCard place={selectedPlace} />
+                          <span
+                            className="delete"
+                            onClick={() => handleDelete(place.contentid, i)}
+                          >
+                            <LuTrash2 />
+                          </span>
+                        </li>
+                      )}
+                </>
+              ))}
+          </ul>
+        </div>
+      )}
     </div>
   );
 };
