@@ -45,6 +45,26 @@ const Map = () => {
   useEffect(() => {
     if (window.kakao) {
       window.kakao.maps.load(() => {
+        // 주소-좌표 변환 객체를 생성합니다
+        var geocoder = new window.kakao.maps.services.Geocoder();
+
+        // 달력으로 이동할 때의 주소
+        // 주소로 좌표를 검색합니다
+        geocoder.addressSearch(
+          addr,
+          function (result: ResultType[], status: kakao.maps.services.Status) {
+            // 정상적으로 검색이 완료됐으면
+            if (status === kakao.maps.services.Status.OK) {
+              var coords = new kakao.maps.LatLng(
+                Number(result[0].y),
+                Number(result[0].x)
+              );
+
+              // 지도의 중심을 결과값으로 받은 위치로 이동시킵니다
+              map.setCenter(coords);
+            }
+          }
+        );
         const container = document.getElementById("map");
         const options = {
           center: new kakao.maps.LatLng(33.450701, 126.570667),
@@ -53,30 +73,73 @@ const Map = () => {
 
         const map = new window.kakao.maps.Map(container, options);
 
-        // 주소-좌표 변환 객체를 생성합니다
-        var geocoder = new window.kakao.maps.services.Geocoder();
-
         // 지도를 재설정할 범위 정보를 가지고 있을 LatLngBounds 객체 생성
         const bounds = new kakao.maps.LatLngBounds();
 
+        function createMarkerImage(
+          markerSize: kakao.maps.Size,
+          offset: kakao.maps.Point,
+          spriteOrigin: kakao.maps.Point
+        ) {
+          const markerImage = new kakao.maps.MarkerImage(
+            SPRITE_MARKER_SRC,
+            markerSize,
+            {
+              offset,
+              spriteOrigin,
+              spriteSize: spriteImageSize,
+            }
+          );
+
+          return markerImage;
+        }
+
+        const MARKER_WIDTH = 30;
+        const MARKER_HEIGHT = 42.5;
+        const OFFSET_X = 6;
+        const OFFSET_Y = MARKER_HEIGHT;
+        const SPRITE_MARKER_SRC = "/images/kakao-markers.png";
+        const SPRITE_WIDTH = 330;
+        const SPRITE_HEIGHT = 425;
+
+        const markerSize = new kakao.maps.Size(MARKER_WIDTH, MARKER_HEIGHT);
+
+        const markerOffset = new kakao.maps.Point(OFFSET_X, OFFSET_Y);
+
+        const spriteImageSize = new kakao.maps.Size(
+          SPRITE_WIDTH,
+          SPRITE_HEIGHT
+        );
+
         if (hash === "#step1" || hash === "#step2" || hash === "#step3") {
           // 주소로 좌표를 검색합니다
-          for (const selectedPlace of selectedPlaces) {
+          for (let i = 0; i < selectedPlaces.length; i++) {
+            const selectedPlace = selectedPlaces[i];
+            const originY = MARKER_HEIGHT * i;
+            const normalOrigin = new kakao.maps.Point(0, originY);
             geocoder.addressSearch(
               selectedPlace.addr1,
               function (
                 result: ResultType[],
                 status: kakao.maps.services.Status
               ) {
-                // 정상적으로 검색이 완료됐으면
+                // 정상적으로 검색이 완료됐으면 마커의 위치
                 if (status === window.kakao.maps.services.Status.OK) {
                   var coords = new window.kakao.maps.LatLng(
                     result[0].y,
                     result[0].x
                   );
 
+                  // 마커 이미지 생성
+                  const normalImage = createMarkerImage(
+                    markerSize,
+                    markerOffset,
+                    normalOrigin
+                  );
+
                   // 결과값으로 받은 위치를 마커로 표시합니다
                   var marker = new window.kakao.maps.Marker({
+                    image: normalImage,
                     map: map,
                     position: coords,
                     title: selectedPlace.title,
@@ -104,6 +167,13 @@ const Map = () => {
           const keys = Object.keys(columnPlaces);
           for (const key of keys) {
             const colPlaces = columnPlaces[key];
+            const originX =
+              key.split("columnPlaces")[1] === "_1"
+                ? 0
+                : MARKER_WIDTH * (Number(key.split("columnPlaces")[1]) + 1);
+
+            console.log(originX);
+
             for (let i = 0; i < colPlaces.length; i++) {
               const place = colPlaces[i];
               geocoder.addressSearch(
@@ -112,6 +182,8 @@ const Map = () => {
                   result: ResultType[],
                   status: kakao.maps.services.Status
                 ) {
+                  const originY = MARKER_HEIGHT * i;
+                  const normalOrigin = new kakao.maps.Point(originX, originY);
                   // 정상적으로 검색이 완료됐으면
                   if (status === window.kakao.maps.services.Status.OK) {
                     var coords = new window.kakao.maps.LatLng(
@@ -119,8 +191,16 @@ const Map = () => {
                       result[0].x
                     );
 
+                    // 마커 이미지 생성
+                    const normalImage = createMarkerImage(
+                      markerSize,
+                      markerOffset,
+                      normalOrigin
+                    );
+
                     // 결과값으로 받은 위치를 마커로 표시합니다
                     var marker = new window.kakao.maps.Marker({
+                      image: normalImage,
                       map: map,
                       position: coords,
                       title: place.title,
@@ -137,12 +217,12 @@ const Map = () => {
                     const num = Number(key.split("columnPlaces")[1]);
 
                     // 인포윈도우로 장소에 대한 설명을 표시합니다
-                    var infowindow = new window.kakao.maps.InfoWindow({
-                      content: `<div style="width:150px;text-align:center;padding:6px 0; background-color: ${
-                        colors[num]
-                      }">${text} ${place.title} ${i + 1}번째 장소</div>`,
-                    });
-                    infowindow.open(map, marker);
+                    // var infowindow = new window.kakao.maps.InfoWindow({
+                    //   content: `<div style="width:150px;text-align:center;padding:6px 0; background-color: ${
+                    //     colors[num]
+                    //   }">${text} ${place.title} ${i + 1}번째 장소</div>`,
+                    // });
+                    // infowindow.open(map, marker);
 
                     // LatLngBounds 객체에 추가된 좌표들을 기준으로 지도의 범위를 재설정합니다
                     // 이때 지도의 중심좌표와 레벨이 변경될 수 있습니다
@@ -157,7 +237,8 @@ const Map = () => {
         }
       });
     }
-  }, [selectedPlaces, columnPlaces]);
+  }, [selectedPlaces, columnPlaces, hash]);
+
   return <div id="map" style={{ width: "100%", height: "97vh" }} />;
 };
 
