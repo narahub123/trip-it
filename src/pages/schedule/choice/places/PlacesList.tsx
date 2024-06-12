@@ -112,6 +112,13 @@ const PlacesList = () => {
   console.log(`----- 렌더링 횟수 ${count} -----`);
 
   const handleSelection = (contentId: string, contentTypeId: string) => {
+    if (selectedPlaces.length === 10) {
+      alert(
+        "최대 선택할 수 있는 장소는 10개 입니다. \n장소들을 일정으로 이동한 다음 추가해주세요"
+      );
+
+      return;
+    }
     if (contentTypeId == "32") {
       dispatch(accommoToggle());
       // 불러만 와야 함
