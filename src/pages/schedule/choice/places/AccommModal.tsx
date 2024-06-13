@@ -19,12 +19,12 @@ const AccommModal = () => {
   const dispatch = useDispatch();
   const place = useSelector((state: Rootstate) => state.place.place);
 
-  const columns = useSelector((state: Rootstate) => state.accommo.columns);
+  const items = useSelector((state: Rootstate) => state.accommo.items);
   const selected = useSelector((state: Rootstate) => state.accommo.selected);
 
   useEffect(() => {
     // contentId가 ''아닌 요소가 존재하는 여부 확인
-    const isExisted = columns.findIndex((column) => column.contentId !== "");
+    const isExisted = items.findIndex((item) => item.contentId !== "");
     // 존재하지 않는다면 컬럼 리셋
     if (isExisted === -1) store.dispatch(calcColumns());
   }, []);
@@ -54,11 +54,11 @@ const AccommModal = () => {
           <div className="accommo-title">{place?.title}</div>
           <div className="accommo-list-container">
             <ul>
-              {columns.map((column) => (
+              {items.map((item) => (
                 <AccommoPick
-                  date={column.date}
-                  index={column.index}
-                  key={column.date.date}
+                  date={item.date}
+                  index={item.index}
+                  key={item.date.date}
                 />
               ))}
             </ul>

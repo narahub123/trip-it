@@ -4,7 +4,7 @@ import { Rootstate } from "../store";
 import { CalculateDuration } from "../../utils/date";
 
 export interface AccommoState {
-  columns: {
+  items: {
     index: number;
     contentId: string;
     date: DestrucDateType;
@@ -14,7 +14,7 @@ export interface AccommoState {
 }
 
 const initialState: AccommoState = {
-  columns: [],
+  items: [],
   selected: false,
 };
 
@@ -53,7 +53,7 @@ const accommoSlice = createSlice({
   initialState,
   reducers: {
     setColumns: (state, action) => {
-      state.columns = action.payload;
+      state.items = action.payload;
     },
     setCurColumn: (state, action: PayloadAction<number>) => {
       state.curColumn = action.payload;

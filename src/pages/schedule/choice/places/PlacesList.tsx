@@ -34,7 +34,7 @@ const PlacesList = () => {
   const status = useSelector((state: Rootstate) => state.place.status);
   const pageNo = useSelector((state: Rootstate) => state.place.pageNo);
   const isEnd = useSelector((state: Rootstate) => state.place.isEnd);
-  const columns = useSelector((state: Rootstate) => state.accommo.columns);
+  const items = useSelector((state: Rootstate) => state.accommo.items);
   const areacode =
     useSelector((state: Rootstate) => state.schedule.schedule.metro_id) || "1";
   const schedule = useSelector((state: Rootstate) => state.schedule.schedule);
@@ -136,8 +136,8 @@ const PlacesList = () => {
     // selectedPlaces에서 제거
     dispatch(removeSelectedPlace(contentId));
     // 숙소의 경우 숙소 배열에서 제거 필요
-    const updatedColumns = columns.map((column) =>
-      column.contentId === contentId ? { ...column, contentId: "" } : column
+    const updatedColumns = items.map((item) =>
+      item.contentId === contentId ? { ...item, contentId: "" } : item
     );
     dispatch(setColumns(updatedColumns));
   };

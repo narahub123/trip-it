@@ -25,9 +25,9 @@ const AccommoPick = ({ date, index }: AccommoPickProps) => {
     (state: Rootstate) => state.place.selectedPlaces
   );
 
-  const columns = useSelector((state: Rootstate) => state.accommo.columns);
+  const items = useSelector((state: Rootstate) => state.accommo.items);
   const place = useSelector((state: Rootstate) => state.place.place);
-  const match = columns.find((column) => column.index === index);
+  const match = items.find((item) => item.index === index);
   // 이전에 선택했던 장소
   const [matched, setMatched] = useState(
     selectedPlaces?.find((place) => place.contentid === match?.contentId)
@@ -50,10 +50,10 @@ const AccommoPick = ({ date, index }: AccommoPickProps) => {
     console.log(selectedColumn);
 
     if (!inserted) {
-      const updateColumns = columns.map((col) =>
-        col.index === selectedColumn
-          ? { ...col, contentId: place?.contentid }
-          : col
+      const updateColumns = items.map((item) =>
+        item.index === selectedColumn
+          ? { ...item, contentId: place?.contentid }
+          : item
       );
 
       // 미리 저장된 장소가 있다면 columnPlaces에서 삭제
@@ -118,8 +118,8 @@ const AccommoPick = ({ date, index }: AccommoPickProps) => {
       setInserted(!inserted);
     }
     if (inserted) {
-      const updateColumns = columns.map((col) =>
-        col.index === selectedColumn ? { ...col, contentId: "" } : col
+      const updateColumns = items.map((item) =>
+        item.index === selectedColumn ? { ...item, contentId: "" } : item
       );
 
       place?.contentid &&

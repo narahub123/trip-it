@@ -37,11 +37,6 @@ const Drops = () => {
 
   const debounceOnChange = debounce<typeof handleChange>(handleChange, 500);
 
-  // 확인 용 : 지워야 함
-  const columns = useSelector((state: Rootstate) => state.accommo.columns);
-
-  console.log("columns", columns);
-
   return (
     <div className="drops">
       <div className="schedule-info">

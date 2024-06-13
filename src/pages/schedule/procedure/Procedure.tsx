@@ -18,7 +18,7 @@ const Procedure = () => {
 
   const schedule = useSelector((state: Rootstate) => state.schedule.schedule);
   const endDate = useSelector((state: Rootstate) => state.date.end);
-  const accommos = useSelector((state: Rootstate) => state.accommo.columns);
+  const accommos = useSelector((state: Rootstate) => state.accommo.items);
 
   const columnPlaces = useSelector(
     (state: Rootstate) => state.columnPlaces.columnPlaces

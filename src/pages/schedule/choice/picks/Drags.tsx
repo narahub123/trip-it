@@ -31,7 +31,7 @@ const Drags = () => {
   const curCol = useSelector((state: Rootstate) => state.columnPlaces.curCol);
   const goalCol = useSelector((state: Rootstate) => state.columnPlaces.goalCol);
 
-  const columns = useSelector((state: Rootstate) => state.accommo.columns);
+  const items = useSelector((state: Rootstate) => state.accommo.items);
 
   // console.log(column_1);
 
@@ -44,8 +44,8 @@ const Drags = () => {
     dispatch(removePlaceFromColumn({ column: "_1", index }) as any);
 
     // 숙소의 경우 숙소 배열에서 제거 필요
-    const updatedColumns = columns.map((column) =>
-      column.contentId === contentId ? { ...column, contentId: "" } : column
+    const updatedColumns = items.map((item) =>
+      item.contentId === contentId ? { ...item, contentId: "" } : item
     );
     dispatch(setColumns(updatedColumns));
   };

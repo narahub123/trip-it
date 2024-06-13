@@ -34,7 +34,7 @@ const ScheduleColumn = ({ date, index }: ScheduleColumnProps) => {
   const curCol = useSelector((state: Rootstate) => state.columnPlaces.curCol);
   const curRow = useSelector((state: Rootstate) => state.columnPlaces.curRow);
   const goalRow = useSelector((state: Rootstate) => state.columnPlaces.goalRow);
-  const columns = useSelector((state: Rootstate) => state.accommo.columns);
+  const items = useSelector((state: Rootstate) => state.accommo.items);
   // 렌더링 개수
   const count = useRenderCount();
   console.log("렌더링 개수", count);
@@ -134,8 +134,8 @@ const ScheduleColumn = ({ date, index }: ScheduleColumnProps) => {
     );
 
     // 숙소의 경우 숙소 배열에서 제거 필요
-    const updatedColumns = columns.map((column) =>
-      column.index === index ? { ...column, contentId: "" } : column
+    const updatedColumns = items.map((item) =>
+      item.index === index ? { ...item, contentId: "" } : item
     );
     dispatch(setColumns(updatedColumns));
   };
