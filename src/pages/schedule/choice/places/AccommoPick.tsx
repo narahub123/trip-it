@@ -50,7 +50,7 @@ const AccommoPick = ({ date, index }: AccommoPickProps) => {
     console.log(seletetedItem);
 
     if (!inserted) {
-      const updateColumns = items.map((item) =>
+      const updateItems = items.map((item) =>
         item.index === seletetedItem
           ? { ...item, contentId: place?.contentid }
           : item
@@ -113,12 +113,12 @@ const AccommoPick = ({ date, index }: AccommoPickProps) => {
         );
       }
 
-      dispatch(setItems(updateColumns));
+      dispatch(setItems(updateItems));
       dispatch(setSelected(true));
       setInserted(!inserted);
     }
     if (inserted) {
-      const updateColumns = items.map((item) =>
+      const updateItems = items.map((item) =>
         item.index === seletetedItem ? { ...item, contentId: "" } : item
       );
 
@@ -145,7 +145,7 @@ const AccommoPick = ({ date, index }: AccommoPickProps) => {
       // 추가된 장소 삭제
       place && dispatch(removeSelectedPlace(place?.contentid));
 
-      dispatch(setItems(updateColumns));
+      dispatch(setItems(updateItems));
       dispatch(setSelected(false));
       setInserted(!inserted);
     }
