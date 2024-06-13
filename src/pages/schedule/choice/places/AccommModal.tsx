@@ -11,12 +11,21 @@ import { Rootstate, store } from "../../../../store/store";
 import AccommoPick from "./AccommoPick";
 import { calcItems, setSelected } from "../../../../store/slices/accommoSlice";
 import Button from "../../../../components/ui/Button";
+import {
+  addPlaceToColumn,
+  removeAccommosFromColumnPlaces,
+  removePlaceFromColumnPlaces_1,
+} from "../../../../store/slices/columnPlacesSlice";
+import { destrucDate } from "../../../../utils/date";
 
 const AccommModal = () => {
   const dispatch = useDispatch();
   const place = useSelector((state: Rootstate) => state.place.place);
-
+  const dates = useSelector((state: Rootstate) => state.date.datesArray);
   const items = useSelector((state: Rootstate) => state.accommo.items);
+  const [selections, setSelections] = useState(
+    items.map((item) => item.contentId)
+  );
   const selected = useSelector((state: Rootstate) => state.accommo.selected);
 
   useEffect(() => {
@@ -38,6 +47,56 @@ const AccommModal = () => {
   };
 
   const handleSelection = () => {
+    for (let i = 0; i < items.length; i++) {
+      const item = items[i];
+      // 선택한 숙소의 contentId와 등록한 숙소의 contentId가 갖은 경우
+      if (place && item.contentId === place?.contentid) {
+        // 기존에 등록되었던 숙소 정보를 columnPlaces에서 삭제해야 함
+        // 기존에 등록되었던 숙소의 contentId
+        const deletedAccommo = selections[i];
+        dispatch(
+          removeAccommosFromColumnPlaces({
+            column: i,
+            contentId: deletedAccommo,
+          })
+        );
+
+        // 삭제가 완료되고 새로운 숙소 등록 : 삭제 완료 전에 숙소가 등록될 듯?
+        if (i === 0) {
+          dispatch(
+            addPlaceToColumn({
+              column: 0,
+              place: place,
+              order: 0,
+              date: dates[0],
+            })
+          );
+        }
+
+        dispatch(
+          addPlaceToColumn({
+            column: i,
+            place: place,
+            order: -1,
+            date: dates[i],
+          })
+        );
+
+        const datePlusOne = destrucDate(
+          new Date(dates[i].year, dates[i].month, dates[i].date + 1)
+        );
+
+        dispatch(
+          addPlaceToColumn({
+            column: i + 1,
+            place: place,
+            order: 0,
+            date: datePlusOne,
+          })
+        );
+      }
+    }
+
     place && dispatch(addSelectedPlace(place));
     dispatch(accommoToggle());
     dispatch(setSelected(false));

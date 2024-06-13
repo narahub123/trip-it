@@ -135,13 +135,12 @@ const columnPlacesSlice = createSlice({
     // columnPlaces_1 초기화하기
     clearColumnPlaces_1: (state) => {
       const columnPlaces_1 = state.columnPlaces[`columnPlaces_1`];
-      // columnPlaces_1에서 숙소만 고름 
+      // columnPlaces_1에서 숙소만 고름
       const accommos = columnPlaces_1.filter(
         (place) => place.contenttypeid === "32"
       );
 
-      // columnPlaces에서 columnPlaces_1에 포함된 장소 삭제 
-      
+      // columnPlaces에서 columnPlaces_1에 포함된 장소 삭제
 
       state.columnPlaces[`columnPlaces_1`] = [];
     },
@@ -259,6 +258,70 @@ const columnPlacesSlice = createSlice({
       );
 
       state.columnPlaces[key] = [...filterColumpPlaces];
+    },
+
+    // 숙소 페어를 columnPlaces에서 삭제하기
+    removeAccommosFromColumnPlaces: (
+      state,
+      action: PayloadAction<{ column: number; contentId: string }>
+    ) => {
+      // 해당 컬럼
+      const key1 =
+        `columnPlaces${action.payload.column}` as keyof typeof state.columnPlaces;
+      const columnPlaces1 = state.columnPlaces[key1];
+
+      // 다음 컬럼
+      const key2 = `columnPlaces${
+        action.payload.column + 1
+      }` as keyof typeof state.columnPlaces;
+      const columnPlaces2 = state.columnPlaces[key2];
+
+      // 해당 컬럼에서는 가장 나중 숙소를 삭제
+      // 해당 컬럼에 있는 숙소 인덱스 찾기
+      const accommos1 = [];
+
+      // contentId를 가진 장소를 인덱스 배열에 추가
+      for (let i = 0; i < columnPlaces1.length; i++) {
+        const columnPlace = columnPlaces1[i];
+        if (columnPlace.contentid === action.payload.contentId) {
+          accommos1.push(i);
+        }
+      }
+
+      console.log(accommos1);
+
+      // 인덱스 배열의 길이가 1인 경우
+      if (accommos1.length === 1) {
+        columnPlaces1.splice(accommos1[0], 1);
+        state.columnPlaces[key1] = [...columnPlaces1];
+      }
+      // 인덱스 배열의 길이가 2인 경우
+      else {
+        console.log(action.payload.column);
+
+        let filteredPlaces1;
+        if (action.payload.column !== 0) {
+          filteredPlaces1 = columnPlaces1.splice(accommos1[1], 1);
+        } else {
+          columnPlaces1.splice(accommos1[1], 1);
+          columnPlaces1.splice(accommos1[0], 1);
+
+          filteredPlaces1 = columnPlaces1;
+        }
+
+        state.columnPlaces[key1] = filteredPlaces1;
+        console.log(filteredPlaces1);
+      }
+
+      // 다음 컬럼에서는 가장 먼저 숙소를 삭제
+      // 가장 첫 숙소를 제거하는 것이기 때문에 findIndex 사용해도 됨
+      const index = columnPlaces2.findIndex(
+        (place) => place.contentid === action.payload.contentId
+      );
+
+      columnPlaces2.splice(index, 1);
+
+      state.columnPlaces[key2] = columnPlaces2;
     },
 
     removePlaceFromColumnPlaces_1: (state, action: PayloadAction<string>) => {
@@ -397,12 +460,12 @@ const columnPlacesSlice = createSlice({
         end_time: end,
       };
 
-      if (action.payload.order === -1) {
-        state.columnPlaces[key] = [...columnPlaces, place];
-      }
-
       if (action.payload.order === 0) {
         state.columnPlaces[key] = [place, ...columnPlaces];
+      }
+
+      if (action.payload.order === -1) {
+        state.columnPlaces[key] = [...columnPlaces, place];
       }
     },
   },
@@ -458,6 +521,7 @@ export const {
   updateStartTime,
   updateEndTime,
   clearColumnPlaces,
+  removeAccommosFromColumnPlaces,
 } = columnPlacesSlice.actions;
 
 export default columnPlacesSlice.reducer;

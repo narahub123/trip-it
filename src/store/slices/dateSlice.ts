@@ -1,11 +1,13 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import {
+  CalculateDuration,
   curMonth,
   dateMidFormatter,
   destrucDate,
   monthAgo,
   monthLater,
 } from "../../utils/date";
+import { DestrucDateType } from "../../pages/schedule/choice/dates/Calendar";
 
 export interface DateDestructType {
   year: number;
@@ -19,6 +21,7 @@ export interface DateState {
   rightMonth: DateDestructType;
   start?: string;
   end?: string;
+  datesArray: DestrucDateType[];
 }
 
 const today = dateMidFormatter(new Date());
@@ -27,6 +30,7 @@ const initialState: DateState = {
   base: today.toDateString(),
   leftMonth: destrucDate(curMonth(today)),
   rightMonth: destrucDate(monthLater(today)),
+  datesArray: [],
 };
 
 const dateSlice = createSlice({
@@ -60,6 +64,12 @@ const dateSlice = createSlice({
     addEnd: (state, action: PayloadAction<string>) => {
       const date = action.payload;
       state.end = date;
+
+      if (state.start && date) {
+        const dates = CalculateDuration(state.start, date);
+
+        state.datesArray = dates;
+      }
     },
   },
 });

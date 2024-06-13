@@ -56,62 +56,8 @@ const AccommoPick = ({ date, index }: AccommoPickProps) => {
           : item
       );
 
-      // 미리 저장된 장소가 있다면 columnPlaces에서 삭제
-      if (matched) {
-        matched?.contentid &&
-          dispatch(
-            removeAccommoFromColumn({
-              column: seletetedItem.toString(),
-              contentId: matched?.contentid,
-            })
-          );
-        matched?.contentid &&
-          dispatch(
-            removeAccommoFromColumn({
-              column: (seletetedItem + 1).toString(),
-              contentId: matched?.contentid,
-            })
-          );
-
-        // selectedPlaces에서 삭제
-        dispatch(removeSelectedPlace(matched.contentid));
-      }
-
-      // 숙소 추가시 columnPlaces에 추가해야 함
-      if (place) {
-        if (seletetedItem === 0) {
-          dispatch(
-            addPlaceToColumn({
-              column: seletetedItem,
-              place: place,
-              order: 0,
-              date: date,
-            })
-          );
-        }
-
-        dispatch(
-          addPlaceToColumn({
-            column: seletetedItem,
-            place: place,
-            order: -1,
-            date: date,
-          })
-        );
-
-        const datePlusOne = destrucDate(
-          new Date(date.year, date.month, date.date + 1)
-        );
-
-        dispatch(
-          addPlaceToColumn({
-            column: seletetedItem + 1,
-            place: place,
-            order: 0,
-            date: datePlusOne,
-          })
-        );
-      }
+      // selectedPlaces에서 삭제
+      matched && dispatch(removeSelectedPlace(matched.contentid));
 
       dispatch(setItems(updateItems));
       dispatch(setSelected(true));
@@ -121,21 +67,6 @@ const AccommoPick = ({ date, index }: AccommoPickProps) => {
       const updateItems = items.map((item) =>
         item.index === seletetedItem ? { ...item, contentId: "" } : item
       );
-
-      place?.contentid &&
-        dispatch(
-          removeAccommoFromColumn({
-            column: seletetedItem.toString(),
-            contentId: place?.contentid,
-          })
-        );
-      place?.contentid &&
-        dispatch(
-          removeAccommoFromColumn({
-            column: (seletetedItem + 1).toString(),
-            contentId: place?.contentid,
-          })
-        );
 
       // 이미 저장된 장소가 있다면 다시 추가
       if (matched) {
