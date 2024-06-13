@@ -6,7 +6,6 @@ import { Rootstate } from "../../../../store/store";
 import {
   accommoToggle,
   addPageNo,
-  addSelectedPlace,
   clearPageNo,
   clearPlaces,
   fetchPlace,
