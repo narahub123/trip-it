@@ -17,7 +17,7 @@ import {
   setcurCol,
   setcurRow,
 } from "../../../../store/slices/columnPlacesSlice";
-import { setColumns } from "../../../../store/slices/accommoSlice";
+import { setItems } from "../../../../store/slices/accommoSlice";
 
 const Drags = () => {
   const dispatch = useDispatch();
@@ -47,7 +47,7 @@ const Drags = () => {
     const updatedColumns = items.map((item) =>
       item.contentId === contentId ? { ...item, contentId: "" } : item
     );
-    dispatch(setColumns(updatedColumns));
+    dispatch(setItems(updatedColumns));
   };
 
   // 드래그 시작

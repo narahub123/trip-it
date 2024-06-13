@@ -3,7 +3,7 @@ import { LuPlus } from "react-icons/lu";
 import { DestrucDateType } from "../dates/Calendar";
 import { useDispatch, useSelector } from "react-redux";
 import { Rootstate } from "../../../../store/store";
-import { setColumns, setSelected } from "../../../../store/slices/accommoSlice";
+import { setItems, setSelected } from "../../../../store/slices/accommoSlice";
 import {
   addPlaceToColumn,
   removeAccommoFromColumn,
@@ -113,7 +113,7 @@ const AccommoPick = ({ date, index }: AccommoPickProps) => {
         );
       }
 
-      dispatch(setColumns(updateColumns));
+      dispatch(setItems(updateColumns));
       dispatch(setSelected(true));
       setInserted(!inserted);
     }
@@ -145,7 +145,7 @@ const AccommoPick = ({ date, index }: AccommoPickProps) => {
       // 추가된 장소 삭제
       place && dispatch(removeSelectedPlace(place?.contentid));
 
-      dispatch(setColumns(updateColumns));
+      dispatch(setItems(updateColumns));
       dispatch(setSelected(false));
       setInserted(!inserted);
     }

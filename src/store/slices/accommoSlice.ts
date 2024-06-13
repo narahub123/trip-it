@@ -38,13 +38,13 @@ export const calcColumns = createAsyncThunk(
 
     const filteredDates = dates.slice(0, dates.length - 1);
 
-    const columns = filteredDates.map((date, index) => ({
+    const items = filteredDates.map((date, index) => ({
       date: date,
       contentId: "",
       index: index,
     }));
 
-    dispatch(setColumns(columns));
+    dispatch(setItems(items));
   }
 );
 
@@ -52,7 +52,7 @@ const accommoSlice = createSlice({
   name: "accommo",
   initialState,
   reducers: {
-    setColumns: (state, action) => {
+    setItems: (state, action) => {
       state.items = action.payload;
     },
     setCurColumn: (state, action: PayloadAction<number>) => {
@@ -67,6 +67,6 @@ const accommoSlice = createSlice({
   },
 });
 
-export const { setColumns, setCurColumn, setSelected } = accommoSlice.actions;
+export const { setItems, setCurColumn, setSelected } = accommoSlice.actions;
 
 export default accommoSlice.reducer;

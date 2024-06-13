@@ -17,7 +17,7 @@ import {
 } from "../../../../store/slices/columnPlacesSlice";
 import { LuTrash2 } from "react-icons/lu";
 import DropCard from "./DropCard";
-import { setColumns } from "../../../../store/slices/accommoSlice";
+import { setItems } from "../../../../store/slices/accommoSlice";
 import { useRenderCount } from "@uidotdev/usehooks";
 import PossibleCard from "./PossibleCard";
 
@@ -137,7 +137,7 @@ const ScheduleColumn = ({ date, index }: ScheduleColumnProps) => {
     const updatedColumns = items.map((item) =>
       item.index === index ? { ...item, contentId: "" } : item
     );
-    dispatch(setColumns(updatedColumns));
+    dispatch(setItems(updatedColumns));
   };
 
   return (

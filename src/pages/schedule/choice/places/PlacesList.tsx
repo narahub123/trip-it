@@ -21,7 +21,7 @@ import PlaceCard from "./PlaceCard";
 import { isSearchable } from "../../../../data/hangul";
 import { debounce } from "../../../../utils/debounce";
 import { useRenderCount } from "@uidotdev/usehooks";
-import { setColumns } from "../../../../store/slices/accommoSlice";
+import { setItems } from "../../../../store/slices/accommoSlice";
 import { removePlaceFromColumnPlaces_1 } from "../../../../store/slices/columnPlacesSlice";
 
 const PlacesList = () => {
@@ -139,7 +139,7 @@ const PlacesList = () => {
     const updatedColumns = items.map((item) =>
       item.contentId === contentId ? { ...item, contentId: "" } : item
     );
-    dispatch(setColumns(updatedColumns));
+    dispatch(setItems(updatedColumns));
   };
 
   // 일정
