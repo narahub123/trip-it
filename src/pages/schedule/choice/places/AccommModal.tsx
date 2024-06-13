@@ -9,10 +9,7 @@ import {
 import { Rootstate, store } from "../../../../store/store";
 
 import AccommoPick from "./AccommoPick";
-import {
-  calcColumns,
-  setSelected,
-} from "../../../../store/slices/accommoSlice";
+import { calcItems, setSelected } from "../../../../store/slices/accommoSlice";
 import Button from "../../../../components/ui/Button";
 
 const AccommModal = () => {
@@ -26,7 +23,7 @@ const AccommModal = () => {
     // contentId가 ''아닌 요소가 존재하는 여부 확인
     const isExisted = items.findIndex((item) => item.contentId !== "");
     // 존재하지 않는다면 컬럼 리셋
-    if (isExisted === -1) store.dispatch(calcColumns());
+    if (isExisted === -1) store.dispatch(calcItems());
   }, []);
 
   // 일정

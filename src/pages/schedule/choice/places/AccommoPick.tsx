@@ -46,12 +46,12 @@ const AccommoPick = ({ date, index }: AccommoPickProps) => {
   const handleInsertImage = (
     e: React.MouseEvent<HTMLImageElement | HTMLDivElement, MouseEvent>
   ) => {
-    const selectedColumn = Number(e.currentTarget.id);
-    console.log(selectedColumn);
+    const seletetedItem = Number(e.currentTarget.id);
+    console.log(seletetedItem);
 
     if (!inserted) {
       const updateColumns = items.map((item) =>
-        item.index === selectedColumn
+        item.index === seletetedItem
           ? { ...item, contentId: place?.contentid }
           : item
       );
@@ -61,14 +61,14 @@ const AccommoPick = ({ date, index }: AccommoPickProps) => {
         matched?.contentid &&
           dispatch(
             removeAccommoFromColumn({
-              column: selectedColumn.toString(),
+              column: seletetedItem.toString(),
               contentId: matched?.contentid,
             })
           );
         matched?.contentid &&
           dispatch(
             removeAccommoFromColumn({
-              column: (selectedColumn + 1).toString(),
+              column: (seletetedItem + 1).toString(),
               contentId: matched?.contentid,
             })
           );
@@ -79,10 +79,10 @@ const AccommoPick = ({ date, index }: AccommoPickProps) => {
 
       // 숙소 추가시 columnPlaces에 추가해야 함
       if (place) {
-        if (selectedColumn === 0) {
+        if (seletetedItem === 0) {
           dispatch(
             addPlaceToColumn({
-              column: selectedColumn,
+              column: seletetedItem,
               place: place,
               order: 0,
               date: date,
@@ -92,7 +92,7 @@ const AccommoPick = ({ date, index }: AccommoPickProps) => {
 
         dispatch(
           addPlaceToColumn({
-            column: selectedColumn,
+            column: seletetedItem,
             place: place,
             order: -1,
             date: date,
@@ -105,7 +105,7 @@ const AccommoPick = ({ date, index }: AccommoPickProps) => {
 
         dispatch(
           addPlaceToColumn({
-            column: selectedColumn + 1,
+            column: seletetedItem + 1,
             place: place,
             order: 0,
             date: datePlusOne,
@@ -119,20 +119,20 @@ const AccommoPick = ({ date, index }: AccommoPickProps) => {
     }
     if (inserted) {
       const updateColumns = items.map((item) =>
-        item.index === selectedColumn ? { ...item, contentId: "" } : item
+        item.index === seletetedItem ? { ...item, contentId: "" } : item
       );
 
       place?.contentid &&
         dispatch(
           removeAccommoFromColumn({
-            column: selectedColumn.toString(),
+            column: seletetedItem.toString(),
             contentId: place?.contentid,
           })
         );
       place?.contentid &&
         dispatch(
           removeAccommoFromColumn({
-            column: (selectedColumn + 1).toString(),
+            column: (seletetedItem + 1).toString(),
             contentId: place?.contentid,
           })
         );

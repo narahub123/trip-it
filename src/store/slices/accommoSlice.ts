@@ -9,7 +9,7 @@ export interface AccommoState {
     contentId: string;
     date: DestrucDateType;
   }[];
-  curColumn?: number;
+  curItem?: number;
   selected: boolean;
 }
 
@@ -19,8 +19,8 @@ const initialState: AccommoState = {
 };
 
 // accommoModal 내에 컬럼 개수
-export const calcColumns = createAsyncThunk(
-  "accommoSlice/calcColumns",
+export const calcItems = createAsyncThunk(
+  "accommoSlice/calcItems",
   async (_, { getState, dispatch }) => {
     const { schedule } = getState() as Rootstate;
 
@@ -55,18 +55,18 @@ const accommoSlice = createSlice({
     setItems: (state, action) => {
       state.items = action.payload;
     },
-    setCurColumn: (state, action: PayloadAction<number>) => {
-      state.curColumn = action.payload;
+    setCurItem: (state, action: PayloadAction<number>) => {
+      state.curItem = action.payload;
     },
     setSelected: (state, action: PayloadAction<boolean>) => {
       state.selected = action.payload;
     },
   },
   extraReducers: (builder) => {
-    builder.addCase(calcColumns.fulfilled, (state, action) => {});
+    builder.addCase(calcItems.fulfilled, (state, action) => {});
   },
 });
 
-export const { setItems, setCurColumn, setSelected } = accommoSlice.actions;
+export const { setItems, setCurItem, setSelected } = accommoSlice.actions;
 
 export default accommoSlice.reducer;

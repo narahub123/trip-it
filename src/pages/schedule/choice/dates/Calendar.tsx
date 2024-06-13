@@ -10,7 +10,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Rootstate } from "../../../../store/store";
 import { addEnd, addStart } from "../../../../store/slices/dateSlice";
 import { addDates } from "../../../../store/slices/scheduleSlice";
-import { calcColumns } from "../../../../store/slices/accommoSlice";
+import { calcItems } from "../../../../store/slices/accommoSlice";
 import { clearSelectedPlaces } from "../../../../store/slices/placeSlice";
 import { clearColumnPlaces } from "../../../../store/slices/columnPlacesSlice";
 
@@ -55,7 +55,7 @@ const Calendar = ({ month }: CalendarProps) => {
     if (date) {
       dispatch(addStart(date));
       dispatch(addEnd(""));
-      dispatch(calcColumns() as any);
+      dispatch(calcItems() as any);
       // selectedPlace 비우기
       dispatch(clearSelectedPlaces());
       // columnPlaces 비우기
