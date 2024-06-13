@@ -9,7 +9,10 @@ import {
 } from "../../../../store/slices/placeSlice";
 
 import PlaceCard from "./PlaceCard";
-import { removePlaceFromColumnPlaces_1 } from "../../../../store/slices/columnPlacesSlice";
+import {
+  clearColumnPlaces_1,
+  removePlaceFromColumnPlaces_1,
+} from "../../../../store/slices/columnPlacesSlice";
 // import { fetchSelectedPlaces } from "../../../../store/slices/columnPlacesSlice";
 
 const SelectedPlacesList = () => {
@@ -17,6 +20,11 @@ const SelectedPlacesList = () => {
   const selectedPlaces = useSelector(
     (state: Rootstate) => state.place.selectedPlaces
   );
+  const columnPlaces = useSelector(
+    (state: Rootstate) => state.columnPlaces.columnPlaces
+  );
+
+  const columnPlaces_1 = columnPlaces[`columnPlaces_1`];
 
   const handleDeselection = (contentId: string) => {
     // selectedPlaces에서 삭제
@@ -26,9 +34,13 @@ const SelectedPlacesList = () => {
   };
 
   const handleReset = () => {
-    dispatch(clearSelectedPlaces());
+    if (!window.confirm("선택한 장소들을 초기화하시겠습니까?")) {
+      return;
+    }
+    dispatch(clearColumnPlaces_1());
   };
   console.log("selectedPlaces", selectedPlaces);
+  console.log("columnPlaces_1", columnPlaces_1);
 
   return (
     <div className="selectedPlacesList">

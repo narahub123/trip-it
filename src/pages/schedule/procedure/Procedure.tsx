@@ -20,8 +20,6 @@ const Procedure = () => {
   const endDate = useSelector((state: Rootstate) => state.date.end);
   const accommos = useSelector((state: Rootstate) => state.accommo.columns);
 
-  console.log(accommos);
-
   const columnPlaces = useSelector(
     (state: Rootstate) => state.columnPlaces.columnPlaces
   );
@@ -95,9 +93,17 @@ const Procedure = () => {
 
       return;
     }
+
+    if (accommos.length === 0) {
+      alert("숙소 선택을 완료해주세요");
+      return;
+    }
+
     // 숙소 선택 완료 여부 확인
     const accommosObj = Object.values(accommos);
     for (const accommo of accommosObj) {
+      console.log(accommo);
+
       if (accommo.contentId.length === 0) {
         e.preventDefault();
         alert("숙소 선택을 완료해주세요");

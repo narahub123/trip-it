@@ -72,9 +72,6 @@ const Map = () => {
           }
         );
 
-        console.log(latitude);
-        console.log(longitude);
-
         const options = {
           center: new kakao.maps.LatLng(latitude, longitude),
           level: 8,
@@ -180,8 +177,6 @@ const Map = () => {
               key.split("columnPlaces")[1] === "_1"
                 ? 0
                 : MARKER_WIDTH * (Number(key.split("columnPlaces")[1]) + 1);
-
-            console.log(originX);
 
             for (let i = 0; i < colPlaces.length; i++) {
               const place = colPlaces[i];

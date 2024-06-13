@@ -116,6 +116,7 @@ const columnPlacesSlice = createSlice({
   name: "columnPlaces",
   initialState,
   reducers: {
+    // columnPlaces 초기화하기
     clearColumnPlaces: (state) => {
       state.columnPlaces = {
         columnPlaces_1: [],
@@ -130,6 +131,19 @@ const columnPlacesSlice = createSlice({
         columnPlaces8: [],
         columnPlaces9: [],
       };
+    },
+    // columnPlaces_1 초기화하기
+    clearColumnPlaces_1: (state) => {
+      const columnPlaces_1 = state.columnPlaces[`columnPlaces_1`];
+      // columnPlaces_1에서 숙소만 고름 
+      const accommos = columnPlaces_1.filter(
+        (place) => place.contenttypeid === "32"
+      );
+
+      // columnPlaces에서 columnPlaces_1에 포함된 장소 삭제 
+      
+
+      state.columnPlaces[`columnPlaces_1`] = [];
     },
     setcurRow: (state, action: PayloadAction<string>) => {
       state.curRow = action.payload;
@@ -429,6 +443,7 @@ const columnPlacesSlice = createSlice({
 });
 
 export const {
+  clearColumnPlaces_1,
   setcurRow,
   setcurCol,
   setGoalRow,

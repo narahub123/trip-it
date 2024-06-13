@@ -46,10 +46,6 @@ const AccommModal = () => {
     dispatch(setSelected(false));
   };
 
-  console.log("columns", columns);
-  console.log("열림");
-  console.log(selected);
-
   return (
     <div className="accommo-modal" onClick={(e) => handleToggle(e)}>
       <div className="accommo-container" onClick={(e) => handleToggle(e)}>
