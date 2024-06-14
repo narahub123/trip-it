@@ -69,48 +69,48 @@ export const removePlaceFromColumn = createAsyncThunk(
     };
 
     dispatch(setColumnPlaces(newColumnPlaces));
-    dispatch(combineColumnPlaces(contentId));
+    // dispatch(combineColumnPlaces(contentId));
 
     return newColumnPlaces;
   }
 );
 
 // 삭제된 장소가 columnPlaces 배열들에 존재하는지 여부 확인
-export const combineColumnPlaces = createAsyncThunk(
-  "columnPlacesSlice/combineColumnPlaces",
-  async (contentId: string, { getState }) => {
-    const { columnPlaces } = getState() as Rootstate;
+// export const combineColumnPlaces = createAsyncThunk(
+//   "columnPlacesSlice/combineColumnPlaces",
+//   async (contentId: string, { getState }) => {
+//     const { columnPlaces } = getState() as Rootstate;
 
-    const colPlacesObj = columnPlaces;
+//     const colPlacesObj = columnPlaces;
 
-    const keys = Object.keys(colPlacesObj);
+//     const keys = Object.keys(colPlacesObj);
 
-    const columnKey = keys[0];
+//     const columnKey = keys[0];
 
-    const columnObj = colPlacesObj[columnKey];
+//     const columnObj = colPlacesObj[columnKey];
 
-    const placeValues = Object.values(columnObj);
+//     const placeValues = Object.values(columnObj);
 
-    const placeObj = placeValues[0] as ColumnPlacesType;
+//     const placeObj = placeValues[0] as ColumnPlacesType;
 
-    const placeKey = Object.keys(placeObj);
+//     const placeKey = Object.keys(placeObj);
 
-    for (const key of placeKey) {
-      const placeArray = placeObj[key];
-      for (const place of placeArray) {
-        if (place.contentid === contentId) {
-          return {
-            contentId: "",
-          };
-        }
-      }
-    }
+//     for (const key of placeKey) {
+//       const placeArray = placeObj[key];
+//       for (const place of placeArray) {
+//         if (place.contentid === contentId) {
+//           return {
+//             contentId: "",
+//           };
+//         }
+//       }
+//     }
 
-    return {
-      contentId,
-    };
-  }
-);
+//     return {
+//       contentId,
+//     };
+//   }
+// );
 
 const columnPlacesSlice = createSlice({
   name: "columnPlaces",

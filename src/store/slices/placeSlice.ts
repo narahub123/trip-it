@@ -2,7 +2,7 @@ import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { PlaceApiType } from "../../types/place";
 import { Rootstate } from "../store";
 import { convertStringToJson } from "../../utils/convertStringToJson";
-import { combineColumnPlaces } from "./columnPlacesSlice";
+// import { combineColumnPlaces } from "./columnPlacesSlice";
 
 export interface ContentIdsType {
   contentId: string;
