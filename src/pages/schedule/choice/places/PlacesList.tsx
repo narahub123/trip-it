@@ -126,13 +126,13 @@ const PlacesList = () => {
     if (contentTypeId == "32") {
       dispatch(accommoToggle());
       // 불러만 와야 함
-      dispatch(fetchPlace({ contentId, addToSelectedPlaces: false }) as any);
+      dispatch(fetchPlace({ contentId }) as any);
 
       return;
     }
 
     // 장소 추가까지 해야 함
-    dispatch(fetchPlace({ contentId, addToSelectedPlaces: true }) as any);
+    dispatch(fetchPlace({ contentId }) as any);
   };
 
   const handleDeselection = (contentId: string, index: number) => {

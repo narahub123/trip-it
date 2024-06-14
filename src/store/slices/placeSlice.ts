@@ -44,7 +44,6 @@ interface PlaceSearchProps extends PlacesProps {
 
 interface PlaceProps {
   contentId: string;
-  addToSelectedPlaces?: boolean;
 }
 
 // 지역 코드로 장소들 불러오기
@@ -103,27 +102,26 @@ export const fetchPlaces = createAsyncThunk(
 export const fetchPlace = createAsyncThunk<
   {
     place: PlaceApiType;
-    addToSelectedPlaces: boolean;
+    addToColumnPlaces_1: boolean;
   },
   PlaceProps
->(
-  "placeSlice/fetchPlace",
-  async ({ contentId, addToSelectedPlaces = false }: PlaceProps) => {
-    try {
-      const url = `http://localhost:8080/places/${contentId}`;
+>("placeSlice/fetchPlace", async ({ contentId }: PlaceProps) => {
+  try {
+    const url = `http://localhost:8080/places/${contentId}`;
 
-      const response = await fetch(url);
-      const jsonData = await response.json();
+    const response = await fetch(url);
+    const jsonData = await response.json();
 
-      const place = jsonData[0];
+    const place = jsonData[0];
 
-      return { place: place, addToSelectedPlaces };
-    } catch (error) {
-      console.log(error);
-      return { place: undefined, addToSelectedPlaces: false };
-    }
+    const addToColumnPlaces_1 = place.contenttypeid !== "32";
+
+    return { place: place, addToColumnPlaces_1 };
+  } catch (error) {
+    console.log(error);
+    return { place: undefined, addToColumnPlaces_1: false };
   }
-);
+});
 
 // 키워드로 장소들 불러오기
 export const fetchSearchedPlaces = createAsyncThunk(
@@ -231,7 +229,7 @@ const placeSlice = createSlice({
           state,
           action: PayloadAction<{
             place: PlaceApiType;
-            addToSelectedPlaces: boolean;
+            addToColumnPlaces_1: boolean;
           }>
         ) => {
           state.status = "succeeded";
