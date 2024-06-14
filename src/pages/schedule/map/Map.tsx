@@ -25,9 +25,13 @@ interface ResultType {
 
 const Map = () => {
   const { hash } = useLocation();
-  const selectedPlaces = useSelector(
-    (state: Rootstate) => state.place.selectedPlaces
+  // 선택한 장소를 모아둠
+  const columnPlaces_1 = useSelector(
+    (state: Rootstate) => state.columnPlaces.columnPlaces[`columnPlaces_1`]
   );
+
+  // 선택한 장소 보관소의 요소 개수
+  const numOfSavedPlaces = columnPlaces_1.length;
 
   const columnPlaces = useSelector(
     (state: Rootstate) => state.columnPlaces.columnPlaces
@@ -119,8 +123,8 @@ const Map = () => {
 
         if (hash === "#step1" || hash === "#step2" || hash === "#step3") {
           // 주소로 좌표를 검색합니다
-          for (let i = 0; i < selectedPlaces.length; i++) {
-            const selectedPlace = selectedPlaces[i];
+          for (let i = 0; i < numOfSavedPlaces; i++) {
+            const selectedPlace = columnPlaces_1[i];
             const originY = MARKER_HEIGHT * i;
             const normalOrigin = new kakao.maps.Point(0, originY);
             geocoder.addressSearch(
@@ -241,7 +245,7 @@ const Map = () => {
         }
       });
     }
-  }, [selectedPlaces, columnPlaces, hash]);
+  }, [columnPlaces_1, columnPlaces, hash]);
 
   return <div id="map" style={{ width: "100%", height: "97vh" }} />;
 };

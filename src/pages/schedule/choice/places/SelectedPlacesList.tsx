@@ -14,14 +14,12 @@ import {
 
 const SelectedPlacesList = () => {
   const dispatch = useDispatch();
-  const selectedPlaces = useSelector(
-    (state: Rootstate) => state.place.selectedPlaces
-  );
-  const columnPlaces = useSelector(
-    (state: Rootstate) => state.columnPlaces.columnPlaces
+
+  const columnPlaces_1 = useSelector(
+    (state: Rootstate) => state.columnPlaces.columnPlaces[`columnPlaces_1`]
   );
 
-  const columnPlaces_1 = columnPlaces[`columnPlaces_1`];
+  const numOfSavedPlaces = columnPlaces_1.length;
 
   const handleDeselection = (contentId: string) => {
     // selectedPlaces에서 삭제
@@ -36,25 +34,25 @@ const SelectedPlacesList = () => {
     }
     dispatch(clearColumnPlaces_1());
   };
-  console.log("selectedPlaces", selectedPlaces);
+
   console.log("columnPlaces_1", columnPlaces_1);
 
   return (
     <div className="selectedPlacesList">
       <div className="listInfo">
-        <p className="count">{selectedPlaces?.length || 0}</p>
+        <p className="count">{numOfSavedPlaces || 0}</p>
         <p className="reset" onClick={handleReset}>
           장소 설정 초기화
         </p>
       </div>
       <div className="selectedList">
-        {(selectedPlaces?.length === 0 || !selectedPlaces) && (
+        {(numOfSavedPlaces === 0 || !columnPlaces_1) && (
           <div className="indicator">장소를 선택해주세요.</div>
         )}
         <ul>
-          {selectedPlaces &&
-            selectedPlaces?.length > 0 &&
-            selectedPlaces.map((place, index) => (
+          {columnPlaces_1 &&
+            numOfSavedPlaces > 0 &&
+            columnPlaces_1.map((place, index) => (
               <li key={place.contentid}>
                 <span className="index">
                   <p>{index + 1}</p>

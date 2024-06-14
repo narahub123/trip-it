@@ -21,16 +21,20 @@ interface AccommoPickProps {
 }
 
 const AccommoPick = ({ date, index }: AccommoPickProps) => {
-  const selectedPlaces = useSelector(
-    (state: Rootstate) => state.place.selectedPlaces
+  // 선택한 장소를 모아둠
+  const columnPlaces_1 = useSelector(
+    (state: Rootstate) => state.columnPlaces.columnPlaces[`columnPlaces_1`]
   );
+
+  // 선택한 장소 보관소의 요소 개수
+  const numOfSavedPlaces = columnPlaces_1.length;
 
   const items = useSelector((state: Rootstate) => state.accommo.items);
   const place = useSelector((state: Rootstate) => state.place.place);
   const match = items.find((item) => item.index === index);
   // 이전에 선택했던 장소
   const [matched, setMatched] = useState(
-    selectedPlaces?.find((place) => place.contentid === match?.contentId)
+    columnPlaces_1?.find((place) => place.contentid === match?.contentId)
   );
   const [inserted, setInserted] = useState(false);
 

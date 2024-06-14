@@ -44,10 +44,13 @@ const PlacesList = () => {
   const [contentTypeId, setContentTypeId] = useState("1");
   const [keyword, setKeyword] = useState("");
 
-  // 장소 추가하기
-  const selectedPlaces = useSelector(
-    (state: Rootstate) => state.place.selectedPlaces
+  // 선택한 장소를 모아둠
+  const columnPlaces_1 = useSelector(
+    (state: Rootstate) => state.columnPlaces.columnPlaces[`columnPlaces_1`]
   );
+
+  // 선택한 장소 보관소의 요소 개수
+  const numOfSavedPlaces = columnPlaces_1.length;
 
   // 해시나 종류가 달라지는 경우 기존 places를 비움
   useEffect(() => {
@@ -111,7 +114,7 @@ const PlacesList = () => {
   console.log(`----- 렌더링 횟수 ${count} -----`);
 
   const handleSelection = (contentId: string, contentTypeId: string) => {
-    if (selectedPlaces.length === 10) {
+    if (numOfSavedPlaces === 10) {
       alert(
         "최대 선택할 수 있는 장소는 10개 입니다. \n장소들을 일정으로 이동한 다음 추가해주세요"
       );
@@ -234,7 +237,7 @@ const PlacesList = () => {
                 <span className="placeInfo">
                   <PlaceCard place={place} />
                 </span>
-                {!selectedPlaces?.find(
+                {!columnPlaces_1?.find(
                   (contentId) => contentId.contentid === place.contentid
                 ) ? (
                   <span

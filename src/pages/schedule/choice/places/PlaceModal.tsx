@@ -2,10 +2,7 @@ import React from "react";
 import "./placeModal.css";
 import { useDispatch, useSelector } from "react-redux";
 import { Rootstate } from "../../../../store/store";
-import {
-  addSelectedPlace,
-  modalToggle,
-} from "../../../../store/slices/placeSlice";
+import { modalToggle } from "../../../../store/slices/placeSlice";
 import Button from "../../../../components/ui/Button";
 import { addPlaceToColumn } from "../../../../store/slices/columnPlacesSlice";
 const PlaceModal = () => {
