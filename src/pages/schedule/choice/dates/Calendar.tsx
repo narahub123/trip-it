@@ -56,8 +56,6 @@ const Calendar = ({ month }: CalendarProps) => {
       dispatch(addStart(date));
       dispatch(addEnd(""));
       dispatch(calcItems() as any);
-      // selectedPlace 비우기
-      dispatch(clearSelectedPlaces());
       // columnPlaces 비우기
       dispatch(clearColumnPlaces());
     }
