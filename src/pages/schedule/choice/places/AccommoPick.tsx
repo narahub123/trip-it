@@ -4,10 +4,7 @@ import { DestrucDateType } from "../dates/Calendar";
 import { useDispatch, useSelector } from "react-redux";
 import { Rootstate } from "../../../../store/store";
 import { setItems, setSelected } from "../../../../store/slices/accommoSlice";
-import {
-  addPlaceToColumn,
-  removeAccommoFromColumn,
-} from "../../../../store/slices/columnPlacesSlice";
+
 import {
   addSelectedPlace,
   removeSelectedPlace,

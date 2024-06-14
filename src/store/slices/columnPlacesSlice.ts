@@ -245,19 +245,14 @@ const columnPlacesSlice = createSlice({
       };
     },
 
-    removeAccommoFromColumn: (
-      state,
-      action: PayloadAction<{ column: string; contentId: string }>
-    ) => {
-      const key =
-        `columnPlaces${action.payload.column}` as keyof typeof state.columnPlaces;
-      const columnPlaces = state.columnPlaces[key];
+    clearAccommoFromColumnPlaces_1: (state) => {
+      const columnPlaces = state.columnPlaces[`columnPlaces_1`];
 
       const filterColumpPlaces = columnPlaces.filter(
-        (place) => place.contentid !== action.payload.contentId
+        (place) => place.contenttypeid !== "32"
       );
 
-      state.columnPlaces[key] = [...filterColumpPlaces];
+      state.columnPlaces[`columnPlaces_1`] = [...filterColumpPlaces];
     },
 
     // 숙소 페어를 columnPlaces에서 삭제하기
@@ -509,6 +504,7 @@ const columnPlacesSlice = createSlice({
 
 export const {
   clearColumnPlaces_1,
+  clearAccommoFromColumnPlaces_1,
   setcurRow,
   setcurCol,
   setGoalRow,
@@ -516,7 +512,6 @@ export const {
   setDraggedPlace,
   dragInColumn,
   dragBtwColumn,
-  removeAccommoFromColumn,
   removePlaceFromColumnPlaces_1,
   addPlaceToColumn,
   setColumnPlaces,

@@ -52,7 +52,6 @@ const AccommModal = () => {
       // 선택한 숙소의 contentId와 등록한 숙소의 contentId가 갖은 경우
       if (place && item.contentId === place?.contentid) {
         // 기존에 등록되었던 숙소 정보를 columnPlaces에서 삭제해야 함
-        // 기존에 등록되었던 숙소의 contentId
         const deletedAccommo = selections[i];
         dispatch(
           removeAccommosFromColumnPlaces({
@@ -97,7 +96,15 @@ const AccommModal = () => {
       }
     }
 
-    place && dispatch(addSelectedPlace(place));
+    // 숙소를 columnPlaces_1에 추가
+    place &&
+      dispatch(
+        addPlaceToColumn({
+          column: "_1",
+          place,
+          order: -1,
+        })
+      );
     dispatch(accommoToggle());
     dispatch(setSelected(false));
   };

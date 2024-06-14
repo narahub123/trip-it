@@ -34,6 +34,7 @@ const Procedure = () => {
     if (endDate === undefined || (!endDate && endDate?.length === 0)) {
       e.preventDefault();
       window.alert("날짜 선택을 완료해주세요");
+      if (hash !== "#step1") navigate("./#step1");
       return false;
     }
 

@@ -7,10 +7,9 @@ import PlaceCard from "../places/PlaceCard";
 import { LuTrash2 } from "react-icons/lu";
 import DropIndicator from "./DropIndicator";
 import {
+  clearAccommoFromColumnPlaces_1,
   dragBtwColumn,
   dragInColumn,
-  // fetchSelectedPlaces,
-  removePlaceFromColumn,
   removePlaceFromColumnPlaces_1,
   setDraggedPlace,
   setGoalCol,
@@ -26,6 +25,10 @@ const Drags = () => {
   const column_1 = useSelector(
     (state: Rootstate) => state.columnPlaces.columnPlaces.columnPlaces_1
   );
+
+  useEffect(() => {
+    dispatch(clearAccommoFromColumnPlaces_1());
+  }, []);
 
   const curRow = useSelector((state: Rootstate) => state.columnPlaces.curRow);
   const goalRow = useSelector((state: Rootstate) => state.columnPlaces.goalRow);
