@@ -18,21 +18,23 @@ interface AccommoPickProps {
 }
 
 const AccommoPick = ({ date, index }: AccommoPickProps) => {
-  // 선택한 장소를 모아둠
-  const columnPlaces_1 = useSelector(
-    (state: Rootstate) => state.columnPlaces.columnPlaces[`columnPlaces_1`]
+  // 숙소배열과 동일한 컬럼
+  const columnPlaces = useSelector(
+    (state: Rootstate) =>
+      state.columnPlaces.columnPlaces[`columnPlaces${index}`]
   );
 
-  // 선택한 장소 보관소의 요소 개수
-  const numOfSavedPlaces = columnPlaces_1.length;
+  // 동일한 컬럼에서 숙소 존재여부 확인
+  const accommos = columnPlaces.filter((place) => place.contenttypeid === "32");
 
   const items = useSelector((state: Rootstate) => state.accommo.items);
   const place = useSelector((state: Rootstate) => state.place.place);
   const match = items.find((item) => item.index === index);
   // 이전에 선택했던 장소
-  const [matched, setMatched] = useState(
-    columnPlaces_1?.find((place) => place.contentid === match?.contentId)
+  const matched = accommos?.find(
+    (place) => place.contentid === match?.contentId
   );
+
   const [inserted, setInserted] = useState(false);
 
   const dispatch = useDispatch();
@@ -57,9 +59,6 @@ const AccommoPick = ({ date, index }: AccommoPickProps) => {
           : item
       );
 
-      // selectedPlaces에서 삭제
-      matched && dispatch(removeSelectedPlace(matched.contentid));
-
       dispatch(setItems(updateItems));
       dispatch(setSelected(true));
       setInserted(!inserted);
@@ -68,14 +67,6 @@ const AccommoPick = ({ date, index }: AccommoPickProps) => {
       const updateItems = items.map((item) =>
         item.index === seletetedItem ? { ...item, contentId: "" } : item
       );
-
-      // 이미 저장된 장소가 있다면 다시 추가
-      if (matched) {
-        dispatch(addSelectedPlace(matched));
-      }
-
-      // 추가된 장소 삭제
-      place && dispatch(removeSelectedPlace(place?.contentid));
 
       dispatch(setItems(updateItems));
       dispatch(setSelected(false));

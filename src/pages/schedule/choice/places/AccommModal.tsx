@@ -15,6 +15,7 @@ import {
   addPlaceToColumn,
   removeAccommosFromColumnPlaces,
   removePlaceFromColumnPlaces_1,
+  removePlaceFromColumnPlaces_1ByContentId,
 } from "../../../../store/slices/columnPlacesSlice";
 import { destrucDate } from "../../../../utils/date";
 
@@ -93,6 +94,9 @@ const AccommModal = () => {
             date: datePlusOne,
           })
         );
+
+        // 기존 숙소를 columnPlaces_1에서 삭제
+        dispatch(removePlaceFromColumnPlaces_1ByContentId(deletedAccommo));
       }
     }
 

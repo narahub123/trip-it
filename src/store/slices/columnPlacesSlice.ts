@@ -327,6 +327,19 @@ const columnPlacesSlice = createSlice({
       state.columnPlaces[`columnPlaces_1`] = columnPlaces_1;
     },
 
+    removePlaceFromColumnPlaces_1ByContentId: (
+      state,
+      action: PayloadAction<string>
+    ) => {
+      const columnPlaces_1 = state.columnPlaces[`columnPlaces_1`];
+
+      const filteredColumnPlaces_1 = columnPlaces_1.filter(
+        (place) => place.contentid !== action.payload
+      );
+
+      state.columnPlaces[`columnPlaces_1`] = filteredColumnPlaces_1;
+    },
+
     // 드래그한 장소를 기존 장소 배열에서 삭제
     removeDraggedPlace: (state) => {
       const key =
@@ -513,6 +526,7 @@ export const {
   dragInColumn,
   dragBtwColumn,
   removePlaceFromColumnPlaces_1,
+  removePlaceFromColumnPlaces_1ByContentId,
   addPlaceToColumn,
   setColumnPlaces,
   updateStartTime,
