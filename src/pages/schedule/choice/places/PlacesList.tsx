@@ -133,11 +133,10 @@ const PlacesList = () => {
     dispatch(fetchPlace({ contentId, addToSelectedPlaces: true }) as any);
   };
 
-  const handleDeselection = (contentId: string) => {
+  const handleDeselection = (contentId: string, index: number) => {
     // columnPlaces에서 제거
-    dispatch(removePlaceFromColumnPlaces_1(contentId));
-    // selectedPlaces에서 제거
-    dispatch(removeSelectedPlace(contentId));
+    dispatch(removePlaceFromColumnPlaces_1(index));
+
     // 숙소의 경우 숙소 배열에서 제거 필요
     const updatedColumns = items.map((item) =>
       item.contentId === contentId ? { ...item, contentId: "" } : item
@@ -232,7 +231,7 @@ const PlacesList = () => {
           {status === "connection-error" ? (
             <li className="warning">데이터 연결 실패</li>
           ) : places && places.length > 0 ? (
-            places.map((place) => (
+            places.map((place, index) => (
               <li className="placeListCard" key={place.contentid}>
                 <span className="placeInfo">
                   <PlaceCard place={place} />
@@ -251,7 +250,7 @@ const PlacesList = () => {
                 ) : (
                   <span
                     className="placeEventActive"
-                    onClick={() => handleDeselection(place.contentid)}
+                    onClick={() => handleDeselection(place.contentid, index)}
                   >
                     <p className="btn">🗸</p>
                   </span>

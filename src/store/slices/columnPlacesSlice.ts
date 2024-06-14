@@ -324,11 +324,12 @@ const columnPlacesSlice = createSlice({
       state.columnPlaces[key2] = columnPlaces2;
     },
 
-    removePlaceFromColumnPlaces_1: (state, action: PayloadAction<string>) => {
-      state.columnPlaces.columnPlaces_1 =
-        state.columnPlaces.columnPlaces_1.filter(
-          (place) => place.contentid !== action.payload
-        );
+    removePlaceFromColumnPlaces_1: (state, action: PayloadAction<number>) => {
+      const columnPlaces_1 = state.columnPlaces[`columnPlaces_1`];
+
+      columnPlaces_1.splice(action.payload, 1);
+
+      state.columnPlaces[`columnPlaces_1`] = columnPlaces_1;
     },
 
     // 드래그한 장소를 기존 장소 배열에서 삭제

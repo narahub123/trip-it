@@ -11,6 +11,7 @@ import {
   dragInColumn,
   // fetchSelectedPlaces,
   removePlaceFromColumn,
+  removePlaceFromColumnPlaces_1,
   setDraggedPlace,
   setGoalCol,
   setGoalRow,
@@ -37,11 +38,8 @@ const Drags = () => {
 
   // 장소 삭제
   const handleDelete = (contentId: string, index: number) => {
-    // selectedPlaces에서 삭제
-    dispatch(removeSelectedPlace(contentId));
-
-    // 해당 컬럼 배열에서도 삭제
-    dispatch(removePlaceFromColumn({ column: "_1", index }) as any);
+    // columnPlaces_1에서 삭제
+    dispatch(removePlaceFromColumnPlaces_1(index));
 
     // 숙소의 경우 숙소 배열에서 제거 필요
     const updatedColumns = items.map((item) =>

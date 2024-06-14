@@ -21,11 +21,9 @@ const SelectedPlacesList = () => {
 
   const numOfSavedPlaces = columnPlaces_1.length;
 
-  const handleDeselection = (contentId: string) => {
-    // selectedPlaces에서 삭제
-    dispatch(removeSelectedPlace(contentId));
+  const handleDeselection = (contentId: string, index: number) => {
     // columnPlaces_1에서 삭제
-    dispatch(removePlaceFromColumnPlaces_1(contentId));
+    dispatch(removePlaceFromColumnPlaces_1(index));
   };
 
   const handleReset = () => {
@@ -60,7 +58,7 @@ const SelectedPlacesList = () => {
                 <PlaceCard place={place} />
                 <span
                   className="delete"
-                  onClick={() => handleDeselection(place.contentid)}
+                  onClick={() => handleDeselection(place.contentid, index)}
                 >
                   <LuTrash2 />
                 </span>
