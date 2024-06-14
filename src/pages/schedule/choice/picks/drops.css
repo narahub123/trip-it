@@ -3,6 +3,17 @@
   overflow-x: auto;
   overflow-y: hidden;
   .schedule-info {
+    display: flex;
+    justify-content: space-between;
+    .info-left {
+    }
+    .info-right {
+      .reset {
+        padding: 10px;
+        color: red;
+        cursor: pointer;
+      }
+    }
   }
   .schedule-columns {
     display: flex;

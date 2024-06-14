@@ -11,6 +11,7 @@ import {
 import ScheduleColumn from "./ScheduleColumn";
 import { debounce } from "../../../../utils/debounce";
 import { addTitle } from "../../../../store/slices/scheduleSlice";
+import { clearColumnPlaces } from "../../../../store/slices/columnPlacesSlice";
 const Drops = () => {
   const [title, setTitle] = useState("");
   const dispatch = useDispatch();
@@ -35,25 +36,40 @@ const Drops = () => {
     dispatch(addTitle(title.trim()));
   };
 
+  const handleReset = () => {
+    dispatch(clearColumnPlaces());
+  };
+
   const debounceOnChange = debounce<typeof handleChange>(handleChange, 500);
 
   return (
     <div className="drops">
       <div className="schedule-info">
-        <div className="schedule-title">
-          제목 :
-          <input type="text" defaultValue={title} onChange={debounceOnChange} />
+        <div className="info-left">
+          <div className="schedule-title">
+            제목 :
+            <input
+              type="text"
+              defaultValue={title}
+              onChange={debounceOnChange}
+            />
+          </div>
+          <div className="schedule-duration">
+            {start &&
+              schedule.start_date &&
+              end &&
+              schedule.end_date &&
+              `일정 : ${start.year}.${start.month + 1}.${start.date}(${getWeek(
+                new Date(schedule.start_date)
+              )}) - ${end.year}.${end.month + 1}.${end.date}(${getWeek(
+                new Date(schedule.end_date)
+              )})`}
+          </div>
         </div>
-        <div className="schedule-duration">
-          {start &&
-            schedule.start_date &&
-            end &&
-            schedule.end_date &&
-            `일정 : ${start.year}.${start.month + 1}.${start.date}(${getWeek(
-              new Date(schedule.start_date)
-            )}) - ${end.year}.${end.month + 1}.${end.date}(${getWeek(
-              new Date(schedule.end_date)
-            )})`}
+        <div className="info-right">
+          <div className="reset" onClick={handleReset}>
+            일정 초기화
+          </div>
         </div>
       </div>
       <div className="schedule-columns">
