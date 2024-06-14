@@ -425,10 +425,11 @@ const columnPlacesSlice = createSlice({
       columnPlacesSlice.caseReducers.removeDraggedPlace(state);
     },
 
+    // columnPlaces에 장소 추가할 때 사용
     addPlaceToColumn: (
       state,
       action: PayloadAction<{
-        column: number;
+        column: string;
         place: PlaceApiType;
         order: number;
         date?: DestrucDateType;

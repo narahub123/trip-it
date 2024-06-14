@@ -65,7 +65,7 @@ const AccommModal = () => {
         if (i === 0) {
           dispatch(
             addPlaceToColumn({
-              column: 0,
+              column: "0",
               place: place,
               order: 0,
               date: dates[0],
@@ -75,7 +75,7 @@ const AccommModal = () => {
 
         dispatch(
           addPlaceToColumn({
-            column: i,
+            column: i.toString(),
             place: place,
             order: -1,
             date: dates[i],
@@ -88,7 +88,7 @@ const AccommModal = () => {
 
         dispatch(
           addPlaceToColumn({
-            column: i + 1,
+            column: (i + 1).toString(),
             place: place,
             order: 0,
             date: datePlusOne,

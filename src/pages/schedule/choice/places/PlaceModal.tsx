@@ -7,6 +7,7 @@ import {
   modalToggle,
 } from "../../../../store/slices/placeSlice";
 import Button from "../../../../components/ui/Button";
+import { addPlaceToColumn } from "../../../../store/slices/columnPlacesSlice";
 const PlaceModal = () => {
   const place = useSelector((state: Rootstate) => state.place.place);
   const dispatch = useDispatch();
@@ -15,7 +16,8 @@ const PlaceModal = () => {
   };
 
   const handleSelect = () => {
-    place && dispatch(addSelectedPlace(place));
+    // place && dispatch(addSelectedPlace(place));
+    place && dispatch(addPlaceToColumn({ column: "_1", place, order: -1 }));
   };
   return (
     <div
