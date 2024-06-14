@@ -49,7 +49,7 @@ const SelectedPlacesList = () => {
           {columnPlaces_1 &&
             numOfSavedPlaces > 0 &&
             columnPlaces_1.map((place, index) => (
-              <li key={place.contentid}>
+              <li key={index}>
                 <span className="index">
                   <p>{index + 1}</p>
                 </span>
