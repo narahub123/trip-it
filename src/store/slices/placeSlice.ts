@@ -177,9 +177,6 @@ const placeSlice = createSlice({
       state.places = [];
     },
 
-    clearSelectedPlaces: (state) => {
-      state.selectedPlaces = [];
-    },
     clearPageNo: (state) => {
       state.pageNo = 1;
     },
@@ -323,7 +320,6 @@ const placeSlice = createSlice({
 
 export const {
   clearPlaces,
-  clearSelectedPlaces,
   addSelectedPlace,
   removeSelectedPlace,
   modalToggle,
