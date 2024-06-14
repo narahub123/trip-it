@@ -144,6 +144,27 @@ const columnPlacesSlice = createSlice({
 
       state.columnPlaces[`columnPlaces_1`] = [];
     },
+
+    // 특정 장소를 columnPlaces 객체에서 일괄 삭제하기
+    clearPlaceFromAllColumnPlaces: (state, action) => {
+      const contentId = action.payload;
+
+      const keys = Object.keys(state.columnPlaces);
+
+      for (const key of keys) {
+        // columnPlaces_1은 제외하는 경우
+        // if (key === "columnPlaces_1") continue;
+
+        const colPlaces = state.columnPlaces[key];
+
+        const filteredColumnPlaces = colPlaces.filter(
+          (place) => place.contentid !== contentId
+        );
+
+        state.columnPlaces[key] = filteredColumnPlaces;
+      }
+    },
+
     setcurRow: (state, action: PayloadAction<string>) => {
       state.curRow = action.payload;
     },
@@ -518,6 +539,7 @@ const columnPlacesSlice = createSlice({
 export const {
   clearColumnPlaces_1,
   clearAccommoFromColumnPlaces_1,
+  clearPlaceFromAllColumnPlaces,
   setcurRow,
   setcurCol,
   setGoalRow,
