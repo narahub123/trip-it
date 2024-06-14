@@ -35,10 +35,12 @@ const ScheduleColumn = ({ date, index }: ScheduleColumnProps) => {
   const curRow = useSelector((state: Rootstate) => state.columnPlaces.curRow);
   const goalRow = useSelector((state: Rootstate) => state.columnPlaces.goalRow);
   const items = useSelector((state: Rootstate) => state.accommo.items);
+  const dates = useSelector((state: Rootstate) => state.date.datesArray);
   // 렌더링 개수
   const count = useRenderCount();
   console.log("렌더링 개수", count);
 
+  // drag한 컬럼
   const selectedPlaceColumn = useSelector(
     (state: Rootstate) =>
       state.columnPlaces.columnPlaces[
@@ -49,12 +51,18 @@ const ScheduleColumn = ({ date, index }: ScheduleColumnProps) => {
   // drag한 장소
   const selectedPlace = selectedPlaceColumn[Number(curRow)];
 
+  console.log(selectedPlace);
+
+  // 현재 컬럼
   const columnPlaces = useSelector(
     (state: Rootstate) =>
       state.columnPlaces.columnPlaces[
         `columnPlaces${index}` as keyof typeof state.columnPlaces.columnPlaces
       ] || []
   );
+
+  // 숙소 최대 허용 개수
+  const maxOfAccommoNum = 2;
 
   const length = columnPlaces && columnPlaces?.length;
 
@@ -96,8 +104,36 @@ const ScheduleColumn = ({ date, index }: ScheduleColumnProps) => {
 
     setPossible(undefined);
 
+    // 장소 최대 개수 초과 여부 유효성 검사
     if (columnPlaces.length === limitOfPlaces) {
       alert(`하루 최대 허용 장소 개수 ${limitOfPlaces}개를 초과하였습니다.`);
+      return;
+    }
+
+    // 숙소 최대 개수 초과 여부 유효성 검삭
+    const accommos = columnPlaces.filter(
+      (place) => place.contenttypeid === "32"
+    );
+
+    if (
+      dates.length - 1 === index &&
+      selectedPlace.contenttypeid === "32" &&
+      accommos.length === maxOfAccommoNum - 1
+    ) {
+      alert(
+        `숙소 최대 개수 ${
+          maxOfAccommoNum - 1
+        }개가 되었습니다. 숙소를 추가할 수 없습니다.`
+      );
+      return;
+    }
+    if (
+      selectedPlace.contenttypeid === "32" &&
+      accommos.length === maxOfAccommoNum
+    ) {
+      alert(
+        `숙소 최대 개수 ${maxOfAccommoNum}개가 되었습니다. 숙소를 추가할 수 없습니다.`
+      );
       return;
     }
 
@@ -124,9 +160,6 @@ const ScheduleColumn = ({ date, index }: ScheduleColumnProps) => {
   // 장소 삭제
   const handleDelete = (contentId: string, order: number) => {
     console.log("number of item", order);
-
-    // 선택된 장소들에서 삭제하기
-    // dispatch(removeSelectedPlace(contentId));
 
     // 컬럼 목록에서 삭제하기
     dispatch(
