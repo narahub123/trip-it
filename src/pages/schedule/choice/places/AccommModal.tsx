@@ -2,10 +2,7 @@ import React, { useEffect, useState } from "react";
 import "./accommoModal.css";
 
 import { useDispatch, useSelector } from "react-redux";
-import {
-  accommoToggle,
-  addSelectedPlace,
-} from "../../../../store/slices/placeSlice";
+import { accommoToggle } from "../../../../store/slices/placeSlice";
 import { Rootstate, store } from "../../../../store/store";
 
 import AccommoPick from "./AccommoPick";
@@ -14,7 +11,6 @@ import Button from "../../../../components/ui/Button";
 import {
   addPlaceToColumn,
   removeAccommosFromColumnPlaces,
-  removePlaceFromColumnPlaces_1,
   removePlaceFromColumnPlaces_1ByContentId,
 } from "../../../../store/slices/columnPlacesSlice";
 import { destrucDate } from "../../../../utils/date";

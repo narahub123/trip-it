@@ -11,7 +11,6 @@ import {
   fetchPlace,
   fetchPlaces,
   fetchSearchedPlaces,
-  removeSelectedPlace,
 } from "../../../../store/slices/placeSlice";
 import { metros } from "../../../../data/metros";
 import { dateMidFormatter, destrucDate, getWeek } from "../../../../utils/date";

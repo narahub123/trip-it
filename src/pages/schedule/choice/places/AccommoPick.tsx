@@ -4,12 +4,6 @@ import { DestrucDateType } from "../dates/Calendar";
 import { useDispatch, useSelector } from "react-redux";
 import { Rootstate } from "../../../../store/store";
 import { setItems, setSelected } from "../../../../store/slices/accommoSlice";
-
-import {
-  addSelectedPlace,
-  removeSelectedPlace,
-} from "../../../../store/slices/placeSlice";
-import { destrucDate } from "../../../../utils/date";
 import { metros } from "../../../../data/metros";
 
 interface AccommoPickProps {

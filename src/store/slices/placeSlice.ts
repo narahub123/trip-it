@@ -13,7 +13,6 @@ export interface PlaceState {
   places: PlaceApiType[];
   status: string;
   error?: string;
-  selectedPlaces: PlaceApiType[];
   place?: PlaceApiType;
   modal?: boolean;
   accomoModal?: boolean;
@@ -26,7 +25,6 @@ const initialState: PlaceState = {
   places: [],
   status: "idle",
   error: undefined,
-  selectedPlaces: [],
   modal: false,
   accomoModal: false,
   isEnd: false,
@@ -184,23 +182,6 @@ const placeSlice = createSlice({
       state.pageNo += 1;
     },
 
-    addSelectedPlace: (state, action: PayloadAction<PlaceApiType>) => {
-      // 장소의 중복 여부 확인
-      const place = state.selectedPlaces.findIndex(
-        (place) => place.contentid === action.payload.contentid
-      );
-
-      if (place === -1) state.selectedPlaces?.push(action.payload);
-    },
-
-    // selectedPlaces에서 제거
-    removeSelectedPlace: (state, action: PayloadAction<string>) => {
-      if (state.selectedPlaces) {
-        state.selectedPlaces = state.selectedPlaces.filter(
-          (selectedPlace) => selectedPlace.contentid !== action.payload
-        );
-      }
-    },
     modalToggle: (state) => {
       state.modal = !state.modal;
     },
@@ -320,8 +301,6 @@ const placeSlice = createSlice({
 
 export const {
   clearPlaces,
-  addSelectedPlace,
-  removeSelectedPlace,
   modalToggle,
   accommoToggle,
   addPageNo,

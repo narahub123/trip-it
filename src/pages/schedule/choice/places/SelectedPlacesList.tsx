@@ -3,8 +3,6 @@ import "./selectedPlacesList.css";
 import { LuTrash2 } from "react-icons/lu";
 import { useDispatch, useSelector } from "react-redux";
 import { Rootstate } from "../../../../store/store";
-import { removeSelectedPlace } from "../../../../store/slices/placeSlice";
-
 import PlaceCard from "./PlaceCard";
 import {
   clearColumnPlaces_1,
