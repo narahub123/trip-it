@@ -254,6 +254,12 @@ const placeSlice = createSlice({
           }>
         ) => {
           state.status = "succeeded";
+
+          state.place = action.payload.place;
+
+          // if (action.payload.addToSelectedPlaces) {
+          //   state.selectedPlaces.push(action.payload.place);
+          // }
         }
       )
       .addCase(fetchPlace.rejected, (state, action) => {
