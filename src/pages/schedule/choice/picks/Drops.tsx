@@ -12,9 +12,12 @@ import ScheduleColumn from "./ScheduleColumn";
 import { debounce } from "../../../../utils/debounce";
 import { addTitle } from "../../../../store/slices/scheduleSlice";
 import { clearColumnPlaces } from "../../../../store/slices/columnPlacesSlice";
+import { useNavigate } from "react-router-dom";
+import { resetDates } from "../../../../store/slices/dateSlice";
 const Drops = () => {
   const [title, setTitle] = useState("");
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const schedule = useSelector((state: Rootstate) => state.schedule.schedule);
   // 일정
   const start =
@@ -37,7 +40,12 @@ const Drops = () => {
   };
 
   const handleReset = () => {
+    if (!window.confirm(`모든 정보를 초기화하시겠습니다?`)) {
+      return;
+    }
+    dispatch(resetDates());
     dispatch(clearColumnPlaces());
+    navigate("./#step1");
   };
 
   const debounceOnChange = debounce<typeof handleChange>(handleChange, 500);
