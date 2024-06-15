@@ -49,6 +49,10 @@ export const createMarker = (
   // 지도 재설정
   const bounds = new kakao.maps.LatLngBounds();
 
+  const markerSize = new kakao.maps.Size(MARKER_WIDTH, MARKER_HEIGHT);
+
+  const markerOffset = new kakao.maps.Point(OFFSET_X, OFFSET_Y);
+
   for (let i = 0; i < positions.length; i++) {
     const originY = MARKER_HEIGHT * i;
     const normalOrigin = new kakao.maps.Point(0, originY);
@@ -82,17 +86,12 @@ const SPRITE_MARKER_SRC = "/images/kakao-markers2.png";
 const SPRITE_WIDTH = 330;
 const SPRITE_HEIGHT = 425;
 
-const markerSize = new kakao.maps.Size(MARKER_WIDTH, MARKER_HEIGHT);
-
-const markerOffset = new kakao.maps.Point(OFFSET_X, OFFSET_Y);
-
-const spriteImageSize = new kakao.maps.Size(SPRITE_WIDTH, SPRITE_HEIGHT);
-
 export const createMarkerImage = (
   markerSize: kakao.maps.Size,
   offset: kakao.maps.Point,
   spriteOrigin: kakao.maps.Point
 ) => {
+  const spriteImageSize = new kakao.maps.Size(SPRITE_WIDTH, SPRITE_HEIGHT);
   const markerImage = new kakao.maps.MarkerImage(
     SPRITE_MARKER_SRC,
     markerSize,
