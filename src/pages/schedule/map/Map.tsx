@@ -31,7 +31,7 @@ const Map = () => {
   );
 
   // 선택한 장소 보관소의 요소 개수
-  const numOfSavedPlaces = columnPlaces_1.length;
+  const numOfSavedPlaces = columnPlaces_1 ? columnPlaces_1.length : 0;
 
   const columnPlaces = useSelector(
     (state: Rootstate) => state.columnPlaces.columnPlaces

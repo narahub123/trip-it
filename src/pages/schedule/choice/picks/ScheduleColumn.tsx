@@ -36,22 +36,14 @@ const ScheduleColumn = ({ date, index }: ScheduleColumnProps) => {
   const goalRow = useSelector((state: Rootstate) => state.columnPlaces.goalRow);
   const items = useSelector((state: Rootstate) => state.accommo.items);
   const dates = useSelector((state: Rootstate) => state.date.datesArray);
+
+  const selectedPlace = useSelector(
+    (state: Rootstate) => state.columnPlaces.draggedPlace
+  );
+
   // 렌더링 개수
   const count = useRenderCount();
   console.log("렌더링 개수", count);
-
-  // drag한 컬럼
-  const selectedPlaceColumn = useSelector(
-    (state: Rootstate) =>
-      state.columnPlaces.columnPlaces[
-        `columnPlaces${curCol}` as keyof typeof state.columnPlaces.columnPlaces
-      ]
-  );
-
-  // drag한 장소
-  const selectedPlace = selectedPlaceColumn[Number(curRow)];
-
-  console.log(selectedPlace);
 
   // 현재 컬럼
   const columnPlaces = useSelector(
@@ -117,6 +109,7 @@ const ScheduleColumn = ({ date, index }: ScheduleColumnProps) => {
 
     if (
       dates.length - 1 === index &&
+      selectedPlace &&
       selectedPlace.contenttypeid === "32" &&
       accommos.length === maxOfAccommoNum - 1
     ) {
@@ -128,6 +121,7 @@ const ScheduleColumn = ({ date, index }: ScheduleColumnProps) => {
       return;
     }
     if (
+      selectedPlace &&
       selectedPlace.contenttypeid === "32" &&
       accommos.length === maxOfAccommoNum
     ) {
@@ -248,7 +242,7 @@ const ScheduleColumn = ({ date, index }: ScheduleColumnProps) => {
                 <>
                   <li
                     className="dropCard"
-                    key={place.contentid}
+                    key={`${index}_${i}`}
                     data-col={index.toString()}
                     data-row={i.toString()}
                     data-content={place.contentid}

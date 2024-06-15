@@ -60,7 +60,7 @@ const Drags = () => {
     if (contentId && curCol)
       dispatch(setDraggedPlace({ curRow: contentId, curCol }));
 
-    console.log("curRow)", curRow);
+    console.log("curRow", curRow);
     console.log("curCol", curCol);
   };
 
