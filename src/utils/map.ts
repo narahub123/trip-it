@@ -44,18 +44,18 @@ export const getCoordsArray = async (places: PlaceApiType[]) => {
 
 export const createMarker = (
   map: kakao.maps.Map,
-  positions: kakao.maps.LatLng[]
+  positions: kakao.maps.LatLng[],
+  col: number
 ) => {
-  // 지도 재설정
-  const bounds = new kakao.maps.LatLngBounds();
-
   const markerSize = new kakao.maps.Size(MARKER_WIDTH, MARKER_HEIGHT);
 
   const markerOffset = new kakao.maps.Point(OFFSET_X, OFFSET_Y);
 
+  const originX = MARKER_WIDTH * col;
+
   for (let i = 0; i < positions.length; i++) {
     const originY = MARKER_HEIGHT * i;
-    const normalOrigin = new kakao.maps.Point(0, originY);
+    const normalOrigin = new kakao.maps.Point(originX, originY);
     // 마커 이미지 생성
     const normalImage = createMarkerImage(
       markerSize,
@@ -70,11 +70,6 @@ export const createMarker = (
     });
 
     marker.setMap(map);
-
-    // latlngBounds 객체에 좌표 추가
-    bounds.extend(positions[i]);
-
-    map.setBounds(bounds);
   }
 };
 

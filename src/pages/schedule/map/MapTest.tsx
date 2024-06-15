@@ -18,8 +18,8 @@ declare global {
 }
 
 const MapTest = () => {
-  const columnPlaces_1 = useSelector(
-    (state: Rootstate) => state.columnPlaces.columnPlaces[`columnPlaces_1`]
+  const columnPlaces = useSelector(
+    (state: Rootstate) => state.columnPlaces.columnPlaces
   );
   const areaCode = useSelector(
     (state: Rootstate) => state.schedule.schedule.metro_id
@@ -90,16 +90,30 @@ const MapTest = () => {
         const map = new window.kakao.maps.Map(container, options);
 
         try {
-          const coords = await getCoordsArray(columnPlaces_1);
+          const keys = Object.keys(columnPlaces);
+          // 지도 재설정
+          const bounds = new kakao.maps.LatLngBounds();
 
-          createMarker(map, coords);
-          console.log(coords);
+          for (let col = 0; col < keys.length; col++) {
+            const colPlaces = columnPlaces[keys[col]];
+            const coords = await getCoordsArray(colPlaces);
+
+            for (const coord of coords) {
+              // latlngBounds 객체에 좌표 추가
+              bounds.extend(coord);
+            }
+
+            createMarker(map, coords, col);
+            console.log(coords);
+          }
+
+          map.setBounds(bounds);
         } catch (error) {
           console.error(error);
         }
       });
     }
-  }, [columnPlaces_1]);
+  }, [columnPlaces]);
 
   return <div id="map" style={{ width: "100%", height: "97vh" }}></div>;
 };
