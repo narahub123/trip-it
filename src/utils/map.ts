@@ -45,7 +45,8 @@ export const getCoordsArray = async (places: PlaceApiType[]) => {
 export const createMarker = (
   map: kakao.maps.Map,
   positions: kakao.maps.LatLng[],
-  col: number
+  col: number,
+  places: string[]
 ) => {
   const markerSize = new kakao.maps.Size(MARKER_WIDTH, MARKER_HEIGHT);
 
@@ -67,6 +68,7 @@ export const createMarker = (
       image: normalImage,
       map,
       position: positions[i],
+      title: places[i],
     });
 
     marker.setMap(map);
