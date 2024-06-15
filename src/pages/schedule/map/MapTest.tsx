@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import { Rootstate } from "../../../store/store";
 import { metros } from "../../../data/metros";
@@ -8,6 +8,7 @@ import {
   getCoords,
   getCoordsArray,
 } from "../../../utils/map";
+import { debounce } from "../../../utils/debounce";
 
 // kakao 객체의 존재 여부를 typeScript가 인식하지 못함
 // Property 'kakao' does not exist on type 'Window & typeof globalThis'.
@@ -18,6 +19,21 @@ declare global {
 }
 
 const MapTest = () => {
+  const mapRef = useRef<HTMLDivElement>(null);
+  const [mapWidth, setMapWidth] = useState(0);
+
+  const handleResize = debounce(() => {
+    if (mapRef.current) setMapWidth(mapRef.current.offsetWidth);
+  }, 500);
+
+  useEffect(() => {
+    window.addEventListener("resize", handleResize);
+    return () => {
+      // cleanup
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
   const columnPlaces = useSelector(
     (state: Rootstate) => state.columnPlaces.columnPlaces
   );
@@ -113,9 +129,11 @@ const MapTest = () => {
         }
       });
     }
-  }, [columnPlaces]);
+  }, [columnPlaces, mapWidth]);
 
-  return <div id="map" style={{ width: "100%", height: "97vh" }}></div>;
+  return (
+    <div id="map" ref={mapRef} style={{ width: "100%", height: "97vh" }}></div>
+  );
 };
 
 export default MapTest;
