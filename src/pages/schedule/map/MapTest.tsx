@@ -6,6 +6,7 @@ import {
   ResultType,
   createMarker,
   createPolyline,
+  getCarDirection,
   getCoords,
   getCoordsArray,
 } from "../../../utils/map";
@@ -90,6 +91,9 @@ const MapTest = () => {
 
               createMarker(map, coords, col, places);
               createPolyline(map, coords, col);
+              if (hash === "#step4" && col === 0) {
+                await getCarDirection(coords[0], coords[1], map);
+              }
             }
 
             map.setBounds(bounds);
