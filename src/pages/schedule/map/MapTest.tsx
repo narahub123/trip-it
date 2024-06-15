@@ -5,6 +5,7 @@ import { metros } from "../../../data/metros";
 import {
   ResultType,
   createMarker,
+  createPolyline,
   getCoords,
   getCoordsArray,
 } from "../../../utils/map";
@@ -88,7 +89,7 @@ const MapTest = () => {
               }
 
               createMarker(map, coords, col, places);
-              console.log(coords);
+              createPolyline(map, coords, col);
             }
 
             map.setBounds(bounds);

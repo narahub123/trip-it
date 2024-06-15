@@ -1,3 +1,4 @@
+import { colors } from "../data/color";
 import { PlaceApiType } from "../types/place";
 
 declare global {
@@ -77,7 +78,7 @@ export const createMarker = (
 
 const MARKER_WIDTH = 30;
 const MARKER_HEIGHT = 42.5;
-const OFFSET_X = 6;
+const OFFSET_X = 14;
 const OFFSET_Y = MARKER_HEIGHT;
 const SPRITE_MARKER_SRC = "/images/kakao-markers2.png";
 const SPRITE_WIDTH = 330;
@@ -100,4 +101,20 @@ export const createMarkerImage = (
   );
 
   return markerImage;
+};
+
+export const createPolyline = (
+  map: kakao.maps.Map,
+  paths: kakao.maps.LatLng[],
+  col: number
+) => {
+  const polyline = new kakao.maps.Polyline({
+    path: paths,
+    strokeWeight: 5,
+    strokeColor: colors[col],
+    strokeOpacity: 0.7,
+    strokeStyle: "solid",
+  });
+
+  polyline.setMap(map);
 };
