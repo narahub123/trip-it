@@ -1,10 +1,11 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import "./map.css";
 import { useSelector } from "react-redux";
 import { Rootstate } from "../../../store/store";
 import { metros } from "../../../data/metros";
 import { useLocation } from "react-router-dom";
 import { colors } from "../../../data/color";
+import { debounce } from "../../../utils/debounce";
 
 // kakao 객체의 존재 여부를 typeScript가 인식하지 못함
 // Property 'kakao' does not exist on type 'Window & typeof globalThis'.
@@ -25,6 +26,24 @@ interface ResultType {
 
 const Map = () => {
   const { hash } = useLocation();
+
+  const mapRef = useRef<HTMLDivElement>(null);
+  const [width, setWidth] = useState(0);
+
+  const handleResize = debounce(() => {
+    if (mapRef.current) setWidth(mapRef.current.offsetWidth);
+  }, 500);
+
+  useEffect(() => {
+    window.addEventListener("resize", handleResize);
+    return () => {
+      // cleanup
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
+  console.log(width);
+
   // 선택한 장소를 모아둠
   const columnPlaces_1 = useSelector(
     (state: Rootstate) => state.columnPlaces.columnPlaces[`columnPlaces_1`]
@@ -49,10 +68,10 @@ const Map = () => {
   useEffect(() => {
     if (window.kakao) {
       window.kakao.maps.load(() => {
-        const container = document.getElementById("map");
         // 주소-좌표 변환 객체를 생성합니다
         const geocoder = new window.kakao.maps.services.Geocoder();
 
+        const container = document.getElementById("map");
         let latitude = 0;
         let longitude = 0;
         // 달력으로 이동할 때의 주소
@@ -245,9 +264,11 @@ const Map = () => {
         }
       });
     }
-  }, [columnPlaces_1, columnPlaces, hash]);
+  }, [columnPlaces_1, columnPlaces, hash, width]);
 
-  return <div id="map" style={{ width: "100%", height: "97vh" }} />;
+  return (
+    <div id="map" ref={mapRef} style={{ width: "100%", height: "97vh" }} />
+  );
 };
 
 export default Map;
