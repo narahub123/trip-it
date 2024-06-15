@@ -12,6 +12,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import BackModal from "../pages/schedule/BackModal";
 import { setBackToggle } from "../store/slices/uiSlice";
 import { useRenderCount } from "@uidotdev/usehooks";
+import MapTest from "../pages/schedule/map/MapTest";
 
 const ScheduleLayout = () => {
   const rendering = useRenderCount();
@@ -71,7 +72,8 @@ const ScheduleLayout = () => {
       {backToggle && <BackModal />}
       <Procedure />
       <Choice />
-      <Map />
+      {/* <Map /> */}
+      <MapTest />
     </div>
   );
 };
