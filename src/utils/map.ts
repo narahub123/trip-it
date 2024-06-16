@@ -16,6 +16,7 @@ export interface ResultType {
   road_address: kakao.maps.services.RoadAaddress;
 }
 
+// 비동기적으로 주소 정보로 위치 정보 받아오기
 export const getCoords = (address: string) => {
   return new Promise<kakao.maps.LatLng>((resolve, reject) => {
     const geocoder = new kakao.maps.services.Geocoder();
@@ -43,6 +44,7 @@ export const getCoordsArray = async (places: PlaceApiType[]) => {
   return Promise.all(promises);
 };
 
+// 여러 마커 사용하기
 export const createMarker = (
   map: kakao.maps.Map,
   positions: kakao.maps.LatLng[],
@@ -84,6 +86,7 @@ const SPRITE_MARKER_SRC = "/images/kakao-markers2.png";
 const SPRITE_WIDTH = 330;
 const SPRITE_HEIGHT = 425;
 
+// 마커에 커스텀 이미지 사용하기
 export const createMarkerImage = (
   markerSize: kakao.maps.Size,
   offset: kakao.maps.Point,
@@ -103,6 +106,7 @@ export const createMarkerImage = (
   return markerImage;
 };
 
+// 선 긋기
 export const createPolyline = (
   map: kakao.maps.Map,
   paths: kakao.maps.LatLng[],
@@ -119,10 +123,12 @@ export const createPolyline = (
   polyline.setMap(map);
 };
 
+// 자동자 길찾기(비동기)
 export const getCarDirection = async (
+  map: kakao.maps.Map,
   startPoint: kakao.maps.LatLng,
   endPoint: kakao.maps.LatLng,
-  map: kakao.maps.Map
+  col: number
 ) => {
   console.log(startPoint, endPoint);
 
@@ -159,11 +165,8 @@ export const getCarDirection = async (
     }
 
     const data = await response.json();
-    console.log(data);
 
     const linePath: kakao.maps.LatLng[] = [];
-
-    // console.log(data.routes[0].sections[0].roads[0]);
 
     data.routes[0].sections[0].roads.forEach((router: any) => {
       router.vertexes.forEach((vertax: any, index: number) => {
@@ -178,14 +181,7 @@ export const getCarDirection = async (
       });
     });
 
-    var polyline = new kakao.maps.Polyline({
-      path: linePath,
-      strokeWeight: 5,
-      strokeColor: "#000000",
-      strokeOpacity: 0.7,
-      strokeStyle: "solid",
-    });
-    polyline.setMap(map);
+    createPolyline(map, linePath, col);
   } catch (error) {
     console.error("Error:", error);
   }
