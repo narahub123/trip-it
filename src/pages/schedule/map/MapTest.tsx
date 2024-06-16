@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Rootstate } from "../../../store/store";
 import { metros } from "../../../data/metros";
 import {
@@ -10,6 +10,7 @@ import {
 } from "../../../utils/map";
 import { debounce } from "../../../utils/debounce";
 import { useLocation } from "react-router-dom";
+import { setInfoToMapColumn } from "../../../store/slices/mapSlice";
 
 // kakao 객체의 존재 여부를 typeScript가 인식하지 못함
 // Property 'kakao' does not exist on type 'Window & typeof globalThis'.
@@ -23,6 +24,11 @@ const MapTest = () => {
   const mapRef = useRef<HTMLDivElement>(null);
   const [mapWidth, setMapWidth] = useState(0);
   const { hash } = useLocation();
+  const dispatch = useDispatch();
+
+  const mapcol = useSelector((state: Rootstate) => state.map);
+
+  console.log(mapcol);
 
   const handleResize = debounce(() => {
     if (mapRef.current) setMapWidth(mapRef.current.offsetWidth);
@@ -103,6 +109,10 @@ const MapTest = () => {
                   );
 
                   console.log(info);
+                  if (info && col !== 0)
+                    dispatch(
+                      setInfoToMapColumn({ column: col, info, index: i })
+                    );
                 }
               }
             }

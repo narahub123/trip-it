@@ -36,6 +36,10 @@ const ScheduleColumn = ({ date, index }: ScheduleColumnProps) => {
   const goalRow = useSelector((state: Rootstate) => state.columnPlaces.goalRow);
   const items = useSelector((state: Rootstate) => state.accommo.items);
   const dates = useSelector((state: Rootstate) => state.date.datesArray);
+  const mapCol = useSelector((state: Rootstate) => state.map);
+  const mapColumn = mapCol[`mapColumn${index}`];
+
+  console.log("mapColumn", mapColumn);
 
   const selectedPlace = useSelector(
     (state: Rootstate) => state.columnPlaces.draggedPlace
@@ -265,7 +269,9 @@ const ScheduleColumn = ({ date, index }: ScheduleColumnProps) => {
                       <LuTrash2 />
                     </span>
                   </li>
-
+                  {mapColumn && mapColumn[i] && (
+                    <div>{`${Math.round(mapColumn[i]?.duration / 60)}분`}</div>
+                  )}
                   {columnPlaces.length < limitOfPlaces && (
                     <DropIndicator
                       col={index.toString()}

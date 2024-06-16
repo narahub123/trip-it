@@ -7,11 +7,15 @@ import {
   weekOfDay,
 } from "../../../../utils/date";
 import { useDispatch, useSelector } from "react-redux";
-import { Rootstate } from "../../../../store/store";
+import { Rootstate, store } from "../../../../store/store";
 import { addEnd, addStart } from "../../../../store/slices/dateSlice";
 import { addDates } from "../../../../store/slices/scheduleSlice";
 import { calcItems } from "../../../../store/slices/accommoSlice";
 import { clearColumnPlaces } from "../../../../store/slices/columnPlacesSlice";
+import {
+  clearMapColumn,
+  createMapColumns,
+} from "../../../../store/slices/mapSlice";
 
 export interface DestrucDateType {
   year: number;
@@ -48,6 +52,8 @@ const Calendar = ({ month }: CalendarProps) => {
 
     if (className.includes("possible") && date) {
       dispatch(addEnd(date));
+      // mapColumn 생성하기(이동 정보 저장)
+      store.dispatch(createMapColumns());
       return;
     }
 
@@ -57,6 +63,8 @@ const Calendar = ({ month }: CalendarProps) => {
       dispatch(calcItems() as any);
       // columnPlaces 비우기
       dispatch(clearColumnPlaces());
+      // mapColumn 비우기
+      dispatch(clearMapColumn());
     }
   };
 

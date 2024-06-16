@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { Rootstate } from "../store";
 import { addPlaceToColumn } from "./columnPlacesSlice";
 
@@ -12,13 +12,6 @@ export interface MapColumnType {
 }
 
 const initialState: MapColumnType = {};
-
-// 모빌리티에서 받아온 정보 저장하기
-
-interface AddInfoProps {
-  column: number;
-  index: number;
-}
 
 // mapColumn 동적 생성하기
 export const createMapColumns = createAsyncThunk(
@@ -51,16 +44,27 @@ const mapSlice = createSlice({
   name: "map",
   initialState,
   reducers: {
+    // MapColum 초기화
+    clearMapColumn: () => initialState,
     updateMapColumn: (state, action) => {
       return {
         ...state,
         ...action.payload,
       };
     },
+    // 모빌리티에서 받아 온 정보를 추가하기
+    setInfoToMapColumn: (
+      state,
+      action: PayloadAction<{ column: number; info: InfoType; index: number }>
+    ) => {
+      const { column, info, index } = action.payload;
+      state[`mapColumn${column - 1}`][index] = info;
+    },
   },
   extraReducers: (builder) => {},
 });
 
-export const { updateMapColumn } = mapSlice.actions;
+export const { updateMapColumn, setInfoToMapColumn, clearMapColumn } =
+  mapSlice.actions;
 
 export default mapSlice.reducer;
