@@ -89,12 +89,20 @@ const MapTest = () => {
 
               createMarker(map, coords, col, places);
               //   createPolyline(map, coords, col);
+
               if (hash === "#step4") {
                 for (let i = 0; i < coords.length - 1; i++) {
                   const start = i;
                   const end = i + 1;
 
-                  await getCarDirection(map, coords[start], coords[end], col);
+                  const info = await getCarDirection(
+                    map,
+                    coords[start],
+                    coords[end],
+                    col
+                  );
+
+                  console.log(info);
                 }
               }
             }

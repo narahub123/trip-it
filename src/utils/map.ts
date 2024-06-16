@@ -166,22 +166,34 @@ export const getCarDirection = async (
 
     const data = await response.json();
 
+    console.log(data.routes[0].sections[0].roads);
+
+    const distance = data.routes[0].sections[0].distance;
+    const duration = data.routes[0].sections[0].duration;
+
+    console.log(distance);
+    console.log(duration);
+
     const linePath: kakao.maps.LatLng[] = [];
 
-    data.routes[0].sections[0].roads.forEach((router: any) => {
+    data.routes[0].sections[0].roads.forEach((router: any, i: number) => {
       router.vertexes.forEach((vertax: any, index: number) => {
         if (index % 2 === 0) {
-          linePath.push(
-            new kakao.maps.LatLng(
-              router.vertexes[index + 1],
-              router.vertexes[index]
-            )
+          const coords = new kakao.maps.LatLng(
+            router.vertexes[index + 1],
+            router.vertexes[index]
           );
+          linePath.push(coords);
         }
       });
     });
 
     createPolyline(map, linePath, col);
+
+    return {
+      distance,
+      duration,
+    };
   } catch (error) {
     console.error("Error:", error);
   }
