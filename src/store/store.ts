@@ -7,6 +7,7 @@ import placeSlice from "./slices/placeSlice";
 import columnPlacesSlice from "./slices/columnPlacesSlice";
 import accommoSlice from "./slices/accommoSlice";
 import uiSlice from "./slices/uiSlice";
+import mapSlice from "./slices/mapSlice";
 
 export const store = configureStore({
   reducer: {
@@ -18,6 +19,7 @@ export const store = configureStore({
     columnPlaces: columnPlacesSlice,
     accommo: accommoSlice,
     ui: uiSlice,
+    map: mapSlice,
   },
 });
 
