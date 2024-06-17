@@ -240,10 +240,11 @@ const ScheduleColumn = ({ date, index }: ScheduleColumnProps) => {
                     key={"_1"}
                   />
                 )}
-            {curCol === index.toString()
-              ? curRow !== "0" &&
-                possible === "_1" &&
-                selectedPlace && (
+            {curCol === index.toString() ? (
+              curRow !== "0" &&
+              possible === "_1" &&
+              selectedPlace && (
+                <li className="possibleCard">
                   <li className="dropCard">
                     <span className="index">
                       <p>{1}</p>
@@ -256,22 +257,26 @@ const ScheduleColumn = ({ date, index }: ScheduleColumnProps) => {
                       <LuTrash2 />
                     </span>
                   </li>
-                )
-              : possible === "_1" &&
-                selectedPlace && (
-                  <li className="dropCard">
-                    <span className="index">
-                      <p>{1}</p>
-                    </span>
-                    <PossibleCard place={selectedPlace} />
-                    <span
-                      className="delete"
-                      onClick={() => handleDelete(selectedPlace.contentid, 0)}
-                    >
-                      <LuTrash2 />
-                    </span>
-                  </li>
-                )}
+                </li>
+              )
+            ) : possible === "_1" && selectedPlace ? (
+              <li className="possibleCard">
+                <li className="dropCard">
+                  <span className="index">
+                    <p>{1}</p>
+                  </span>
+                  <PossibleCard place={selectedPlace} />
+                  <span
+                    className="delete"
+                    onClick={() => handleDelete(selectedPlace.contentid, 0)}
+                  >
+                    <LuTrash2 />
+                  </span>
+                </li>
+              </li>
+            ) : (
+              <li className="hideCard"></li>
+            )}
 
             {columnPlaces &&
               columnPlaces?.map((place, i) => (
@@ -304,34 +309,22 @@ const ScheduleColumn = ({ date, index }: ScheduleColumnProps) => {
                   {mapColumn && mapColumn[i] && (
                     <div>{`${Math.round(mapColumn[i]?.duration / 60)}분`}</div>
                   )}
-                  {curCol === index.toString()
-                    ? columnPlaces.length < limitOfPlaces &&
-                      curRow !== i.toString() &&
-                      i.toString() !== (Number(curRow) - 1).toString() && (
-                        <DropIndicator
-                          col={index.toString()}
-                          row={i.toString()}
-                          onDragLeave={handleDragLeave}
-                          onDragOver={handleDragOver}
-                          onDrop={handleDrop}
-                          key={i}
-                        />
-                      )
-                    : columnPlaces.length < limitOfPlaces && (
-                        <DropIndicator
-                          col={index.toString()}
-                          row={i.toString()}
-                          onDragLeave={handleDragLeave}
-                          onDragOver={handleDragOver}
-                          onDrop={handleDrop}
-                          key={i}
-                        />
-                      )}
-                  {curCol === index.toString()
-                    ? possible === i.toString() &&
-                      curRow !== i.toString() &&
-                      i.toString() !== (Number(curRow) - 1).toString() &&
-                      selectedPlace && (
+                  {columnPlaces.length < limitOfPlaces && (
+                    <DropIndicator
+                      col={index.toString()}
+                      row={i.toString()}
+                      onDragLeave={handleDragLeave}
+                      onDragOver={handleDragOver}
+                      onDrop={handleDrop}
+                      key={i}
+                    />
+                  )}
+                  {curCol === index.toString() ? (
+                    possible === i.toString() &&
+                    curRow !== i.toString() &&
+                    i.toString() !== (Number(curRow) - 1).toString() &&
+                    selectedPlace && (
+                      <li className="possibleCard">
                         <li className="dropCard">
                           <span className="index">
                             <p>{i + 2}</p>
@@ -344,22 +337,26 @@ const ScheduleColumn = ({ date, index }: ScheduleColumnProps) => {
                             <LuTrash2 />
                           </span>
                         </li>
-                      )
-                    : possible === i.toString() &&
-                      selectedPlace && (
-                        <li className="dropCard">
-                          <span className="index">
-                            <p>{i + 2}</p>
-                          </span>
-                          <PossibleCard place={selectedPlace} />
-                          <span
-                            className="delete"
-                            onClick={() => handleDelete(place.contentid, i)}
-                          >
-                            <LuTrash2 />
-                          </span>
-                        </li>
-                      )}
+                      </li>
+                    )
+                  ) : possible === i.toString() && selectedPlace ? (
+                    <li className="possibleCard">
+                      <li className="dropCard">
+                        <span className="index">
+                          <p>{i + 2}</p>
+                        </span>
+                        <PossibleCard place={selectedPlace} />
+                        <span
+                          className="delete"
+                          onClick={() => handleDelete(place.contentid, i)}
+                        >
+                          <LuTrash2 />
+                        </span>
+                      </li>
+                    </li>
+                  ) : (
+                    <li className="hideCard"></li>
+                  )}
                 </>
               ))}
           </ul>

@@ -20,6 +20,15 @@
         }
       }
 
+      li.possibleCard {
+        height: 67.6px;
+        transition: all 0.5s ease-in-out;
+      }
+
+      li.hideCard {
+        height: 0;
+      }
+
       li.dropCard {
         display: flex;
         align-items: center;
