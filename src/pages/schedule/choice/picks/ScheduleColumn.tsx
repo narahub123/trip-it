@@ -20,6 +20,7 @@ import DropCard from "./DropCard";
 import { setItems } from "../../../../store/slices/accommoSlice";
 import { useRenderCount } from "@uidotdev/usehooks";
 import PossibleCard from "./PossibleCard";
+import { setActive } from "../../../../store/slices/modalSlice";
 
 interface ScheduleColumnProps {
   date: DestrucDateType;
@@ -103,6 +104,7 @@ const ScheduleColumn = ({ date, index }: ScheduleColumnProps) => {
     // 장소 최대 개수 초과 여부 유효성 검사
     if (columnPlaces.length === limitOfPlaces) {
       alert(`하루 최대 허용 장소 개수 ${limitOfPlaces}개를 초과하였습니다.`);
+      setIsActive(false);
       return;
     }
 
@@ -122,6 +124,7 @@ const ScheduleColumn = ({ date, index }: ScheduleColumnProps) => {
           maxOfAccommoNum - 1
         }개가 되었습니다. 숙소를 추가할 수 없습니다.`
       );
+      setIsActive(false);
       return;
     }
     if (
@@ -132,6 +135,7 @@ const ScheduleColumn = ({ date, index }: ScheduleColumnProps) => {
       alert(
         `숙소 최대 개수 ${maxOfAccommoNum}개가 되었습니다. 숙소를 추가할 수 없습니다.`
       );
+      setIsActive(false);
       return;
     }
 
