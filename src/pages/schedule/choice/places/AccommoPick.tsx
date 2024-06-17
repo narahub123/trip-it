@@ -42,7 +42,10 @@ const AccommoPick = ({ date, index }: AccommoPickProps) => {
   // 현재 선택한 장소
   const place = useSelector((state: Rootstate) => state.place.place);
 
-  const [inserted, setInserted] = useState(false);
+  // 현재 컬럼에 새로 이미지를 추가하였는지 여부
+  const inserted = items[index].inserted;
+
+  console.log(inserted);
 
   const dispatch = useDispatch();
 
@@ -62,22 +65,24 @@ const AccommoPick = ({ date, index }: AccommoPickProps) => {
     if (!inserted) {
       const updateItems = items.map((item) =>
         item.index === seletetedItem
-          ? { ...item, contentId: place?.contentid }
+          ? { ...item, contentId: place?.contentid, inserted: !inserted }
           : item
       );
 
       dispatch(setItems(updateItems));
       dispatch(setSelected(true));
-      setInserted(!inserted);
+      // setInserted(!inserted);
     }
     if (inserted) {
       const updateItems = items.map((item) =>
-        item.index === seletetedItem ? { ...item, contentId: "" } : item
+        item.index === seletetedItem
+          ? { ...item, contentId: "", inserted: !inserted }
+          : item
       );
 
       dispatch(setItems(updateItems));
       dispatch(setSelected(false));
-      setInserted(!inserted);
+      // setInserted(!inserted);
     }
   };
 

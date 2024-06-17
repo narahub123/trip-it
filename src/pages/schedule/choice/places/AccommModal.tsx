@@ -6,7 +6,12 @@ import { accommoToggle } from "../../../../store/slices/placeSlice";
 import { Rootstate, store } from "../../../../store/store";
 
 import AccommoPick from "./AccommoPick";
-import { calcItems, setSelected } from "../../../../store/slices/accommoSlice";
+import {
+  calcItems,
+  clearInserted,
+  setItems,
+  setSelected,
+} from "../../../../store/slices/accommoSlice";
 import Button from "../../../../components/ui/Button";
 import {
   addPlaceToColumn,
@@ -23,6 +28,7 @@ const AccommModal = () => {
   const [selections, setSelections] = useState(
     items.map((item) => item.contentId)
   );
+  const [all, setAll] = useState(false);
   const selected = useSelector((state: Rootstate) => state.accommo.selected);
 
   useEffect(() => {
@@ -39,6 +45,8 @@ const AccommModal = () => {
     if (e.currentTarget.className === "accommo-modal") {
       // 토글이 작동하는 경우 selected를 품
       dispatch(setSelected(false));
+      // 모든 inserted를 품
+      dispatch(clearInserted());
       dispatch(accommoToggle());
     }
   };
@@ -105,8 +113,28 @@ const AccommModal = () => {
           order: -1,
         })
       );
+
+    dispatch(clearInserted());
     dispatch(accommoToggle());
     dispatch(setSelected(false));
+  };
+
+  const handleSelectAll = () => {
+    const newItems = items.map((item) => ({
+      ...item,
+      contentId: place?.contentid,
+      inserted: true,
+    }));
+
+    dispatch(setItems(newItems));
+    dispatch(setSelected(true));
+    setAll(true);
+  };
+
+  const handleRewind = () => {
+    dispatch(clearInserted());
+    dispatch(setSelected(false));
+    setAll(false);
   };
 
   return (
@@ -126,7 +154,15 @@ const AccommModal = () => {
               ))}
             </ul>
           </div>
-          <div className="select-all">전체 선택</div>
+          {!all ? (
+            <div className="select-all" onClick={handleSelectAll}>
+              전체 선택
+            </div>
+          ) : (
+            <div className="select-all" onClick={handleRewind}>
+              되돌리기
+            </div>
+          )}
           <div
             className="done"
             onClick={

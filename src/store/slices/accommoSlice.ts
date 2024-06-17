@@ -8,6 +8,7 @@ export interface AccommoState {
     index: number;
     contentId: string;
     date: DestrucDateType;
+    inserted: boolean; // 이미지 삽입 여부
   }[];
   curItem?: number;
   selected: boolean;
@@ -42,6 +43,7 @@ export const calcItems = createAsyncThunk(
       date: date,
       contentId: "",
       index: index,
+      inserted: false,
     }));
 
     dispatch(setItems(items));
@@ -61,12 +63,25 @@ const accommoSlice = createSlice({
     setSelected: (state, action: PayloadAction<boolean>) => {
       state.selected = action.payload;
     },
+    clearInserted: (state) => {
+      const items = state.items;
+      const newItems = items.map((item) => ({
+        ...item,
+        inserted: false,
+      }));
+
+      accommoSlice.caseReducers.setItems(state, {
+        payload: newItems,
+        type: "setItems",
+      });
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(calcItems.fulfilled, (state, action) => {});
   },
 });
 
-export const { setItems, setCurItem, setSelected } = accommoSlice.actions;
+export const { setItems, setCurItem, setSelected, clearInserted } =
+  accommoSlice.actions;
 
 export default accommoSlice.reducer;
