@@ -34,7 +34,6 @@ const ScheduleColumn = ({ date, index }: ScheduleColumnProps) => {
   const dispatch = useDispatch();
   const curCol = useSelector((state: Rootstate) => state.columnPlaces.curCol);
   const curRow = useSelector((state: Rootstate) => state.columnPlaces.curRow);
-  const goalRow = useSelector((state: Rootstate) => state.columnPlaces.goalRow);
   const items = useSelector((state: Rootstate) => state.accommo.items);
   const dates = useSelector((state: Rootstate) => state.date.datesArray);
   const mapCol = useSelector((state: Rootstate) => state.map);
@@ -219,17 +218,47 @@ const ScheduleColumn = ({ date, index }: ScheduleColumnProps) => {
               </li>
             )}
 
-            {columnPlaces.length < limitOfPlaces && (
-              <>
-                <DropIndicator
-                  row="_1"
-                  col={index.toString()}
-                  onDragLeave={handleDragLeave}
-                  onDragOver={handleDragOver}
-                  onDrop={handleDrop}
-                  key={"_1"}
-                />
-                {possible === "_1" && selectedPlace && (
+            {curCol === index.toString()
+              ? curRow !== "0" &&
+                columnPlaces.length < limitOfPlaces && (
+                  <DropIndicator
+                    row="_1"
+                    col={index.toString()}
+                    onDragLeave={handleDragLeave}
+                    onDragOver={handleDragOver}
+                    onDrop={handleDrop}
+                    key={"_1"}
+                  />
+                )
+              : columnPlaces.length < limitOfPlaces && (
+                  <DropIndicator
+                    row="_1"
+                    col={index.toString()}
+                    onDragLeave={handleDragLeave}
+                    onDragOver={handleDragOver}
+                    onDrop={handleDrop}
+                    key={"_1"}
+                  />
+                )}
+            {curCol === index.toString()
+              ? curRow !== "0" &&
+                possible === "_1" &&
+                selectedPlace && (
+                  <li className="dropCard">
+                    <span className="index">
+                      <p>{1}</p>
+                    </span>
+                    <PossibleCard place={selectedPlace} />
+                    <span
+                      className="delete"
+                      onClick={() => handleDelete(selectedPlace.contentid, 0)}
+                    >
+                      <LuTrash2 />
+                    </span>
+                  </li>
+                )
+              : possible === "_1" &&
+                selectedPlace && (
                   <li className="dropCard">
                     <span className="index">
                       <p>{1}</p>
@@ -243,8 +272,7 @@ const ScheduleColumn = ({ date, index }: ScheduleColumnProps) => {
                     </span>
                   </li>
                 )}
-              </>
-            )}
+
             {columnPlaces &&
               columnPlaces?.map((place, i) => (
                 <>
@@ -276,16 +304,29 @@ const ScheduleColumn = ({ date, index }: ScheduleColumnProps) => {
                   {mapColumn && mapColumn[i] && (
                     <div>{`${Math.round(mapColumn[i]?.duration / 60)}분`}</div>
                   )}
-                  {columnPlaces.length < limitOfPlaces && (
-                    <DropIndicator
-                      col={index.toString()}
-                      row={i.toString()}
-                      onDragLeave={handleDragLeave}
-                      onDragOver={handleDragOver}
-                      onDrop={handleDrop}
-                      key={i}
-                    />
-                  )}
+                  {curCol === index.toString()
+                    ? columnPlaces.length < limitOfPlaces &&
+                      curRow !== i.toString() &&
+                      i.toString() !== (Number(curRow) - 1).toString() && (
+                        <DropIndicator
+                          col={index.toString()}
+                          row={i.toString()}
+                          onDragLeave={handleDragLeave}
+                          onDragOver={handleDragOver}
+                          onDrop={handleDrop}
+                          key={i}
+                        />
+                      )
+                    : columnPlaces.length < limitOfPlaces && (
+                        <DropIndicator
+                          col={index.toString()}
+                          row={i.toString()}
+                          onDragLeave={handleDragLeave}
+                          onDragOver={handleDragOver}
+                          onDrop={handleDrop}
+                          key={i}
+                        />
+                      )}
                   {curCol === index.toString()
                     ? possible === i.toString() &&
                       curRow !== i.toString() &&
