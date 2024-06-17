@@ -21,13 +21,14 @@ const AccommoPick = ({ date, index }: AccommoPickProps) => {
   // 동일한 컬럼에서 숙소 존재여부 확인
   const accommos = columnPlaces.filter((place) => place.contenttypeid === "32");
 
-  const items = useSelector((state: Rootstate) => state.accommo.items);
-  const place = useSelector((state: Rootstate) => state.place.place);
-  const match = items.find((item) => item.index === index);
   // 이전에 선택했던 장소
-  const matched = accommos?.find(
-    (place) => place.contentid === match?.contentId
-  );
+  const matched = accommos.length > 1 ? accommos[1] : accommos[0];
+
+  // 숙소 배열
+  const items = useSelector((state: Rootstate) => state.accommo.items);
+
+  // 현재 선택한 장소
+  const place = useSelector((state: Rootstate) => state.place.place);
 
   const [inserted, setInserted] = useState(false);
 
