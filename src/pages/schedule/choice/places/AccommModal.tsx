@@ -100,7 +100,16 @@ const AccommModal = () => {
         );
 
         // 기존 숙소를 columnPlaces_1에서 삭제
-        dispatch(removePlaceFromColumnPlaces_1ByContentId(deletedAccommo));
+        // 숙소 배열에 존재하는 여부 확인
+        const existed = items.findIndex(
+          (item) => item.contentId === deletedAccommo
+        );
+
+        console.log(existed);
+
+        // 숙소 배열에 존재하지 않는다면 columnPlaces_1에서 삭제
+        if (existed === -1)
+          dispatch(removePlaceFromColumnPlaces_1ByContentId(deletedAccommo));
       }
     }
 
