@@ -14,15 +14,27 @@ interface AccommoPickProps {
 const AccommoPick = ({ date, index }: AccommoPickProps) => {
   // 숙소배열과 동일한 컬럼
   const columnPlaces = useSelector(
-    (state: Rootstate) =>
-      state.columnPlaces.columnPlaces[`columnPlaces${index}`]
+    (state: Rootstate) => state.columnPlaces.columnPlaces
   );
 
+  const colPlaces0 =
+    index !== 0 ? columnPlaces[`columnPlaces${index - 1}`] : undefined;
+
+  const accommos0 =
+    colPlaces0 && colPlaces0.filter((place) => place.contenttypeid === "32");
+
+  const colPlaces = columnPlaces[`columnPlaces${index}`];
+
   // 동일한 컬럼에서 숙소 존재여부 확인
-  const accommos = columnPlaces.filter((place) => place.contenttypeid === "32");
+  const accommos = colPlaces.filter((place) => place.contenttypeid === "32");
 
   // 이전에 선택했던 장소
-  const matched = accommos.length > 1 ? accommos[1] : accommos[0];
+  const matched =
+    accommos.length > 1 // 숙소가 둘 이상일 때
+      ? accommos[1]
+      : accommos.length === 1 && !accommos0 // 숙소가 하나이고 이전 컬럼에 숙소가 없을 때
+      ? accommos[0]
+      : undefined;
 
   // 숙소 배열
   const items = useSelector((state: Rootstate) => state.accommo.items);
