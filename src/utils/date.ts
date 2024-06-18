@@ -122,8 +122,8 @@ export const dateFormatToLocalDate = (origin: string) => {
   const newDate = destrucDate(new Date(origin));
 
   const date = `${newDate.year}${
-    newDate.month < 0 ? "0" + newDate.month : newDate.month
-  }${newDate.date < 0 ? "0" + newDate.date : newDate.date}`;
+    newDate.month < 10 ? "0" + newDate.month : newDate.month
+  }${newDate.date < 10 ? "0" + newDate.date : newDate.date}`;
 
   return date;
 };
@@ -146,13 +146,12 @@ export const dateFormatFromLocalDate = (origin: string) => {
 // 시간 형식을 자바에 맞게 변경하기 (240607102531)
 export const dateFormateToLocalDatetime = (origin: string) => {
   const newDate = destructTime(new Date(origin));
-  const date = `${newDate.year}${
-    newDate.month < 0 ? "0" + newDate.month : newDate.month
-  }${newDate.date < 0 ? "0" + newDate.date : newDate.date}${
-    newDate.hour < 0 ? "0" + newDate.hour : newDate.hour
-  }${newDate.minute < 0 ? "0" + newDate.minute : newDate.minute}${
-    newDate.second < 0 ? "0" + newDate.second : newDate.second
+  const date = `
+    ${newDate.hour < 10 ? "0" + newDate.hour : newDate.hour}:${
+    newDate.minute < 10 ? "0" + newDate.minute : newDate.minute
   }`;
+
+  console.log(date);
 
   return date;
 };

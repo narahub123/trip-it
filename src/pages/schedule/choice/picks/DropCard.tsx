@@ -28,26 +28,54 @@ interface DropCardProps {
   row: number;
 }
 
+export interface DropdownState {
+  down: boolean;
+  violated: boolean;
+}
+
 const DropCard = ({ place, date, column, row }: DropCardProps) => {
   const dispatch = useDispatch();
-  const [dropdownStates, setDropdownStates] = useState<boolean[]>([
-    false,
-    false,
-    false,
-    false,
+  const [dropdownStates, setDropdownStates] = useState<DropdownState[]>([
+    {
+      down: false,
+      violated: false,
+    },
+    {
+      down: false,
+      violated: false,
+    },
+    {
+      down: false,
+      violated: false,
+    },
+    {
+      down: false,
+      violated: false,
+    },
   ]);
 
   const toggleDropdown = (index: number) => {
     const newDropdownStates = [...dropdownStates];
-    newDropdownStates[index] = !newDropdownStates[index];
+    newDropdownStates[index] = {
+      ...newDropdownStates[index],
+      down: !newDropdownStates[index].down,
+    };
+
     setDropdownStates(newDropdownStates);
 
     // 열린 드롭다운 외의 다른 드롭다운 닫기
     for (let i = 0; i < newDropdownStates.length; i++) {
-      if (i !== index && newDropdownStates[i] === true) {
-        newDropdownStates[i] = false;
+      if (i !== index && newDropdownStates[i].down === true) {
+        newDropdownStates[i].down = false;
       }
     }
+    setDropdownStates(newDropdownStates);
+  };
+
+  const setViolated = (index: number, violated: boolean) => {
+    const newDropdownStates = [...dropdownStates];
+    newDropdownStates[index].violated = violated;
+
     setDropdownStates(newDropdownStates);
   };
 
@@ -104,6 +132,8 @@ const DropCard = ({ place, date, column, row }: DropCardProps) => {
     [dispatch]
   );
 
+  console.log(dropdownStates);
+
   console.log(time);
 
   return (
@@ -139,48 +169,56 @@ const DropCard = ({ place, date, column, row }: DropCardProps) => {
           <span>
             <Dropdown
               id={"startHour"}
+              index={0}
               contents={hourFormat2}
               init={Number(time.startHour) - 1}
               time={time}
               setTime={setTime}
-              isActive={dropdownStates[0]}
-              toggleDropdown={() => toggleDropdown(0)}
+              dropdownStates={dropdownStates}
+              toggleDropdown={toggleDropdown}
+              setViolated={setViolated}
             />
           </span>
           :
           <span>
             <Dropdown
               id={"startMinute"}
+              index={1}
               contents={minuteFormat2}
               init={Number(time.startMinute)}
               time={time}
               setTime={setTime}
-              isActive={dropdownStates[1]}
-              toggleDropdown={() => toggleDropdown(1)}
+              dropdownStates={dropdownStates}
+              toggleDropdown={toggleDropdown}
+              setViolated={setViolated}
             />
           </span>
           -
           <span>
             <Dropdown
               id={"endHour"}
+              index={2}
               contents={hourFormat2}
               init={Number(time.endHour) - 1}
               time={time}
               setTime={setTime}
-              isActive={dropdownStates[2]}
-              toggleDropdown={() => toggleDropdown(2)}
+              dropdownStates={dropdownStates}
+              toggleDropdown={toggleDropdown}
+              setViolated={setViolated}
             />
           </span>
           :
           <span>
             <Dropdown
               id={"endMinute"}
+              index={3}
               contents={minuteFormat2}
               init={Number(time.endMinute)}
               time={time}
               setTime={setTime}
-              isActive={dropdownStates[3]}
-              toggleDropdown={() => toggleDropdown(3)}
+              dropdownStates={dropdownStates}
+              toggleDropdown={toggleDropdown}
+              setViolated={setViolated}
             />
           </span>
         </div>

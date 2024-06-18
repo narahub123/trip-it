@@ -5,7 +5,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { clearPageNo } from "../../../store/slices/placeSlice";
 import { Rootstate } from "../../../store/store";
 import axios from "axios";
-import { CalculateDuration, dateFormatToLocalDate } from "../../../utils/date";
+import {
+  CalculateDuration,
+  dateFormatToLocalDate,
+  dateFormateToLocalDatetime,
+} from "../../../utils/date";
 import { setBackToggle } from "../../../store/slices/uiSlice";
 import Button from "../../../components/ui/Button";
 
@@ -148,12 +152,20 @@ const Procedure = () => {
       let accommoCount = 0;
       for (let i = 0; i < colPlaces.length; i++) {
         const place = colPlaces[i];
+        // nodejs
+        // const detail = {
+        //   schedule_order: key.split("columnPlaces")[1],
+        //   start_time: place.start_time,
+        //   end_time: place.end_time,
+        //   content_id: place.contentid,
+        //   createdAt: new Date().toISOString(),
+        // };
+        // java
         const detail = {
           schedule_order: key.split("columnPlaces")[1],
-          start_time: place.start_time,
-          end_time: place.end_time,
+          start_time: dateFormateToLocalDatetime(place.start_time),
+          end_time: dateFormateToLocalDatetime(place.end_time),
           content_id: place.contentid,
-          createdAt: new Date().toISOString(),
         };
         schedule_details.push(detail);
         if (place.contenttypeid === "32") accommoCount++;
@@ -195,20 +207,27 @@ const Procedure = () => {
     const start =
       schedule.start_date && dateFormatToLocalDate(schedule.start_date);
     const end = schedule.end_date && dateFormatToLocalDate(schedule.end_date);
+
     const value = {
-      metro_id: schedule.metro_id,
-      user_id: 1,
-      start_date: start,
-      end_date: end,
-      schedule_title: schedule.schedule_title,
+      scheduleDto: {
+        metro_id: schedule.metro_id,
+        user_id: 1,
+        start_date: start,
+        end_date: end,
+        schedule_title: schedule.schedule_title,
+      },
+      detailScheduleDto: schedule_details,
     };
 
     axios
-      .post(`http://localhost:8080/schedules`, valueNode)
-      // .post(`http://172.16.1.88:8080/home/save`, value)
+      // .post(`http://localhost:8080/schedules`, valueNode)
+      .post(`http://172.16.1.186:8080/home/save`, value)
       .then((response) => {
         if (response.status === 200 || response.status === 201) {
           console.log("정상적으로 처리되었습니다.");
+
+          console.log(response.data);
+
           navigate("/mypage");
         }
       })
