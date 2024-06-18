@@ -1,5 +1,13 @@
 button {
   cursor: pointer;
+  padding: 0;
+  background-color: transparent;
+  border: none;
+  font-size: 12px;
+}
+
+button.violated {
+  border: 1px solid red;
 }
 
 .dropdown {
