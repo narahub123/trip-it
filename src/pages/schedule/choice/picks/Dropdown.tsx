@@ -75,7 +75,7 @@ const Dropdown = ({
         alert(
           `종료 시간은 시작 시간보다 같거나 커야 합니다. \n시간을 다시 조정해주세요.`
         );
-        setViolated(index, true);
+        // setViolated(index, true);
         return;
         // 시작 시간과 종료 시간이 같은 경우 시작 분과 종료 분을 확인해서
         // 종료 분이 시작 분보다 작다면 경고창
@@ -84,7 +84,7 @@ const Dropdown = ({
         setTime({ ...time, [id]: content });
         setSelected(content);
         toggleDropdown(index);
-        setViolated(index, false);
+        // setViolated(index, false);
 
         if (Number(time.startMinute) >= Number(time.endMinute)) {
           alert(
@@ -106,7 +106,7 @@ const Dropdown = ({
           alert(
             `시작 시간과 종료 시간이 같다면 종료 시간의 분이 시작 시간의 분보다 커야 합니다.`
           );
-          setViolated(index, true); // 유효성 걸림
+          // setViolated(index, true); // 유효성 걸림
           return;
         }
       }

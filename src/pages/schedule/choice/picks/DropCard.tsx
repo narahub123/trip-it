@@ -55,6 +55,10 @@ const DropCard = ({ place, date, column, row }: DropCardProps) => {
   ]);
 
   const toggleDropdown = (index: number) => {
+    if (dropdownStates[3].violated && index !== 3) {
+      handlFocus();
+      return;
+    }
     const newDropdownStates = [...dropdownStates];
     newDropdownStates[index] = {
       ...newDropdownStates[index],
@@ -125,17 +129,18 @@ const DropCard = ({ place, date, column, row }: DropCardProps) => {
 
   const handleModal = useCallback(
     (contentId: string) => {
-      console.log(contentId);
+      if (dropdownStates[3].violated) {
+        handlFocus();
+        return;
+      }
       dispatch(modalToggle());
       dispatch(fetchPlace({ contentId }) as any);
     },
     [dispatch]
   );
 
-  const handleBlur = (e: React.FocusEvent<HTMLSpanElement, Element>) => {
-    e.preventDefault();
-    console.log("블러닷");
-    alert(`작업 완료 후 다른 거 해라`);
+  const handlFocus = () => {
+    alert(`에러부터 잡고 해라`);
     return;
   };
 
@@ -169,12 +174,7 @@ const DropCard = ({ place, date, column, row }: DropCardProps) => {
         </div>
         <div className="duration-time">
           <p>머무는 시간</p>
-          <span
-            className={dropdownStates[0].violated ? "violated" : undefined}
-            onBlur={
-              dropdownStates[0].violated ? (e) => handleBlur(e) : undefined
-            }
-          >
+          <span className={dropdownStates[0].violated ? "violated" : undefined}>
             <Dropdown
               id={"startHour"}
               index={0}
@@ -188,11 +188,7 @@ const DropCard = ({ place, date, column, row }: DropCardProps) => {
             />
           </span>
           :
-          <span
-            onBlur={
-              dropdownStates[1].violated ? (e) => handleBlur(e) : undefined
-            }
-          >
+          <span className={dropdownStates[1].violated ? "violated" : undefined}>
             <Dropdown
               id={"startMinute"}
               index={1}
@@ -206,11 +202,7 @@ const DropCard = ({ place, date, column, row }: DropCardProps) => {
             />
           </span>
           -
-          <span
-            onBlur={
-              dropdownStates[2].violated ? (e) => handleBlur(e) : undefined
-            }
-          >
+          <span className={dropdownStates[2].violated ? "violated" : undefined}>
             <Dropdown
               id={"endHour"}
               index={2}
@@ -224,11 +216,7 @@ const DropCard = ({ place, date, column, row }: DropCardProps) => {
             />
           </span>
           :
-          <span
-            onBlur={
-              dropdownStates[3].violated ? (e) => handleBlur(e) : undefined
-            }
-          >
+          <span className={dropdownStates[3].violated ? "violated" : undefined}>
             <Dropdown
               id={"endMinute"}
               index={3}
