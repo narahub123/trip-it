@@ -101,18 +101,24 @@ const MapTest = () => {
                   const start = i;
                   const end = i + 1;
 
-                  const info = await getCarDirection(
-                    map,
-                    coords[start],
-                    coords[end],
-                    col
-                  );
-
-                  console.log(info);
-                  if (info && col !== 0)
-                    dispatch(
-                      setInfoToMapColumn({ column: col, info, index: i })
+                  if (
+                    col !== 0 &&
+                    colPlaces[start] !== colPlaces[end] &&
+                    start &&
+                    end
+                  ) {
+                    const info = await getCarDirection(
+                      map,
+                      coords[start],
+                      coords[end],
+                      col
                     );
+
+                    if (info && col !== 0)
+                      dispatch(
+                        setInfoToMapColumn({ column: col, info, index: i })
+                      );
+                  }
                 }
               }
             }
