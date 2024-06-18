@@ -69,6 +69,39 @@ const Dropdown = ({
   }, [dropdownStates[index].down, selected]);
 
   function handleClick(content: string) {
+    // 현재 프로퍼티가 startHour인 경우 endHour와 비교
+    if (id === "startHour") {
+      if (content > time.endHour) {
+        alert(`시작 시간은 종료시간보다 같거나 작어야 합니다.`);
+        return;
+      } else if (content === time.endHour) {
+        setTime({ ...time, [id]: content });
+        setSelected(content);
+        toggleDropdown(index);
+        if (time.startMinute >= time.endMinute) {
+          alert(
+            `시작 시간과 종료 시간이 같다면 시작 시간의 분이 종료 시간의 분보다 작아야 합니다.`
+          );
+          setViolated(1, true);
+          toggleDropdown(1);
+          return;
+        }
+      }
+    }
+
+    // 현재 프로퍼티가 startHour인 경우
+    if (id === "startMinute") {
+      if (time.startHour === time.endHour) {
+        if (content >= time.endMinute) {
+          alert(
+            `시작 시간과 종료 시간이 같다면 시작 시간의 분이 종료 시간의 분보다 작아야 합니다.`
+          );
+          // setViolated(index, true); // 유효성 걸림
+          return;
+        }
+      }
+    }
+
     // 현재 프로퍼티가 endHour인 경우 startHour와 비교
     if (id === "endHour") {
       if (content < time.startHour) {
@@ -90,8 +123,8 @@ const Dropdown = ({
           alert(
             `시작 시간과 종료 시간이 같다면 종료 시간의 분이 시작 시간의 분보다 커야 합니다.`
           );
-          toggleDropdown(3);
           setViolated(3, true);
+          toggleDropdown(3);
 
           return;
         }
