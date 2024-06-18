@@ -6,7 +6,7 @@ import { Rootstate } from "../../../../store/store";
 import { useDispatch, useSelector } from "react-redux";
 import { contentTypeIds } from "../../../../data/contentTypeIds";
 import { fetchPlace, modalToggle } from "../../../../store/slices/placeSlice";
-import Dropdown from "../../../../components/ui/Dropdown";
+
 import {
   hourFormat1,
   hourFormat2,
@@ -19,6 +19,7 @@ import {
   updateEndTime,
   updateStartTime,
 } from "../../../../store/slices/columnPlacesSlice";
+import Dropdown, { DurationType } from "./Dropdown";
 
 interface DropCardProps {
   place: ColumnPlaceType;
@@ -53,46 +54,41 @@ const DropCard = ({ place, date, column, row }: DropCardProps) => {
   const areacode =
     useSelector((state: Rootstate) => state.schedule.schedule.metro_id) || "1";
 
-  const [startHourInit, setStartHourInit] = useState(
-    new Date(place.start_time).getHours() < 10
-      ? "0" + new Date(place.start_time).getHours()
-      : new Date(place.start_time).getHours().toString()
-  );
-
-  const [startMinuteInit, setStartMinuteInit] = useState(
-    new Date(place.start_time).getMinutes() < 10
-      ? "0" + new Date(place.start_time).getMinutes()
-      : new Date(place.start_time).getMinutes().toString()
-  );
-
-  const [endHourInit, setEndHourInit] = useState(
-    new Date(place.start_time).getHours() < 10
-      ? "0" + new Date(place.end_time).getHours()
-      : new Date(place.end_time).getHours().toString()
-  );
-
-  const [endMinuteInit, setEndMinuteInit] = useState(
-    new Date(place.end_time).getMinutes() < 10
-      ? "0" + new Date(place.end_time).getMinutes()
-      : new Date(place.end_time).getMinutes().toString()
-  );
+  const [time, setTime] = useState<DurationType>({
+    startHour:
+      new Date(place.start_time).getHours() < 10
+        ? "0" + new Date(place.start_time).getHours()
+        : new Date(place.start_time).getHours().toString(),
+    startMinute:
+      new Date(place.start_time).getMinutes() < 10
+        ? "0" + new Date(place.start_time).getMinutes()
+        : new Date(place.start_time).getMinutes().toString(),
+    endHour:
+      new Date(place.start_time).getHours() < 10
+        ? "0" + new Date(place.end_time).getHours()
+        : new Date(place.end_time).getHours().toString(),
+    endMinute:
+      new Date(place.end_time).getMinutes() < 10
+        ? "0" + new Date(place.end_time).getMinutes()
+        : new Date(place.end_time).getMinutes().toString(),
+  });
 
   useEffect(() => {
     dispatch(
       updateStartTime({
         column,
         row,
-        hour: startHourInit,
-        minute: startMinuteInit,
+        hour: time.startHour,
+        minute: time.startMinute,
       })
     );
-  }, [startHourInit, startMinuteInit]);
+  }, [time]);
 
   useEffect(() => {
     dispatch(
-      updateEndTime({ column, row, hour: endHourInit, minute: endMinuteInit })
+      updateEndTime({ column, row, hour: time.endHour, minute: time.endMinute })
     );
-  }, [endHourInit, endMinuteInit]);
+  }, [time]);
 
   // 기본 이미지
   const defaultImage = metros.find(
@@ -108,7 +104,7 @@ const DropCard = ({ place, date, column, row }: DropCardProps) => {
     [dispatch]
   );
 
-  // console.log(startHourInit, startMinuteInit, endHourInit, endMinuteInit);
+  console.log(time);
 
   return (
     <div className="dropPlaceCard">
@@ -140,14 +136,13 @@ const DropCard = ({ place, date, column, row }: DropCardProps) => {
         </div>
         <div className="duration-time">
           <p>머무는 시간</p>
-          {/* <span>
-            <Dropdown contents={timeFormat} style={-22} scroll="hidden" />
-          </span> */}
           <span>
             <Dropdown
+              id={"startHour"}
               contents={hourFormat2}
-              init={Number(startHourInit) - 1}
-              setStartHourInit={setStartHourInit}
+              init={Number(time.startHour) - 1}
+              time={time}
+              setTime={setTime}
               isActive={dropdownStates[0]}
               toggleDropdown={() => toggleDropdown(0)}
             />
@@ -155,22 +150,23 @@ const DropCard = ({ place, date, column, row }: DropCardProps) => {
           :
           <span>
             <Dropdown
+              id={"startMinute"}
               contents={minuteFormat2}
-              init={Number(startMinuteInit)}
-              setStartMinuteInit={setStartMinuteInit}
+              init={Number(time.startMinute)}
+              time={time}
+              setTime={setTime}
               isActive={dropdownStates[1]}
               toggleDropdown={() => toggleDropdown(1)}
             />
           </span>
           -
-          {/* <span>
-            <Dropdown contents={timeFormat} style={-22} scroll="hidden" />
-          </span> */}
           <span>
             <Dropdown
+              id={"endHour"}
               contents={hourFormat2}
-              init={Number(endHourInit) - 1}
-              setEndHourInit={setEndHourInit}
+              init={Number(time.endHour) - 1}
+              time={time}
+              setTime={setTime}
               isActive={dropdownStates[2]}
               toggleDropdown={() => toggleDropdown(2)}
             />
@@ -178,9 +174,11 @@ const DropCard = ({ place, date, column, row }: DropCardProps) => {
           :
           <span>
             <Dropdown
+              id={"endMinute"}
               contents={minuteFormat2}
-              init={Number(endMinuteInit)}
-              setEndMinuteInit={setEndMinuteInit}
+              init={Number(time.endMinute)}
+              time={time}
+              setTime={setTime}
               isActive={dropdownStates[3]}
               toggleDropdown={() => toggleDropdown(3)}
             />
