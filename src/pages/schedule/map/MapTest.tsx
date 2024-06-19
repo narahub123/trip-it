@@ -103,9 +103,7 @@ const MapTest = () => {
 
                   if (
                     col !== 0 &&
-                    colPlaces[start] !== colPlaces[end] &&
-                    start &&
-                    end
+                    colPlaces[start].contentid !== colPlaces[end].contentid
                   ) {
                     const info = await getCarDirection(
                       map,
