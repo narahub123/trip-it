@@ -11,7 +11,10 @@ import { Rootstate, store } from "../../../../store/store";
 import { addEnd, addStart } from "../../../../store/slices/dateSlice";
 import { addDates } from "../../../../store/slices/scheduleSlice";
 import { calcItems } from "../../../../store/slices/accommoSlice";
-import { clearColumnPlaces } from "../../../../store/slices/columnPlacesSlice";
+import {
+  clearColumnPlaces,
+  createColumnPlaces,
+} from "../../../../store/slices/columnPlacesSlice";
 import {
   clearMapColumn,
   createMapColumns,
@@ -54,6 +57,8 @@ const Calendar = ({ month }: CalendarProps) => {
       dispatch(addEnd(date));
       // mapColumn 생성하기(이동 정보 저장)
       store.dispatch(createMapColumns());
+      // columnPlaces 생성하기
+      store.dispatch(createColumnPlaces());
       return;
     }
 

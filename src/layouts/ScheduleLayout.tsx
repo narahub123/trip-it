@@ -20,8 +20,12 @@ const ScheduleLayout = () => {
   const dispatch = useDispatch();
   const { hash, pathname } = useLocation();
   const backToggle = useSelector((state: Rootstate) => state.ui.BackToggle);
+  const columnPlaces = useSelector(
+    (state: Rootstate) => state.columnPlaces.columnPlaces
+  );
 
   console.log("렌더링 횟수", rendering);
+  console.log(columnPlaces);
 
   // 새로 고침 방지
   usePreventRefresh();

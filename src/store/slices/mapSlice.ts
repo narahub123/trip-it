@@ -24,7 +24,7 @@ export const createMapColumns = createAsyncThunk(
 
       let newMapColumns: MapColumnType = {};
 
-      // columnPlaces_1 제외함 i를 1부터 시작함
+      // columnPlaces_1 제외함
       for (let i = 0; i < dates.length; i++) {
         const mapColumn: InfoType[] = [];
 

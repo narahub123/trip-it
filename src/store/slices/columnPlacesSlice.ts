@@ -22,16 +22,6 @@ interface columnPlacesState {
 const initialState: columnPlacesState = {
   columnPlaces: {
     columnPlaces_1: [],
-    columnPlaces0: [],
-    columnPlaces1: [],
-    columnPlaces2: [],
-    columnPlaces3: [],
-    columnPlaces4: [],
-    columnPlaces5: [],
-    columnPlaces6: [],
-    columnPlaces7: [],
-    columnPlaces8: [],
-    columnPlaces9: [],
   },
 
   curRow: "_1",
@@ -75,42 +65,31 @@ export const removePlaceFromColumn = createAsyncThunk(
   }
 );
 
-// 삭제된 장소가 columnPlaces 배열들에 존재하는지 여부 확인
-// export const combineColumnPlaces = createAsyncThunk(
-//   "columnPlacesSlice/combineColumnPlaces",
-//   async (contentId: string, { getState }) => {
-//     const { columnPlaces } = getState() as Rootstate;
+// columnPlaces 배열을 동적으로 생성하기
+export const createColumnPlaces = createAsyncThunk(
+  "columnPlacesSlice/createColumnPlaces",
+  async (_, { getState, dispatch }) => {
+    try {
+      const { date } = getState() as Rootstate;
 
-//     const colPlacesObj = columnPlaces;
+      const dates = date.datesArray;
 
-//     const keys = Object.keys(colPlacesObj);
+      let newColumnPlaces: ColumnPlacesType = {
+        columnPlaces_1: [],
+      };
 
-//     const columnKey = keys[0];
+      for (let i = 0; i < dates.length; i++) {
+        const columnPlaces: ColumnPlaceType[] = [];
 
-//     const columnObj = colPlacesObj[columnKey];
+        newColumnPlaces[`columnPlaces${i}`] = columnPlaces;
+      }
 
-//     const placeValues = Object.values(columnObj);
-
-//     const placeObj = placeValues[0] as ColumnPlacesType;
-
-//     const placeKey = Object.keys(placeObj);
-
-//     for (const key of placeKey) {
-//       const placeArray = placeObj[key];
-//       for (const place of placeArray) {
-//         if (place.contentid === contentId) {
-//           return {
-//             contentId: "",
-//           };
-//         }
-//       }
-//     }
-
-//     return {
-//       contentId,
-//     };
-//   }
-// );
+      dispatch(updateColumnPlaces(newColumnPlaces));
+    } catch (error) {
+      console.log(`Error creating columnPlaces`, error);
+    }
+  }
+);
 
 const columnPlacesSlice = createSlice({
   name: "columnPlaces",
@@ -118,19 +97,11 @@ const columnPlacesSlice = createSlice({
   reducers: {
     // columnPlaces 초기화하기
     clearColumnPlaces: (state) => {
-      state.columnPlaces = {
-        columnPlaces_1: [],
-        columnPlaces0: [],
-        columnPlaces1: [],
-        columnPlaces2: [],
-        columnPlaces3: [],
-        columnPlaces4: [],
-        columnPlaces5: [],
-        columnPlaces6: [],
-        columnPlaces7: [],
-        columnPlaces8: [],
-        columnPlaces9: [],
-      };
+      initialState;
+    },
+    // columnPlaces 동적 생성
+    updateColumnPlaces: (state, action) => {
+      state.columnPlaces = action.payload;
     },
     // columnPlaces_1 초기화하기
     clearColumnPlaces_1: (state) => {
@@ -555,6 +526,7 @@ export const {
   updateEndTime,
   clearColumnPlaces,
   removeAccommosFromColumnPlaces,
+  updateColumnPlaces,
 } = columnPlacesSlice.actions;
 
 export default columnPlacesSlice.reducer;
