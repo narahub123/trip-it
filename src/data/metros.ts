@@ -57,7 +57,7 @@ export const metros: MetroType[] = [
     name: "세종특별자치시",
     description: "행정중심복합도시로 개발된 특별자치시입니다.",
     imgUrl:
-      "https://mediaim.expedia.com/destination/1/a228eab856f91cf3eb6badfff256678d.jpg?impolicy=fcrop&w=1040&h=580&q=mediumHigh",
+      "https://i.namu.wiki/i/5QhXVN4aca87EP4_DcyjFy30G-F7fE4iKKyfrwsEgx6zx_FtklOhxxdUd7Q0qVhb_lTBYsKbXD6d6m9v78Mud18UDdNXGVwd9IY_eLv6z8cQEEhHtNXzfGcjSS-xA44W0CAxU8K11DF1RHWE5bkWQw.svg",
   },
 
   {
