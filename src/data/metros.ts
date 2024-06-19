@@ -110,7 +110,8 @@ export const metros: MetroType[] = [
     areaCode: "37",
     name: "전북특별자치도",
     description: "풍부한 농산물과 전통 문화가 발달한 지역입니다.",
-    imgUrl: "http://m.challenge-gunsan.com/ko/images/tour_j_01.jpg",
+    imgUrl:
+      "https://cdn.enewstoday.co.kr/news/photo/202402/2088955_890749_3232.jpg",
   },
   {
     areaCode: "38",
