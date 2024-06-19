@@ -244,19 +244,27 @@ const Procedure = () => {
       detailScheduleDto: schedule_details,
     };
 
+    // axios
+    //   // .post(`http://localhost:8080/schedules`, valueNode)
+    //   .post(`http://172.16.1.145:8080/home/save`, value)
+    //   .then((response) => {
+    //     if (response.status === 200 || response.status === 201) {
+    //       console.log("정상적으로 처리되었습니다.");
+
+    //       console.log(response);
+    //       console.log(response.data);
+
+    //       navigate("/mypage");
+    //     }
+    //   })
+    //   .catch((error) => console.log(error.response.data));
+
+    // 하나만 받는 경우
+    const userId = 1;
+    const schedule_id = 31;
     axios
-      // .post(`http://localhost:8080/schedules`, valueNode)
-      .post(`http://172.16.1.145:8080/home/save`, value)
-      .then((response) => {
-        if (response.status === 200 || response.status === 201) {
-          console.log("정상적으로 처리되었습니다.");
-
-          console.log(response);
-          console.log(response.data);
-
-          navigate("/mypage");
-        }
-      })
+      .get(`http://172.16.1.145:8080/home/${userId}/${schedule_id}`)
+      .then((response) => console.log(response.data))
       .catch((error) => console.log(error.response.data));
   };
 
