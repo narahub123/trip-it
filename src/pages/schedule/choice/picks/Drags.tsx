@@ -85,6 +85,10 @@ const Drags = () => {
     if (curCol === goalCol) {
       dispatch(dragInColumn());
     } else {
+      if (goalCol === "_1") {
+        alert(`장소 보관함으로는 이동할 수 없습니다.`);
+        return;
+      }
       dispatch(dragBtwColumn());
     }
   };

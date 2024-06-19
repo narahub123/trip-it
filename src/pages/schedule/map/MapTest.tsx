@@ -4,13 +4,13 @@ import { Rootstate } from "../../../store/store";
 import { metros } from "../../../data/metros";
 import {
   createMarker,
-  getCarDirection,
+  getCarDirectionArray,
   getCoords,
   getCoordsArray,
 } from "../../../utils/map";
 import { debounce } from "../../../utils/debounce";
 import { useLocation } from "react-router-dom";
-import { setInfoToMapColumn } from "../../../store/slices/mapSlice";
+import { InfoType, setInfoToMapColumn } from "../../../store/slices/mapSlice";
 
 // kakao 객체의 존재 여부를 typeScript가 인식하지 못함
 // Property 'kakao' does not exist on type 'Window & typeof globalThis'.
@@ -94,30 +94,18 @@ const MapTest = () => {
               }
 
               createMarker(map, coords, col, places);
-              //   createPolyline(map, coords, col);
 
               if (hash === "#step4") {
-                for (let i = 0; i < coords.length - 1; i++) {
-                  const start = i;
-                  const end = i + 1;
+                const res = await getCarDirectionArray(map, coords, col);
 
-                  if (
-                    col !== 0 &&
-                    colPlaces[start].contentid !== colPlaces[end].contentid
-                  ) {
-                    const info = await getCarDirection(
-                      map,
-                      coords[start],
-                      coords[end],
-                      col
-                    );
+                const info: InfoType[] = [];
 
-                    if (info && col !== 0)
-                      dispatch(
-                        setInfoToMapColumn({ column: col, info, index: i })
-                      );
-                  }
+                for (const i of res) {
+                  if (i) info.push(i);
                 }
+
+                dispatch(setInfoToMapColumn({ column: col, info }));
+                console.log("pairs && col", col, info);
               }
             }
 

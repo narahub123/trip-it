@@ -1,4 +1,5 @@
 import { colors } from "../data/color";
+import { kakaoMobilitySectionType } from "../types/kakaoMobility";
 import { PlaceApiType } from "../types/place";
 
 declare global {
@@ -166,7 +167,7 @@ export const getCarDirection = async (
 
     const data = await response.json();
 
-    console.log(data.routes[0].sections[0].roads);
+    console.log(data);
 
     const distance = data.routes[0].sections[0].distance;
     const duration = data.routes[0].sections[0].duration;
@@ -197,4 +198,121 @@ export const getCarDirection = async (
   } catch (error) {
     console.error("Error:", error);
   }
+};
+
+// 길찾기 promise
+export const getCarDirectionPromise = async (
+  map: kakao.maps.Map,
+  startPoint: kakao.maps.LatLng,
+  endPoint: kakao.maps.LatLng,
+  col: number
+) => {
+  console.log(startPoint, endPoint);
+
+  const REST_API_KEY = process.env.REACT_APP_KAKAO_REST_KEY;
+
+  const url = "https://apis-navi.kakaomobility.com/v1/directions";
+
+  // 출발지(origin), 목적지(destination)의 좌표를 문자열로 변환합니다.
+  const origin = `${startPoint.getLng()},${startPoint.getLat()}`;
+  const destination = `${endPoint.getLng()},${endPoint.getLat()}`;
+
+  // 요청 헤더를 추가합니다.
+  const headers = {
+    Authorization: `KakaoAK ${REST_API_KEY}`,
+    "Content-Type": "application/json",
+  };
+
+  // 표3의 요청 파라미터에 필수값을 적어줍니다.
+  const queryParams = new URLSearchParams({
+    origin: origin,
+    destination: destination,
+  });
+
+  const requestUrl = `${url}?${queryParams}`; // 파라미터까지 포함된 전체 URL
+
+  try {
+    const response = await fetch(requestUrl, {
+      method: "GET",
+      headers: headers,
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+
+    return new Promise<kakaoMobilitySectionType>(async (resolve, reject) => {
+      const data = await response.json();
+      if (data) {
+        console.log(data);
+        if (data.routes[0].result_code !== 104) {
+          resolve(data.routes[0].sections[0]);
+        }
+      } else {
+        reject("에러");
+      }
+    });
+  } catch (error) {
+    console.error("Error:", error);
+  }
+};
+
+export const getCarDirectionArray = (
+  map: kakao.maps.Map,
+  coords: kakao.maps.LatLng[],
+  col: number
+) => {
+  const pairs = [];
+
+  for (let i = 0; i < coords.length - 1; i++) {
+    const start = coords[i];
+    const end = coords[i + 1];
+
+    const pair = {
+      start,
+      end,
+    };
+
+    pairs.push(pair);
+  }
+
+  console.log("pairs", pairs);
+
+  const promises =
+    pairs &&
+    pairs.map(async (pair) => {
+      const startPoint = pair.start;
+      const endPoint = pair.end;
+
+      const data = await getCarDirectionPromise(map, startPoint, endPoint, col);
+
+      const linePath: kakao.maps.LatLng[] = [];
+      if (data) {
+        data.roads.forEach((router: any, i: number) => {
+          router.vertexes.forEach((vertax: any, index: number) => {
+            if (index % 2 === 0) {
+              const coords = new kakao.maps.LatLng(
+                router.vertexes[index + 1],
+                router.vertexes[index]
+              );
+              linePath.push(coords);
+            }
+          });
+        });
+        createPolyline(map, linePath, col);
+
+        const distance = data?.distance;
+        const duration = data?.duration;
+
+        const info = {
+          distance,
+          duration,
+        };
+        if (distance && duration) {
+          return info;
+        }
+      }
+    });
+
+  return Promise.all(promises);
 };

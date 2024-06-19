@@ -1,6 +1,5 @@
 import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { Rootstate } from "../store";
-import { addPlaceToColumn } from "./columnPlacesSlice";
 
 export interface InfoType {
   distance: number;
@@ -55,10 +54,12 @@ const mapSlice = createSlice({
     // 모빌리티에서 받아 온 정보를 추가하기
     setInfoToMapColumn: (
       state,
-      action: PayloadAction<{ column: number; info: InfoType; index: number }>
+      action: PayloadAction<{ column: number; info: InfoType[] }>
     ) => {
-      const { column, info, index } = action.payload;
-      state[`mapColumn${column - 1}`][index] = info;
+      const { column, info } = action.payload;
+      if (column > 0) {
+        state[`mapColumn${column - 1}`] = info;
+      }
     },
   },
   extraReducers: (builder) => {},

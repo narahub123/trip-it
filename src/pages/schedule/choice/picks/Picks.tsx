@@ -59,7 +59,7 @@ const Picks = () => {
           : { width: "530px" }
       }
     >
-      <Drags />
+      {columnPlaces_1.length > 0 && <Drags />}
       <Drops />
       <div className="edge" onMouseDown={(e) => handleDrag(e)}></div>
     </div>

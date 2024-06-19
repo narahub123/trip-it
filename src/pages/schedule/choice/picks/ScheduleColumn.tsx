@@ -154,6 +154,10 @@ const ScheduleColumn = ({ date, index }: ScheduleColumnProps) => {
     if (curCol === goalCol) {
       dispatch(dragInColumn()); // 컬럼 내 드래그 앤 드롭
     } else {
+      if (goalCol === "_1") {
+        alert(`장소 보관함으로는 이동할 수 없습니다.`);
+        return;
+      }
       dispatch(dragBtwColumn(date)); // 컬럼 간 드래그 앤 드롭
     }
   };
@@ -210,6 +214,7 @@ const ScheduleColumn = ({ date, index }: ScheduleColumnProps) => {
           className={
             isActive ? "schedule-column-list active" : "schedule-column-list"
           }
+          key={`columnPlaces${index}`}
         >
           <ul>
             {!isActive && columnPlaces?.length === 0 && (
