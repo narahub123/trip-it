@@ -246,11 +246,12 @@ const Procedure = () => {
 
     axios
       // .post(`http://localhost:8080/schedules`, valueNode)
-      .post(`http://172.16.1.186:8080/home/save`, value)
+      .post(`http://172.16.1.145:8080/home/save`, value)
       .then((response) => {
         if (response.status === 200 || response.status === 201) {
           console.log("정상적으로 처리되었습니다.");
 
+          console.log(response);
           console.log(response.data);
 
           navigate("/mypage");
