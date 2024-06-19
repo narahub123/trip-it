@@ -56,7 +56,8 @@ export const metros: MetroType[] = [
     areaCode: "8",
     name: "세종특별자치시",
     description: "행정중심복합도시로 개발된 특별자치시입니다.",
-    imgUrl: "https://www.sejong.go.kr/archive/subject/4/01.JPG",
+    imgUrl:
+      "https://mediaim.expedia.com/destination/1/a228eab856f91cf3eb6badfff256678d.jpg?impolicy=fcrop&w=1040&h=580&q=mediumHigh",
   },
 
   {
