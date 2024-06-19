@@ -110,6 +110,16 @@ const ScheduleColumn = ({ date, index }: ScheduleColumnProps) => {
     console.log("goalRow", goalRow);
     console.log("goalCol", goalCol);
 
+    // 드롭 유효성 : 변경 혹은 삭제 가능함
+    if (
+      (curCol == goalCol && curRow === goalRow) ||
+      (curCol == goalCol && (Number(curRow) - 1).toString() === goalRow)
+    ) {
+      setIsActive(false);
+      setPossible(undefined);
+      return false;
+    }
+
     // 장소 최대 개수 초과 여부 유효성 검사
     if (columnPlaces.length === limitOfPlaces) {
       alert(`하루 최대 허용 장소 개수 ${limitOfPlaces}개를 초과하였습니다.`);
@@ -224,48 +234,31 @@ const ScheduleColumn = ({ date, index }: ScheduleColumnProps) => {
               </li>
             )}
 
-            {curCol === index.toString()
-              ? curRow !== "0" &&
-                columnPlaces.length < limitOfPlaces && (
-                  <DropIndicator
-                    row="_1"
-                    col={index.toString()}
-                    onDragLeave={handleDragLeave}
-                    onDragOver={handleDragOver}
-                    onDrop={handleDrop}
-                    key={"_1"}
-                  />
-                )
-              : columnPlaces.length < limitOfPlaces && (
-                  <DropIndicator
-                    row="_1"
-                    col={index.toString()}
-                    onDragLeave={handleDragLeave}
-                    onDragOver={handleDragOver}
-                    onDrop={handleDrop}
-                    key={"_1"}
-                  />
-                )}
-            {curCol === index.toString() ? (
-              curRow !== "0" &&
-              possible === "_1" &&
-              selectedPlace && (
-                <li className="possibleCard">
-                  <li className="dropCard">
-                    <span className="index">
-                      <p>{1}</p>
-                    </span>
-                    <PossibleCard place={selectedPlace} />
-                    <span
-                      className="delete"
-                      onClick={() => handleDelete(selectedPlace.contentid, 0)}
-                    >
-                      <LuTrash2 />
-                    </span>
-                  </li>
-                </li>
-              )
-            ) : possible === "_1" && selectedPlace ? (
+            {columnPlaces.length < limitOfPlaces &&
+            selectedPlace &&
+            !(curCol == index.toString() && curRow === "0") &&
+            selectedPlace.contentid !== columnPlaces[0].contentid ? (
+              <DropIndicator
+                row="_1"
+                col={index.toString()}
+                onDragLeave={handleDragLeave}
+                onDragOver={handleDragOver}
+                onDrop={handleDrop}
+                key={"_1"}
+              />
+            ) : (
+              <li
+                className="dropIndicator"
+                data-col={index.toString()}
+                data-row={`_1`}
+              >
+                <p className="separator"></p>
+              </li>
+            )}
+            {possible === "_1" &&
+            selectedPlace &&
+            !(curCol == index.toString() && curRow === "0") &&
+            selectedPlace.contentid !== columnPlaces[0].contentid ? (
               <li className="possibleCard">
                 <li className="dropCard">
                   <span className="index">
@@ -287,35 +280,45 @@ const ScheduleColumn = ({ date, index }: ScheduleColumnProps) => {
             {columnPlaces &&
               columnPlaces?.map((place, i) => (
                 <>
-                  <li
-                    className="dropCard"
-                    key={`${index}_${i}`}
-                    data-col={index.toString()}
-                    data-row={i.toString()}
-                    data-content={place.contentid}
-                    onDragStart={(e) => handleDragStart(e)}
-                    draggable
-                  >
-                    <span className="index">
-                      <p>{i + 1}</p>
-                    </span>
-                    <DropCard
-                      place={place}
-                      date={date}
-                      column={index}
-                      row={i}
-                    />
-                    <span
-                      className="delete"
-                      onClick={() => handleDelete(place.contentid, i)}
+                  {place ? (
+                    <li
+                      className="dropCard"
+                      key={`${index}_${i}`}
+                      data-col={index.toString()}
+                      data-row={i.toString()}
+                      data-content={place.contentid}
+                      onDragStart={(e) => handleDragStart(e)}
+                      draggable
                     >
-                      <LuTrash2 />
-                    </span>
-                  </li>
+                      <span className="index">
+                        <p>{i + 1}</p>
+                      </span>
+                      <DropCard
+                        place={place}
+                        date={date}
+                        column={index}
+                        row={i}
+                      />
+                      <span
+                        className="delete"
+                        onClick={() => handleDelete(place.contentid, i)}
+                      >
+                        <LuTrash2 />
+                      </span>
+                    </li>
+                  ) : (
+                    <li className="hideCard"></li>
+                  )}
                   {mapColumn && mapColumn[i] && (
                     <div>{`${Math.round(mapColumn[i]?.duration / 60)}분`}</div>
                   )}
-                  {columnPlaces.length < limitOfPlaces && (
+                  {columnPlaces.length < limitOfPlaces &&
+                  selectedPlace &&
+                  !(curCol == index.toString() && i === Number(curRow) - 1) &&
+                  !(
+                    curCol == index.toString() &&
+                    selectedPlace.contentid === place.contentid
+                  ) ? (
                     <DropIndicator
                       col={index.toString()}
                       row={i.toString()}
@@ -324,28 +327,22 @@ const ScheduleColumn = ({ date, index }: ScheduleColumnProps) => {
                       onDrop={handleDrop}
                       key={i}
                     />
+                  ) : (
+                    <li
+                      className="dropIndicator"
+                      data-col={index.toString()}
+                      data-row={i.toString()}
+                    >
+                      <p className="separator"></p>
+                    </li>
                   )}
-                  {curCol === index.toString() ? (
-                    possible === i.toString() &&
-                    curRow !== i.toString() &&
-                    i.toString() !== (Number(curRow) - 1).toString() &&
-                    selectedPlace && (
-                      <li className="possibleCard">
-                        <li className="dropCard">
-                          <span className="index">
-                            <p>{i + 2}</p>
-                          </span>
-                          <PossibleCard place={selectedPlace} />
-                          <span
-                            className="delete"
-                            onClick={() => handleDelete(place.contentid, i)}
-                          >
-                            <LuTrash2 />
-                          </span>
-                        </li>
-                      </li>
-                    )
-                  ) : possible === i.toString() && selectedPlace ? (
+                  {possible === i.toString() &&
+                  selectedPlace &&
+                  !(curCol == index.toString() && i === Number(curRow) - 1) &&
+                  !(
+                    curCol == index.toString() &&
+                    selectedPlace.contentid === place.contentid
+                  ) ? (
                     <li className="possibleCard">
                       <li className="dropCard">
                         <span className="index">

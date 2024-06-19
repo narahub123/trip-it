@@ -25,11 +25,12 @@
 
       li.possibleCard {
         height: 67.6px;
-        transition: all 0.5s ease-in-out;
+        transition: height 0.5s ease-in-out;
       }
 
       li.hideCard {
         height: 0;
+        transition: height 0.5s ease-in-out;
       }
 
       li.dropCard {
@@ -55,6 +56,12 @@
         span.delete {
           margin: 15px;
           cursor: pointer;
+        }
+      }
+      li.dropIndicator {
+        p.separator {
+          padding: 10px;
+          background-color: transparent;
         }
       }
     }
