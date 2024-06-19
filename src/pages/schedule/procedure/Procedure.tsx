@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import "./procedure.css";
 import { useDispatch, useSelector } from "react-redux";
@@ -19,6 +19,7 @@ const Procedure = () => {
   const { hash } = location;
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const buttonRef = useRef<HTMLAnchorElement>(null);
 
   const schedule = useSelector((state: Rootstate) => state.schedule.schedule);
   const endDate = useSelector((state: Rootstate) => state.date.end);
@@ -27,6 +28,17 @@ const Procedure = () => {
   const columnPlaces = useSelector(
     (state: Rootstate) => state.columnPlaces.columnPlaces
   );
+
+  const columnPlaces_1 = columnPlaces[`columnPlaces_1`];
+
+  // 버튼에 포커스 주기
+  useEffect(() => {
+    // step1에서 endDate가 설정 되어 있는 경우 버튼에 포커스 주기
+    if (endDate?.length !== 0 || endDate) buttonRef.current?.focus();
+
+    // step2, step3에서 columnPlaces_1에 장소가 추가되면 포커스 주기
+    if (columnPlaces_1) buttonRef.current?.focus();
+  }, [endDate, columnPlaces_1]);
 
   // 로고를 눌러 이동할 때
   const handleLogo = () => {
@@ -45,20 +57,29 @@ const Procedure = () => {
     return true;
   };
 
+  // step 1 유효성 검사
   const handleClickStep1 = () => {};
+
+  // step 2 유효성 검사
   const handleClickStep2 = (
     e: React.MouseEvent<HTMLAnchorElement, MouseEvent>
   ) => {
     // 날짜 선택 완료 여부 확인
-    checkDates(e);
+    const validation = checkDates(e);
     dispatch(clearPageNo());
+
+    return validation;
   };
+
+  // step 3 유효성 검사
   const handleClickStep3 = (
     e: React.MouseEvent<HTMLAnchorElement, MouseEvent>
   ) => {
     // 날짜 선택 완료 여부 확인
-    checkDates(e);
+    const validation = checkDates(e);
     dispatch(clearPageNo());
+
+    return validation;
   };
 
   // step 4 유효성 검사
@@ -71,7 +92,7 @@ const Procedure = () => {
     // 장소 선택이 일정 날수보다 적은지 여부 확인
 
     if (schedule.start_date === undefined || schedule.end_date === undefined) {
-      return;
+      return false;
     }
 
     const dates = CalculateDuration(schedule.start_date, schedule.end_date).map(
@@ -96,12 +117,12 @@ const Procedure = () => {
       e.preventDefault();
       alert("장소 개수가 부족합니다.");
 
-      return;
+      return false;
     }
 
     if (accommos.length === 0) {
       alert("숙소 선택을 완료해주세요");
-      return;
+      return false;
     }
 
     // 숙소 선택 완료 여부 확인
@@ -112,9 +133,11 @@ const Procedure = () => {
       if (accommo.contentId.length === 0) {
         e.preventDefault();
         alert("숙소 선택을 완료해주세요");
-        return;
+        return false;
       }
     }
+
+    return true;
   };
 
   // 일정 제출 시 유효성 검사
@@ -152,6 +175,7 @@ const Procedure = () => {
       let accommoCount = 0;
       for (let i = 0; i < colPlaces.length; i++) {
         const place = colPlaces[i];
+
         // nodejs
         // const detail = {
         //   schedule_order: key.split("columnPlaces")[1],
@@ -160,6 +184,7 @@ const Procedure = () => {
         //   content_id: place.contentid,
         //   createdAt: new Date().toISOString(),
         // };
+
         // java
         const detail = {
           schedule_order: key.split("columnPlaces")[1],
@@ -234,6 +259,28 @@ const Procedure = () => {
       .catch((error) => console.log(error.response.data));
   };
 
+  // 클릭하면 다음 해시로 이동하게 하는 이벤트
+  const handleNext = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
+    e.preventDefault();
+
+    if (hash === "#step1") {
+      const validation = handleClickStep2(e);
+
+      if (!validation) return;
+    }
+
+    if (hash === "#step2") {
+      const validation = handleClickStep3(e);
+    }
+
+    if (hash === "#step3") {
+      const validation = handleClickStep4(e);
+
+      if (!validation) return;
+    }
+    navigate(`#step${Number(hash.split("#step")[1]) + 1}`);
+  };
+
   return (
     <aside className="procedure">
       <figure className="proc-nav">
@@ -296,6 +343,16 @@ const Procedure = () => {
               </div>
             </Link>
           </li>
+          {(hash === "#step1" || hash === "#step2" || hash === "#step3") && (
+            <Link
+              to="."
+              onClick={(e) => handleNext(e)}
+              ref={buttonRef}
+              style={{ outline: "none" }}
+            >
+              <Button name="다음" />
+            </Link>
+          )}
           {hash === "#step4" && (
             <li onClick={() => handleSubmit()}>
               <Button name="등록" />
