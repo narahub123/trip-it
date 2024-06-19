@@ -187,7 +187,7 @@ const ScheduleColumn = ({ date, index }: ScheduleColumnProps) => {
           )}, ${index + 1}일차)`}
           {columnPlaces.length === limitOfPlaces
             ? `: 하루 허용 장소 수 ${limitOfPlaces}개 초과`
-            : ` : ${columnPlaces.length}군데`}
+            : ` (${columnPlaces.length}/10)`}
         </p>
       </div>
       {columnPlaces.length === 0 ? (

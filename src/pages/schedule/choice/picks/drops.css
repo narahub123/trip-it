@@ -26,11 +26,11 @@
     display: grid;
     width: 100%;
     margin-top: 20px;
-    grid-auto-columns: 420px;
+    grid-auto-columns: 411px;
     grid-auto-flow: column;
     grid-template-columns: repeat(
       var(--columns, 0),
-      400px
+      411px
     ); /* 반응형 그리드 설정 */
   }
 
