@@ -1,8 +1,8 @@
 .picks {
   display: flex;
 
-  .kanban {
-  }
+  width: 530px;
+
   .edge {
     border: 1px solid black;
     cursor: col-resize;

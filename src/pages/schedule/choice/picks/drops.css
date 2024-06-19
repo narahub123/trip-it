@@ -1,12 +1,15 @@
 .drops {
-  height: 92vh;
-  overflow-x: auto;
+  height: 95.5vh;
+  width: 40s0px;
   overflow-y: hidden;
+
   .schedule-info {
     display: flex;
     justify-content: space-between;
+
     .info-left {
     }
+
     .info-right {
       .reset {
         padding: 10px;
@@ -15,8 +18,41 @@
       }
     }
   }
+
   .schedule-columns {
-    display: flex;
+    height: 86.5vh;
+    overflow-x: auto;
+    overflow-y: hidden;
+    display: grid;
+    width: 100%;
     margin-top: 20px;
+    grid-auto-columns: 420px;
+    grid-auto-flow: column;
+    grid-template-columns: repeat(
+      var(--columns, 0),
+      400px
+    ); /* 반응형 그리드 설정 */
+  }
+
+  /* Webkit 브라우저용 스크롤바 */
+  .schedule-columns::-webkit-scrollbar {
+    height: 10px; /* 스크롤바 너비 설정 */
+  }
+
+  .schedule-columns::-webkit-scrollbar-thumb {
+    background-color: rgba(127, 255, 212, 0.644); /* 스크롤바 색상 설정 */
+    border-radius: 10px; /* 스크롤바 썸 모서리 둥글게 */
+  }
+
+  .schedule-columns::-webkit-scrollbar-track {
+    background-color: transparent; /* 스크롤바 트랙 색상 설정 (Webkit) */
+  }
+
+  .schedule-columns::-webkit-scrollbar-corner {
+    background-color: transparent; /* 스크롤바 코너 색상 설정 (Webkit) */
+  }
+  .schedule-columns::-webkit-scrollbar-button {
+    display: transparent;
+    width: 5px;
   }
 }

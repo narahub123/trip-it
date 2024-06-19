@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./drops.css";
 import { useDispatch, useSelector } from "react-redux";
 import { Rootstate } from "../../../../store/store";
@@ -14,6 +14,7 @@ import { addTitle } from "../../../../store/slices/scheduleSlice";
 import { clearColumnPlaces } from "../../../../store/slices/columnPlacesSlice";
 import { useNavigate } from "react-router-dom";
 import { resetDates } from "../../../../store/slices/dateSlice";
+import { DestrucDateType } from "../dates/Calendar";
 const Drops = () => {
   const [title, setTitle] = useState("");
   const dispatch = useDispatch();
@@ -31,6 +32,20 @@ const Drops = () => {
     schedule.start_date &&
     schedule.end_date &&
     CalculateDuration(schedule.start_date, schedule.end_date);
+
+  // 동적으로 그리드의 컬럼 개수 변경하기
+  const colCount = dates?.length || 0;
+
+  useEffect(() => {
+    const scheduleColumns = document.querySelector(".schedule-columns");
+    if (scheduleColumns) {
+      // Element에 style 적용이 안돼서 HTMLElement로 캐스팅 함
+      (scheduleColumns as HTMLElement).style.setProperty(
+        "--col-count",
+        colCount?.toString()
+      );
+    }
+  }, [colCount]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const title = e.target.value;
@@ -80,9 +95,10 @@ const Drops = () => {
           </div>
         </div>
       </div>
+
       <div className="schedule-columns">
         {dates &&
-          dates.map((date: any, index: number) => (
+          dates.map((date: DestrucDateType, index: number) => (
             <ScheduleColumn date={date} index={index} key={`col${index}`} />
           ))}
       </div>
