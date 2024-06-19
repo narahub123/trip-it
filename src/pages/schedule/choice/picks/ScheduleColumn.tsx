@@ -100,6 +100,16 @@ const ScheduleColumn = ({ date, index }: ScheduleColumnProps) => {
 
     setPossible(undefined);
 
+    // 이동하고자하는 위치
+    const goalRow = e.currentTarget.dataset.row;
+    const goalCol = e.currentTarget.dataset.col;
+
+    if (goalRow) dispatch(setGoalRow(goalRow));
+    if (goalCol) dispatch(setGoalCol(goalCol));
+
+    console.log("goalRow", goalRow);
+    console.log("goalCol", goalCol);
+
     // 장소 최대 개수 초과 여부 유효성 검사
     if (columnPlaces.length === limitOfPlaces) {
       alert(`하루 최대 허용 장소 개수 ${limitOfPlaces}개를 초과하였습니다.`);
@@ -129,7 +139,8 @@ const ScheduleColumn = ({ date, index }: ScheduleColumnProps) => {
     if (
       selectedPlace &&
       selectedPlace.contenttypeid === "32" &&
-      accommos.length === maxOfAccommoNum
+      accommos.length === maxOfAccommoNum &&
+      curCol !== goalCol
     ) {
       alert(
         `숙소 최대 개수 ${maxOfAccommoNum}개가 되었습니다. 숙소를 추가할 수 없습니다.`
@@ -137,16 +148,6 @@ const ScheduleColumn = ({ date, index }: ScheduleColumnProps) => {
       setIsActive(false);
       return;
     }
-
-    // 이동하고자하는 위치
-    const goalRow = e.currentTarget.dataset.row;
-    const goalCol = e.currentTarget.dataset.col;
-
-    if (goalRow) dispatch(setGoalRow(goalRow));
-    if (goalCol) dispatch(setGoalCol(goalCol));
-
-    console.log("goalRow", goalRow);
-    console.log("goalCol", goalCol);
 
     setIsActive(false);
 
