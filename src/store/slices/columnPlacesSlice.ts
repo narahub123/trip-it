@@ -474,7 +474,7 @@ const columnPlacesSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(fetchPlace.fulfilled, (state, action) => {
-        if (!action.payload.addToColumnPlaces_1) return;
+        if (!action.payload.addPlaceToColumnPlaces_1) return;
         // 숙소가 아닌 경우
         // 장소를 columnPlaces배열에 추가할 때 start_time, end_time을 추가해서
         // 타입을 PlaceApiType에서 ColumnPlaceType으로 변경

@@ -20,7 +20,6 @@ import DropCard from "./DropCard";
 import { setItems } from "../../../../store/slices/accommoSlice";
 import { useRenderCount } from "@uidotdev/usehooks";
 import PossibleCard from "./PossibleCard";
-import { setActive } from "../../../../store/slices/modalSlice";
 
 interface ScheduleColumnProps {
   date: DestrucDateType;
@@ -60,7 +59,7 @@ const ScheduleColumn = ({ date, index }: ScheduleColumnProps) => {
   // 숙소 최대 허용 개수
   const maxOfAccommoNum = 2;
 
-  const length = columnPlaces && columnPlaces?.length;
+  const colLength = columnPlaces && columnPlaces?.length;
 
   // 드래그 시작
   const handleDragStart = (e: React.DragEvent<HTMLLIElement>) => {
@@ -121,7 +120,7 @@ const ScheduleColumn = ({ date, index }: ScheduleColumnProps) => {
     }
 
     // 장소 최대 개수 초과 여부 유효성 검사
-    if (columnPlaces.length === limitOfPlaces) {
+    if (colLength === limitOfPlaces) {
       alert(`하루 최대 허용 장소 개수 ${limitOfPlaces}개를 초과하였습니다.`);
       setIsActive(false);
       return;
@@ -196,12 +195,12 @@ const ScheduleColumn = ({ date, index }: ScheduleColumnProps) => {
           {`${date.year}.${date.month + 1}.${date.date}(${getWeek(
             new Date(date.year, date.month, date.date)
           )}, ${index + 1}일차)`}
-          {columnPlaces.length === limitOfPlaces
+          {colLength === limitOfPlaces
             ? `: 하루 허용 장소 수 ${limitOfPlaces}개 초과`
-            : ` (${columnPlaces.length}/10)`}
+            : ` (${colLength}/10)`}
         </p>
       </div>
-      {columnPlaces.length === 0 ? (
+      {colLength === 0 ? (
         <div
           className={
             isActive ? "schedule-column-list active" : "schedule-column-list"
@@ -213,7 +212,7 @@ const ScheduleColumn = ({ date, index }: ScheduleColumnProps) => {
           onDrop={(e) => handleDrop(e)}
         >
           <ul>
-            {!isActive && columnPlaces?.length === 0 && (
+            {!isActive && colLength === 0 && (
               <li className="place-indicator" key={"indicator"}>
                 <p>원하는 장소를 드래그 해주세요</p>
               </li>
@@ -228,13 +227,13 @@ const ScheduleColumn = ({ date, index }: ScheduleColumnProps) => {
           key={`columnPlaces${index}`}
         >
           <ul>
-            {!isActive && columnPlaces?.length === 0 && (
+            {!isActive && colLength === 0 && (
               <li className="place-indicator" key={"indicator"}>
                 <p>원하는 장소를 드래그 해주세요</p>
               </li>
             )}
 
-            {columnPlaces.length < limitOfPlaces &&
+            {colLength < limitOfPlaces &&
             selectedPlace &&
             !(curCol == index.toString() && curRow === "0") &&
             selectedPlace.contentid !== columnPlaces[0].contentid ? (

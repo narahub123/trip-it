@@ -25,7 +25,9 @@ const PlaceCard = ({ place }: PlaceCardProps) => {
     (contentId: string) => {
       console.log(contentId);
       dispatch(modalToggle());
-      dispatch(fetchPlace({ contentId }) as any);
+      dispatch(
+        fetchPlace({ contentId, addPlaceToColumnPlaces_1: false }) as any
+      );
     },
     [dispatch]
   );

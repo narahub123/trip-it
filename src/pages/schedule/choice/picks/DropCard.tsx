@@ -134,7 +134,9 @@ const DropCard = ({ place, date, column, row }: DropCardProps) => {
         return;
       }
       dispatch(modalToggle());
-      dispatch(fetchPlace({ contentId }) as any);
+      dispatch(
+        fetchPlace({ contentId, addPlaceToColumnPlaces_1: false }) as any
+      );
     },
     [dispatch]
   );

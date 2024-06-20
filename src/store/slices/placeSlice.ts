@@ -44,6 +44,7 @@ interface PlaceSearchProps extends PlacesProps {
 
 interface PlaceProps {
   contentId: string;
+  addPlaceToColumnPlaces_1?: boolean; // columnPlaces_1 추가 여부
 }
 
 // 지역 코드로 장소들 불러오기
@@ -102,26 +103,34 @@ export const fetchPlaces = createAsyncThunk(
 export const fetchPlace = createAsyncThunk<
   {
     place: PlaceApiType;
-    addToColumnPlaces_1: boolean;
+    addPlaceToColumnPlaces_1: boolean;
   },
   PlaceProps
->("placeSlice/fetchPlace", async ({ contentId }: PlaceProps) => {
-  try {
-    const url = `http://localhost:8080/places/${contentId}`;
+>(
+  "placeSlice/fetchPlace",
+  async ({ contentId, addPlaceToColumnPlaces_1 = true }: PlaceProps) => {
+    try {
+      const url = `http://localhost:8080/places/${contentId}`;
 
-    const response = await fetch(url);
-    const jsonData = await response.json();
+      const response = await fetch(url);
+      const jsonData = await response.json();
 
-    const place = jsonData[0];
+      const place = jsonData[0];
 
-    const addToColumnPlaces_1 = place.contenttypeid !== "32";
+      // 숙소가 아니면 추가 : 장소 추가 버튼을 눌렀을 때를 의미
+      const addToColumnPlaces_1: boolean = addPlaceToColumnPlaces_1
+        ? place.contenttypeid !== "32"
+        : addPlaceToColumnPlaces_1;
 
-    return { place: place, addToColumnPlaces_1 };
-  } catch (error) {
-    console.log(error);
-    return { place: undefined, addToColumnPlaces_1: false };
+      // 장소 추가 버튼이 아닌 장소 모달창이 열린 경우에는 추가 버튼을 눌러야 추가해야 함
+
+      return { place: place, addPlaceToColumnPlaces_1: addToColumnPlaces_1 };
+    } catch (error) {
+      console.log(error);
+      return { place: undefined, addPlaceToColumnPlaces_1: false };
+    }
   }
-});
+);
 
 // 키워드로 장소들 불러오기
 export const fetchSearchedPlaces = createAsyncThunk(
@@ -229,16 +238,13 @@ const placeSlice = createSlice({
           state,
           action: PayloadAction<{
             place: PlaceApiType;
-            addToColumnPlaces_1: boolean;
+            addPlaceToColumnPlaces_1: boolean;
           }>
         ) => {
           state.status = "succeeded";
 
-          state.place = action.payload.place;
-
-          // if (action.payload.addToSelectedPlaces) {
-          //   state.selectedPlaces.push(action.payload.place);
-          // }
+          if (action.payload.addPlaceToColumnPlaces_1)
+            state.place = action.payload.place;
         }
       )
       .addCase(fetchPlace.rejected, (state, action) => {
@@ -271,29 +277,6 @@ const placeSlice = createSlice({
         state.error = action.error.message;
         state.places = [];
       });
-    // 삭제된 장소가 columnPlaces 배열들에 존재하는지 여부를 확인하고
-    // 존재하지 않는 경우 selectedPlaces에서 삭제함
-    // .addCase(
-    //   combineColumnPlaces.fulfilled,
-    //   (state, action: PayloadAction<{ contentId: string }>) => {
-    //     console.log(action.payload.contentId);
-
-    //     if (
-    //       action.payload.contentId !== "" ||
-    //       action.payload.contentId.length !== 0
-    //     ) {
-    //       const newSelectedPlaces = state.selectedPlaces.filter(
-    //         (place) => place.contentid !== action.payload.contentId
-    //       );
-
-    //       state.selectedPlaces = [...newSelectedPlaces];
-
-    //       return;
-    //     }
-
-    //     return;
-    //   }
-    // );
   },
 });
 

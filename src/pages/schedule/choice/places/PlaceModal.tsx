@@ -13,7 +13,6 @@ const PlaceModal = () => {
   };
 
   const handleSelect = () => {
-    // place && dispatch(addSelectedPlace(place));
     place && dispatch(addPlaceToColumn({ column: "_1", place, order: -1 }));
   };
   return (
