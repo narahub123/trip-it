@@ -124,7 +124,7 @@ export const fetchPlace = createAsyncThunk<
 
       // 장소 추가 버튼이 아닌 장소 모달창이 열린 경우에는 추가 버튼을 눌러야 추가해야 함
 
-      return { place: place, addPlaceToColumnPlaces_1: addToColumnPlaces_1 };
+      return { place, addPlaceToColumnPlaces_1: addToColumnPlaces_1 };
     } catch (error) {
       console.log(error);
       return { place: undefined, addPlaceToColumnPlaces_1: false };
@@ -243,8 +243,7 @@ const placeSlice = createSlice({
         ) => {
           state.status = "succeeded";
 
-          if (action.payload.addPlaceToColumnPlaces_1)
-            state.place = action.payload.place;
+          state.place = action.payload.place;
         }
       )
       .addCase(fetchPlace.rejected, (state, action) => {
