@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "./placeModal.css";
 import { useDispatch, useSelector } from "react-redux";
 import { Rootstate } from "../../../../store/store";
@@ -7,17 +7,27 @@ import Button from "../../../../components/ui/Button";
 import { addPlaceToColumn } from "../../../../store/slices/columnPlacesSlice";
 import { LuLoader } from "react-icons/lu";
 import useDefaultImage from "../../../../hooks/useDefaultImage";
+import useLoadedImage from "../../../../hooks/useLoadedImage";
 const PlaceModal = () => {
+  const dispatch = useDispatch();
   // 기본이미지 가져오기
   const defaultImage = useDefaultImage();
+  // 선택한 장소
   const place = useSelector((state: Rootstate) => state.place.place);
+  // 데이터 상태 확인
   const status = useSelector((state: Rootstate) => state.place.status);
+  // 이미지 로딩
+  const imgLoaded = useLoadedImage(place);
 
-  const dispatch = useDispatch();
-  const handleToggle = () => {
-    dispatch(modalToggle());
+  // 모달창 닫기
+  const handleToggle = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    e.stopPropagation();
+    const classname = e.currentTarget.className;
+
+    if (classname === "placeModal") dispatch(modalToggle());
   };
 
+  // 해당 장소 선택하기
   const handleSelect = () => {
     place && dispatch(addPlaceToColumn({ column: "_1", place, order: -1 }));
   };
@@ -25,11 +35,17 @@ const PlaceModal = () => {
   return (
     <div
       className="placeModal"
-      onClick={() => {
-        handleToggle();
+      onClick={(e) => {
+        handleToggle(e);
       }}
     >
-      <div className="container">
+      <div
+        className="container"
+        onClick={(e) => {
+          handleToggle(e);
+        }}
+      >
+        {/* api 데이터 로딩 처리 */}
         {status === "loading" && (
           <div className="loading-container">
             <p className="loading-text">loading</p>
@@ -43,11 +59,16 @@ const PlaceModal = () => {
             <div className="info">
               <p className="title">{place?.title}</p>
               <figure>
-                <img
-                  src={place?.firstimage || defaultImage}
-                  alt={place?.title}
-                  decoding="async"
-                />
+                {/* 이미지 로딩 처리 */}
+                {imgLoaded ? (
+                  <img
+                    src={place?.firstimage || defaultImage}
+                    alt={place?.title}
+                    decoding="async"
+                  />
+                ) : (
+                  <img src="/images/trip-it-logo.png" alt="Loading..." />
+                )}
               </figure>
               <p className="desc">{place?.overview}</p>
             </div>
