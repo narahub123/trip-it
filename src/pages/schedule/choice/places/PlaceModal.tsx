@@ -19,12 +19,14 @@ const PlaceModal = () => {
   // 이미지 로딩
   const imgLoaded = useLoadedImage(place);
 
-  // 모달창 닫기
+  // 모달창 열고 닫기
   const handleToggle = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     e.stopPropagation();
     const classname = e.currentTarget.className;
 
-    if (classname === "placeModal") dispatch(modalToggle());
+    if (classname === "placeModal") {
+      dispatch(modalToggle());
+    }
   };
 
   // 해당 장소 선택하기

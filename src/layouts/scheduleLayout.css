@@ -1,5 +1,6 @@
 .scheduleLayout {
   display: flex;
   padding: 10px;
-  overflow-y: none;
+  overflow-y: hidden;
+  overflow-x: hidden;
 }
