@@ -45,6 +45,16 @@ const Procedure = () => {
     dispatch(setBackToggle());
   };
 
+  // 리덕스 상태가 초기화 되면 step1으로 이동 (나중에 삭제?)
+  useEffect(() => {
+    if (hash !== "#step1") {
+      if (endDate === undefined) {
+        alert(`리덕스 상태가 초기화 되었습니다. step1으로 이동합니다.`);
+        navigate("./#step1");
+      }
+    }
+  }, [endDate]);
+
   // 날짜 선택이 완료되지 않은 경우
   const checkDates = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
     if (endDate === undefined || (!endDate && endDate?.length === 0)) {
@@ -244,28 +254,29 @@ const Procedure = () => {
       detailScheduleDto: schedule_details,
     };
 
-    // axios
-    //   // .post(`http://localhost:8080/schedules`, valueNode)
-    //   .post(`http://172.16.1.145:8080/home/save`, value)
-    //   .then((response) => {
-    //     if (response.status === 200 || response.status === 201) {
-    //       console.log("정상적으로 처리되었습니다.");
+    // 일정 보내고 목록 받기
+    axios
+      // .post(`http://localhost:8080/schedules`, valueNode)
+      .post(`http://172.16.1.145:8080/home/save`, value)
+      .then((response) => {
+        if (response.status === 200 || response.status === 201) {
+          console.log("정상적으로 처리되었습니다.");
 
-    //       console.log(response);
-    //       console.log(response.data);
+          console.log(response);
+          console.log(response.data);
 
-    //       navigate("/mypage");
-    //     }
-    //   })
-    //   .catch((error) => console.log(error.response.data));
+          navigate("/mypage");
+        }
+      })
+      .catch((error) => console.log(error.response.data));
 
     // 하나만 받는 경우
-    const userId = 1;
-    const schedule_id = 31;
-    axios
-      .get(`http://172.16.1.145:8080/home/${userId}/${schedule_id}`)
-      .then((response) => console.log(response.data))
-      .catch((error) => console.log(error.response.data));
+    // const userId = 1;
+    // const schedule_id = 31;
+    // axios
+    //   .get(`http://172.16.1.145:8080/home/${userId}/${schedule_id}`)
+    //   .then((response) => console.log(response.data))
+    //   .catch((error) => console.log(error.response.data));
   };
 
   // 클릭하면 다음 해시로 이동하게 하는 이벤트
