@@ -27,8 +27,20 @@ const BackModal = () => {
     dispatch(setBackToggle());
   };
 
+  // esc 키를 누른 경우 모달창 닫기
+  const handleEscape = (e: React.KeyboardEvent<HTMLDivElement>) => {
+    if (e.key === "Escape") {
+      dispatch(setBackToggle());
+    }
+  };
+
   return (
-    <div className="back-modal" onClick={(e) => handleBackground(e)}>
+    <div
+      className="back-modal"
+      onClick={(e) => handleBackground(e)}
+      tabIndex={0}
+      onKeyDown={(e) => handleEscape(e)}
+    >
       <div className="container" onClick={(e) => handleBackground(e)}>
         <div className="info">
           <p>변경사항이 저장되지 않을 수 있습니다.</p>

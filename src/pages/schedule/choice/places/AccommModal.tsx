@@ -146,8 +146,20 @@ const AccommModal = () => {
     setAll(false);
   };
 
+  // esc 키를 누른 경우 모달창 닫기
+  const handleEscape = (e: React.KeyboardEvent<HTMLDivElement>) => {
+    if (e.key === "Escape") {
+      dispatch(accommoToggle());
+    }
+  };
+
   return (
-    <div className="accommo-modal" onClick={(e) => handleToggle(e)}>
+    <div
+      className="accommo-modal"
+      onClick={(e) => handleToggle(e)}
+      tabIndex={0}
+      onKeyDown={(e) => handleEscape(e)}
+    >
       <div className="accommo-container" onClick={(e) => handleToggle(e)}>
         <div className="container">
           <div className="desc">숙박하실 날짜를 선택해주세요</div>

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import "./placeModal.css";
 import { useDispatch, useSelector } from "react-redux";
 import { Rootstate } from "../../../../store/store";
@@ -34,12 +34,21 @@ const PlaceModal = () => {
     place && dispatch(addPlaceToColumn({ column: "_1", place, order: -1 }));
   };
 
+  // esc 키를 누른 경우 모달창 닫기
+  const handleEscape = (e: React.KeyboardEvent<HTMLDivElement>) => {
+    if (e.key === "Escape") {
+      dispatch(modalToggle());
+    }
+  };
+
   return (
     <div
       className="placeModal"
       onClick={(e) => {
         handleToggle(e);
       }}
+      tabIndex={0}
+      onKeyDown={(e) => handleEscape(e)}
     >
       <div
         className="container"
@@ -80,7 +89,6 @@ const PlaceModal = () => {
                   <Button name="추가" />
                 </div>
               )}
-              {place?.contenttypeid === "32" && <></>}
             </div>
           </>
         )}

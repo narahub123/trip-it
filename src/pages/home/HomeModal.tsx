@@ -50,8 +50,20 @@ const HomeModal = () => {
     dispatch(setActive());
   };
 
+  // esc 키를 누른 경우 모달창 닫기
+  const handleEscape = (e: React.KeyboardEvent<HTMLDivElement>) => {
+    if (e.key === "Escape") {
+      dispatch(setActive());
+    }
+  };
+
   return (
-    <div className="home-modal" onClick={(e) => handleClose(e)}>
+    <div
+      className="home-modal"
+      onClick={(e) => handleClose(e)}
+      tabIndex={0}
+      onKeyDown={(e) => handleEscape(e)}
+    >
       <div className="container">
         <div className="info">
           <p className="title">{metro?.name}</p>
