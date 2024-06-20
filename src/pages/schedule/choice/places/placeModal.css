@@ -12,8 +12,25 @@
     top: 50%;
     left: 50%;
     width: 80%;
+    min-width: 300px;
+    min-height: 300px;
+    max-width: 500px;
+    max-height: 500px;
     transform: translate(-50%, -50%);
     border-radius: 20px;
+    .loading-container {
+      margin-top: 100px;
+      .loading-text {
+      }
+      .loading-image {
+        padding: 20px 0;
+        font-size: 20px;
+        text-align: center;
+        vertical-align: middle;
+        transform-origin: 50% 48%;
+        animation: rotate 1.5s linear infinite;
+      }
+    }
     .info {
       p.title {
         font-size: 20px;
@@ -29,5 +46,14 @@
     .buttons {
       padding: 10px;
     }
+  }
+}
+
+@keyframes rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
   }
 }
