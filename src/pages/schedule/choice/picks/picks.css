@@ -1,7 +1,7 @@
 .picks {
   display: flex;
 
-  width: 530px;
+  width: 430px;
 
   .edge {
     border: 1px solid black;

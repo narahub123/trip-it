@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef, useState } from "react";
 import "./picks.css";
 import Drags from "./Drags";
 import Drops from "./Drops";
@@ -6,6 +6,8 @@ import { useSelector } from "react-redux";
 import { Rootstate } from "../../../../store/store";
 
 const Picks = () => {
+  const widthRef = useRef<HTMLDivElement>(null);
+  const [width, setWidth] = useState(widthRef.current?.offsetWidth);
   const schedule = useSelector((state: Rootstate) => state.schedule.schedule);
   const columnPlace = useSelector(
     (state: Rootstate) => state.columnPlaces.columnPlaces
@@ -18,11 +20,21 @@ const Picks = () => {
     const target = e.currentTarget.parentElement;
     if (!target) return;
 
-    const MIN_WIDTH = columnPlaces_1.length > 0 ? 741 : 530;
+    const widthRefWidth = widthRef.current?.getBoundingClientRect().width;
+    console.log(widthRefWidth);
+
+    const MIN_WIDTH = columnPlaces_1.length > 0 ? 741 : 430;
     const MAX_WIDTH = columnPlaces_1.length > 0 ? 1145 : 1035;
     const procedureWidth = 100;
 
+    console.log(widthRef.current?.offsetWidth);
+
+    console.log(MIN_WIDTH);
+    console.log(MAX_WIDTH);
+
     const resize: EventListener = (e) => {
+      console.log("mousedown");
+
       // picks 오른쪽 border의 거리?
       const right = target.getBoundingClientRect().right - 102;
       // 드래그 포인트의 위치
@@ -38,12 +50,24 @@ const Picks = () => {
           : left;
 
       target.style.width = `${width}px`;
+      setWidth(width);
     };
 
     document.addEventListener("mousemove", resize);
+
+    if (width && width < MIN_WIDTH) {
+      document.removeEventListener("mousemove", resize);
+    }
+    if (width && width > MAX_WIDTH) {
+      document.removeEventListener("mousemove", resize);
+    }
     document.addEventListener(
       "mouseup",
-      () => document.removeEventListener("mousemove", resize),
+      () => {
+        console.log("mouseup");
+
+        document.removeEventListener("mousemove", resize);
+      },
       { once: true }
     );
   };
@@ -56,8 +80,9 @@ const Picks = () => {
           ? undefined
           : columnPlaces_1.length > 0
           ? { width: "741px" }
-          : { width: "530px" }
+          : { width: "430px" }
       }
+      ref={widthRef}
     >
       {columnPlaces_1.length > 0 && <Drags />}
       <Drops />
