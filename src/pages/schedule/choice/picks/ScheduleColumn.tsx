@@ -35,7 +35,7 @@ const ScheduleColumn = ({ date, index }: ScheduleColumnProps) => {
   const curRow = useSelector((state: Rootstate) => state.columnPlaces.curRow);
   const items = useSelector((state: Rootstate) => state.accommo.items);
   const dates = useSelector((state: Rootstate) => state.date.datesArray);
-  const mapCol = useSelector((state: Rootstate) => state.map);
+  const mapCol = useSelector((state: Rootstate) => state.map.mapColumns);
   const mapColumn = mapCol[`mapColumn${index}`];
 
   console.log("mapColumn", mapColumn);

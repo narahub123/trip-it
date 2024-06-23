@@ -10,7 +10,11 @@ import {
 } from "../../../utils/map";
 import { debounce } from "../../../utils/debounce";
 import { useLocation } from "react-router-dom";
-import { InfoType, setInfoToMapColumn } from "../../../store/slices/mapSlice";
+import {
+  InfoType,
+  setInfoToMapColumn,
+  setMapWidth,
+} from "../../../store/slices/mapSlice";
 
 // kakao 객체의 존재 여부를 typeScript가 인식하지 못함
 // Property 'kakao' does not exist on type 'Window & typeof globalThis'.
@@ -22,7 +26,8 @@ declare global {
 
 const MapTest = () => {
   const mapRef = useRef<HTMLDivElement>(null);
-  const [mapWidth, setMapWidth] = useState(0);
+  const mapWidth = useSelector((state: Rootstate) => state.map.mapWidth);
+
   const { hash } = useLocation();
   const dispatch = useDispatch();
 
@@ -30,17 +35,20 @@ const MapTest = () => {
 
   console.log(mapcol);
 
+  console.log("map 크기", mapWidth);
   const handleResize = debounce(() => {
-    if (mapRef.current) setMapWidth(mapRef.current.offsetWidth);
+    if (mapRef.current) dispatch(setMapWidth(mapRef.current.offsetWidth));
   }, 500);
-
+  // 맵 크기
   useEffect(() => {
+    handleResize();
+
     window.addEventListener("resize", handleResize);
     return () => {
       // cleanup
       window.removeEventListener("resize", handleResize);
     };
-  }, []);
+  }, [mapRef]);
 
   const columnPlaces = useSelector(
     (state: Rootstate) => state.columnPlaces.columnPlaces

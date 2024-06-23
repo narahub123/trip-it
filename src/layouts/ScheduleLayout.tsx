@@ -14,6 +14,7 @@ import { setBackToggle } from "../store/slices/uiSlice";
 import { useRenderCount } from "@uidotdev/usehooks";
 import MapTest from "../pages/schedule/map/MapTest";
 import { debounce } from "../utils/debounce";
+import { setMapWidth } from "../store/slices/mapSlice";
 
 const ScheduleLayout = () => {
   const scheduleLayoutRef = useRef<HTMLDivElement>(null);
@@ -56,10 +57,10 @@ const ScheduleLayout = () => {
     // choice와 map을 찾기 위해서 dom children 사용
     const choice = scheduleLayoutRef.current.children[1] as HTMLElement;
     const map = scheduleLayoutRef.current.children[3] as HTMLElement;
-    const picks = choice.children[0] as HTMLElement;
 
     if (!choice || !map) return;
 
+    dispatch(setMapWidth(map.getBoundingClientRect().width));
     console.log("레이아웃 너비", scheduleLayoutWidth);
     console.log("choice 너비", choice.getBoundingClientRect().width);
     console.log("map 너비", map.getBoundingClientRect().width);
@@ -164,6 +165,7 @@ const ScheduleLayout = () => {
           "width",
           `${scheduleLayoutWidth - newWidth - 130}px`
         );
+        dispatch(setMapWidth(scheduleLayoutWidth - newWidth - 130));
       };
 
       // 마우스 이동 이벤트

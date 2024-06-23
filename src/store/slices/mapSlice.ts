@@ -10,7 +10,15 @@ export interface MapColumnType {
   [key: string]: InfoType[];
 }
 
-const initialState: MapColumnType = {};
+export interface mapState {
+  mapColumns: MapColumnType;
+  mapWidth: number;
+}
+
+const initialState: mapState = {
+  mapColumns: {},
+  mapWidth: 0,
+};
 
 // mapColumn 동적 생성하기
 export const createMapColumns = createAsyncThunk(
@@ -58,14 +66,22 @@ const mapSlice = createSlice({
     ) => {
       const { column, info } = action.payload;
       if (column > 0) {
-        state[`mapColumn${column - 1}`] = info;
+        state.mapColumns[`mapColumn${column - 1}`] = info;
       }
+    },
+
+    setMapWidth: (state, action) => {
+      state.mapWidth = action.payload;
     },
   },
   extraReducers: (builder) => {},
 });
 
-export const { updateMapColumn, setInfoToMapColumn, clearMapColumn } =
-  mapSlice.actions;
+export const {
+  updateMapColumn,
+  setInfoToMapColumn,
+  clearMapColumn,
+  setMapWidth,
+} = mapSlice.actions;
 
 export default mapSlice.reducer;
