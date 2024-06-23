@@ -5,6 +5,7 @@
   overflow-x: hidden;
 
   .edge {
+    height: 97vh;
     border: 1px solid black;
     cursor: col-resize;
   }
