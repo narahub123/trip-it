@@ -3,6 +3,7 @@
   padding: 10px;
   overflow-y: hidden;
   overflow-x: hidden;
+  user-select: none;
 
   .edge {
     height: 97vh;
