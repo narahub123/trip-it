@@ -1,7 +1,7 @@
 .picks {
+  overflow: hidden;
   display: flex;
-
-  width: 430px;
+  width: 100%;
 
   .edge {
     border: 1px solid black;
