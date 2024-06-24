@@ -8,6 +8,7 @@ import { DestrucDateType } from "../dates/Calendar";
 import {
   dragBtwColumn,
   dragInColumn,
+  removeAccommosFromColumnPlaces,
   removePlaceFromColumn,
   setDraggedPlace,
   setGoalCol,
@@ -173,16 +174,28 @@ const ScheduleColumn = ({ date, colNum }: ScheduleColumnProps) => {
   };
 
   // 장소 삭제
-  const handleDelete = (order: number) => {
+  const handleDelete = (
+    order: number,
+    contentId: string,
+    contentTypeId: string
+  ) => {
     if (!window.confirm(`이장소를 삭제하시겠습니까?`)) {
       return false;
     }
     // console.log("number of item", order);
 
     // 컬럼 목록에서 삭제하기
-    dispatch(
-      removePlaceFromColumn({ column: colNum.toString(), index: order }) as any
-    );
+    contentTypeId !== "32" &&
+      dispatch(
+        removePlaceFromColumn({
+          column: colNum.toString(),
+          index: order,
+        }) as any
+      );
+
+    // 숙소를 컬럼 목록에서 삭제
+    contentTypeId === "32" &&
+      dispatch(removeAccommosFromColumnPlaces({ column: colNum, contentId }));
 
     // 숙소의 경우 숙소 배열에서 제거 필요
     const updatedColumns = items.map((item) =>
@@ -298,7 +311,12 @@ const ScheduleColumn = ({ date, colNum }: ScheduleColumnProps) => {
                         column={colNum}
                         row={i}
                       />
-                      <span className="delete" onClick={() => handleDelete(i)}>
+                      <span
+                        className="delete"
+                        onClick={() =>
+                          handleDelete(i, place.contentid, place.contenttypeid)
+                        }
+                      >
                         <LuTrash2 />
                       </span>
                     </li>
@@ -345,10 +363,7 @@ const ScheduleColumn = ({ date, colNum }: ScheduleColumnProps) => {
                           <p>{i + 2}</p>
                         </span>
                         <PossibleCard place={selectedPlace} />
-                        <span
-                          className="delete"
-                          onClick={() => handleDelete(i)}
-                        >
+                        <span className="delete">
                           <LuTrash2 />
                         </span>
                       </li>
