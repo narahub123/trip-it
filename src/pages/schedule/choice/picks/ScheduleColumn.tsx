@@ -227,7 +227,7 @@ const ScheduleColumn = ({ date, colNum }: ScheduleColumnProps) => {
           className={
             isActive ? "schedule-column-list active" : "schedule-column-list"
           }
-          key={`columnPlaces${colNum}`}
+          key={`columnPlaces${colNum}_${date.date}`}
         >
           <ul>
             {!isActive && colLength === 0 && (
