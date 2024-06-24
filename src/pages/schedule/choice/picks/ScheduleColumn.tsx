@@ -179,7 +179,8 @@ const ScheduleColumn = ({ date, colNum }: ScheduleColumnProps) => {
   const handleDelete = (
     order: number,
     contentId: string,
-    contentTypeId: string
+    contentTypeId: string,
+    accommoColumn: number
   ) => {
     if (!window.confirm(`이장소를 삭제하시겠습니까?`)) {
       return false;
@@ -197,7 +198,7 @@ const ScheduleColumn = ({ date, colNum }: ScheduleColumnProps) => {
 
     // 숙소를 컬럼 목록에서 삭제
     contentTypeId === "32" &&
-      dispatch(removeAccommosFromColumnPlaces({ column: colNum, contentId }));
+      dispatch(removeAccommosFromColumnPlaces({ accommoColumn }));
 
     // 숙소의 경우 숙소 배열에서 제거 필요
     const updatedColumns = items.map((item) =>
@@ -316,12 +317,16 @@ const ScheduleColumn = ({ date, colNum }: ScheduleColumnProps) => {
                       <span
                         className="delete"
                         onClick={() =>
-                          handleDelete(i, place.contentid, place.contenttypeid)
+                          handleDelete(
+                            i,
+                            place.contentid,
+                            place.contenttypeid,
+                            place.accommoColumn
+                          )
                         }
                       >
                         <LuTrash2 />
                       </span>
-                      <li>{place.accommoColumn}</li>
                     </li>
                   ) : (
                     <li className="hideCard"></li>

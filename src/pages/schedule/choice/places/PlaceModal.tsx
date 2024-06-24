@@ -31,7 +31,10 @@ const PlaceModal = () => {
 
   // 해당 장소 선택하기
   const handleSelect = () => {
-    place && dispatch(addPlaceToColumn({ column: "_1", place, order: -1 }));
+    place &&
+      dispatch(
+        addPlaceToColumn({ column: "_1", place, order: -1, accommoColumn: -1 })
+      );
   };
 
   // esc 키를 누른 경우 모달창 닫기

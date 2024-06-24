@@ -83,8 +83,7 @@ const AccommModal = () => {
         accommo &&
           dispatch(
             removeAccommosFromColumnPlaces({
-              column: i,
-              contentId: accommo?.contentid,
+              accommoColumn: accommo.accommoColumn,
             })
           );
 
@@ -146,6 +145,7 @@ const AccommModal = () => {
           column: "_1",
           place,
           order: -1,
+          accommoColumn: -1,
         })
       );
 

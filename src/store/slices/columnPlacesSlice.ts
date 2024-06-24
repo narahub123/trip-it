@@ -247,67 +247,101 @@ const columnPlacesSlice = createSlice({
       state.columnPlaces[`columnPlaces_1`] = [...filterColumpPlaces];
     },
 
-    // 숙소 페어를 columnPlaces에서 삭제하기
+    // 숙소 페어를 columnPlaces에서 삭제
     removeAccommosFromColumnPlaces: (
       state,
-      action: PayloadAction<{ column: number; contentId: string }>
+      action: PayloadAction<{ accommoColumn: number }>
     ) => {
+      // 삭제하려는 숙소의 accommoColumn을 검색해서 해당 컬럼과 다음 컬럼에서
+      // 해당 번호를 갖은 숙소를 삭제
+      // 해당 컬럼 키
+      const curKey =
+        `columnPlaces${action.payload.accommoColumn}` as keyof typeof state.columnPlaces;
       // 해당 컬럼
-      const key1 =
-        `columnPlaces${action.payload.column}` as keyof typeof state.columnPlaces;
-      const columnPlaces1 = state.columnPlaces[key1];
-
-      // 다음 컬럼
-      const key2 = `columnPlaces${
-        action.payload.column + 1
-      }` as keyof typeof state.columnPlaces;
-      const columnPlaces2 = state.columnPlaces[key2];
-
-      // 해당 컬럼에서는 가장 나중 숙소를 삭제
-      // 해당 컬럼에 있는 숙소 인덱스 찾기
-      const accommos1 = [];
-
-      // contentId를 가진 장소를 인덱스 배열에 추가
-      for (let i = 0; i < columnPlaces1.length; i++) {
-        const columnPlace = columnPlaces1[i];
-        if (columnPlace.contentid === action.payload.contentId) {
-          accommos1.push(i);
-        }
-      }
-
-      console.log(accommos1);
-
-      // 인덱스 배열의 길이가 1인 경우
-      if (accommos1.length === 1) {
-        columnPlaces1.splice(accommos1[0], 1);
-        state.columnPlaces[key1] = [...columnPlaces1];
-      }
-      // 인덱스 배열의 길이가 2인 경우
-      else {
-        console.log(action.payload.column);
-
-        let filteredPlaces1;
-        if (action.payload.column !== 0) {
-          columnPlaces1.splice(accommos1[1], 1);
-        } else {
-          columnPlaces1.splice(accommos1[1], 1);
-          columnPlaces1.splice(accommos1[0], 1);
-        }
-
-        state.columnPlaces[key1] = columnPlaces1;
-        console.log(filteredPlaces1);
-      }
-
-      // 다음 컬럼에서는 가장 먼저 숙소를 삭제
-      // 가장 첫 숙소를 제거하는 것이기 때문에 findIndex 사용해도 됨
-      const index = columnPlaces2.findIndex(
-        (place) => place.contentid === action.payload.contentId
+      const curColumnPlaces = state.columnPlaces[curKey];
+      // 해당 숙소를 제외한 배열
+      const filterCurCol = curColumnPlaces.filter(
+        (place) => place.accommoColumn !== action.payload.accommoColumn
       );
 
-      columnPlaces2.splice(index, 1);
+      // 해당 컬럼에 새 배열 할당
+      state.columnPlaces[curKey] = filterCurCol;
 
-      state.columnPlaces[key2] = columnPlaces2;
+      // 다음 컬럼 키
+      const nextKey = `columnPlaces${
+        action.payload.accommoColumn + 1
+      }` as keyof typeof state.columnPlaces;
+      // 다음 컬럼
+      const nextColumPlaces = state.columnPlaces[nextKey];
+      // 해당 숙소를 제외한 배열
+      const filterNextCol = nextColumPlaces.filter(
+        (place) => place.accommoColumn !== action.payload.accommoColumn
+      );
+      // 해당 컬럼에 새 배열 할당
+      state.columnPlaces[nextKey] = filterNextCol;
     },
+
+    // 숙소 페어를 columnPlaces에서 삭제하기
+    // removeAccommosFromColumnPlaces: (
+    //   state,
+    //   action: PayloadAction<{ column: number; contentId: string }>
+    // ) => {
+    //   // 해당 컬럼
+    //   const key1 =
+    //     `columnPlaces${action.payload.column}` as keyof typeof state.columnPlaces;
+    //   const columnPlaces1 = state.columnPlaces[key1];
+
+    //   // 다음 컬럼
+    //   const key2 = `columnPlaces${
+    //     action.payload.column + 1
+    //   }` as keyof typeof state.columnPlaces;
+    //   const columnPlaces2 = state.columnPlaces[key2];
+
+    //   // 해당 컬럼에서는 가장 나중 숙소를 삭제
+    //   // 해당 컬럼에 있는 숙소 인덱스 찾기
+    //   const accommos1 = [];
+
+    //   // contentId를 가진 장소를 인덱스 배열에 추가
+    //   for (let i = 0; i < columnPlaces1.length; i++) {
+    //     const columnPlace = columnPlaces1[i];
+    //     if (columnPlace.contentid === action.payload.contentId) {
+    //       accommos1.push(i);
+    //     }
+    //   }
+
+    //   console.log(accommos1);
+
+    //   // 인덱스 배열의 길이가 1인 경우
+    //   if (accommos1.length === 1) {
+    //     columnPlaces1.splice(accommos1[0], 1);
+    //     state.columnPlaces[key1] = [...columnPlaces1];
+    //   }
+    //   // 인덱스 배열의 길이가 2인 경우
+    //   else {
+    //     console.log(action.payload.column);
+
+    //     let filteredPlaces1;
+    //     if (action.payload.column !== 0) {
+    //       columnPlaces1.splice(accommos1[1], 1);
+    //     } else {
+    //       columnPlaces1.splice(accommos1[1], 1);
+    //       columnPlaces1.splice(accommos1[0], 1);
+    //     }
+
+    //     state.columnPlaces[key1] = columnPlaces1;
+    //     console.log(filteredPlaces1);
+    //   }
+
+    //   // 다음 컬럼에서는 가장 먼저 숙소를 삭제
+    //   // 가장 첫 숙소를 제거하는 것이기 때문에 findIndex 사용해도 됨
+    //   const index = columnPlaces2.findIndex(
+    //     (place) => place.contentid === action.payload.contentId
+    //   );
+
+    //   columnPlaces2.splice(index, 1);
+
+    //   state.columnPlaces[key2] = columnPlaces2;
+    // },
 
     removePlaceFromColumnPlaces_1: (state, action: PayloadAction<number>) => {
       const columnPlaces_1 = state.columnPlaces[`columnPlaces_1`];
@@ -432,7 +466,7 @@ const columnPlacesSlice = createSlice({
         place: PlaceApiType;
         order: number;
         date?: DestrucDateType;
-        accommoColumn?: number;
+        accommoColumn: number;
       }>
     ) => {
       const key =
