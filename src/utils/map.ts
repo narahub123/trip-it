@@ -131,7 +131,7 @@ export const getCarDirection = async (
   endPoint: kakao.maps.LatLng,
   col: number
 ) => {
-  console.log(startPoint, endPoint);
+  // console.log(startPoint, endPoint);
 
   const REST_API_KEY = process.env.REACT_APP_KAKAO_REST_KEY;
 
@@ -167,13 +167,13 @@ export const getCarDirection = async (
 
     const data = await response.json();
 
-    console.log(data);
+    // console.log(data);
 
     const distance = data.routes[0].sections[0].distance;
     const duration = data.routes[0].sections[0].duration;
 
-    console.log(distance);
-    console.log(duration);
+    // console.log(distance);
+    // console.log(duration);
 
     const linePath: kakao.maps.LatLng[] = [];
 
@@ -196,7 +196,7 @@ export const getCarDirection = async (
       duration,
     };
   } catch (error) {
-    console.error("Error:", error);
+    // console.error("Error:", error);
   }
 };
 
@@ -207,7 +207,7 @@ export const getCarDirectionPromise = async (
   endPoint: kakao.maps.LatLng,
   col: number
 ) => {
-  console.log(startPoint, endPoint);
+  // console.log(startPoint, endPoint);
 
   const REST_API_KEY = process.env.REACT_APP_KAKAO_REST_KEY;
 
@@ -244,7 +244,7 @@ export const getCarDirectionPromise = async (
     return new Promise<kakaoMobilitySectionType>(async (resolve, reject) => {
       const data = await response.json();
       if (data) {
-        console.log(data);
+        // console.log(data);
         if (data.routes[0].result_code !== 104) {
           resolve(data.routes[0].sections[0]);
         }
@@ -253,7 +253,7 @@ export const getCarDirectionPromise = async (
       }
     });
   } catch (error) {
-    console.error("Error:", error);
+    // console.error("Error:", error);
   }
 };
 
@@ -276,7 +276,7 @@ export const getCarDirectionArray = (
     pairs.push(pair);
   }
 
-  console.log("pairs", pairs);
+  // console.log("pairs", pairs);
 
   const promises =
     pairs &&

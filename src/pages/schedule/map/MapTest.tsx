@@ -33,9 +33,9 @@ const MapTest = () => {
 
   const mapcol = useSelector((state: Rootstate) => state.map);
 
-  console.log(mapcol);
+  // console.log(mapcol);
 
-  console.log("map 크기", mapWidth);
+  // console.log("map 크기", mapWidth);
   const handleResize = debounce(() => {
     if (mapRef.current) dispatch(setMapWidth(mapRef.current.offsetWidth));
   }, 500);
@@ -113,13 +113,13 @@ const MapTest = () => {
                 }
 
                 dispatch(setInfoToMapColumn({ column: col, info }));
-                console.log("pairs && col", col, info);
+                // console.log("pairs && col", col, info);
               }
             }
 
             map.setBounds(bounds);
           } catch (error) {
-            console.error(error);
+            // console.error(error);
           }
         }
       });

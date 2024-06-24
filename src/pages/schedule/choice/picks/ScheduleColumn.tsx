@@ -23,10 +23,10 @@ import PossibleCard from "./PossibleCard";
 
 interface ScheduleColumnProps {
   date: DestrucDateType;
-  index: number;
+  colNum: number;
 }
 
-const ScheduleColumn = ({ date, index }: ScheduleColumnProps) => {
+const ScheduleColumn = ({ date, colNum }: ScheduleColumnProps) => {
   const limitOfPlaces = 10;
   const [possible, setPossible] = useState<string | undefined>(undefined);
   const [isActive, setIsActive] = useState(false);
@@ -36,9 +36,9 @@ const ScheduleColumn = ({ date, index }: ScheduleColumnProps) => {
   const items = useSelector((state: Rootstate) => state.accommo.items);
   const dates = useSelector((state: Rootstate) => state.date.datesArray);
   const mapCol = useSelector((state: Rootstate) => state.map.mapColumns);
-  const mapColumn = mapCol[`mapColumn${index}`];
+  const mapColumn = mapCol[`mapColumn${colNum}`];
 
-  console.log("mapColumn", mapColumn);
+  // console.log("mapColumn", mapColumn);
 
   const selectedPlace = useSelector(
     (state: Rootstate) => state.columnPlaces.draggedPlace
@@ -46,13 +46,13 @@ const ScheduleColumn = ({ date, index }: ScheduleColumnProps) => {
 
   // 렌더링 개수
   const count = useRenderCount();
-  console.log("렌더링 개수", count);
+  // console.log("렌더링 개수", count);
 
   // 현재 컬럼
   const columnPlaces = useSelector(
     (state: Rootstate) =>
       state.columnPlaces.columnPlaces[
-        `columnPlaces${index}` as keyof typeof state.columnPlaces.columnPlaces
+        `columnPlaces${colNum}` as keyof typeof state.columnPlaces.columnPlaces
       ] || []
   );
 
@@ -76,7 +76,7 @@ const ScheduleColumn = ({ date, index }: ScheduleColumnProps) => {
     e: React.DragEvent<HTMLDivElement> | React.DragEvent<HTMLLIElement>
   ) => {
     e.preventDefault();
-    console.log(e.currentTarget.dataset.row);
+    // console.log(e.currentTarget.dataset.row);
     const overRow = e.currentTarget.dataset.row;
 
     setPossible(overRow);
@@ -106,8 +106,8 @@ const ScheduleColumn = ({ date, index }: ScheduleColumnProps) => {
     if (goalRow) dispatch(setGoalRow(goalRow));
     if (goalCol) dispatch(setGoalCol(goalCol));
 
-    console.log("goalRow", goalRow);
-    console.log("goalCol", goalCol);
+    // console.log("goalRow", goalRow);
+    // console.log("goalCol", goalCol);
 
     // 드롭 유효성 : 변경 혹은 삭제 가능함
     if (
@@ -132,7 +132,7 @@ const ScheduleColumn = ({ date, index }: ScheduleColumnProps) => {
     );
 
     if (
-      dates.length - 1 === index &&
+      dates.length - 1 === colNum &&
       selectedPlace &&
       selectedPlace.contenttypeid === "32" &&
       accommos.length === maxOfAccommoNum - 1
@@ -173,28 +173,31 @@ const ScheduleColumn = ({ date, index }: ScheduleColumnProps) => {
   };
 
   // 장소 삭제
-  const handleDelete = (contentId: string, order: number) => {
-    console.log("number of item", order);
+  const handleDelete = (order: number) => {
+    if (!window.confirm(`이장소를 삭제하시겠습니까?`)) {
+      return false;
+    }
+    // console.log("number of item", order);
 
     // 컬럼 목록에서 삭제하기
     dispatch(
-      removePlaceFromColumn({ column: index.toString(), index: order }) as any
+      removePlaceFromColumn({ column: colNum.toString(), index: order }) as any
     );
 
     // 숙소의 경우 숙소 배열에서 제거 필요
     const updatedColumns = items.map((item) =>
-      item.index === index ? { ...item, contentId: "" } : item
+      item.index === colNum ? { ...item, contentId: "" } : item
     );
     dispatch(setItems(updatedColumns));
   };
 
   return (
-    <div className="schedule-column" key={`col${index}`}>
+    <div className="schedule-column" key={`col${colNum}`}>
       <div className="schedule-column-date">
         <p>
           {`${date.year}.${date.month + 1}.${date.date}(${getWeek(
             new Date(date.year, date.month, date.date)
-          )}, ${index + 1}일차)`}
+          )}, ${colNum + 1}일차)`}
           {colLength === limitOfPlaces
             ? `: 하루 허용 장소 수 ${limitOfPlaces}개 초과`
             : ` (${colLength}/10)`}
@@ -205,7 +208,7 @@ const ScheduleColumn = ({ date, index }: ScheduleColumnProps) => {
           className={
             isActive ? "schedule-column-list active" : "schedule-column-list"
           }
-          data-col={index.toString()}
+          data-col={colNum.toString()}
           data-row={"_1"}
           onDragOver={(e) => handleDragOver(e)}
           onDragLeave={(e) => handleDragLeave(e)}
@@ -224,7 +227,7 @@ const ScheduleColumn = ({ date, index }: ScheduleColumnProps) => {
           className={
             isActive ? "schedule-column-list active" : "schedule-column-list"
           }
-          key={`columnPlaces${index}`}
+          key={`columnPlaces${colNum}`}
         >
           <ul>
             {!isActive && colLength === 0 && (
@@ -235,11 +238,11 @@ const ScheduleColumn = ({ date, index }: ScheduleColumnProps) => {
 
             {colLength < limitOfPlaces &&
             selectedPlace &&
-            !(curCol == index.toString() && curRow === "0") &&
+            !(curCol == colNum.toString() && curRow === "0") &&
             selectedPlace.contentid !== columnPlaces[0].contentid ? (
               <DropIndicator
                 row="_1"
-                col={index.toString()}
+                col={colNum.toString()}
                 onDragLeave={handleDragLeave}
                 onDragOver={handleDragOver}
                 onDrop={handleDrop}
@@ -248,7 +251,7 @@ const ScheduleColumn = ({ date, index }: ScheduleColumnProps) => {
             ) : (
               <li
                 className="dropIndicator"
-                data-col={index.toString()}
+                data-col={colNum.toString()}
                 data-row={`_1`}
               >
                 <p className="separator"></p>
@@ -256,7 +259,7 @@ const ScheduleColumn = ({ date, index }: ScheduleColumnProps) => {
             )}
             {possible === "_1" &&
             selectedPlace &&
-            !(curCol == index.toString() && curRow === "0") &&
+            !(curCol == colNum.toString() && curRow === "0") &&
             selectedPlace.contentid !== columnPlaces[0].contentid ? (
               <li className="possibleCard">
                 <li className="dropCard">
@@ -264,10 +267,7 @@ const ScheduleColumn = ({ date, index }: ScheduleColumnProps) => {
                     <p>{1}</p>
                   </span>
                   <PossibleCard place={selectedPlace} />
-                  <span
-                    className="delete"
-                    onClick={() => handleDelete(selectedPlace.contentid, 0)}
-                  >
+                  <span className="delete">
                     <LuTrash2 />
                   </span>
                 </li>
@@ -282,8 +282,8 @@ const ScheduleColumn = ({ date, index }: ScheduleColumnProps) => {
                   {place ? (
                     <li
                       className="dropCard"
-                      key={`${index}_${i}`}
-                      data-col={index.toString()}
+                      key={`${colNum}_${i}`}
+                      data-col={colNum.toString()}
                       data-row={i.toString()}
                       data-content={place.contentid}
                       onDragStart={(e) => handleDragStart(e)}
@@ -295,13 +295,10 @@ const ScheduleColumn = ({ date, index }: ScheduleColumnProps) => {
                       <DropCard
                         place={place}
                         date={date}
-                        column={index}
+                        column={colNum}
                         row={i}
                       />
-                      <span
-                        className="delete"
-                        onClick={() => handleDelete(place.contentid, i)}
-                      >
+                      <span className="delete" onClick={() => handleDelete(i)}>
                         <LuTrash2 />
                       </span>
                     </li>
@@ -313,13 +310,13 @@ const ScheduleColumn = ({ date, index }: ScheduleColumnProps) => {
                   )}
                   {columnPlaces.length < limitOfPlaces &&
                   selectedPlace &&
-                  !(curCol == index.toString() && i === Number(curRow) - 1) &&
+                  !(curCol == colNum.toString() && i === Number(curRow) - 1) &&
                   !(
-                    curCol == index.toString() &&
+                    curCol == colNum.toString() &&
                     selectedPlace.contentid === place.contentid
                   ) ? (
                     <DropIndicator
-                      col={index.toString()}
+                      col={colNum.toString()}
                       row={i.toString()}
                       onDragLeave={handleDragLeave}
                       onDragOver={handleDragOver}
@@ -329,7 +326,7 @@ const ScheduleColumn = ({ date, index }: ScheduleColumnProps) => {
                   ) : (
                     <li
                       className="dropIndicator"
-                      data-col={index.toString()}
+                      data-col={colNum.toString()}
                       data-row={i.toString()}
                     >
                       <p className="separator"></p>
@@ -337,9 +334,9 @@ const ScheduleColumn = ({ date, index }: ScheduleColumnProps) => {
                   )}
                   {possible === i.toString() &&
                   selectedPlace &&
-                  !(curCol == index.toString() && i === Number(curRow) - 1) &&
+                  !(curCol == colNum.toString() && i === Number(curRow) - 1) &&
                   !(
-                    curCol == index.toString() &&
+                    curCol == colNum.toString() &&
                     selectedPlace.contentid === place.contentid
                   ) ? (
                     <li className="possibleCard">
@@ -350,7 +347,7 @@ const ScheduleColumn = ({ date, index }: ScheduleColumnProps) => {
                         <PossibleCard place={selectedPlace} />
                         <span
                           className="delete"
-                          onClick={() => handleDelete(place.contentid, i)}
+                          onClick={() => handleDelete(i)}
                         >
                           <LuTrash2 />
                         </span>

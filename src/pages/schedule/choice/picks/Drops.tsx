@@ -99,7 +99,7 @@ const Drops = () => {
       <div className="schedule-columns">
         {dates &&
           dates.map((date: DestrucDateType, index: number) => (
-            <ScheduleColumn date={date} index={index} key={`col${index}`} />
+            <ScheduleColumn date={date} colNum={index} key={`col${index}`} />
           ))}
       </div>
     </div>

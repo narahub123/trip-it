@@ -30,7 +30,7 @@ const ScheduleLayout = () => {
 
   const divisionPoint = 751;
 
-  console.log("렌더링 횟수", rendering);
+  // console.log("렌더링 횟수", rendering);
 
   // scheduleLayout 너비 구하기: ref 이용
   useEffect(() => {
@@ -61,9 +61,9 @@ const ScheduleLayout = () => {
     if (!choice || !map) return;
 
     dispatch(setMapWidth(map.getBoundingClientRect().width));
-    console.log("레이아웃 너비", scheduleLayoutWidth);
-    console.log("choice 너비", choice.getBoundingClientRect().width);
-    console.log("map 너비", map.getBoundingClientRect().width);
+    // console.log("레이아웃 너비", scheduleLayoutWidth);
+    // console.log("choice 너비", choice.getBoundingClientRect().width);
+    // console.log("map 너비", map.getBoundingClientRect().width);
 
     if (scheduleLayoutWidth < divisionPoint) {
       choice.style.width = `${scheduleLayoutWidth - 130}px`;
@@ -78,7 +78,7 @@ const ScheduleLayout = () => {
     }
   }, [scheduleLayoutWidth]);
 
-  console.log("레이아웃 너비", scheduleLayoutWidth);
+  // console.log("레이아웃 너비", scheduleLayoutWidth);
 
   // 새로 고침 방지
   usePreventRefresh();
@@ -127,14 +127,14 @@ const ScheduleLayout = () => {
       const picks = choice.children[0] as HTMLElement;
       const map = scheduleLayoutRef.current.children[3] as HTMLElement;
 
-      console.log(picks);
+      // console.log(picks);
 
       // choice의 너비
       const choiceWidth = choice.getBoundingClientRect().width;
 
       // 최초 위치 저장
       const initialX = e.clientX;
-      console.log("최초 위치", initialX);
+      // console.log("최초 위치", initialX);
 
       const resize = (e: MouseEvent) => {
         // 이동거리
@@ -155,10 +155,10 @@ const ScheduleLayout = () => {
             ? MAX_WIDTH
             : choiceWidth + deltaX;
 
-        console.log("이동거리", deltaX);
-        console.log("최대너비", MAX_WIDTH);
-        console.log("새로운 choice 너비", newWidth);
-        console.log("map", scheduleLayoutWidth - newWidth - 130);
+        // console.log("이동거리", deltaX);
+        // console.log("최대너비", MAX_WIDTH);
+        // console.log("새로운 choice 너비", newWidth);
+        // console.log("map", scheduleLayoutWidth - newWidth - 130);
 
         choice.style.width = `${newWidth}px`;
         map.style.setProperty(
@@ -175,7 +175,7 @@ const ScheduleLayout = () => {
       document.addEventListener(
         "mouseup",
         () => {
-          console.log("mouseup");
+          // console.log("mouseup");
 
           document.removeEventListener("mousemove", resize);
         },

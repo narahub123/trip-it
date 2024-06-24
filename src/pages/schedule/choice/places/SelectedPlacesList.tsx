@@ -13,6 +13,16 @@ import {
 const SelectedPlacesList = () => {
   const dispatch = useDispatch();
 
+  const columnPlaces = useSelector(
+    (state: Rootstate) => state.columnPlaces.columnPlaces
+  );
+
+  const accommos = useSelector((state: Rootstate) => state.accommo.items);
+
+  console.log("accommos", accommos);
+
+  console.log(columnPlaces);
+
   const columnPlaces_1 = useSelector(
     (state: Rootstate) => state.columnPlaces.columnPlaces[`columnPlaces_1`]
   );

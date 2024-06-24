@@ -14,10 +14,11 @@ const Picks = () => {
   );
   const columnPlaces_1 = columnPlace["columnPlaces_1"];
   console.log(schedule);
+  console.log(columnPlace);
 
   return (
     <div className="picks">
-      {columnPlaces_1.length > 0 && <Drags />}
+      {columnPlaces_1 && columnPlaces_1.length !== 0 && <Drags />}
       <Drops />
     </div>
   );

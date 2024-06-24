@@ -96,6 +96,8 @@ const Procedure = () => {
   const handleClickStep4 = (
     e: React.MouseEvent<HTMLAnchorElement, MouseEvent>
   ) => {
+    e.preventDefault();
+
     // 날짜 선택 완료 여부 확인
     if (!checkDates(e)) return;
 
@@ -123,6 +125,10 @@ const Procedure = () => {
       }
     }
 
+    console.log(placeCount);
+    console.log(accommoCount);
+    console.log(dates.length * 2 - 1);
+
     if (placeCount < dates.length) {
       e.preventDefault();
       alert("장소 개수가 부족합니다.");
@@ -130,22 +136,23 @@ const Procedure = () => {
       return false;
     }
 
-    if (accommos.length === 0) {
+    if (accommoCount < dates.length * 2 - 1) {
       alert("숙소 선택을 완료해주세요");
+
       return false;
     }
 
     // 숙소 선택 완료 여부 확인
-    const accommosObj = Object.values(accommos);
-    for (const accommo of accommosObj) {
-      console.log(accommo);
+    // const accommosObj = Object.values(accommos);
+    // for (const accommo of accommosObj) {
+    //   console.log(accommo);
 
-      if (accommo.contentId.length === 0) {
-        e.preventDefault();
-        alert("숙소 선택을 완료해주세요");
-        return false;
-      }
-    }
+    //   if (accommo.contentId.length === 0) {
+    //     e.preventDefault();
+    //     alert("숙소가 부족합니다. 추가로 선택을 완료해주세요");
+    //     return false;
+    //   }
+    // }
 
     return true;
   };
