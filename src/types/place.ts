@@ -27,4 +27,5 @@ export interface PlaceApiType {
 export interface ColumnPlaceType extends PlaceApiType {
   start_time: string;
   end_time: string;
+  accommoColumn?: number;
 }

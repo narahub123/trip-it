@@ -82,6 +82,7 @@ const AccommModal = () => {
               place: place,
               order: 0,
               date: dates[0],
+              accommoColumn: i,
             })
           );
         }
@@ -92,6 +93,7 @@ const AccommModal = () => {
             place: place,
             order: -1,
             date: dates[i],
+            accommoColumn: i,
           })
         );
 
@@ -105,6 +107,7 @@ const AccommModal = () => {
             place: place,
             order: 0,
             date: datePlusOne,
+            accommoColumn: i,
           })
         );
 

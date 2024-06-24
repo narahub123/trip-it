@@ -434,6 +434,7 @@ const columnPlacesSlice = createSlice({
         place: PlaceApiType;
         order: number;
         date?: DestrucDateType;
+        accommoColumn?: number;
       }>
     ) => {
       const key =
@@ -460,6 +461,10 @@ const columnPlacesSlice = createSlice({
         ...action.payload.place,
         start_time: start,
         end_time: end,
+        accommoColumn:
+          action.payload.place.contenttypeid === "32"
+            ? action.payload.accommoColumn
+            : -1,
       };
 
       if (action.payload.order === 0) {
@@ -494,6 +499,7 @@ const columnPlacesSlice = createSlice({
           ...action.payload.place,
           start_time: start,
           end_time: end,
+          accommoColumn: -1,
         };
 
         const contentTypeId = place.contenttypeid;
