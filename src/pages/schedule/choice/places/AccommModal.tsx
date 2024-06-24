@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import "./accommoModal.css";
 
 import { useDispatch, useSelector } from "react-redux";
@@ -22,6 +22,7 @@ import { destrucDate } from "../../../../utils/date";
 
 const AccommModal = () => {
   const dispatch = useDispatch();
+  const buttonsRef = useRef<HTMLDivElement>(null);
   const place = useSelector((state: Rootstate) => state.place.place);
   const dates = useSelector((state: Rootstate) => state.date.datesArray);
   const items = useSelector((state: Rootstate) => state.accommo.items);
@@ -37,6 +38,14 @@ const AccommModal = () => {
     // 존재하지 않는다면 컬럼 리셋
     if (isExisted === -1) store.dispatch(calcItems());
   }, []);
+
+  useEffect(() => {
+    // 버튼 찾기
+    const modal = buttonsRef.current?.children[0] as HTMLButtonElement;
+    if (modal && selected) {
+      modal.focus();
+    }
+  }, [selected]);
 
   // 일정
   const handleToggle = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
@@ -186,6 +195,7 @@ const AccommModal = () => {
           )}
           <div
             className="done"
+            ref={buttonsRef}
             onClick={
               selected
                 ? () => {
