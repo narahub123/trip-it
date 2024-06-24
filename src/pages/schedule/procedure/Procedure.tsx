@@ -157,6 +157,16 @@ const Procedure = () => {
     return true;
   };
 
+  const handleEnterStep4 = (
+    e: React.MouseEvent<HTMLAnchorElement, MouseEvent>
+  ) => {
+    const validation = handleClickStep4(e);
+
+    if (!validation) return;
+
+    navigate("#step4");
+  };
+
   // 일정 제출 시 유효성 검사
   const handleSubmit = () => {
     // 유효성 검사
@@ -361,7 +371,7 @@ const Procedure = () => {
             <Link
               to="#step4"
               className={hash === "#step4" ? "link active" : "link"}
-              onClick={(e) => handleClickStep4(e)}
+              onClick={(e) => handleEnterStep4(e)}
               replace={true}
             >
               <div className="step-container">
