@@ -288,15 +288,13 @@ const columnPlacesSlice = createSlice({
 
         let filteredPlaces1;
         if (action.payload.column !== 0) {
-          filteredPlaces1 = columnPlaces1.splice(accommos1[1], 1);
+          columnPlaces1.splice(accommos1[1], 1);
         } else {
           columnPlaces1.splice(accommos1[1], 1);
           columnPlaces1.splice(accommos1[0], 1);
-
-          filteredPlaces1 = columnPlaces1;
         }
 
-        state.columnPlaces[key1] = filteredPlaces1;
+        state.columnPlaces[key1] = columnPlaces1;
         console.log(filteredPlaces1);
       }
 

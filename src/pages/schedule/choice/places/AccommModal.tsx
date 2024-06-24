@@ -26,11 +26,11 @@ const AccommModal = () => {
   const place = useSelector((state: Rootstate) => state.place.place);
   const dates = useSelector((state: Rootstate) => state.date.datesArray);
   const items = useSelector((state: Rootstate) => state.accommo.items);
-  const [selections, setSelections] = useState(
-    items.map((item) => item.contentId)
-  );
   const [all, setAll] = useState(false);
   const selected = useSelector((state: Rootstate) => state.accommo.selected);
+  const columnPlaces = useSelector(
+    (state: Rootstate) => state.columnPlaces.columnPlaces
+  );
 
   useEffect(() => {
     // contentId가 ''아닌 요소가 존재하는 여부 확인
@@ -63,16 +63,30 @@ const AccommModal = () => {
   const handleSelection = () => {
     for (let i = 0; i < items.length; i++) {
       const item = items[i];
+
+      console.log(all);
+
       // 선택한 숙소의 contentId와 등록한 숙소의 contentId가 갖은 경우
       if (place && item.contentId === place?.contentid) {
         // 기존에 등록되었던 숙소 정보를 columnPlaces에서 삭제해야 함
-        const deletedAccommo = selections[i];
-        dispatch(
-          removeAccommosFromColumnPlaces({
-            column: i,
-            contentId: deletedAccommo,
-          })
-        );
+        const deletedAccommo = items[i].contentId;
+
+        // 칼럼을 찾음
+        const colPlaces = columnPlaces[`columnPlaces${i}`];
+
+        // 칼럼에 같은 번호를 갖은 숙소를 찾음
+        const accommo = colPlaces.find((place) => place.accommoColumn === i);
+
+        console.log(accommo);
+
+        // 같은 번호를 갖은 숙소가 있다면 삭제
+        accommo &&
+          dispatch(
+            removeAccommosFromColumnPlaces({
+              column: i,
+              contentId: accommo?.contentid,
+            })
+          );
 
         // 삭제가 완료되고 새로운 숙소 등록 : 삭제 완료 전에 숙소가 등록될 듯?
         if (i === 0) {

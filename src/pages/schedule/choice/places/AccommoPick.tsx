@@ -32,12 +32,15 @@ const AccommoPick = ({ date, index }: AccommoPickProps) => {
   const matched =
     accommos.length > 1 // 숙소가 둘 이상일 때
       ? accommos[1]
-      : accommos.length === 1 && !accommos0 // 숙소가 하나이고 이전 컬럼에 숙소가 없을 때
+      : accommos.length === 1 && accommos0?.length === 0 // 숙소가 하나이고 이전 컬럼에 숙소가 없을 때
       ? accommos[0]
       : undefined;
 
+  // console.log(matched);
+
   // 숙소 배열
   const items = useSelector((state: Rootstate) => state.accommo.items);
+  // console.log(items);
 
   // 현재 선택한 장소
   const place = useSelector((state: Rootstate) => state.place.place);
@@ -45,7 +48,7 @@ const AccommoPick = ({ date, index }: AccommoPickProps) => {
   // 현재 컬럼에 새로 이미지를 추가하였는지 여부
   const inserted = items[index].inserted;
 
-  console.log(inserted);
+  // console.log(inserted);
 
   const dispatch = useDispatch();
 
@@ -60,7 +63,7 @@ const AccommoPick = ({ date, index }: AccommoPickProps) => {
     e: React.MouseEvent<HTMLImageElement | HTMLDivElement, MouseEvent>
   ) => {
     const seletetedItem = Number(e.currentTarget.id);
-    console.log(seletetedItem);
+    // console.log(seletetedItem);
 
     if (!inserted) {
       const updateItems = items.map((item) =>

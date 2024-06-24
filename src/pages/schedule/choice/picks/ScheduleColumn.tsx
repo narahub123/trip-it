@@ -47,7 +47,7 @@ const ScheduleColumn = ({ date, colNum }: ScheduleColumnProps) => {
 
   // 렌더링 개수
   const count = useRenderCount();
-  // console.log("렌더링 개수", count);
+  console.log("렌더링 개수", count);
 
   // 현재 컬럼
   const columnPlaces = useSelector(
@@ -56,6 +56,8 @@ const ScheduleColumn = ({ date, colNum }: ScheduleColumnProps) => {
         `columnPlaces${colNum}` as keyof typeof state.columnPlaces.columnPlaces
       ] || []
   );
+
+  console.log(columnPlaces);
 
   // 숙소 최대 허용 개수
   const maxOfAccommoNum = 2;
@@ -319,6 +321,7 @@ const ScheduleColumn = ({ date, colNum }: ScheduleColumnProps) => {
                       >
                         <LuTrash2 />
                       </span>
+                      <li>{place.accommoColumn}</li>
                     </li>
                   ) : (
                     <li className="hideCard"></li>
