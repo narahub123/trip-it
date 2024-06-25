@@ -90,7 +90,7 @@ const Personal = () => {
 
   const submitRequirements =
     isRight.email &&
-    isRight.email &&
+    isRight.password &&
     isRight.username &&
     isRight.nickname &&
     isRight.gender &&
@@ -199,7 +199,7 @@ const Personal = () => {
             <input
               className={
                 "personal-body-inputbox" +
-                (isRight.email === true ? "confirm" : "")
+                (isRight.email === true ? "confirm disabled" : "")
               }
               type="text"
               defaultValue={formData.email}

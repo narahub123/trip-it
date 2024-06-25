@@ -20,7 +20,7 @@
   }
 
   .personal-body-title {
-    margin: 35px 0px 10px;
+    margin: 10px 0px;
     font-size: 15px;
     font-weight: 800;
   }
@@ -80,6 +80,10 @@
 
   .personal-body-inputbox:focus {
     border: 1px solid rgb(0, 206, 124);
+  }
+
+  input:disabled {
+    background: rgba(128, 128, 128, 0.026);
   }
 
   .personal-body-inputboxconfirm {

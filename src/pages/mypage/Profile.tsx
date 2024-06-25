@@ -23,10 +23,27 @@ const Profile = () => {
 
   const [image, setImage] = useState<File | undefined>(undefined);
   const [formData, setFormData] = useState({
-    userpic: user.userpic,
+    gender: user.gender,
     nickname: user.nickname,
+    userpic: user.userpic,
     userIntro: user.userIntro,
   });
+
+  // 기존 정보와 변경이 있는지 여부 확인
+  const hasChanged = (): string => {
+    const keys = Object.keys(formData);
+
+    for (const key of keys) {
+      if (
+        user[key as keyof typeof user] !==
+        formData[key as keyof typeof formData]
+      ) {
+        return "changed";
+      }
+    }
+
+    return "notChanged";
+  };
 
   // 이미지에 변화가 있으면 업데이트
   useEffect(() => {
@@ -95,6 +112,8 @@ const Profile = () => {
     // });
   };
 
+  console.log(hasChanged());
+
   return (
     <div className="profile">
       <form onSubmit={(e) => handleSubmit(e)}>
@@ -124,35 +143,22 @@ const Profile = () => {
             alt=""
           />
         </figure>
-        <table>
-          <thead></thead>
-          <tbody>
-            <tr key={"nickname"}>
-              <th>닉네임: </th>
-              <td>
-                <input
-                  type="text"
-                  className="nickname"
-                  defaultValue={user.nickname}
-                  onChange={(e) => handleChange(e)}
-                />
-              </td>
-            </tr>
-            <tr key={`userIntro`}>
-              <th>자기소개:</th>
-              <td>
-                <input
-                  type="text"
-                  className="userIntro"
-                  defaultValue={user.userIntro}
-                  placeholder="자기소개를 적어주세요"
-                  onChange={(e) => handleChange(e)}
-                />
-              </td>
-            </tr>
-          </tbody>
-        </table>
-        <button>업데이트</button>
+        <input
+          type="text"
+          className="nickname"
+          defaultValue={user.nickname}
+          onChange={(e) => handleChange(e)}
+        />
+        <input
+          type="text"
+          className="userIntro"
+          defaultValue={user.userIntro}
+          placeholder="자기소개를 적어주세요"
+          onChange={(e) => handleChange(e)}
+        />
+        <button disabled={hasChanged() === "notChanged" ? true : false}>
+          프로필 수정
+        </button>
       </form>
     </div>
   );

@@ -9,7 +9,7 @@ const Sidebar = () => {
             to="mypage/profile"
             className={({ isActive }) => (isActive ? "active" : "")}
           >
-            프로필
+            프로필 수정
           </NavLink>
         </li>
         <li>
