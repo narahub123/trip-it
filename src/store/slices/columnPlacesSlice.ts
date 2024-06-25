@@ -96,9 +96,7 @@ const columnPlacesSlice = createSlice({
   initialState,
   reducers: {
     // columnPlaces 초기화하기
-    clearColumnPlaces: (state) => {
-      initialState;
-    },
+    clearColumnPlaces: (state) => initialState,
     // columnPlaces 동적 생성
     updateColumnPlaces: (state, action) => {
       state.columnPlaces = action.payload;
