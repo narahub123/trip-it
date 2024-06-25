@@ -38,6 +38,24 @@
     background: rgb(248, 248, 248);
     border: 1px solid rgb(233, 233, 233);
     border-radius: 4px;
+
+    p.personal-error {
+      text-align: center;
+      opacity: 0;
+      font-size: 0px;
+      margin-bottom: 0px;
+
+      transition: all 1s ease-in-out 1s;
+    }
+
+    p.personal-error.visible {
+      text-align: center;
+      color: red;
+      font-size: 14px;
+      margin-bottom: 10px;
+      opacity: 1;
+      transition: all 1s ease-in-out;
+    }
   }
 
   .personal-body-input {

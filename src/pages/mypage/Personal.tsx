@@ -1,74 +1,99 @@
 import { useEffect, useRef, useState } from "react";
 import Valid from "../login/Valid";
 import "./personal.css";
+import { dateList, monthList } from "../../data/join";
 
 const Personal = () => {
   const [open, setOpen] = useState("");
-  const [gender, setGender] = useState("성별");
-  const [month, setMonth] = useState("월");
-  const [date, setDate] = useState("일");
-  const monthList = [
-    "1월",
-    "2월",
-    "3월",
-    "4월",
-    "5월",
-    "6월",
-    "7월",
-    "8월",
-    "9월",
-    "10월",
-    "11월",
-    "12월",
-  ];
-  const dateList = [
-    "1일",
-    "2일",
-    "3일",
-    "4일",
-    "5일",
-    "6일",
-    "7일",
-    "8일",
-    "9일",
-    "10일",
-    "11일",
-    "12일",
-    "13일",
-    "14일",
-    "15일",
-    "16일",
-    "17일",
-    "18일",
-    "19일",
-    "20일",
-    "21일",
-    "22일",
-    "23일",
-    "24일",
-    "25일",
-    "26일",
-    "27일",
-    "28일",
-    "29일",
-    "30일",
-    "31일",
-  ];
+  const [formData, setFormData] = useState({
+    email: "test@gmail.com",
+    password: "test1234",
+    username: "박나라",
+    nickname: "몰러",
+    gender: "m",
+    birth: "19850213",
+  }); // 백에서 받아와야하는 정보
+
+  const [month, setMonth] = useState(`${Number(formData.birth.slice(4, 6))}`);
+  const [date, setDate] = useState(`${Number(formData.birth.slice(6))}`);
+  const [isRight, setIsRight] = useState(false);
+
   const [keepClicked, setKeepClicked] = useState(0);
   const [val, setVal] = useState("");
 
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    let key = e.currentTarget.id;
+
+    if (key === "password") {
+      ValidatePw(e.currentTarget.value);
+    }
+
+    if (e.currentTarget.id === "year") {
+      key = "birth";
+    }
+
+    let value = e.currentTarget.value;
+
+    if (e.currentTarget.id === "year") {
+      const year = e.currentTarget.value;
+
+      const birth = year + month + date;
+      value = birth;
+    }
+
+    const updatedUser = {
+      ...formData,
+      [key]: value,
+    };
+
+    setFormData(updatedUser);
+  };
+
+  console.log(formData);
+
   const changeGender = (e: any) => {
-    setGender(e.target.value === 1 ? "남" : "여");
+    console.log(e.target.parentElement.previousElementSibling.id);
+
+    setFormData({
+      ...formData,
+      [e.target.parentElement.previousElementSibling.id]:
+        e.target.value === 1 ? "m" : "f",
+    });
+
     setOpen("");
   };
 
   const changeMonth = (e: any) => {
-    setMonth(e.target.value + "월");
+    let birth = formData.birth;
+
+    const year = birth.slice(0, 4);
+
+    const month = e.target.value < 10 ? "0" + e.target.value : e.target.value;
+    const dateFormat = Number(date) < 10 ? "0" + date : date;
+
+    birth = year + month + dateFormat;
+    setFormData({
+      ...formData,
+      birth,
+    });
+    setMonth(e.target.value);
     setOpen("");
   };
 
   const changeDate = (e: any) => {
-    setDate(e.target.value + "일");
+    let birth = formData.birth;
+
+    const year = birth.slice(0, 4);
+
+    const monthFormat = Number(month) < 10 ? "0" + month : month;
+    const date = e.target.value < 10 ? "0" + e.target.value : e.target.value;
+
+    birth = year + monthFormat + date;
+    setFormData({
+      ...formData,
+      birth,
+    });
+    setDate(e.target.value);
     setOpen("");
   };
 
@@ -116,21 +141,12 @@ const Personal = () => {
     inputValue.date &&
     inputValue.validDate;
 
-  useEffect(() => {
-    const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/i;
-    setInputValue((prev) => ({
-      ...prev,
-      validEmail: emailRegex.test(inputValue.email),
-    }));
-  }, [inputValue.email]);
-
-  useEffect(() => {
+  const ValidatePw = (value: string) => {
     const pwRegex = /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,12}$/;
-    setInputValue((prev) => ({
-      ...prev,
-      validPw: pwRegex.test(inputValue.pw),
-    }));
-  }, [inputValue.pw]);
+    const result = pwRegex.test(value);
+
+    setIsRight(result);
+  };
 
   useEffect(() => {
     const nameRegex = /^[가-힣]{2,5}$/;
@@ -151,10 +167,10 @@ const Personal = () => {
   useEffect(() => {
     setInputValue((prev) => ({
       ...prev,
-      gender: gender,
-      validGender: gender !== "",
+      gender: formData.gender,
+      validGender: formData.gender !== "",
     }));
-  }, [gender]);
+  }, [formData.gender]);
 
   useEffect(() => {
     const yearRegex = /^[0-9]{4}$/;
@@ -179,6 +195,9 @@ const Personal = () => {
       validDate: date !== "일",
     }));
   }, [date]);
+
+  console.log(formData.gender);
+
   return (
     <div className="personal">
       <h3 className="join-title">개인 정보 수정</h3>
@@ -190,70 +209,71 @@ const Personal = () => {
         <div className="personal-body-main">
           <div className="personal-body-input">
             <input
-              value={inputValue.email}
               className={
                 "personal-body-inputbox" +
                 (inputValue.validEmail === true ? "confirm" : "")
               }
               ref={emailTag}
               type="text"
-              placeholder="이메일 주소"
-              onChange={(e) =>
-                setInputValue({ ...inputValue, email: e.target.value })
-              }
+              defaultValue={formData.email}
+              disabled
             ></input>
           </div>
           <div className="personal-body-input">
             <input
-              value={inputValue.pw}
+              defaultValue={formData.password}
               className={
                 "personal-body-inputbox" +
                 (inputValue.validPw === true ? "confirm" : "")
               }
+              id="password"
               type="password"
               placeholder="비밀번호(8자~12자, 영문+숫자+특수문자 사용)"
-              onChange={(e) =>
-                setInputValue({ ...inputValue, pw: e.target.value })
-              }
+              onChange={(e) => handleChange(e)}
             ></input>
           </div>
+
+          <p className={`personal-error ${!isRight ? "visible" : ""}`}>
+            비밀번호(8자~12자, 영문+숫자+특수문자 사용)
+          </p>
+
           <div className="personal-body-input">
             <input
-              value={inputValue.name}
+              defaultValue={formData.username}
               className={
                 "personal-body-inputbox" +
                 (inputValue.validName === true ? "confirm" : "")
               }
+              id="username"
               type="text"
-              placeholder="이름"
-              onChange={(e) =>
-                setInputValue({ ...inputValue, name: e.target.value })
-              }
+              onChange={(e) => handleChange(e)}
             ></input>
           </div>
           <div className="personal-body-input">
             <input
-              value={inputValue.nick}
+              defaultValue={formData.nickname}
               className={
                 "personal-body-inputbox" +
                 (inputValue.validNick === true ? "confirm" : "")
               }
+              id="nickname"
               type="text"
               placeholder="닉네임"
-              onChange={(e) =>
-                setInputValue({ ...inputValue, nick: e.target.value })
-              }
+              onChange={(e) => handleChange(e)}
             ></input>
           </div>
           <div className="personal-body-input">
-            <li
+            <input
+              defaultValue={formData.gender === "m" ? "남" : "여"}
+              type="button"
               className={
                 "personal-li" + (inputValue.gender === "성별" ? "" : "confirm")
               }
+              id="gender"
               onClick={() => setOpen("gender")}
-            >
-              {gender}
-            </li>
+              onChange={(e) => handleChange(e)}
+              value={formData.gender === "m" ? "남" : "여"}
+            ></input>
             <ul
               className={"personal-ul" + (open === "gender" ? "-gender" : "")}
             >
@@ -269,7 +289,7 @@ const Personal = () => {
           <div className="personal-body-grid">
             <div className="personal-body-grid-year">
               <input
-                value={inputValue.year}
+                defaultValue={formData.birth.slice(0, 4)}
                 className={
                   "personal-body-year-font" +
                   (inputValue.validYear === true ? "confirm" : "")
@@ -277,20 +297,19 @@ const Personal = () => {
                 type="text"
                 placeholder="년(예 1996)"
                 maxLength={4}
-                onChange={(e) =>
-                  setInputValue({ ...inputValue, year: e.target.value })
-                }
+                id="year"
+                onChange={(e) => handleChange(e)}
               ></input>
             </div>
             <div className="personal-body-input">
-              <li
+              <input
+                type="button"
+                defaultValue={`${month}월`}
                 className={
                   "personal-li" + (inputValue.month === "월" ? "" : "confirm")
                 }
                 onClick={() => setOpen("month")}
-              >
-                {month}
-              </li>
+              ></input>
               <ul
                 className={"personal-ul" + (open === "month" ? "-month" : "")}
               >
@@ -309,14 +328,14 @@ const Personal = () => {
               </ul>
             </div>
             <div className="personal-body-input">
-              <li
+              <input
+                type="button"
+                defaultValue={`${date}일`}
                 className={
                   "personal-li" + (inputValue.date === "일" ? "" : "confirm")
                 }
                 onClick={() => setOpen("date")}
-              >
-                {date}
-              </li>
+              />
               <ul className={"personal-ul" + (open === "date" ? "-date" : "")}>
                 {dateList.map(function (a, i) {
                   return (
@@ -333,6 +352,15 @@ const Personal = () => {
               </ul>
             </div>
           </div>
+          <button
+            type="button"
+            className={
+              "join-body-button" + (submitRequirements === true ? "active" : "")
+            }
+            disabled={!submitRequirements}
+          >
+            개인 정보 수정
+          </button>
         </div>
       </div>
       {val == "이메일" ? (
