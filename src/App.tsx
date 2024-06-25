@@ -11,6 +11,7 @@ import ScheduleLayout from "./layouts/ScheduleLayout";
 import UserLayout from "./layouts/UserLayout";
 import { Provider } from "react-redux";
 import { store } from "./store/store";
+import Profile from "./pages/mypage/Profile";
 
 function App() {
   return (
@@ -20,7 +21,9 @@ function App() {
           <Route index element={<Home />} />
           <Route path="/community" element={<Community />} />
           <Route element={<UserLayout />}>
-            <Route path="/mypage" element={<MyPage />} />
+            <Route path="/mypage" element={<MyPage />}>
+              <Route path="profile" element={<Profile />} />
+            </Route>
             <Route path="/admin" element={<Admin />} />
           </Route>
           <Route path="/login" element={<Login />} />

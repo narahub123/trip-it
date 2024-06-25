@@ -3,7 +3,7 @@
   .blank {
     width: 100%;
     height: 50px;
-    padding-bottom: 10px; /* rootLayout의 padding과 동일하게 유지해서 간격을 통일성 부여할 것 */
+    padding-bottom: 20px; /* rootLayout의 padding과 동일하게 유지해서 간격을 통일성 부여할 것 */
   }
   main {
     width: 100%;
