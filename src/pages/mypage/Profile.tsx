@@ -82,7 +82,7 @@ const Profile = () => {
   console.log(formData);
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    if (!confirm(`업데이트하시겠습니까?`)) {
+    if (!window.confirm(`업데이트하시겠습니까?`)) {
       return;
     }
     e.preventDefault();
