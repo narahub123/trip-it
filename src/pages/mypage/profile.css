@@ -1,2 +1,36 @@
 .profile {
+  margin: 70px 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  figure.profile-image-container {
+    margin: 10px 0;
+    text-align: center;
+    img {
+      width: 150px;
+      height: 150px;
+      object-fit: cover;
+      border-radius: 50%;
+    }
+  }
+  .nickname {
+    margin: 20px 0;
+    padding: 10px;
+    width: 200px;
+  }
+  .userIntro {
+    margin: 20px 0;
+    padding: 10px;
+    width: 200px;
+  }
+
+  button {
+    text-align: center;
+    width: 100%;
+    padding: 15px;
+    border-radius: 10px;
+    background-color: aquamarine;
+  }
 }
