@@ -1,23 +1,48 @@
 import "./sidebar.css";
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 const Sidebar = () => {
   return (
     <aside className="sidebar">
       <ul>
         <li>
-          <Link to="mypage/profile">프로필</Link>
+          <NavLink
+            to="mypage/profile"
+            className={({ isActive }) => (isActive ? "active" : "")}
+          >
+            프로필
+          </NavLink>
         </li>
         <li>
-          <Link to="mypage/personal">개인정보수정</Link>
+          <NavLink
+            to="mypage/personal"
+            className={({ isActive }) => (isActive ? "active" : "")}
+          >
+            개인정보수정
+          </NavLink>
         </li>
         <li>
-          <Link to="mypage/schedules">내 일정</Link>
+          <NavLink
+            to="mypage/schedules"
+            className={({ isActive }) => (isActive ? "active" : "")}
+          >
+            내 일정
+          </NavLink>
         </li>
         <li>
-          <Link to="mypage/details">내 모집글</Link>
+          <NavLink
+            to="mypage/details"
+            className={({ isActive }) => (isActive ? "active" : "")}
+          >
+            내 모집글
+          </NavLink>
         </li>
         <li>
-          <Link to="mypage/bans">내 차단 멤버`</Link>
+          <NavLink
+            to="mypage/bans"
+            className={({ isActive }) => (isActive ? "active" : "")}
+          >
+            내 차단 멤버
+          </NavLink>
         </li>
       </ul>
     </aside>

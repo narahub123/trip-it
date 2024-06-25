@@ -1,6 +1,21 @@
 .sidebar {
   width: 150px;
-  height: 100vh;
+
   /* 그림자 부분 */
-  box-shadow: 3px 3px 3px 3px gray;
+  /* box-shadow: 3px 3px 3px 3px gray; */
+  ul {
+    text-align: center;
+    padding-top: 20px;
+    li {
+      padding: 10px 0;
+      a {
+      }
+      a.active {
+        color: aquamarine;
+      }
+      a:hover {
+        color: aquamarine;
+      }
+    }
+  }
 }
