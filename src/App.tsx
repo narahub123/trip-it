@@ -6,12 +6,14 @@ import Community from "./pages/community/Community";
 import MyPage from "./pages/mypage/MyPage";
 import Admin from "./pages/admin/Admin";
 import Login from "./pages/login/Login";
-import SignIn from "./pages/signin/SignIn";
 import ScheduleLayout from "./layouts/ScheduleLayout";
 import UserLayout from "./layouts/UserLayout";
 import { Provider } from "react-redux";
 import { store } from "./store/store";
 import Profile from "./pages/mypage/Profile";
+import Personal from "./pages/mypage/Personal";
+import Join from "./pages/login/Join";
+import "./Trip.css";
 
 function App() {
   return (
@@ -23,11 +25,12 @@ function App() {
           <Route element={<UserLayout />}>
             <Route path="/mypage" element={<MyPage />}>
               <Route path="profile" element={<Profile />} />
+              <Route path="personal" element={<Personal />} />
             </Route>
             <Route path="/admin" element={<Admin />} />
           </Route>
           <Route path="/login" element={<Login />} />
-          <Route path="/signin" element={<SignIn />} />
+          <Route path="/join" element={<Join />} />
         </Route>
         <Route
           path="/schedule/:metro_name"

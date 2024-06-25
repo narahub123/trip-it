@@ -15,7 +15,7 @@ export interface FormDataType {
 const Profile = () => {
   const imageRef = useRef<HTMLInputElement>(null);
   const user = {
-    gender: "F",
+    gender: "f",
     nickname: "몰러",
     userpic: "",
     userIntro: "",
@@ -117,7 +117,7 @@ const Profile = () => {
             src={
               formData.userpic.length !== 0
                 ? formData.userpic
-                : user.gender === "F"
+                : user.gender === "f"
                 ? `/images/female-profile-image.jpg`
                 : `/images/male-profile-image.jpg`
             }
