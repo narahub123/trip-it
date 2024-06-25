@@ -14,6 +14,9 @@ import Profile from "./pages/mypage/Profile";
 import Personal from "./pages/mypage/Personal";
 import Join from "./pages/login/Join";
 import "./Trip.css";
+import Schedules from "./pages/mypage/Schedules";
+import Details from "./pages/mypage/Details";
+import Bans from "./pages/mypage/Bans";
 
 function App() {
   return (
@@ -26,6 +29,11 @@ function App() {
             <Route path="/mypage" element={<MyPage />}>
               <Route path="profile" element={<Profile />} />
               <Route path="personal" element={<Personal />} />
+              <Route path="schedules" element={<Schedules />} />
+              <Route path="schedules/:scheduleId" element={<Schedules />} />
+              <Route path="details" element={<Details />} />
+              <Route path="details/:detailId" element={<Details />} />
+              <Route path="bans" element={<Bans />} />
             </Route>
             <Route path="/admin" element={<Admin />} />
           </Route>

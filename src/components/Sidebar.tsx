@@ -11,13 +11,13 @@ const Sidebar = () => {
           <Link to="mypage/personal">개인정보수정</Link>
         </li>
         <li>
-          <Link to="mypage/mySchedules">내 일정</Link>
+          <Link to="mypage/schedules">내 일정</Link>
         </li>
         <li>
-          <Link to="mypage/myDetails">내 모집글</Link>
+          <Link to="mypage/details">내 모집글</Link>
         </li>
         <li>
-          <Link to="mypage/myBans">내 모집글</Link>
+          <Link to="mypage/bans">내 차단 멤버`</Link>
         </li>
       </ul>
     </aside>
