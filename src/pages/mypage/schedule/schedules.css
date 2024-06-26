@@ -1,2 +1,20 @@
 .schedules {
+  padding: 20px;
+  .schedules-title {
+    text-align: center;
+  }
+  .schedule-sort {
+    .schedule-sort-container {
+      display: flex;
+      justify-content: flex-end;
+      .schedule-sort-items {
+        padding: 0 10px;
+      }
+    }
+  }
+  .schedules-cards {
+    .schedules-cards-container {
+      display: flex;
+    }
+  }
 }

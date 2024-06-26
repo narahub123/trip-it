@@ -17,6 +17,7 @@ import "./Trip.css";
 import Schedules from "./pages/mypage/schedule/Schedules";
 import Details from "./pages/mypage/detail/Details";
 import Bans from "./pages/mypage/ban/Bans";
+import Schedule from "./pages/mypage/schedule/Schedule";
 
 function App() {
   return (
@@ -30,7 +31,7 @@ function App() {
               <Route path="profile" element={<Profile />} />
               <Route path="personal" element={<Personal />} />
               <Route path="schedules" element={<Schedules />} />
-              <Route path="schedules/:scheduleId" element={<Schedules />} />
+              <Route path="schedules/:scheduleId" element={<Schedule />} />
               <Route path="details" element={<Details />} />
               <Route path="details/:detailId" element={<Details />} />
               <Route path="bans" element={<Bans />} />
