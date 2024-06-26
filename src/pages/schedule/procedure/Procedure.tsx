@@ -12,6 +12,8 @@ import {
 } from "../../../utils/date";
 import { setBackToggle } from "../../../store/slices/uiSlice";
 import Button from "../../../components/ui/Button";
+import { getCookie } from "../../../utils/Cookie";
+import { setSchedules } from "../../../store/slices/returnSlice";
 
 const Procedure = () => {
   const location = useLocation();
@@ -275,15 +277,25 @@ const Procedure = () => {
     // 일정 보내고 목록 받기
     axios
       // .post(`http://localhost:8080/schedules`, valueNode)
-      .post(`http://172.16.1.118:8080/home/saveSchedule`, value)
+      .post(`http://172.16.1.118:8080/home/saveSchedule`, value, {
+        headers: {
+          "Content-Type": "application/json",
+          Access: `${localStorage.getItem("access")}`,
+          Refresh: `${getCookie("refresh")}`,
+        },
+      })
       .then((response) => {
         if (response.status === 200 || response.status === 201) {
           console.log("정상적으로 처리되었습니다.");
 
           console.log(response);
+
+          // 데이터를 redux에 넣어서 mypage에서 뜰 수 있게 할 것
           console.log(response.data);
 
-          navigate("/mypage");
+          dispatch(setSchedules(response.data));
+
+          navigate("/mypage/schedules");
         }
       })
       .catch((error) => console.log(error.response.data));

@@ -2,34 +2,37 @@ import { useState } from "react";
 import { ScheduleType } from "../../../types/schedules";
 import SchedulesCard from "./ScheduleCard";
 import "./schedules.css";
+import { useSelector } from "react-redux";
+import { Rootstate } from "../../../store/store";
 
 const Schedules = () => {
+  const schedules = useSelector((state: Rootstate) => state.return.schedules);
   const [open, setOpen] = useState({
     areacode: false,
     date: false,
     register: false,
   });
   // schedule data
-  const schedules: ScheduleType[] = [
-    {
-      schedule_id: "1",
-      metro_id: "1",
-      start_date: "20240626",
-      end_date: "20240628",
-      schedule_time: "20240621",
-      user_id: "1",
-      schedule_title: "서울 여행",
-    },
-    {
-      schedule_id: "2",
-      metro_id: "2",
-      start_date: "20240704",
-      end_date: "20240712",
-      schedule_time: "20240511",
-      user_id: "1",
-      schedule_title: "인천 여행",
-    },
-  ];
+  // const schedules: ScheduleType[] = [
+  //   {
+  //     schedule_id: "1",
+  //     metro_id: "1",
+  //     start_date: "20240626",
+  //     end_date: "20240628",
+  //     schedule_time: "20240621",
+  //     user_id: "1",
+  //     schedule_title: "서울 여행",
+  //   },
+  //   {
+  //     schedule_id: "2",
+  //     metro_id: "2",
+  //     start_date: "20240704",
+  //     end_date: "20240712",
+  //     schedule_time: "20240511",
+  //     user_id: "1",
+  //     schedule_title: "인천 여행",
+  //   },
+  // ];
 
   const [filteredSchedules, setFilteredSchedules] =
     useState<ScheduleType[]>(schedules);

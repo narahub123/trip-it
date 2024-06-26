@@ -21,7 +21,7 @@ export interface ScheduleType {
   start_date?: string;
   end_date?: string;
   schedule_title?: string;
-  schedule_time?: string;
+  register_date?: string;
   user_id?: string;
   schedule_details?: ScheduleDetailType[];
 }

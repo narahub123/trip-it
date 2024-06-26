@@ -38,7 +38,7 @@ const SchedulesCard = ({ schedule }: SchedulesCardProps) => {
             </p>
             <div className="schedules-card-bottom">
               <p className="schedules-card-register-date">
-                {schedule.schedule_time}
+                {schedule.register_date}
               </p>
               <p className="schedules-card-location">
                 {schedule.metro_id && metroName(schedule.metro_id)}
