@@ -14,6 +14,7 @@ import { setBackToggle } from "../../../store/slices/uiSlice";
 import Button from "../../../components/ui/Button";
 import { getCookie } from "../../../utils/Cookie";
 import { setSchedules } from "../../../store/slices/returnSlice";
+import { resetSchedule } from "../../../store/slices/scheduleSlice";
 
 const Procedure = () => {
   const location = useLocation();
@@ -294,6 +295,9 @@ const Procedure = () => {
           console.log(response.data);
 
           dispatch(setSchedules(response.data));
+
+          // 일정 비우기
+          dispatch(resetSchedule());
 
           navigate("/mypage/schedules");
         }

@@ -3,6 +3,7 @@ import { metros } from "../../../data/metros";
 import useDefaultImage from "../../../hooks/useDefaultImage";
 import { ScheduleType } from "../../../types/schedules";
 import "./schedulesCard.css";
+import { metroName } from "../../../utils/metro";
 
 export interface SchedulesCardProps {
   schedule: ScheduleType;
@@ -10,14 +11,6 @@ export interface SchedulesCardProps {
 
 const SchedulesCard = ({ schedule }: SchedulesCardProps) => {
   const defaultImage = useDefaultImage(schedule.metro_id);
-
-  const metroName = (metroId: string) => {
-    const name = metros.find((metro) => metro.areaCode === metroId)?.name;
-
-    if (!name) return "에러";
-
-    return name;
-  };
 
   return (
     <li
