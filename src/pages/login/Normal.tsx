@@ -19,7 +19,7 @@ function Normal() {
 
   let navigate = useNavigate();
 
-  const baseUrl = "http://172.16.1.97:8080";
+  const baseUrl = "http://172.16.1.118:8080";
 
   async function doLogin() {
     await axios

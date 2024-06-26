@@ -27,6 +27,7 @@ const SchedulesCard = ({ schedule }: SchedulesCardProps) => {
         backgroundSize: "cover",
         backgroundPosition: "50% 50%",
       }}
+      key={schedule.schedule_id}
     >
       <Link to={`${schedule.schedule_id}`} className="schedules-card-link">
         <div className="schedules-card-cap">

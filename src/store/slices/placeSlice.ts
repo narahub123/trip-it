@@ -68,7 +68,7 @@ export const fetchPlaces = createAsyncThunk(
         contentTypeId = "1";
       }
 
-      const url = `http://localhost:8080/places/${areacode}/${contentTypeId}/${pageNo.toString()}`;
+      const url = `http://172.16.1.82:8080/places/${areacode}/${contentTypeId}/${pageNo.toString()}`;
       // const url = `http://172.16.1.147:8080/home/test/${areacode}/${pageNo}`;
       console.log(url);
 
@@ -110,7 +110,7 @@ export const fetchPlace = createAsyncThunk<
   "placeSlice/fetchPlace",
   async ({ contentId, addPlaceToColumnPlaces_1 = true }: PlaceProps) => {
     try {
-      const url = `http://localhost:8080/places/${contentId}`;
+      const url = `http://172.16.1.82:8080/places/${contentId}`;
 
       const response = await fetch(url);
       const jsonData = await response.json();
@@ -158,7 +158,7 @@ export const fetchSearchedPlaces = createAsyncThunk(
         contentTypeId = "1";
       }
 
-      const url = `http://localhost:8080/places/search/${areacode}/${contentTypeId}/${keyword}/${pageNo.toString()}`;
+      const url = `http://172.16.1.82:8080/places/search/${areacode}/${contentTypeId}/${keyword}/${pageNo.toString()}`;
       console.log(url);
 
       const response = await fetch(url);

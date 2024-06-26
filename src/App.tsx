@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import RootLayout from "./layouts/RootLayout";
 import { Route, Routes } from "react-router-dom";
 import Home from "./pages/home/Home";
@@ -18,8 +18,22 @@ import Schedules from "./pages/mypage/schedule/Schedules";
 import Details from "./pages/mypage/detail/Details";
 import Bans from "./pages/mypage/ban/Bans";
 import Schedule from "./pages/mypage/schedule/Schedule";
+import Normal from "./pages/login/Normal";
+import refreshAPI from "./utils/TokenRefresher";
 
 function App() {
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const res = await refreshAPI.get("");
+      } catch (err) {
+        console.log("에러확인 : ", err);
+      }
+    };
+
+    fetchData();
+  }, []);
+
   return (
     <Provider store={store}>
       <Routes>
@@ -38,7 +52,8 @@ function App() {
             </Route>
             <Route path="/admin" element={<Admin />} />
           </Route>
-          <Route path="/login" element={<Login />} />
+          <Route path="/login" element={<Login />}></Route>
+          <Route path="/login/normal" element={<Normal />} />
           <Route path="/join" element={<Join />} />
         </Route>
         <Route

@@ -1,8 +1,14 @@
+import { useState } from "react";
 import { ScheduleType } from "../../../types/schedules";
 import SchedulesCard from "./ScheduleCard";
 import "./schedules.css";
 
 const Schedules = () => {
+  const [open, setOpen] = useState({
+    areacode: false,
+    date: false,
+    register: false,
+  });
   // schedule data
   const schedules: ScheduleType[] = [
     {
@@ -24,19 +30,68 @@ const Schedules = () => {
       schedule_title: "인천 여행",
     },
   ];
+
+  const [filteredSchedules, setFilteredSchedules] =
+    useState<ScheduleType[]>(schedules);
+
   return (
     <div className="schedules">
       <h3 className="schedules-title">내 여행 일정</h3>
       <div className="schedule-sort">
         <ul className="schedule-sort-container">
-          <li className="schedule-sort-items">지역순</li>
-          <li className="schedule-sort-items">날짜순</li>
-          <li className="schedule-sort-items">등록순</li>
+          <li className="schedule-sort-item" key={"areacode"} id="areacode">
+            <p>지역순</p>
+
+            <ul className="schedule-sort-dropdown-container">
+              <li className="schedule-sort-dropdown-item" key={"areacode0"}>
+                지역코드순서: 오름차순
+              </li>
+              <li className="schedule-sort-dropdown-item" key={"areacode1"}>
+                지역코드순서: 내림차순
+              </li>
+              <li className="schedule-sort-dropdown-item" key={"areacode2"}>
+                지역이름순서: 오름차순
+              </li>
+              <li className="schedule-sort-dropdown-item" key={"areacode3"}>
+                지역이름순서: 내림차순
+              </li>
+            </ul>
+          </li>
+          <li className="schedule-sort-item" key={"date"} id="date">
+            <p>일정순</p>
+
+            <ul className="schedule-sort-dropdown-container">
+              <li className="schedule-sort-dropdown-item" key={"date0"}>
+                일정시작날짜: 오름차순
+              </li>
+              <li className="schedule-sort-dropdown-item" key={"date1"}>
+                일정시작날짜: 내림차순
+              </li>
+              <li className="schedule-sort-dropdown-item" key={"date2"}>
+                일정기간기준: 오름차순
+              </li>
+              <li className="schedule-sort-dropdown-item" key={"date3"}>
+                일정기간기준: 내림차순
+              </li>
+            </ul>
+          </li>
+          <li className="schedule-sort-item" key={"register"} id="register">
+            <p>등록일</p>
+
+            <ul className="schedule-sort-dropdown-container">
+              <li className="schedule-sort-dropdown-item" key={"register0"}>
+                등록일기준: 오름차순
+              </li>
+              <li className="schedule-sort-dropdown-item" key={"register1"}>
+                등록일기준: 내림차순
+              </li>
+            </ul>
+          </li>
         </ul>
       </div>
       <div className="schedules-cards">
         <ul className="schedules-cards-container">
-          {schedules.map((schedule) => (
+          {schedules.map((schedule, index) => (
             <SchedulesCard schedule={schedule} />
           ))}
         </ul>

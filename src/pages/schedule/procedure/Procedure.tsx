@@ -263,7 +263,6 @@ const Procedure = () => {
     const value = {
       scheduleDto: {
         metro_id: schedule.metro_id,
-        user_id: 1,
         start_date: start,
         end_date: end,
         schedule_title: schedule.schedule_title,
@@ -271,10 +270,12 @@ const Procedure = () => {
       detailScheduleDto: schedule_details,
     };
 
+    console.log(value);
+
     // 일정 보내고 목록 받기
     axios
       // .post(`http://localhost:8080/schedules`, valueNode)
-      .post(`http://172.16.1.145:8080/home/save`, value)
+      .post(`http://172.16.1.118:8080/home/saveSchedule`, value)
       .then((response) => {
         if (response.status === 200 || response.status === 201) {
           console.log("정상적으로 처리되었습니다.");
