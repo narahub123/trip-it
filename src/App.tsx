@@ -10,13 +10,13 @@ import ScheduleLayout from "./layouts/ScheduleLayout";
 import UserLayout from "./layouts/UserLayout";
 import { Provider } from "react-redux";
 import { store } from "./store/store";
-import Profile from "./pages/mypage/Profile";
-import Personal from "./pages/mypage/Personal";
+import Profile from "./pages/mypage/profile/Profile";
+import Personal from "./pages/mypage/personal/Personal";
 import Join from "./pages/login/Join";
 import "./Trip.css";
-import Schedules from "./pages/mypage/Schedules";
-import Details from "./pages/mypage/Details";
-import Bans from "./pages/mypage/Bans";
+import Schedules from "./pages/mypage/schedule/Schedules";
+import Details from "./pages/mypage/detail/Details";
+import Bans from "./pages/mypage/ban/Bans";
 
 function App() {
   return (

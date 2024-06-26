@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
-import Valid from "../login/Valid";
+import Valid from "../../login/Valid";
 import "./personal.css";
-import { dateList, monthList } from "../../data/join";
+import { dateList, monthList } from "../../../data/join";
 import { useRenderCount } from "@uidotdev/usehooks";
 
 const Personal = () => {
