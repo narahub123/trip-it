@@ -3,8 +3,10 @@ import { useEffect, useRef, useState } from "react";
 import Valid from "./Valid";
 import { useNavigate } from "react-router-dom";
 
+const baseURL = process.env.REACT_APP_SERVER_URL;
+
 function Join() {
-  const baseUrl = `http://${process.env.REACT_APP_IP}:8080/`;
+  const baseUrl = `${baseURL}/`;
 
   let navigate = useNavigate();
 

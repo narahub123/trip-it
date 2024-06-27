@@ -16,6 +16,8 @@ import { getCookie } from "../../../utils/Cookie";
 import { setSchedules } from "../../../store/slices/returnSlice";
 import { resetSchedule } from "../../../store/slices/scheduleSlice";
 
+const baseURL = process.env.REACT_APP_SERVER_URL;
+
 const Procedure = () => {
   const location = useLocation();
   // url의 해시 정보를 가져옴
@@ -277,14 +279,14 @@ const Procedure = () => {
 
     // 일정 보내고 목록 받기
     axios
-      // .post(`http://localhost:8080/schedules`, valueNode)
-      .post(`http://172.16.1.118:8080/home/saveSchedule`, value, {
-        headers: {
-          "Content-Type": "application/json",
-          Access: `${localStorage.getItem("access")}`,
-          Refresh: `${getCookie("refresh")}`,
-        },
-      })
+      .post(`${baseURL}/schedules`, valueNode)
+      // .post(`${baseURL}/home/saveSchedule`, value, {
+      //   headers: {
+      //     "Content-Type": "application/json",
+      //     Access: `${localStorage.getItem("access")}`,
+      //     Refresh: `${getCookie("refresh")}`,
+      //   },
+      // })
       .then((response) => {
         if (response.status === 200 || response.status === 201) {
           console.log("정상적으로 처리되었습니다.");
@@ -308,7 +310,7 @@ const Procedure = () => {
     // const userId = 1;
     // const schedule_id = 31;
     // axios
-    //   .get(`http://172.16.1.145:8080/home/${userId}/${schedule_id}`)
+    //   .get(`${baseURL}/home/${userId}/${schedule_id}`)
     //   .then((response) => console.log(response.data))
     //   .catch((error) => console.log(error.response.data));
   };

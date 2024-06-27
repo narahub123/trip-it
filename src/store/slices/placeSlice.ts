@@ -47,6 +47,8 @@ interface PlaceProps {
   addPlaceToColumnPlaces_1?: boolean; // columnPlaces_1 추가 여부
 }
 
+const baseURL = process.env.REACT_APP_SERVER_URL;
+
 // 지역 코드로 장소들 불러오기
 export const fetchPlaces = createAsyncThunk(
   "placeSlice/fetchPlaces",
@@ -68,8 +70,8 @@ export const fetchPlaces = createAsyncThunk(
         contentTypeId = "1";
       }
 
-      const url = `http://${"localhost"}:8080/places/${areacode}/${contentTypeId}/${pageNo.toString()}`;
-      // const url = `http://${process.env.REACT_APP_IP}:8080/home/test/${areacode}/${pageNo}`
+      const url = `${baseURL}/places/${areacode}/${contentTypeId}/${pageNo.toString()}`;
+      // const url = `${baseURL}/home/test/${areacode}/${pageNo}`
 
       http: console.log(url);
 
@@ -111,8 +113,8 @@ export const fetchPlace = createAsyncThunk<
   "placeSlice/fetchPlace",
   async ({ contentId, addPlaceToColumnPlaces_1 = true }: PlaceProps) => {
     try {
-      const url = `http://${"localhost"}:8080/places/${contentId}`;
-      // const url = `http://${process.env.REACT_APP_IP}:8080/home/test/${areacode}/${pageNo}`
+      const url = `${baseURL}/places/${contentId}`;
+      // const url = `${baseURL}/home/test/${areacode}/${pageNo}`
 
       const response = await fetch(url);
       const jsonData = await response.json();
@@ -160,8 +162,8 @@ export const fetchSearchedPlaces = createAsyncThunk(
         contentTypeId = "1";
       }
 
-      const url = `http://${"localhost"}:8080/places/search/${areacode}/${contentTypeId}/${keyword}/${pageNo.toString()}`;
-      // const url = `http://${process.env.REACT_APP_IP}:8080/home/test/${areacode}/${pageNo}`
+      const url = `${baseURL}/places/search/${areacode}/${contentTypeId}/${keyword}/${pageNo.toString()}`;
+      // const url = `${baseURL}/home/test/${areacode}/${pageNo}`
 
       console.log(url);
 

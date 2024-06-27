@@ -5,6 +5,8 @@ import axios from "axios";
 import { getCookie, removeCookie, setCookie } from "../../utils/Cookie";
 import Try from "./TryNormal";
 
+const baseURL = process.env.REACT_APP_SERVER_URL;
+
 function Normal() {
   const [find, setFind] = useState("");
   const [keepClicked, setKeepClicked] = useState(0);
@@ -19,7 +21,7 @@ function Normal() {
 
   let navigate = useNavigate();
 
-  const baseUrl = `http://${process.env.REACT_APP_IP}:8080`;
+  const baseUrl = `${baseURL}`;
 
   async function doLogin() {
     await axios

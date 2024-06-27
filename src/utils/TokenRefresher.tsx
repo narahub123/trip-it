@@ -1,14 +1,20 @@
 import axios from "axios";
 import { getCookie, removeCookie, setCookie } from "./Cookie";
 
+const baseURL = process.env.REACT_APP_SERVER_URL;
+
+console.log(process.env.REACT_APP_SERVER_URL);
+
 const refreshAPI = axios.create({
-  baseURL: `http://${process.env.REACT_APP_IP}:8080/reissue`,
+  baseURL: `${baseURL}/reissue`,
   headers: {
     "Content-Type": "application/json",
     Access: `${localStorage.getItem("access")}`,
     Refresh: `${getCookie("refresh")}`,
   },
 });
+
+console.log("ip", baseURL);
 
 refreshAPI.interceptors.response.use(
   // 성공적인 응답 처리
@@ -31,7 +37,7 @@ refreshAPI.interceptors.response.use(
           console.log("토큰 재발급 요청");
           try {
             const res = await axios.post(
-              `http://${process.env.REACT_APP_IP}:8080/reissue`,
+              `${baseURL}/reissue`,
               {},
               {
                 headers: {
