@@ -30,6 +30,15 @@ const Schedules = () => {
       user_id: "1",
       schedule_title: "인천 여행",
     },
+    {
+      schedule_id: "3",
+      metro_id: "3",
+      start_date: "20240504",
+      end_date: "20240513",
+      register_date: "20240211",
+      user_id: "1",
+      schedule_title: "부산 여행",
+    },
   ];
 
   const [filteredSchedules, setFilteredSchedules] =
@@ -38,35 +47,35 @@ const Schedules = () => {
   // 지역 코드 오름차순
   const areacodeSortIncl = () => {
     console.log("코드 오름");
-    schedules.sort((schedule1, schedule2) => {
+    const sortedSchedules = [...schedules].sort((schedule1, schedule2) => {
       if (!schedule1.metro_id || !schedule2.metro_id) return -1;
 
       return schedule1.metro_id?.localeCompare(schedule2.metro_id);
     });
 
-    console.log(schedules);
+    console.log(sortedSchedules);
 
-    setFilteredSchedules(schedules);
+    setFilteredSchedules(sortedSchedules);
   };
 
   // 지역 코드 내림차순
   const areacodeSortDecl = () => {
     console.log("코드 내림");
-    schedules.sort((schedule1, schedule2) => {
+    const sortedSchedules = [...schedules].sort((schedule1, schedule2) => {
       if (!schedule1.metro_id || !schedule2.metro_id) return -1;
 
       return schedule2.metro_id?.localeCompare(schedule1.metro_id);
     });
 
-    console.log(schedules);
+    console.log(sortedSchedules);
 
-    setFilteredSchedules(schedules);
+    setFilteredSchedules(sortedSchedules);
   };
 
   // 지역 이름 오름차순
   const areaNameSortIncl = () => {
     console.log("이름 오름");
-    schedules.sort((schedule1, schedule2) => {
+    const sortedSchedules = [...schedules].sort((schedule1, schedule2) => {
       if (!schedule1.metro_id || !schedule2.metro_id) return -1;
 
       return metroName(schedule1.metro_id)?.localeCompare(
@@ -74,14 +83,16 @@ const Schedules = () => {
       );
     });
 
-    setFilteredSchedules(schedules);
+    console.log(sortedSchedules);
+
+    setFilteredSchedules(sortedSchedules);
   };
 
   // 지역 이름 내림차순
   const areaNameSortDecl = () => {
     console.log("이름 내림");
 
-    schedules.sort((schedule1, schedule2) => {
+    const sortedSchedules = [...schedules].sort((schedule1, schedule2) => {
       if (!schedule1.metro_id || !schedule2.metro_id) return -1;
 
       return metroName(schedule2.metro_id)?.localeCompare(
@@ -89,42 +100,44 @@ const Schedules = () => {
       );
     });
 
-    setFilteredSchedules(schedules);
+    console.log(sortedSchedules);
+
+    setFilteredSchedules(sortedSchedules);
   };
 
   // 일정 시작 오름차순
   const startDateSortIncl = () => {
     console.log("시작 오름");
-    schedules.sort((schedule1, schedule2) => {
+    const sortedSchedules = [...schedules].sort((schedule1, schedule2) => {
       if (!schedule1.start_date || !schedule2.start_date) return -1;
 
-      return metroName(schedule1.start_date)?.localeCompare(
-        metroName(schedule2.start_date)
-      );
+      return schedule1.start_date?.localeCompare(schedule2.start_date);
     });
 
-    setFilteredSchedules(schedules);
+    console.log(sortedSchedules);
+
+    setFilteredSchedules(sortedSchedules);
   };
 
   // 일정 시작 내림차순
   const startDateSortDecl = () => {
     console.log("시작 내림");
 
-    schedules.sort((schedule1, schedule2) => {
+    const sortedSchedules = [...schedules].sort((schedule1, schedule2) => {
       if (!schedule1.start_date || !schedule2.start_date) return -1;
 
-      return metroName(schedule2.start_date)?.localeCompare(
-        metroName(schedule1.start_date)
-      );
+      return schedule2.start_date?.localeCompare(schedule1.start_date);
     });
 
-    setFilteredSchedules(schedules);
+    console.log(sortedSchedules);
+
+    setFilteredSchedules(sortedSchedules);
   };
 
   // 일정 기간 오름차순
   const durationSortIncl = () => {
     console.log("기간 오름");
-    schedules.sort((schedule1, schedule2) => {
+    const sortedSchedules = [...schedules].sort((schedule1, schedule2) => {
       if (!schedule1.start_date || !schedule2.start_date) return -1;
 
       const duration1 =
@@ -135,14 +148,16 @@ const Schedules = () => {
       return duration2 - duration1;
     });
 
-    setFilteredSchedules(schedules);
+    console.log(sortedSchedules);
+
+    setFilteredSchedules(sortedSchedules);
   };
 
   // 일정 기간 내림차순
   const durationSortDecl = () => {
     console.log("기간 내림");
 
-    schedules.sort((schedule1, schedule2) => {
+    const sortedSchedules = [...schedules].sort((schedule1, schedule2) => {
       if (!schedule1.start_date || !schedule2.start_date) return -1;
 
       const duration1 =
@@ -153,36 +168,38 @@ const Schedules = () => {
       return duration1 - duration2;
     });
 
-    setFilteredSchedules(schedules);
+    console.log(sortedSchedules);
+
+    setFilteredSchedules(sortedSchedules);
   };
 
   // 등록일 오름차순
   const registerDateSortIncl = () => {
     console.log("등록 오름");
-    schedules.sort((schedule1, schedule2) => {
+    const sortedSchedules = [...schedules].sort((schedule1, schedule2) => {
       if (!schedule1.register_date || !schedule2.register_date) return -1;
 
-      return metroName(schedule1.register_date)?.localeCompare(
-        metroName(schedule2.register_date)
-      );
+      return schedule1.register_date?.localeCompare(schedule2.register_date);
     });
 
-    setFilteredSchedules(schedules);
+    console.log(sortedSchedules);
+
+    setFilteredSchedules(sortedSchedules);
   };
 
   // 등록일 내림차순
   const registerDateSortDecl = () => {
     console.log("등록 내림");
 
-    schedules.sort((schedule1, schedule2) => {
+    const sortedSchedules = [...schedules].sort((schedule1, schedule2) => {
       if (!schedule1.register_date || !schedule2.register_date) return -1;
 
-      return metroName(schedule2.register_date)?.localeCompare(
-        metroName(schedule1.register_date)
-      );
+      return schedule2.register_date?.localeCompare(schedule1.register_date);
     });
 
-    setFilteredSchedules(schedules);
+    console.log(sortedSchedules);
+
+    setFilteredSchedules(sortedSchedules);
   };
 
   console.log(filteredSchedules);
