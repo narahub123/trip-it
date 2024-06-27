@@ -21,7 +21,7 @@ import Schedule from "./pages/mypage/schedule/Schedule";
 import Normal from "./pages/login/Normal";
 import refreshAPI from "./utils/TokenRefresher";
 
-function App() {
+function Trip() {
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -65,4 +65,4 @@ function App() {
   );
 }
 
-export default App;
+export default Trip;

@@ -2,7 +2,7 @@ import axios from "axios";
 import { getCookie, removeCookie, setCookie } from "./Cookie";
 
 const refreshAPI = axios.create({
-  baseURL: "http://172.16.1.118:8080/reissue",
+  baseURL: `http://${process.env.REACT_APP_IP}:8080/reissue`,
   headers: {
     "Content-Type": "application/json",
     Access: `${localStorage.getItem("access")}`,
@@ -31,7 +31,7 @@ refreshAPI.interceptors.response.use(
           console.log("토큰 재발급 요청");
           try {
             const res = await axios.post(
-              "http://172.16.1.118:8080/reissue",
+              `http://${process.env.REACT_APP_IP}:8080/reissue`,
               {},
               {
                 headers: {

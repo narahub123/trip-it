@@ -19,7 +19,7 @@ function Normal() {
 
   let navigate = useNavigate();
 
-  const baseUrl = "http://172.16.1.118:8080";
+  const baseUrl = `http://${process.env.REACT_APP_IP}:8080`;
 
   async function doLogin() {
     await axios

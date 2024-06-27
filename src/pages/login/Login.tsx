@@ -8,7 +8,7 @@ function Login() {
   };
 
   const clientId = "jKBO0x_XweXsMwCTxz4r";
-  const redirect_uri = "http://172.16.1.118:8080/login/oauth2/code/naver";
+  const redirect_uri = `http://${process.env.REACT_APP_IP}:8080/login/oauth2/code/naver`;
   const state = false;
   const apiURL =
     "https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=" +
