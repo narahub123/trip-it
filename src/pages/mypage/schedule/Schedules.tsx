@@ -1,10 +1,11 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { ScheduleType } from "../../../types/schedules";
 import SchedulesCard from "./SchedulesCard";
 import "./schedules.css";
 import { useSelector } from "react-redux";
 import { Rootstate } from "../../../store/store";
 import { metroName } from "../../../utils/metro";
+import { debounce } from "../../../utils/debounce";
 
 const Schedules = () => {
   // db와 연결했을 때 사용

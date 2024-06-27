@@ -1,54 +1,71 @@
 .schedules-card {
-  width: 30%;
+  flex-grow: 1;
+  flex-shrink: 0;
+  width: 154px;
+  min-width: 154px;
+
   height: 250px;
   border: 1px solid gray;
   border-radius: 10px;
   position: relative;
-  flex-grow: 1;
-  cursor: pointer;
-  margin: 20px;
+
+  background-size: 100% 100%;
+  background-position: 50% 50%;
+  background-repeat: no-repeat;
+
+  transition: all 1s ease;
+
   .schedules-card-link {
-    .schedules-card-cap {
-      background-color: white;
-      position: absolute;
-      bottom: 0px;
+    cursor: pointer;
+    .schedules-card-container {
+      height: 100%;
       width: 100%;
-      height: 40%;
-      border-radius: 0px 0px 10px 10px;
+      .schedules-card-cap {
+        background-color: white;
+        position: absolute;
+        bottom: 0px;
+        width: 100%;
+        height: 40%;
+        border-radius: 0px 0px 10px 10px;
 
-      .schedules-card-cap-container {
-        .schedules-card-title {
-          padding: 5px;
-          font-weight: bold;
-        }
+        .schedules-card-cap-container {
+          .schedules-card-title {
+            padding: 5px;
+            font-weight: bold;
+          }
 
-        .schedules-card-duration {
-          padding: 5px;
-          font-size: 14px;
-        }
-
-        .schedules-card-bottom {
-          display: flex;
-          width: 100%;
-          justify-content: space-between;
-          position: absolute;
-          bottom: 10px;
-
-          p {
-            padding: 0 5px;
+          .schedules-card-duration {
+            padding: 5px;
             font-size: 14px;
           }
-          .schedules-card-register-date {
-          }
-          .schedules-card-location {
-            color: aquamarine;
+
+          .schedules-card-bottom {
+            display: flex;
+            width: 100%;
+            justify-content: space-between;
+            position: absolute;
+            bottom: 10px;
+
+            p {
+              padding: 0 5px;
+              font-size: 14px;
+            }
+            .schedules-card-register-date {
+            }
+            .schedules-card-location {
+              color: aquamarine;
+            }
           }
         }
       }
     }
   }
+}
 
-  .schedules-card:hover {
-    background-size: 50% 50%;
-  }
+.schedules-card:hover {
+  background-size: 150% 150%;
+  background-position: 50% 50%;
+  background-repeat: no-repeat;
+  border: 1px solid aquamarine;
+  transition: all 1s ease;
 }

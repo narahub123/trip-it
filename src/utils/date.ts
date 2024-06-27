@@ -140,7 +140,7 @@ export const dateFormatFromLocalDate = (origin: string) => {
   // destruct 형식으로 리턴시
   const newDateDest = destrucDate(newDate);
 
-  return;
+  return newDateDest;
 };
 
 // 시간 형식을 자바에 맞게 변경하기 (240607102531)
