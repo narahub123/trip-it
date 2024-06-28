@@ -1,6 +1,7 @@
 .sidebar {
   width: 150px;
   height: 100vh;
+  user-select: none;
 
   /* 그림자 부분 */
   /* box-shadow: 3px 3px 3px 3px gray; */
