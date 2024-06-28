@@ -4,121 +4,177 @@
   .schedules-title {
     text-align: center;
   }
-  .schedule-sort {
-    .schedule-sort-container {
-      display: flex;
-      justify-content: flex-end;
+  .schedules-control {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 
-      .schedule-sort-item:not(:last-child) {
-        padding: 0 10px;
-        position: relative;
-        cursor: pointer;
+    .schedules-pagination {
+      position: relative;
+      cursor: pointer;
+      p {
+        padding-bottom: 10px;
+      }
+      .schedules-pagination-container {
+        visibility: hidden;
+        position: absolute;
+        max-height: 0px;
+        opacity: 0;
+      }
+    }
 
-        p {
-          padding-bottom: 10px;
+    .schedules-pagination:hover {
+      p {
+        padding-bottom: 10px;
+      }
+      .schedules-pagination-container {
+        visibility: visible;
+        position: absolute;
+        left: 8%;
+        right: 0;
+        width: 70px;
+        max-height: 400px;
+        opacity: 1;
+        z-index: 1;
+        border: 1px solid gray;
+        background-color: #fff;
+        transition: max-height 0.3s ease-in-out, opacity 0.3s ease-in-out;
+        text-align: center;
+
+        .schedules-pagination-item {
+          padding: 10px;
         }
 
-        .schedule-sort-dropdown-container {
-          visibility: hidden;
-          position: absolute;
-          max-height: 0px;
-          opacity: 0;
+        li:not(:last-child) {
+          border-bottom: 1px solid gray;
+        }
+
+        li:hover {
+          color: aquamarine;
+        }
+
+        li:active {
+          background-color: aquamarine;
+          color: white;
         }
       }
+    }
 
-      .schedule-sort-item:hover {
-        padding: 0 10px;
-        position: relative;
-        cursor: pointer;
+    .schedules-sort {
+      .schedules-sort-container {
+        display: flex;
 
-        .schedule-sort-dropdown-container {
-          visibility: visible;
-          position: absolute;
-          left: -100%;
-          right: 0;
-          width: 200px;
-          max-height: 400px;
-          opacity: 1;
-          z-index: 1;
-          border: 1px solid gray;
-          background-color: #fff;
-          transition: max-height 0.3s ease-in-out, opacity 0.3s ease-in-out;
+        .schedules-sort-item:not(:last-child) {
+          padding: 0 10px;
+          position: relative;
+          cursor: pointer;
 
-          li {
-            padding: 10px;
-            text-align: center;
+          p {
+            padding-bottom: 10px;
           }
 
-          li:hover {
-            color: aquamarine;
-          }
-
-          .schedule-sort-dropdown-item:active {
-            background-color: aquamarine;
-            color: white;
-          }
-
-          .schedule-sort-dropdown-item:not(:last-child) {
-            border-bottom: 1px solid gray;
+          .schedules-sort-dropdown-container {
+            visibility: hidden;
+            position: absolute;
+            max-height: 0px;
+            opacity: 0;
           }
         }
-      }
 
-      .schedule-sort-item:last-child {
-        padding: 0 10px;
-        position: relative;
-        cursor: pointer;
+        .schedules-sort-item:hover {
+          padding: 0 10px;
+          position: relative;
+          cursor: pointer;
 
-        p {
-          padding-bottom: 10px;
-        }
+          .schedules-sort-dropdown-container {
+            visibility: visible;
+            position: absolute;
+            left: -100%;
+            right: 0;
+            width: 200px;
+            max-height: 400px;
+            opacity: 1;
+            z-index: 1;
+            border: 1px solid gray;
+            background-color: #fff;
+            transition: max-height 0.3s ease-in-out, opacity 0.3s ease-in-out;
 
-        .schedule-sort-dropdown-container {
-          visibility: hidden;
-          position: absolute;
-          max-height: 0px;
-          opacity: 0;
-        }
-      }
+            li {
+              padding: 10px;
+              text-align: center;
+            }
 
-      .schedule-sort-item:last-child:hover {
-        p {
-        }
-        .schedule-sort-dropdown-container {
-          visibility: visible;
-          position: absolute;
-          left: -200%;
-          right: 0;
-          width: 200px;
-          z-index: 1;
-          border: 1px solid gray;
-          background-color: #fff;
-          max-height: 400px;
-          opacity: 1;
-          transition: max-height 0.4s ease-in-out, opacity 0.4s ease-in-out;
+            li:hover {
+              color: aquamarine;
+            }
 
-          li {
-            padding: 10px;
-            text-align: center;
-          }
+            .schedules-sort-dropdown-item:active {
+              background-color: aquamarine;
+              color: white;
+            }
 
-          li:hover {
-            color: aquamarine;
-          }
-
-          .schedule-sort-dropdown-item:active {
-            background-color: aquamarine;
-            color: white;
-          }
-
-          .schedule-sort-dropdown-item:not(:last-child) {
-            border-bottom: 1px solid gray;
+            .schedules-sort-dropdown-item:not(:last-child) {
+              border-bottom: 1px solid gray;
+            }
           }
         }
-      }
 
-      .schedule-sort-item:hover {
-        color: aquamarine;
+        .schedules-sort-item:last-child {
+          padding: 0 10px;
+          position: relative;
+          cursor: pointer;
+
+          p {
+            padding-bottom: 10px;
+          }
+
+          .schedules-sort-dropdown-container {
+            visibility: hidden;
+            position: absolute;
+            max-height: 0px;
+            opacity: 0;
+          }
+        }
+
+        .schedules-sort-item:last-child:hover {
+          p {
+          }
+          .schedules-sort-dropdown-container {
+            visibility: visible;
+            position: absolute;
+            left: -200%;
+            right: 0;
+            width: 200px;
+            z-index: 1;
+            border: 1px solid gray;
+            background-color: #fff;
+            max-height: 400px;
+            opacity: 1;
+            transition: max-height 0.4s ease-in-out, opacity 0.4s ease-in-out;
+
+            li {
+              padding: 10px;
+              text-align: center;
+            }
+
+            li:hover {
+              color: aquamarine;
+            }
+
+            .schedules-sort-dropdown-item:active {
+              background-color: aquamarine;
+              color: white;
+            }
+
+            .schedules-sort-dropdown-item:not(:last-child) {
+              border-bottom: 1px solid gray;
+            }
+          }
+        }
+
+        .schedules-sort-item:hover {
+          color: aquamarine;
+        }
       }
     }
   }
@@ -128,5 +184,9 @@
       flex-wrap: wrap;
       gap: 20px;
     }
+  }
+
+  .schedules-pagination {
+    padding: 10px;
   }
 }

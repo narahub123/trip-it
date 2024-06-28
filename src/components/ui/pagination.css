@@ -1,0 +1,21 @@
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  .pageController {
+    padding: 10px;
+  }
+  .pageNum {
+    padding: 10px;
+  }
+  .pageNum.active {
+    color: red;
+    font-weight: bold;
+    cursor: revert;
+    transform: revert;
+  }
+  .pageNum:hover {
+    font-weight: bold;
+  }
+}

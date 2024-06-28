@@ -6,6 +6,7 @@ import { useSelector } from "react-redux";
 import { Rootstate } from "../../../store/store";
 import { metroName } from "../../../utils/metro";
 import { debounce } from "../../../utils/debounce";
+import Pagination from "../../../components/ui/Pagination";
 
 const Schedules = () => {
   // db와 연결했을 때 사용
@@ -42,8 +43,17 @@ const Schedules = () => {
     },
   ];
 
+  const limitArray = [1, 2, 3, 4];
+
   const [filteredSchedules, setFilteredSchedules] =
     useState<ScheduleType[]>(schedules);
+  const [limit, setLimit] = useState(limitArray[3]);
+  const [page, setPage] = useState(1);
+  const offset = (page - 1) * limit;
+
+  console.log(limit);
+  console.log(page);
+  console.log(offset);
 
   // 지역 코드 오름차순
   const areacodeSortIncl = () => {
@@ -203,109 +213,144 @@ const Schedules = () => {
     setFilteredSchedules(sortedSchedules);
   };
 
+  // 페이지네이션
+  const handlePagination = (e: React.MouseEvent<HTMLLIElement, MouseEvent>) => {
+    const pageNum = Number(e.currentTarget.dataset.pagenum);
+    console.log(pageNum);
+    setPage(1);
+    setLimit(pageNum);
+  };
+
   console.log(filteredSchedules);
 
   return (
     <div className="schedules">
       <h3 className="schedules-title">내 여행 일정</h3>
-      <div className="schedule-sort">
-        <ul className="schedule-sort-container">
-          <li className="schedule-sort-item" key={"areacode"} id="areacode">
-            <p>지역순</p>
+      <div className="schedules-control">
+        <div className="schedules-pagination">
+          <p>페이지 수</p>
+          <ul className="schedules-pagination-container">
+            {limitArray.map((limit) => (
+              <li
+                className="schedules-pagination-item"
+                data-pageNum={limit}
+                key={limit}
+                onClick={(e) => handlePagination(e)}
+              >
+                {limit}
+              </li>
+            ))}
+          </ul>
+        </div>
+        <div className="schedules-sort">
+          <ul className="schedules-sort-container">
+            <li className="schedules-sort-item" key={"areacode"} id="areacode">
+              <p>지역순</p>
 
-            <ul className="schedule-sort-dropdown-container">
-              <li
-                className="schedule-sort-dropdown-item"
-                key={"areacode0"}
-                onClick={() => areacodeSortIncl()}
-              >
-                지역코드순서: 오름차순
-              </li>
-              <li
-                className="schedule-sort-dropdown-item"
-                key={"areacode1"}
-                onClick={() => areacodeSortDecl()}
-              >
-                지역코드순서: 내림차순
-              </li>
-              <li
-                className="schedule-sort-dropdown-item"
-                key={"areacode2"}
-                onClick={areaNameSortIncl}
-              >
-                지역이름순서: 오름차순
-              </li>
-              <li
-                className="schedule-sort-dropdown-item"
-                key={"areacode3"}
-                onClick={areaNameSortDecl}
-              >
-                지역이름순서: 내림차순
-              </li>
-            </ul>
-          </li>
-          <li className="schedule-sort-item" key={"date"} id="date">
-            <p>일정순</p>
+              <ul className="schedules-sort-dropdown-container">
+                <li
+                  className="schedules-sort-dropdown-item"
+                  key={"areacode0"}
+                  onClick={() => areacodeSortIncl()}
+                >
+                  지역코드순서: 오름차순
+                </li>
+                <li
+                  className="schedules-sort-dropdown-item"
+                  key={"areacode1"}
+                  onClick={() => areacodeSortDecl()}
+                >
+                  지역코드순서: 내림차순
+                </li>
+                <li
+                  className="schedules-sort-dropdown-item"
+                  key={"areacode2"}
+                  onClick={areaNameSortIncl}
+                >
+                  지역이름순서: 오름차순
+                </li>
+                <li
+                  className="schedules-sort-dropdown-item"
+                  key={"areacode3"}
+                  onClick={areaNameSortDecl}
+                >
+                  지역이름순서: 내림차순
+                </li>
+              </ul>
+            </li>
+            <li className="schedules-sort-item" key={"date"} id="date">
+              <p>일정순</p>
 
-            <ul className="schedule-sort-dropdown-container">
-              <li
-                className="schedule-sort-dropdown-item"
-                key={"date0"}
-                onClick={startDateSortIncl}
-              >
-                일정시작날짜: 오름차순
-              </li>
-              <li
-                className="schedule-sort-dropdown-item"
-                key={"date1"}
-                onClick={startDateSortDecl}
-              >
-                일정시작날짜: 내림차순
-              </li>
-              <li
-                className="schedule-sort-dropdown-item"
-                key={"date2"}
-                onClick={durationSortIncl}
-              >
-                일정기간기준: 오름차순
-              </li>
-              <li
-                className="schedule-sort-dropdown-item"
-                key={"date3"}
-                onClick={durationSortDecl}
-              >
-                일정기간기준: 내림차순
-              </li>
-            </ul>
-          </li>
-          <li className="schedule-sort-item" key={"register"} id="register">
-            <p>등록일</p>
+              <ul className="schedules-sort-dropdown-container">
+                <li
+                  className="schedules-sort-dropdown-item"
+                  key={"date0"}
+                  onClick={startDateSortIncl}
+                >
+                  일정시작날짜: 오름차순
+                </li>
+                <li
+                  className="schedules-sort-dropdown-item"
+                  key={"date1"}
+                  onClick={startDateSortDecl}
+                >
+                  일정시작날짜: 내림차순
+                </li>
+                <li
+                  className="schedules-sort-dropdown-item"
+                  key={"date2"}
+                  onClick={durationSortIncl}
+                >
+                  일정기간기준: 오름차순
+                </li>
+                <li
+                  className="schedules-sort-dropdown-item"
+                  key={"date3"}
+                  onClick={durationSortDecl}
+                >
+                  일정기간기준: 내림차순
+                </li>
+              </ul>
+            </li>
+            <li className="schedules-sort-item" key={"register"} id="register">
+              <p>등록일</p>
 
-            <ul className="schedule-sort-dropdown-container">
-              <li
-                className="schedule-sort-dropdown-item"
-                key={"register0"}
-                onClick={registerDateSortIncl}
-              >
-                등록일기준: 오름차순
-              </li>
-              <li
-                className="schedule-sort-dropdown-item"
-                key={"register1"}
-                onClick={registerDateSortDecl}
-              >
-                등록일기준: 내림차순
-              </li>
-            </ul>
-          </li>
-        </ul>
+              <ul className="schedules-sort-dropdown-container">
+                <li
+                  className="schedules-sort-dropdown-item"
+                  key={"register0"}
+                  onClick={registerDateSortIncl}
+                >
+                  등록일기준: 오름차순
+                </li>
+                <li
+                  className="schedules-sort-dropdown-item"
+                  key={"register1"}
+                  onClick={registerDateSortDecl}
+                >
+                  등록일기준: 내림차순
+                </li>
+              </ul>
+            </li>
+          </ul>
+        </div>
       </div>
       <div className="schedules-cards">
         <ul className="schedules-cards-container">
-          {filteredSchedules.map((schedule, index) => (
-            <SchedulesCard schedule={schedule} key={index} />
-          ))}
+          {filteredSchedules
+            .slice(offset, offset + limit)
+            .map((schedule, index) => (
+              <SchedulesCard schedule={schedule} key={index} />
+            ))}
         </ul>
+      </div>
+      <div className="schedules-pagination">
+        <Pagination
+          total={schedules.length}
+          limit={limit}
+          page={page}
+          setPage={setPage}
+        />
       </div>
     </div>
   );
