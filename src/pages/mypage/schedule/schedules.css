@@ -26,13 +26,18 @@
     .schedules-pagination:hover {
       p {
         padding-bottom: 10px;
+        color: aquamarine;
       }
       .schedules-pagination-container {
         visibility: visible;
         position: absolute;
         left: 8%;
         right: 0;
-        width: 70px;
+        /* 고정인경우 */
+        /* width: 70px; */
+        /* 변경인경우 */
+        width: 180px;
+
         max-height: 400px;
         opacity: 1;
         z-index: 1;
@@ -43,6 +48,9 @@
 
         .schedules-pagination-item {
           padding: 10px;
+          /* 가변인 경우 */
+          display: flex;
+          justify-content: space-evenly;
         }
 
         li:not(:last-child) {

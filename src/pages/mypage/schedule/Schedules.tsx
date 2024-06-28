@@ -45,6 +45,10 @@ const Schedules = () => {
 
   const limitArray = [1, 2, 3, 4];
 
+  const arrayLengthMin = 1;
+  const arrayLengthMax = 10;
+  const arrayLengthDefault = 5;
+
   const [filteredSchedules, setFilteredSchedules] =
     useState<ScheduleType[]>(schedules);
   const [limit, setLimit] = useState(limitArray[3]);
@@ -213,12 +217,20 @@ const Schedules = () => {
     setFilteredSchedules(sortedSchedules);
   };
 
-  // 페이지네이션
+  // 페이지네이션: 고정인 경우
   const handlePagination = (e: React.MouseEvent<HTMLLIElement, MouseEvent>) => {
     const pageNum = Number(e.currentTarget.dataset.pagenum);
     console.log(pageNum);
     setPage(1);
     setLimit(pageNum);
+  };
+
+  // 페이지네이션: 가변인 경우
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.currentTarget.value;
+
+    console.log(value);
+    setLimit(Number(value));
   };
 
   console.log(filteredSchedules);
@@ -230,7 +242,8 @@ const Schedules = () => {
         <div className="schedules-pagination">
           <p>페이지 수</p>
           <ul className="schedules-pagination-container">
-            {limitArray.map((limit) => (
+            {/* 고정인 경우 */}
+            {/* {limitArray.map((limit) => (
               <li
                 className="schedules-pagination-item"
                 data-pageNum={limit}
@@ -239,7 +252,21 @@ const Schedules = () => {
               >
                 {limit}
               </li>
-            ))}
+            ))} */}
+
+            {/* 가변인 경우 */}
+            <li className="schedules-pagination-item">
+              {arrayLengthMin}
+              <input
+                type="range"
+                min={arrayLengthMin}
+                max={arrayLengthMax}
+                step={1}
+                defaultValue={arrayLengthDefault}
+                onChange={(e) => handleInputChange(e)}
+              />
+              {arrayLengthMax}
+            </li>
           </ul>
         </div>
         <div className="schedules-sort">
