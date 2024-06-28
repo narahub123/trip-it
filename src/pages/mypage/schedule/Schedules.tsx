@@ -51,7 +51,7 @@ const Schedules = () => {
 
   const [filteredSchedules, setFilteredSchedules] =
     useState<ScheduleType[]>(schedules);
-  const [limit, setLimit] = useState(limitArray[3]);
+  const [limit, setLimit] = useState(arrayLengthDefault);
   const [page, setPage] = useState(1);
   const offset = (page - 1) * limit;
 
@@ -240,7 +240,7 @@ const Schedules = () => {
       <h3 className="schedules-title">내 여행 일정</h3>
       <div className="schedules-control">
         <div className="schedules-pagination">
-          <p>페이지 수</p>
+          <p>페이지 수({limit})</p>
           <ul className="schedules-pagination-container">
             {/* 고정인 경우 */}
             {/* {limitArray.map((limit) => (
