@@ -33,14 +33,12 @@
         position: absolute;
         left: 8%;
         right: 0;
-        /* 고정인경우 */
-        /* width: 70px; */
-        /* 변경인경우 */
+
         width: 180px;
 
         max-height: 400px;
         opacity: 1;
-        z-index: 1;
+        z-index: 9;
         border: 1px solid gray;
         background-color: #fff;
         transition: max-height 0.3s ease-in-out, opacity 0.3s ease-in-out;
@@ -48,7 +46,7 @@
 
         .posts-pagination-item {
           padding: 10px;
-          /* 가변인 경우 */
+
           display: flex;
           justify-content: space-evenly;
         }
@@ -103,7 +101,7 @@
               width: 200px;
               max-height: 400px;
               opacity: 1;
-              z-index: 1;
+              z-index: 9;
               border: 1px solid gray;
               background-color: #fff;
               transition: max-height 0.3s ease-in-out, opacity 0.3s ease-in-out;
@@ -154,7 +152,7 @@
               left: -200%;
               right: 0;
               width: 200px;
-              z-index: 1;
+              z-index: 9;
               border: 1px solid gray;
               background-color: #fff;
               max-height: 400px;
@@ -193,7 +191,7 @@
         position: relative;
 
         .posts-more-container {
-          z-index: 1;
+          z-index: 9;
           position: absolute;
           left: 100;
           right: 0;

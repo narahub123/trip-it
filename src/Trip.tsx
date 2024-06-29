@@ -21,6 +21,7 @@ import Normal from "./pages/login/Normal";
 import refreshAPI from "./utils/TokenRefresher";
 import Posts from "./pages/mypage/post/Posts";
 import Detail from "./pages/mypage/post/Detail";
+import Post from "./pages/community/post";
 
 function Trip() {
   useEffect(() => {
@@ -40,7 +41,7 @@ function Trip() {
       <Routes>
         <Route path="/" element={<RootLayout />}>
           <Route index element={<Home />} />
-          <Route path="/community" element={<Community />} />
+          <Route path="/community" element={<Post />} />
           <Route element={<UserLayout />}>
             <Route path="/mypage" element={<MyPage />}>
               <Route path="profile" element={<Profile />} />
