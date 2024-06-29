@@ -9,14 +9,30 @@ import { DestrucDateType } from "../../schedule/choice/dates/Calendar";
 import { useEffect, useRef, useState } from "react";
 import { debounce } from "../../../utils/debounce";
 
-export interface SchedulesCardProps {
-  schedule: ScheduleType;
+export interface DeletionsType {
+  schedule_id: string;
+  deletion: boolean;
 }
 
-const SchedulesCard = ({ schedule }: SchedulesCardProps) => {
+export interface SchedulesCardProps {
+  schedule: ScheduleType;
+  showDelete: boolean;
+  setShowDelete: (value: boolean) => void;
+  deletions: DeletionsType[];
+  setDeletions: (value: DeletionsType[]) => void;
+}
+
+const SchedulesCard = ({
+  schedule,
+  showDelete,
+  setShowDelete,
+  deletions,
+  setDeletions,
+}: SchedulesCardProps) => {
+  const inputRef = useRef<HTMLInputElement>(null);
   const defaultImage = useDefaultImage(schedule.metro_id);
 
-  const { start_date, end_date, register_date } = schedule;
+  const { start_date, end_date, register_date, schedule_id } = schedule;
   const start: DestrucDateType = start_date
     ? dateFormatFromLocalDate(start_date)
     : { year: 0, month: 0, date: 0 };
@@ -29,6 +45,57 @@ const SchedulesCard = ({ schedule }: SchedulesCardProps) => {
     ? dateFormatFromLocalDate(register_date)
     : { year: 0, month: 0, date: 0 };
 
+  useEffect(() => {
+    // deletion과 카드의 id가 같은 것 같기
+    const result = deletions.find(
+      (deletion) => deletion.schedule_id === schedule_id
+    );
+
+    if (result) {
+      if (result.deletion) {
+        inputRef.current?.removeAttribute("checked");
+      } else {
+        inputRef.current?.setAttribute("checked", "true");
+      }
+    }
+  }, [deletions, schedule_id]);
+
+  const handleDeletion = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const checked = e.currentTarget.checked;
+    const id = e.currentTarget.id;
+
+    if (checked) {
+      const newDeletions = deletions.map((deletion) => {
+        if (deletion.schedule_id === id) {
+          return {
+            schedule_id: id,
+            deletion: true,
+          };
+        } else {
+          return deletion;
+        }
+      });
+      console.log(newDeletions);
+
+      setDeletions(newDeletions);
+    } else if (!checked) {
+      const newDeletions = deletions.map((deletion) => {
+        if (deletion.schedule_id === id) {
+          return {
+            schedule_id: id,
+            deletion: false,
+          };
+        } else {
+          return deletion;
+        }
+      });
+
+      console.log(newDeletions);
+      setDeletions(newDeletions);
+    }
+    console.log(id);
+  };
+
   return (
     <li
       className="schedules-card"
@@ -37,6 +104,22 @@ const SchedulesCard = ({ schedule }: SchedulesCardProps) => {
       }}
       key={schedule.schedule_id}
     >
+      {/* 삭제 체크 박스 */}
+      <div className="schedules-card-delete">
+        {showDelete && (
+          <input
+            type="checkbox"
+            className="deletion"
+            id={schedule_id}
+            onChange={(e) => handleDeletion(e)}
+            checked={
+              deletions.find((deletion) => deletion.schedule_id === schedule_id)
+                ?.deletion
+            }
+            ref={inputRef}
+          />
+        )}
+      </div>
       <Link to={`${schedule.schedule_id}`} className="schedules-card-link">
         <div className="schedules-card-container">
           <div className="schedules-card-cap">

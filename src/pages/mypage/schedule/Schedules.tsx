@@ -7,9 +7,16 @@ import { Rootstate } from "../../../store/store";
 import { metroName } from "../../../utils/metro";
 import { debounce } from "../../../utils/debounce";
 import Pagination from "../../../components/ui/Pagination";
+import { FiMoreVertical } from "react-icons/fi";
+
 const Schedules = () => {
   // db와 연결했을 때 사용
   // const schedules = useSelector((state: Rootstate) => state.return.schedules);
+
+  // 설정 열고 닫기
+  const [isOpen, setIsOpen] = useState(false);
+  // 삭제 체크 박스 표시 여부
+  const [showDelete, setShowDelete] = useState(false);
 
   // schedule data(practice)
   const schedules: ScheduleType[] = [
@@ -42,6 +49,26 @@ const Schedules = () => {
     },
   ];
 
+  const scheduleDeletions = schedules.map((schedule) => {
+    const schedule_id = schedule.schedule_id ? schedule.schedule_id : "";
+    const deletion = {
+      schedule_id,
+      deletion: false,
+    };
+
+    return deletion;
+  });
+
+  // 삭제할 일정 배열
+  const [deletions, setDeletions] = useState<
+    {
+      schedule_id: string;
+      deletion: boolean;
+    }[]
+  >(scheduleDeletions);
+
+  console.log(deletions);
+
   const limitArray = [1, 2, 3, 4];
 
   const arrayLengthMin = 1;
@@ -53,10 +80,6 @@ const Schedules = () => {
   const [limit, setLimit] = useState(arrayLengthDefault);
   const [page, setPage] = useState(1);
   const offset = (page - 1) * limit;
-
-  console.log(limit);
-  console.log(page);
-  console.log(offset);
 
   // 지역 코드 오름차순
   const areacodeSortIncl = () => {
@@ -245,6 +268,49 @@ const Schedules = () => {
     setFilteredSchedules(newSchedules);
   };
 
+  // 설정 열기
+  const handleOpen = () => {
+    setIsOpen(!isOpen);
+  };
+
+  // 삭제 체크 박스 보이기
+  const handleShowDelete = () => {
+    setShowDelete(!showDelete);
+  };
+
+  // 삭제
+  const handleDelete = () => {
+    // 삭제할 scheduleIds 배열
+    const deletionArray = deletions
+      .filter((deletion) => deletion.deletion === true)
+      .map((result) => result.schedule_id);
+
+    // console.log(deletionArray);
+
+    // api에서 받아 온 배열 조작
+    const newSchedules = filteredSchedules.filter((schedule) => {
+      if (schedule.schedule_id)
+        return !deletionArray.includes(schedule.schedule_id);
+    });
+
+    console.log(newSchedules);
+
+    setFilteredSchedules(newSchedules);
+
+    // api에서 삭제
+  };
+
+  // 일괄 선택
+  const handleSelectAll = () => {
+    const newDeletions = deletions.map((deletion) => ({
+      schedule_id: deletion.schedule_id,
+      deletion: !deletion.deletion,
+    }));
+
+    setDeletions(newDeletions);
+    console.log(newDeletions);
+  };
+
   console.log(filteredSchedules);
 
   return (
@@ -281,98 +347,141 @@ const Schedules = () => {
             </li>
           </ul>
         </div>
-        <div className="schedules-sort">
-          <ul className="schedules-sort-container">
-            <li className="schedules-sort-item" key={"areacode"} id="areacode">
-              <p>지역순</p>
+        <div className="schedules-right">
+          <div className="schedules-sort">
+            <ul className="schedules-sort-container">
+              <li
+                className="schedules-sort-item"
+                key={"areacode"}
+                id="areacode"
+              >
+                <p>지역순</p>
 
-              <ul className="schedules-sort-dropdown-container">
+                <ul className="schedules-sort-dropdown-container">
+                  <li
+                    className="schedules-sort-dropdown-item"
+                    key={"areacode0"}
+                    onClick={() => areacodeSortIncl()}
+                  >
+                    지역코드순서: 오름차순
+                  </li>
+                  <li
+                    className="schedules-sort-dropdown-item"
+                    key={"areacode1"}
+                    onClick={() => areacodeSortDecl()}
+                  >
+                    지역코드순서: 내림차순
+                  </li>
+                  <li
+                    className="schedules-sort-dropdown-item"
+                    key={"areacode2"}
+                    onClick={areaNameSortIncl}
+                  >
+                    지역이름순서: 오름차순
+                  </li>
+                  <li
+                    className="schedules-sort-dropdown-item"
+                    key={"areacode3"}
+                    onClick={areaNameSortDecl}
+                  >
+                    지역이름순서: 내림차순
+                  </li>
+                </ul>
+              </li>
+              <li className="schedules-sort-item" key={"date"} id="date">
+                <p>일정순</p>
+
+                <ul className="schedules-sort-dropdown-container">
+                  <li
+                    className="schedules-sort-dropdown-item"
+                    key={"date0"}
+                    onClick={startDateSortIncl}
+                  >
+                    일정시작날짜: 오름차순
+                  </li>
+                  <li
+                    className="schedules-sort-dropdown-item"
+                    key={"date1"}
+                    onClick={startDateSortDecl}
+                  >
+                    일정시작날짜: 내림차순
+                  </li>
+                  <li
+                    className="schedules-sort-dropdown-item"
+                    key={"date2"}
+                    onClick={durationSortIncl}
+                  >
+                    일정기간기준: 오름차순
+                  </li>
+                  <li
+                    className="schedules-sort-dropdown-item"
+                    key={"date3"}
+                    onClick={durationSortDecl}
+                  >
+                    일정기간기준: 내림차순
+                  </li>
+                </ul>
+              </li>
+              <li
+                className="schedules-sort-item"
+                key={"register"}
+                id="register"
+              >
+                <p>등록일</p>
+
+                <ul className="schedules-sort-dropdown-container">
+                  <li
+                    className="schedules-sort-dropdown-item"
+                    key={"register0"}
+                    onClick={registerDateSortIncl}
+                  >
+                    등록일기준: 오름차순
+                  </li>
+                  <li
+                    className="schedules-sort-dropdown-item"
+                    key={"register1"}
+                    onClick={registerDateSortDecl}
+                  >
+                    등록일기준: 내림차순
+                  </li>
+                </ul>
+              </li>
+            </ul>
+          </div>
+          <div className="schedules-more" title="설정" onClick={handleOpen}>
+            <FiMoreVertical />
+            {isOpen && (
+              <ul className="schedules-more-container">
                 <li
-                  className="schedules-sort-dropdown-item"
-                  key={"areacode0"}
-                  onClick={() => areacodeSortIncl()}
+                  className="schedules-more-item"
+                  key={"delete"}
+                  onClick={handleShowDelete}
                 >
-                  지역코드순서: 오름차순
-                </li>
-                <li
-                  className="schedules-sort-dropdown-item"
-                  key={"areacode1"}
-                  onClick={() => areacodeSortDecl()}
-                >
-                  지역코드순서: 내림차순
-                </li>
-                <li
-                  className="schedules-sort-dropdown-item"
-                  key={"areacode2"}
-                  onClick={areaNameSortIncl}
-                >
-                  지역이름순서: 오름차순
-                </li>
-                <li
-                  className="schedules-sort-dropdown-item"
-                  key={"areacode3"}
-                  onClick={areaNameSortDecl}
-                >
-                  지역이름순서: 내림차순
+                  {!showDelete && "삭제"}
+                  {showDelete && "삭제 취소"}
                 </li>
               </ul>
-            </li>
-            <li className="schedules-sort-item" key={"date"} id="date">
-              <p>일정순</p>
-
-              <ul className="schedules-sort-dropdown-container">
-                <li
-                  className="schedules-sort-dropdown-item"
-                  key={"date0"}
-                  onClick={startDateSortIncl}
-                >
-                  일정시작날짜: 오름차순
-                </li>
-                <li
-                  className="schedules-sort-dropdown-item"
-                  key={"date1"}
-                  onClick={startDateSortDecl}
-                >
-                  일정시작날짜: 내림차순
-                </li>
-                <li
-                  className="schedules-sort-dropdown-item"
-                  key={"date2"}
-                  onClick={durationSortIncl}
-                >
-                  일정기간기준: 오름차순
-                </li>
-                <li
-                  className="schedules-sort-dropdown-item"
-                  key={"date3"}
-                  onClick={durationSortDecl}
-                >
-                  일정기간기준: 내림차순
-                </li>
-              </ul>
-            </li>
-            <li className="schedules-sort-item" key={"register"} id="register">
-              <p>등록일</p>
-
-              <ul className="schedules-sort-dropdown-container">
-                <li
-                  className="schedules-sort-dropdown-item"
-                  key={"register0"}
-                  onClick={registerDateSortIncl}
-                >
-                  등록일기준: 오름차순
-                </li>
-                <li
-                  className="schedules-sort-dropdown-item"
-                  key={"register1"}
-                  onClick={registerDateSortDecl}
-                >
-                  등록일기준: 내림차순
-                </li>
-              </ul>
-            </li>
-          </ul>
+            )}
+          </div>
         </div>
+      </div>
+      <div
+        className={
+          showDelete ? "schedules-deletion-active" : "schedules-deletion"
+        }
+      >
+        <span className="schedules-deletion-item" onClick={handleDelete}>
+          삭제
+        </span>
+        <span className="schedules-deletion-item" onClick={handleSelectAll}>
+          일괄 선택
+        </span>
+        <span
+          className="schedules-deletion-item"
+          onClick={() => setShowDelete(false)}
+        >
+          삭제 취소
+        </span>
       </div>
       <div className="schedules-cards">
         <ul className="schedules-cards-container">
@@ -387,7 +496,14 @@ const Schedules = () => {
           {filteredSchedules
             .slice(offset, offset + limit)
             .map((schedule, index) => (
-              <SchedulesCard schedule={schedule} key={index} />
+              <SchedulesCard
+                schedule={schedule}
+                key={index}
+                showDelete={showDelete}
+                setShowDelete={setShowDelete}
+                deletions={deletions}
+                setDeletions={setDeletions}
+              />
             ))}
         </ul>
       </div>
@@ -406,7 +522,7 @@ const Schedules = () => {
           onChange={(e) => handleSearchChange(e)}
         />
       </div>
-      <div className="schedules-pagination">
+      <div className="schedules-pagination-bottom">
         <Pagination
           total={schedules.length}
           limit={limit}

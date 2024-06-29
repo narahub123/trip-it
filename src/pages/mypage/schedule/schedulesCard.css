@@ -15,8 +15,12 @@
 
   transition: all 1s ease;
 
+  .schedules-card-delete {
+    margin: 3px;
+  }
   .schedules-card-link {
     cursor: pointer;
+
     .schedules-card-container {
       height: 100%;
       width: 100%;
