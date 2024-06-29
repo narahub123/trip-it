@@ -15,11 +15,12 @@ import Personal from "./pages/mypage/personal/Personal";
 import Join from "./pages/login/Join";
 import "./Trip.css";
 import Schedules from "./pages/mypage/schedule/Schedules";
-import Details from "./pages/mypage/detail/Posts";
 import Bans from "./pages/mypage/ban/Bans";
 import Schedule from "./pages/mypage/schedule/Schedule";
 import Normal from "./pages/login/Normal";
 import refreshAPI from "./utils/TokenRefresher";
+import Posts from "./pages/mypage/post/Posts";
+import Detail from "./pages/mypage/post/Detail";
 
 function Trip() {
   useEffect(() => {
@@ -46,8 +47,8 @@ function Trip() {
               <Route path="personal" element={<Personal />} />
               <Route path="schedules" element={<Schedules />} />
               <Route path="schedules/:scheduleId" element={<Schedule />} />
-              <Route path="details" element={<Details />} />
-              <Route path="details/:detailId" element={<Details />} />
+              <Route path="posts" element={<Posts />} />
+              <Route path="posts/:postId" element={<Detail />} />
               <Route path="bans" element={<Bans />} />
             </Route>
             <Route path="/admin" element={<Admin />} />

@@ -294,13 +294,13 @@ const Posts = () => {
 
   return (
     <div className="posts">
-      <h3 className="posts-title">내 여행 일정</h3>
+      <h3 className="posts-title">내 모집글</h3>
       <div className="posts-control">
         <div className="posts-pagination">
-          <p>페이지 당 일정 수({limit})</p>
+          <p>페이지 당 모집글 수({limit})</p>
           <ul className="posts-pagination-container">
             {/* 고정인 경우 */}
-            {/* {limitArray.map((limit) => (
+            {limitArray.map((limit) => (
               <li
                 className="posts-pagination-item"
                 data-pageNum={limit}
@@ -309,10 +309,10 @@ const Posts = () => {
               >
                 {limit}
               </li>
-            ))} */}
+            ))}
 
             {/* 가변인 경우 */}
-            <li className="posts-pagination-item">
+            {/* <li className="posts-pagination-item">
               {arrayLengthMin}
               <input
                 type="range"
@@ -323,7 +323,7 @@ const Posts = () => {
                 onChange={(e) => handleInputChange(e)}
               />
               {arrayLengthMax}
-            </li>
+            </li> */}
           </ul>
         </div>
         <div className="posts-right">

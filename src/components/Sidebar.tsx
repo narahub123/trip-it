@@ -30,7 +30,7 @@ const Sidebar = () => {
         </li>
         <li>
           <NavLink
-            to="mypage/details"
+            to="mypage/posts"
             className={({ isActive }) => (isActive ? "active" : "")}
           >
             내 모집글

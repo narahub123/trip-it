@@ -11,7 +11,7 @@ const PostsCard = () => {
       <div
         className="postsCard-container"
         onClick={() => {
-          navigate("/detail/:detailId");
+          navigate("/posts/:postId");
         }}
       >
         <div className="postsCard-head">
