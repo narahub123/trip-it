@@ -318,7 +318,7 @@ const Schedules = () => {
       <h3 className="schedules-title">내 여행 일정</h3>
       <div className="schedules-control">
         <div className="schedules-pagination">
-          <p>페이지 수({limit})</p>
+          <p>페이지 당 일정 수({limit})</p>
           <ul className="schedules-pagination-container">
             {/* 고정인 경우 */}
             {/* {limitArray.map((limit) => (
@@ -458,7 +458,7 @@ const Schedules = () => {
                   onClick={handleShowDelete}
                 >
                   {!showDelete && "삭제"}
-                  {showDelete && "삭제 취소"}
+                  {showDelete && "삭제 완료"}
                 </li>
               </ul>
             )}
@@ -480,7 +480,7 @@ const Schedules = () => {
           className="schedules-deletion-item"
           onClick={() => setShowDelete(false)}
         >
-          삭제 취소
+          삭제 완료
         </span>
       </div>
       <div className="schedules-cards">
