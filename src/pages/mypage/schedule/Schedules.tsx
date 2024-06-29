@@ -7,7 +7,6 @@ import { Rootstate } from "../../../store/store";
 import { metroName } from "../../../utils/metro";
 import { debounce } from "../../../utils/debounce";
 import Pagination from "../../../components/ui/Pagination";
-
 const Schedules = () => {
   // db와 연결했을 때 사용
   // const schedules = useSelector((state: Rootstate) => state.return.schedules);
@@ -233,6 +232,19 @@ const Schedules = () => {
     setLimit(Number(value));
   };
 
+  // 검색
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const keyword = e.currentTarget.value;
+    console.log(keyword);
+    const newSchedules = schedules.filter((schedule) =>
+      schedule.schedule_title?.includes(keyword)
+    );
+
+    console.log(newSchedules);
+
+    setFilteredSchedules(newSchedules);
+  };
+
   console.log(filteredSchedules);
 
   return (
@@ -364,12 +376,35 @@ const Schedules = () => {
       </div>
       <div className="schedules-cards">
         <ul className="schedules-cards-container">
+          {filteredSchedules.length === 0 && (
+            <>
+              <div className="schedules-cards-logo">
+                <img src={`/images/trip-it-logo.png`} alt="" />
+                <p>검색결과가 없습니다.</p>
+              </div>
+            </>
+          )}
           {filteredSchedules
             .slice(offset, offset + limit)
             .map((schedule, index) => (
               <SchedulesCard schedule={schedule} key={index} />
             ))}
         </ul>
+      </div>
+      <div className="schedules-search">
+        <input
+          id="search"
+          type="search"
+          placeholder="검색어를 적어주세요"
+          style={{
+            width: "50%",
+            height: "clamp(40px, 2vw, 60px)",
+            fontSize: "clamp(12px, 2vw, 16px)",
+            paddingLeft: "5px",
+          }}
+          autoFocus
+          onChange={(e) => handleSearchChange(e)}
+        />
       </div>
       <div className="schedules-pagination">
         <Pagination

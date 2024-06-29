@@ -191,6 +191,25 @@
       display: flex;
       flex-wrap: wrap;
       gap: 20px;
+
+      .schedules-cards-logo {
+        text-align: center;
+        margin: 0 auto;
+        img {
+          width: 180px;
+          height: 180px;
+        }
+        p {
+          text-align: center;
+        }
+      }
+    }
+  }
+
+  .schedules-search {
+    margin-top: 20px;
+    text-align: center;
+    input {
     }
   }
 
