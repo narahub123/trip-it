@@ -15,7 +15,7 @@ import Personal from "./pages/mypage/personal/Personal";
 import Join from "./pages/login/Join";
 import "./Trip.css";
 import Schedules from "./pages/mypage/schedule/Schedules";
-import Details from "./pages/mypage/detail/Details";
+import Details from "./pages/mypage/detail/Posts";
 import Bans from "./pages/mypage/ban/Bans";
 import Schedule from "./pages/mypage/schedule/Schedule";
 import Normal from "./pages/login/Normal";
