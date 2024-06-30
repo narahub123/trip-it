@@ -6,7 +6,7 @@ const Sidebar = () => {
 
   return (
     <aside className="sidebar">
-      {pathname === "/mypage" && (
+      {pathname.includes("/mypage") && (
         <ul>
           <li>
             <NavLink
@@ -50,7 +50,7 @@ const Sidebar = () => {
           </li>
         </ul>
       )}
-      {pathname === "/admin" && (
+      {pathname.includes("/admin") && (
         <ul>
           <li>
             <NavLink

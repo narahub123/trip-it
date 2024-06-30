@@ -5,7 +5,11 @@ import { metroName } from "../../../utils/metro";
 import PostsCard from "./PostsCard";
 import { FiMoreVertical } from "react-icons/fi";
 
-const Posts = () => {
+export interface PostsProps {
+  posts: any[];
+}
+
+const Posts = ({ posts }: PostsProps) => {
   // db와 연결했을 때 사용
   // const posts = useSelector((state: Rootstate) => state.return.posts);
 
@@ -13,28 +17,6 @@ const Posts = () => {
   const [isOpen, setIsOpen] = useState(false);
   // 삭제 체크 박스 표시 여부
   const [showDelete, setShowDelete] = useState(false);
-
-  // post data(practice)
-  const posts = [
-    {
-      post_id: "1",
-      schedule_id: "1",
-      metro_id: "1",
-      start_date: "20240602",
-      end_date: "20240612",
-      post_title: "모여라~",
-      personnel: 2,
-      user_id: "1",
-      age: 32,
-      gender: "f",
-      post_date: "20240512",
-      post_pic:
-        "https://res.heraldm.com/content/image/2023/08/19/20230819000100_0.jpg",
-      recruit_status: "n",
-      views: 2,
-      exposure_status: "y",
-    },
-  ];
 
   const postDeletions = posts.map((post) => {
     const post_id = post.post_id ? post.post_id : "";
