@@ -1,2 +1,27 @@
 .users {
+  user-select: none;
+  h3 {
+    text-align: center;
+    padding: 20px;
+  }
+
+  .users-header {
+    display: flex;
+    justify-content: space-between;
+    padding-bottom: 10px;
+    .users-header-left {
+      .users-header-pagination-container {
+      }
+    }
+    .users-header-right {
+      display: flex;
+      .users-header-sort-container {
+      }
+      .users-header-setting-container {
+      }
+    }
+  }
+
+  .users-main {
+  }
 }
