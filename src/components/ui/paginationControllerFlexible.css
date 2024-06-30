@@ -1,9 +1,7 @@
 .pagination-controller-flexible {
   position: relative;
   cursor: pointer;
-  p {
-    padding-bottom: 10px;
-  }
+
   .pagination-controller-flexible-container {
     visibility: hidden;
     position: absolute;

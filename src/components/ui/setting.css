@@ -1,0 +1,19 @@
+.setting {
+  position: absolute;
+  left: 90%;
+  right: 0;
+  width: 70px;
+  margin-top: 5px;
+  opacity: 1;
+  max-height: 400px;
+  z-index: 9;
+  border: 1px solid gray;
+  border-radius: 5px;
+  background-color: #fff;
+  visibility: visible;
+  transition: max-height 1s ease-in-out, opacity 1s ease-in-out;
+  text-align: center;
+  .setting-item {
+    padding: 5px;
+  }
+}

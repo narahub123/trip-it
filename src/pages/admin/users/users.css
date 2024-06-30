@@ -8,16 +8,39 @@
   .users-header {
     display: flex;
     justify-content: space-between;
+    align-items: center;
     padding-bottom: 10px;
     .users-header-left {
+      display: flex;
+      align-items: center;
+      div {
+        padding: 0 4px;
+      }
+      .users-header-layout-container {
+        border: 1px solid gray;
+        border-radius: 6px;
+
+        .layout-link {
+          margin: 2px;
+          color: gray;
+          cursor: pointer;
+        }
+
+        .layout-link.active {
+          color: black;
+        }
+      }
       .users-header-pagination-container {
       }
     }
     .users-header-right {
       display: flex;
+      align-items: center;
       .users-header-sort-container {
       }
       .users-header-setting-container {
+        position: relative;
+        cursor: pointer;
       }
     }
   }
