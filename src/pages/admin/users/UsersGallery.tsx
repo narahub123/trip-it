@@ -9,6 +9,12 @@ const UsersGallery = ({ filteredUsers }: UsersGalleryProps) => {
   return (
     <div className="users-gallery">
       <ul className="users-gallery-container">
+        {filteredUsers.length === 0 && (
+          <li className="users-gallery-no-data">
+            <img src="/images/trip-it-logo.png" alt="" />
+            <p>검색 결과가 없습니다.</p>
+          </li>
+        )}
         {filteredUsers.map((user) => (
           <li className="users-gallery-item" key={user.user_id}>
             <figure className="users-gallery-item-image">

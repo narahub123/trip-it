@@ -6,6 +6,17 @@
 
     gap: 10px;
 
+    .users-gallery-no-data {
+      margin: 0 auto;
+      img {
+        width: 350px;
+        height: 350px;
+      }
+      p {
+        text-align: center;
+      }
+    }
+
     .users-gallery-item {
       border: 1px solid black;
       max-width: 350px;
