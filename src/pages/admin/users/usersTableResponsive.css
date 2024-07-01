@@ -1,0 +1,22 @@
+.users-table-responsive {
+  min-width: 250px;
+  display: flex;
+  justify-content: space-evenly;
+  gap: 10px;
+  flex-wrap: wrap;
+
+  .users-table-responsive-row {
+    border: 1px solid #ddd;
+    flex-grow: 1;
+
+    .cell-header {
+      font-weight: bold;
+    }
+    td {
+      display: flex;
+      justify-content: space-between;
+      white-space: nowrap;
+      padding: 8px;
+    }
+  }
+}

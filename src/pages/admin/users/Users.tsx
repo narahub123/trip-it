@@ -13,6 +13,8 @@ import Setting from "../../../components/ui/Setting";
 import { Link, useLocation } from "react-router-dom";
 import { users } from "../../../data/test";
 import { UserType } from "../../../types/user";
+import UsersTable from "./UsersTable";
+import UsersTableResponsive from "./UsersTableResponsive";
 
 const Users = () => {
   const { hash } = useLocation();
@@ -28,7 +30,7 @@ const Users = () => {
     user_id: "asc",
     username: "asc",
     nickname: "asc",
-    gender: "asc",
+    gender: "desc",
     birth: "asc",
     role: "asc",
     regdate: "asc",
@@ -43,7 +45,7 @@ const Users = () => {
 
   // 정렬
   const handleSort = (
-    e: React.MouseEvent<HTMLTableHeaderCellElement, MouseEvent>
+    e: React.MouseEvent<HTMLTableHeaderCellElement | HTMLLIElement, MouseEvent>
   ) => {
     const id = e.currentTarget.id as keyof (typeof users)[0];
     const sort = e.currentTarget.dataset.sort;
@@ -131,7 +133,77 @@ const Users = () => {
           </div>
         </div>
         <div className="users-header-right">
-          <div className="users-header-sort-container">정렬</div>
+          <div className="users-header-sort-container">
+            <p>정렬</p>
+            <ul className="users-header-sorts">
+              <li
+                className="users-header-sorts-item"
+                data-sort="asc"
+                id="user_id"
+                onClick={(e) => handleSort(e)}
+              >
+                아이디{" "}
+                {sorts.user_id === "desc" ? <LuChevronDown /> : <LuChevronUp />}
+              </li>
+              <li
+                className="users-header-sorts-item"
+                data-sort="asc"
+                id="username"
+                onClick={(e) => handleSort(e)}
+              >
+                이름{" "}
+                {sorts.username === "desc" ? (
+                  <LuChevronDown />
+                ) : (
+                  <LuChevronUp />
+                )}
+              </li>
+              <li
+                className="users-header-sorts-item"
+                data-sort="asc"
+                id="nickname"
+                onClick={(e) => handleSort(e)}
+              >
+                닉네임{" "}
+                {sorts.nickname === "desc" ? (
+                  <LuChevronDown />
+                ) : (
+                  <LuChevronUp />
+                )}
+              </li>
+              <li
+                className="users-header-sorts-item"
+                data-sort="asc"
+                id="gender"
+                onClick={(e) => handleSort(e)}
+              >
+                성별{" "}
+                {sorts.gender === "asc" ? <LuChevronDown /> : <LuChevronUp />}
+              </li>
+              <li
+                className="users-header-sorts-item"
+                data-sort="asc"
+                id="email"
+                onClick={(e) => handleSort(e)}
+              >
+                이메일{" "}
+                {sorts.email === "desc" ? <LuChevronDown /> : <LuChevronUp />}
+              </li>
+              <li
+                className="users-header-sorts-item"
+                data-sort="asc"
+                id="report_count"
+                onClick={(e) => handleSort(e)}
+              >
+                신고수{" "}
+                {sorts.report_count === "desc" ? (
+                  <LuChevronDown />
+                ) : (
+                  <LuChevronUp />
+                )}
+              </li>
+            </ul>
+          </div>
           <div
             className="users-header-setting-container"
             onClick={handleOpenSetting}
@@ -145,149 +217,12 @@ const Users = () => {
       <main className="users-main">
         {(hash === "#table" || !hash) && (
           <div className="users-main-table-container">
-            <table className="users-main-table">
-              <thead className="users-main-table-header">
-                <tr
-                  className="users-main-table-header-row"
-                  key={`usersHeaderRow`}
-                >
-                  <th
-                    data-sort="asc"
-                    key={`user_id`}
-                    id="user_id"
-                    onClick={(e) => handleSort(e)}
-                  >
-                    아이디{" "}
-                    {sorts.user_id === "desc" ? (
-                      <LuChevronDown />
-                    ) : (
-                      <LuChevronUp />
-                    )}
-                  </th>
-                  <th
-                    data-sort="asc"
-                    key={`user_name`}
-                    id="username"
-                    onClick={(e) => handleSort(e)}
-                  >
-                    이름{" "}
-                    {sorts.username === "desc" ? (
-                      <LuChevronDown />
-                    ) : (
-                      <LuChevronUp />
-                    )}
-                  </th>
-                  <th
-                    data-sort="asc"
-                    key={`user_nick`}
-                    id="nickname"
-                    onClick={(e) => handleSort(e)}
-                  >
-                    닉네임{" "}
-                    {sorts.nickname === "desc" ? (
-                      <LuChevronDown />
-                    ) : (
-                      <LuChevronUp />
-                    )}
-                  </th>
-                  <th
-                    data-sort="asc"
-                    key={`user_gender`}
-                    id="gender"
-                    onClick={(e) => handleSort(e)}
-                  >
-                    성별 {/* 데이터와 한글의 순서가 반대라서 반대로 표기함 */}
-                    {sorts.gender === "asc" ? (
-                      <LuChevronDown />
-                    ) : (
-                      <LuChevronUp />
-                    )}
-                  </th>
-                  <th
-                    data-sort="asc"
-                    key={`user_birth`}
-                    id="birth"
-                    onClick={(e) => handleSort(e)}
-                  >
-                    생년월일{" "}
-                    {sorts.birth === "desc" ? (
-                      <LuChevronDown />
-                    ) : (
-                      <LuChevronUp />
-                    )}
-                  </th>
-                  <th
-                    data-sort="asc"
-                    key={`user_role`}
-                    id="role"
-                    onClick={(e) => handleSort(e)}
-                  >
-                    등급{" "}
-                    {sorts.role === "desc" ? (
-                      <LuChevronDown />
-                    ) : (
-                      <LuChevronUp />
-                    )}
-                  </th>
-                  <th
-                    data-sort="asc"
-                    key={`user_regdate`}
-                    id="regdate"
-                    onClick={(e) => handleSort(e)}
-                  >
-                    가입일{" "}
-                    {sorts.regdate === "desc" ? (
-                      <LuChevronDown />
-                    ) : (
-                      <LuChevronUp />
-                    )}
-                  </th>
-                  <th
-                    data-sort="asc"
-                    key={`user_email`}
-                    id="email"
-                    onClick={(e) => handleSort(e)}
-                  >
-                    이메일{" "}
-                    {sorts.email === "desc" ? (
-                      <LuChevronDown />
-                    ) : (
-                      <LuChevronUp />
-                    )}
-                  </th>
-                  <th
-                    data-sort="asc"
-                    key={`user_reports`}
-                    id="report_count"
-                    onClick={(e) => handleSort(e)}
-                  >
-                    신고건수{" "}
-                    {sorts.report_count === "desc" ? (
-                      <LuChevronDown />
-                    ) : (
-                      <LuChevronUp />
-                    )}
-                  </th>
-                </tr>
-              </thead>
-              <tbody className="users-main-table-body">
-                {filteredUsers.map((user, index) => (
-                  <tr className="users-main-table-row" key={`user${index}`}>
-                    <td key={`user${index}_id`}>{user.user_id}</td>
-                    <td key={`user${index}_name`}>{user.username}</td>
-                    <td key={`user${index}_nick`}>{user.nickname}</td>
-                    <td key={`user${index}_gender`}>
-                      {user.gender === "m" ? "남자" : "여자"}
-                    </td>
-                    <td key={`user${index}_birth`}>{user.birth}</td>
-                    <td key={`user${index}_role`}>{user.role}</td>
-                    <td key={`user${index}_regdate`}>{user.regdate}</td>
-                    <td key={`user${index}_email`}>{user.email}</td>
-                    <td key={`user${index}_reports`}>{user.report_count}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+            {/* <UsersTable
+              sorts={sorts}
+              handleSort={handleSort}
+              filteredUsers={filteredUsers}
+            /> */}
+            <UsersTableResponsive filteredUsers={filteredUsers} />
           </div>
         )}
         {hash === "#gallery" && <p>갤러리</p>}

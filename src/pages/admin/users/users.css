@@ -37,6 +37,50 @@
       display: flex;
       align-items: center;
       .users-header-sort-container {
+        position: relative;
+        p {
+        }
+        .users-header-sorts {
+          visibility: hidden;
+          position: absolute;
+          border: 1px solid #ddd;
+          width: 100px;
+          z-index: 9;
+          background-color: white;
+          left: -170%;
+          right: 0px;
+          text-align: center;
+          .users-header-sorts-item {
+            cursor: pointer;
+            margin: 10px;
+          }
+          .users-header-sorts-item:hover {
+            color: aquamarine;
+          }
+        }
+      }
+
+        .users-header-sort-container:hover {
+        p {
+        }
+        .users-header-sorts {
+          visibility: visible;
+          position: absolute;
+          border: 1px solid #ddd;
+          width: 100px;
+          z-index: 9;
+          background-color: white;
+          left: -170%;
+          right: 0px;
+          text-align: center;
+          .users-header-sorts-item {
+            cursor: pointer;
+            margin: 10px;
+          }
+          .users-header-sorts-item:hover {
+            color: aquamarine;
+          }
+        }
       }
       .users-header-setting-container {
         position: relative;
@@ -47,15 +91,6 @@
 
   .users-main {
     .users-main-table-container {
-      .users-main-table {
-        .users-main-table-header {
-          .users-main-table-header-row {
-            cursor: pointer;
-          }
-        }
-        .users-main-table-body {
-        }
-      }
     }
   }
 }

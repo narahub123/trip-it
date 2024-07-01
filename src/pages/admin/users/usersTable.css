@@ -1,0 +1,28 @@
+.users-table {
+  border-collapse: collapse;
+  width: 100%;
+  border: 1px solid #ddd;
+
+  th,
+  td {
+    padding: 8px;
+  }
+
+  .users-table-header {
+    .users-table-header-row {
+      cursor: pointer;
+      text-align: center;
+      /* background-color: rgba(127, 255, 212, 0.341); */
+      border-bottom: 1px solid #ccc;
+    }
+  }
+  .users-table-body {
+    .users-table-row {
+      text-align: center;
+      border-bottom: 1px solid #ccc;
+    }
+    .users-table-row:nth-child(even) {
+      background-color: rgba(127, 255, 212, 0.341);
+    }
+  }
+}
