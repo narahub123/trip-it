@@ -54,13 +54,14 @@
             cursor: pointer;
             margin: 10px;
           }
+
           .users-header-sorts-item:hover {
             color: aquamarine;
           }
         }
       }
 
-        .users-header-sort-container:hover {
+      .users-header-sort-container:hover {
         p {
         }
         .users-header-sorts {
@@ -90,7 +91,19 @@
   }
 
   .users-main {
+    margin-top: 10px;
     .users-main-table-container {
     }
+  }
+}
+
+@media screen and (max-width: 977px) {
+  .users-header-sort-container {
+    display: block;
+  }
+}
+@media screen and (min-width: 977px) {
+  .users-header-sort-container {
+    display: none;
   }
 }

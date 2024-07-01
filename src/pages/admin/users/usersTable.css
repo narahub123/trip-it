@@ -26,3 +26,14 @@
     }
   }
 }
+
+@media screen and (max-width: 977px) {
+  .users-table {
+    display: none;
+  }
+}
+@media screen and (min-width: 977px) {
+  .users-table {
+    display: table;
+  }
+}

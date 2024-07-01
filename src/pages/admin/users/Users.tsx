@@ -217,11 +217,11 @@ const Users = () => {
       <main className="users-main">
         {(hash === "#table" || !hash) && (
           <div className="users-main-table-container">
-            {/* <UsersTable
+            <UsersTable
               sorts={sorts}
               handleSort={handleSort}
               filteredUsers={filteredUsers}
-            /> */}
+            />
             <UsersTableResponsive filteredUsers={filteredUsers} />
           </div>
         )}
