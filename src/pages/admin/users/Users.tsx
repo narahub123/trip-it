@@ -17,6 +17,7 @@ import UsersTable from "./UsersTable";
 import UsersTableResponsive from "./UsersTableResponsive";
 import Search from "../../../components/ui/Search";
 import Pagination from "../../../components/ui/Pagination";
+import UsersGallery from "./UsersGallery";
 
 const Users = () => {
   const { hash } = useLocation();
@@ -252,7 +253,7 @@ const Users = () => {
             />
           </div>
         )}
-        {hash === "#gallery" && <p>갤러리</p>}
+        {hash === "#gallery" && <UsersGallery filteredUsers={filteredUsers} />}
       </main>
       <section className="user-search">
         <Search
