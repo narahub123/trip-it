@@ -36,7 +36,8 @@
     .users-header-right {
       display: flex;
       align-items: center;
-      .users-header-sort-container {
+      .users-header-sort-container-gallery,
+      .users-header-sort-container-table {
         position: relative;
         p {
         }
@@ -61,7 +62,8 @@
         }
       }
 
-      .users-header-sort-container:hover {
+      .users-header-sort-container-gallery:hover,
+      .users-header-sort-container-table:hover {
         p {
         }
         .users-header-sorts {
@@ -98,12 +100,12 @@
 }
 
 @media screen and (max-width: 977px) {
-  .users-header-sort-container {
+  .users-header-sort-container-table {
     display: block;
   }
 }
 @media screen and (min-width: 977px) {
-  .users-header-sort-container {
+  .users-header-sort-container-table {
     display: none;
   }
 }

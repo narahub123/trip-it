@@ -155,7 +155,13 @@ const Users = () => {
           </div>
         </div>
         <div className="users-header-right">
-          <div className="users-header-sort-container">
+          <div
+            className={
+              hash === "#gallery"
+                ? "users-header-sort-container-gallery"
+                : "users-header-sort-container-table"
+            }
+          >
             <p>정렬</p>
             <ul className="users-header-sorts">
               <li
