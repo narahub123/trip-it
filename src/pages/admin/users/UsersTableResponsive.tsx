@@ -3,10 +3,18 @@ import "./usersTableResponsive.css";
 
 export interface UsersTableResponsiveProps {
   filteredUsers: UserType[];
+  offset: number;
+  limit: number;
 }
 
-const UsersTableResponsive = ({ filteredUsers }: UsersTableResponsiveProps) => {
+const UsersTableResponsive = ({
+  filteredUsers,
+  limit,
+  offset,
+}: UsersTableResponsiveProps) => {
   console.log(filteredUsers.length);
+
+  const newLimit = filteredUsers.length % 2 === 0 ? limit : limit + 1;
 
   const modifiedUsers: UserType[] =
     filteredUsers.length % 2 === 0
@@ -32,7 +40,7 @@ const UsersTableResponsive = ({ filteredUsers }: UsersTableResponsiveProps) => {
 
   return (
     <table className="users-table-responsive">
-      {modifiedUsers.map((user) => (
+      {modifiedUsers.slice(offset, offset + newLimit).map((user) => (
         <tr
           className={
             filteredUsers.length % 2 === 0

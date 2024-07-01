@@ -19,9 +19,17 @@ export interface UsersTableProps {
     value: React.MouseEvent<HTMLTableHeaderCellElement, MouseEvent>
   ) => void;
   filteredUsers: UserType[];
+  offset: number;
+  limit: number;
 }
 
-const UsersTable = ({ sorts, handleSort, filteredUsers }: UsersTableProps) => {
+const UsersTable = ({
+  sorts,
+  handleSort,
+  filteredUsers,
+  limit,
+  offset,
+}: UsersTableProps) => {
   return (
     <table className="users-table">
       <thead className="users-table-header">
@@ -113,7 +121,7 @@ const UsersTable = ({ sorts, handleSort, filteredUsers }: UsersTableProps) => {
         </tr>
       </thead>
       <tbody className="users-table-body">
-        {filteredUsers.map((user, index) => (
+        {filteredUsers.slice(offset, offset + limit).map((user, index) => (
           <tr className="users-table-row" key={`user${index}`}>
             <td key={`user${index}_id`}>{user.user_id}</td>
             <td key={`user${index}_name`}>{user.username}</td>

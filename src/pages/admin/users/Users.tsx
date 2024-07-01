@@ -15,6 +15,8 @@ import { users } from "../../../data/test";
 import { UserType } from "../../../types/user";
 import UsersTable from "./UsersTable";
 import UsersTableResponsive from "./UsersTableResponsive";
+import Search from "../../../components/ui/Search";
+import Pagination from "../../../components/ui/Pagination";
 
 const Users = () => {
   const { hash } = useLocation();
@@ -24,6 +26,8 @@ const Users = () => {
   const arrayLengthDefault = 5;
   const UNIT_NAME = "유저";
   const [limit, setLimit] = useState(arrayLengthDefault);
+  const [page, setPage] = useState(1);
+  const offset = (page - 1) * limit;
   const [isOpen, setIsOpen] = useState(false);
   const [filteredUsers, setFilteredUsers] = useState(users);
   const [sorts, setSorts] = useState({
@@ -37,6 +41,13 @@ const Users = () => {
     email: "asc",
     report_count: "asc",
   });
+
+  const keywordArray = [
+    { keyword: "이름", key: "username" },
+    { keyword: "아이디", key: "user_id" },
+    { keyword: "닉네임", key: "nickname" },
+    { keyword: "소개글", key: "user_intro" },
+  ];
 
   // 설정 열고 닫기
   const handleOpenSetting = () => {
@@ -93,6 +104,16 @@ const Users = () => {
 
     setFilteredUsers(sortedUsers);
   };
+
+  // 페이지네이션: 가변인 경우
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.currentTarget.value;
+
+    console.log(value);
+    setLimit(Number(value));
+  };
+
+  console.log(limit);
 
   return (
     <div className="users">
@@ -221,12 +242,33 @@ const Users = () => {
               sorts={sorts}
               handleSort={handleSort}
               filteredUsers={filteredUsers}
+              offset={offset}
+              limit={limit}
             />
-            <UsersTableResponsive filteredUsers={filteredUsers} />
+            <UsersTableResponsive
+              filteredUsers={filteredUsers}
+              offset={offset}
+              limit={limit}
+            />
           </div>
         )}
         {hash === "#gallery" && <p>갤러리</p>}
       </main>
+      <section className="user-search">
+        <Search
+          array={users}
+          setArray={setFilteredUsers}
+          keywordArray={keywordArray}
+        />
+      </section>
+      <section>
+        <Pagination
+          total={filteredUsers.length}
+          limit={limit}
+          page={page}
+          setPage={setPage}
+        />
+      </section>
     </div>
   );
 };

@@ -50,6 +50,6 @@
 }
 @media screen and (min-width: 977px) {
   .users-table-responsive {
-    visibility: hidden;
+    display: none;
   }
 }
