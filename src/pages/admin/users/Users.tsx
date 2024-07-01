@@ -51,7 +51,7 @@ const Users = () => {
     let sortedUsers = filteredUsers;
 
     sortedUsers = [...users].sort((user1, user2) => {
-      if (!user1[id] === null || !user2[id] === null) return -1;
+      if (user1[id] === null || user2[id] === null) return -1;
 
       const usersArr = [user1, user2];
 
@@ -131,9 +131,9 @@ const Users = () => {
           </div>
         </div>
         <div className="users-header-right">
-          <div className="user-header-sort-container">정렬</div>
+          <div className="users-header-sort-container">정렬</div>
           <div
-            className="user-header-setting-container"
+            className="users-header-setting-container"
             onClick={handleOpenSetting}
             title="설정"
           >
@@ -196,8 +196,8 @@ const Users = () => {
                     id="gender"
                     onClick={(e) => handleSort(e)}
                   >
-                    성별{" "}
-                    {sorts.gender === "desc" ? (
+                    성별 {/* 데이터와 한글의 순서가 반대라서 반대로 표기함 */}
+                    {sorts.gender === "asc" ? (
                       <LuChevronDown />
                     ) : (
                       <LuChevronUp />

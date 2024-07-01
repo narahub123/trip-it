@@ -1,7 +1,7 @@
 .setting {
   position: absolute;
-  left: 90%;
-  right: 0;
+  left: -400%;
+  right: 0px;
   width: 70px;
   margin-top: 5px;
   opacity: 1;
