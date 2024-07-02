@@ -2,6 +2,7 @@ import React from "react";
 import "./usersTable.css";
 import { LuChevronDown, LuChevronUp } from "react-icons/lu";
 import { UserType } from "../../../types/user";
+import { Link, useNavigate } from "react-router-dom";
 
 export interface UsersTableProps {
   sorts: {
@@ -30,6 +31,10 @@ const UsersTable = ({
   limit,
   offset,
 }: UsersTableProps) => {
+  const navigate = useNavigate();
+  const handleLink = (userId: number) => {
+    navigate(`${userId}`);
+  };
   return (
     <table className="users-table">
       <thead className="users-table-header">
@@ -122,7 +127,11 @@ const UsersTable = ({
       </thead>
       <tbody className="users-table-body">
         {filteredUsers.slice(offset, offset + limit).map((user, index) => (
-          <tr className="users-table-row" key={`user${index}`}>
+          <tr
+            className="users-table-row"
+            key={`user${index}`}
+            onClick={() => handleLink(user.user_id)}
+          >
             <td key={`user${index}_id`}>{user.user_id}</td>
             <td key={`user${index}_name`}>{user.username}</td>
             <td key={`user${index}_nick`}>{user.nickname}</td>

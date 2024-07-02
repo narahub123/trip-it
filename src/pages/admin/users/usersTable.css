@@ -20,6 +20,7 @@
     .users-table-row {
       text-align: center;
       border-bottom: 1px solid #ccc;
+      cursor: pointer;
     }
     .users-table-row:nth-child(even) {
       background-color: rgba(127, 255, 212, 0.341);

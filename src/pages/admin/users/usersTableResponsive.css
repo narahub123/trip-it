@@ -11,20 +11,21 @@
     padding: 10px;
     flex-grow: 1;
     flex-shrink: 1;
+    a {
+      .cell-header {
+        font-weight: bold;
+      }
 
-    .cell-header {
-      font-weight: bold;
+      td {
+        display: flex;
+        justify-content: space-between;
+        white-space: nowrap;
+        padding: 8px;
+      }
     }
-
-    td {
-      display: flex;
-      justify-content: space-between;
-      white-space: nowrap;
-      padding: 8px;
+    .users-table-responsive-row:nth-child(even) {
+      background-color: rgba(127, 255, 212, 0.341);
     }
-  }
-  .users-table-responsive-row:nth-child(even) {
-    background-color: rgba(127, 255, 212, 0.341);
   }
 }
 @media screen and (max-width: 574px) {
