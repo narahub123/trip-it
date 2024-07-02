@@ -11,13 +11,24 @@
     li {
       padding: 10px 0;
       a {
+        .sidebar-new-reports {
+          display: inline-block;
+          color: white;
+          background-color: red;
+          border-radius: 5px;
+          width: 20px;
+          height: 20px;
+          line-height: 20px;
+        }
       }
-      a.active {
+      a.active .sidebar-text {
         color: aquamarine;
         font-weight: bold;
       }
       a:hover {
-        color: aquamarine;
+        .sidebar-text {
+          color: aquamarine;
+        }
       }
     }
   }

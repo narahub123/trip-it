@@ -13,7 +13,7 @@ const Sidebar = () => {
               to="mypage/profile"
               className={({ isActive }) => (isActive ? "active" : "")}
             >
-              프로필 수정
+              <span className="sidebar-text">프로필 수정</span>
             </NavLink>
           </li>
           <li>
@@ -21,7 +21,7 @@ const Sidebar = () => {
               to="mypage/personal"
               className={({ isActive }) => (isActive ? "active" : "")}
             >
-              개인정보수정
+              <span className="sidebar-text">개인정보수정</span>
             </NavLink>
           </li>
           <li>
@@ -29,7 +29,7 @@ const Sidebar = () => {
               to="mypage/schedules"
               className={({ isActive }) => (isActive ? "active" : "")}
             >
-              내 일정
+              <span className="sidebar-text">내 일정</span>
             </NavLink>
           </li>
           <li>
@@ -37,7 +37,7 @@ const Sidebar = () => {
               to="mypage/posts"
               className={({ isActive }) => (isActive ? "active" : "")}
             >
-              내 모집글
+              <span className="sidebar-text">내 모집글</span>
             </NavLink>
           </li>
           <li>
@@ -45,7 +45,7 @@ const Sidebar = () => {
               to="mypage/bans"
               className={({ isActive }) => (isActive ? "active" : "")}
             >
-              내 차단 멤버
+              <span className="sidebar-text">내 차단 목록</span>
             </NavLink>
           </li>
         </ul>
@@ -57,7 +57,7 @@ const Sidebar = () => {
               to="admin/users"
               className={({ isActive }) => (isActive ? "active" : "")}
             >
-              유저 목록
+              <span className="sidebar-text">유저 목록</span>
             </NavLink>
           </li>
           <li>
@@ -65,7 +65,7 @@ const Sidebar = () => {
               to="admin/schedules"
               className={({ isActive }) => (isActive ? "active" : "")}
             >
-              일정 목록
+              <span className="sidebar-text">일정 목록</span>
             </NavLink>
           </li>
           <li>
@@ -73,7 +73,7 @@ const Sidebar = () => {
               to="admin/posts"
               className={({ isActive }) => (isActive ? "active" : "")}
             >
-              모집글 목록
+              <span className="sidebar-text">모집글 목록</span>
             </NavLink>
           </li>
           <li>
@@ -81,7 +81,8 @@ const Sidebar = () => {
               to="admin/reports"
               className={({ isActive }) => (isActive ? "active" : "")}
             >
-              신고 목록
+              <span className="sidebar-text">신고 목록</span>{" "}
+              <span className="sidebar-new-reports">4</span>
             </NavLink>
           </li>
         </ul>
