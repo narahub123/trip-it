@@ -1,3 +1,4 @@
+import { ReportType } from "../types/reports";
 import { UserType } from "../types/user";
 
 export const users: UserType[] = [
@@ -105,5 +106,48 @@ export const users: UserType[] = [
     userpic: "/images/female-profile-image.png",
     report_count: 1,
     end_date: undefined,
+  },
+];
+
+export const reports: ReportType[] = [
+  {
+    report_id: 1,
+    msg_id: "1_1",
+    user_id: 1,
+    reported_user_id: 2,
+    report_cate: "R1",
+    report_detail: "궁시렁 궁시렁 ",
+    report_date: "20240702",
+    report_false: 0,
+  },
+  {
+    report_id: 2,
+    msg_id: "3_1",
+    user_id: 1,
+    reported_user_id: 3,
+    report_detail: "",
+    report_cate: "R2",
+    report_date: "20240702",
+    report_false: 1,
+  },
+  {
+    report_id: 3,
+    post_id: "3",
+    user_id: 5,
+    reported_user_id: 3,
+    report_detail: "",
+    report_cate: "R3",
+    report_date: "20240701",
+    report_false: 2,
+  },
+  {
+    report_id: 4,
+    msg_id: "2",
+    user_id: 4,
+    reported_user_id: 1,
+    report_detail: "금전 거래를 유도합니다. 해결해주세요.",
+    report_cate: "R4",
+    report_date: "20240703",
+    report_false: 3,
   },
 ];

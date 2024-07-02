@@ -1,2 +1,54 @@
 .reports {
+  .reports-title {
+    text-align: center;
+  }
+  .reports-header {
+    display: flex;
+    justify-content: space-between;
+    .reports-header-left {
+    }
+    .reports-header-right {
+    }
+  }
+  .reports-main {
+    margin-top: 10px;
+    .reports-main-unsolved {
+      text-align: right;
+      padding: 5px;
+      color: red;
+
+      .reports-main-unsolved-text {
+      }
+      .reports-main-unsolved-number {
+        cursor: pointer;
+      }
+    }
+    .reports-main-table {
+      width: 100%;
+      border: 1px solid #ddd;
+
+      th,
+      td {
+        padding: 8px;
+        text-align: center;
+      }
+
+      .reports-main-table-header {
+        .reports-main-table-header-row {
+          .reports-main-table-header-cell {
+            cursor: pointer;
+          }
+        }
+      }
+      .reports-main-table-body {
+        .reports-main-table-body-row {
+          .reports-main-table-body-cell {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+          }
+        }
+      }
+    }
+  }
 }

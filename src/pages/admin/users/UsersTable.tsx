@@ -16,6 +16,7 @@ export interface UsersTableProps {
     email: string;
     report_count: string;
   };
+
   handleSort: (
     value: React.MouseEvent<HTMLTableHeaderCellElement, MouseEvent>
   ) => void;

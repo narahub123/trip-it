@@ -173,3 +173,13 @@ export const dateFormateFromLocalDatetime = (origin: string) => {
 
   return newDate;
 };
+
+export const dateFromLocalDateToDot = (origin: string) => {
+  const dateform = dateFormatFromLocalDate(origin);
+  const year = dateform.year;
+  const month =
+    dateform.month < 10 ? "0" + (dateform.month + 1) : dateform.month + 1;
+  const date = dateform.date < 10 ? "0" + dateform.date : dateform.date;
+
+  return `${year}.${month}.${date}.`;
+};
