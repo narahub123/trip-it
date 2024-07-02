@@ -150,4 +150,14 @@ export const reports: ReportType[] = [
     report_date: "20240703",
     report_false: 3,
   },
+  {
+    report_id: 5,
+    msg_id: "1_2",
+    user_id: 3,
+    reported_user_id: 2,
+    report_cate: "R1",
+    report_detail: "궁시렁 궁시렁 ",
+    report_date: "20240704",
+    report_false: 0,
+  },
 ];

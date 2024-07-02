@@ -1,17 +1,16 @@
 export const handleSort = (
   e: React.MouseEvent<HTMLTableHeaderCellElement | HTMLLIElement, MouseEvent>,
-  array: any[],
   filteredArray: any[],
   sorts: {},
   setSorts: (value: object) => void,
   setFilteredArray: (value: any[]) => void
 ) => {
-  const id = e.currentTarget.id as keyof (typeof array)[0];
+  const id = e.currentTarget.id as keyof (typeof filteredArray)[0];
   const sort = e.currentTarget.dataset.sort;
 
   let sortedArray = filteredArray;
 
-  sortedArray = [...array].sort((user1, user2) => {
+  sortedArray = [...filteredArray].sort((user1, user2) => {
     if (user1[id] === null || user2[id] === null) return -1;
 
     const usersArr = [user1, user2];

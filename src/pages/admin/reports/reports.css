@@ -8,19 +8,28 @@
     .reports-header-left {
     }
     .reports-header-right {
+      display: flex;
     }
   }
   .reports-main {
     margin-top: 10px;
-    .reports-main-unsolved {
-      text-align: right;
-      padding: 5px;
-      color: red;
 
-      .reports-main-unsolved-text {
-      }
-      .reports-main-unsolved-number {
+    .reports-main-head {
+      padding: 5px;
+      display: flex;
+      justify-content: space-between;
+
+      .reports-header-reset {
         cursor: pointer;
+      }
+
+      .reports-main-unsolved {
+        color: red;
+        .reports-main-unsolved-text {
+        }
+        .reports-main-unsolved-number {
+          cursor: pointer;
+        }
       }
     }
     .reports-main-table {
@@ -46,6 +55,9 @@
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
+          }
+          .reports-main-table-body-cell.selectable {
+            cursor: pointer;
           }
         }
       }

@@ -23,15 +23,16 @@ const Reports = () => {
     report_false: "desc",
   });
 
+  // 정렬
   const handleSort = (
     e: React.MouseEvent<HTMLTableHeaderCellElement | HTMLLIElement, MouseEvent>
   ) => {
-    const id = e.currentTarget.id as keyof (typeof reports)[0];
+    const id = e.currentTarget.id as keyof (typeof filteredReports)[0];
     const sort = e.currentTarget.dataset.sort;
 
     let sortedReports = filteredReports;
 
-    sortedReports = [...reports].sort((user1, user2) => {
+    sortedReports = [...filteredReports].sort((user1, user2) => {
       if (user1[id] === null || user2[id] === null) return -1;
 
       const usersArr = [user1, user2];
@@ -73,17 +74,44 @@ const Reports = () => {
     setFilteredReports(sortedReports);
   };
 
+  // 필터링
+  const handleFilter = (
+    e: React.MouseEvent<HTMLTableDataCellElement, MouseEvent>
+  ) => {
+    const id = e.currentTarget.id;
+    const filter = e.currentTarget.dataset.filter;
+
+    console.log(id);
+    console.log(filter);
+
+    const newFilter = id === "report_false" ? Number(filter) : filter;
+
+    const newReports = filteredReports.filter(
+      (report) => report[id as keyof ReportType] === newFilter
+    );
+
+    setFilteredReports(newReports);
+  };
+
   return (
     <div className="reports">
       <h3 className="reports-title">신고 목록</h3>
       <header className="reports-header">
         <div className="reports-header-left">페이지네이션 조절</div>
-        <div className="reports-header-right">정렬, 설정</div>
+        <div className="reports-header-right">설정</div>
       </header>
       <main className="reports-main">
-        <div className="reports-main-unsolved">
-          <span className="reports-main-unsolved-text">해결 안된 신고: </span>
-          <span className="reports-main-unsolved-number">{unsolved}</span>
+        <div className="reports-main-head">
+          <div
+            className="reports-header-reset"
+            onClick={() => setFilteredReports(reports)}
+          >
+            전체
+          </div>
+          <div className="reports-main-unsolved">
+            <span className="reports-main-unsolved-text">해결 안된 신고: </span>
+            <span className="reports-main-unsolved-number">{unsolved}</span>
+          </div>
         </div>
         <table className="reports-main-table">
           <thead className="reports-main-table-header">
@@ -116,7 +144,12 @@ const Reports = () => {
                 className="reports-main-table-body-row"
                 key={report.report_id}
               >
-                <td className="reports-main-table-body-cell">
+                <td
+                  className="reports-main-table-body-cell selectable"
+                  data-filter={report.report_cate}
+                  id="report_cate"
+                  onClick={(e) => handleFilter(e)}
+                >
                   {reportName(report.report_cate)}
                 </td>
                 <td className="reports-main-table-body-cell">
@@ -136,7 +169,12 @@ const Reports = () => {
                 <td className="reports-main-table-body-cell">
                   {dateFromLocalDateToDot(report.report_date)}
                 </td>
-                <td className="reports-main-table-body-cell">
+                <td
+                  className="reports-main-table-body-cell selectable"
+                  data-filter={report.report_false}
+                  id="report_false"
+                  onClick={(e) => handleFilter(e)}
+                >
                   {reportResult(report.report_false)}
                 </td>
               </tr>
