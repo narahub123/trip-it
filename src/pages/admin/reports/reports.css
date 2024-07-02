@@ -6,24 +6,19 @@
     display: flex;
     justify-content: space-between;
     .reports-header-left {
+      display: flex;
+
+      .reports-header-reset {
+        padding: 0 10px;
+        cursor: pointer;
+        color: blue;
+      }
     }
     .reports-header-right {
       display: flex;
-    }
-  }
-  .reports-main {
-    margin-top: 10px;
-
-    .reports-main-head {
-      padding: 5px;
-      display: flex;
-      justify-content: space-between;
-
-      .reports-header-reset {
-        cursor: pointer;
-      }
 
       .reports-main-unsolved {
+        padding: 0 10px;
         color: red;
         .reports-main-unsolved-text {
         }
@@ -32,6 +27,10 @@
         }
       }
     }
+  }
+  .reports-main {
+    margin-top: 10px;
+
     .reports-main-table {
       width: 100%;
       border: 1px solid #ddd;

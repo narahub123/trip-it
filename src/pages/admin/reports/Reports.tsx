@@ -9,8 +9,18 @@ import { ReportType } from "../../../types/reports";
 import { dateFromLocalDateToDot } from "../../../utils/date";
 import "./reports.css";
 import { useState } from "react";
+import PaginationControllerFlexible from "../../../components/ui/PaginationControllerFlexible";
+import Pagination from "../../../components/ui/Pagination";
 
 const Reports = () => {
+  const arrayLengthDefault = 5;
+  const arrayLengthMax = 10;
+  const arrayLengthMin = 1;
+  const UNIT_NAME = "신고";
+  const [limit, setLimit] = useState(arrayLengthDefault);
+  const [page, setPage] = useState(1);
+  const offset = (page - 1) * limit;
+
   const [filteredReports, setFilteredReports] = useState(reports);
   const unsolved = reports.filter((report) => report.report_false === 0).length;
   const [sorts, setSorts] = useState({
@@ -76,7 +86,7 @@ const Reports = () => {
 
   // 필터링
   const handleFilter = (
-    e: React.MouseEvent<HTMLTableDataCellElement, MouseEvent>
+    e: React.MouseEvent<HTMLTableDataCellElement | HTMLElement, MouseEvent>
   ) => {
     const id = e.currentTarget.id;
     const filter = e.currentTarget.dataset.filter;
@@ -90,6 +100,8 @@ const Reports = () => {
       (report) => report[id as keyof ReportType] === newFilter
     );
 
+    console.log(newReports);
+
     setFilteredReports(newReports);
   };
 
@@ -97,22 +109,38 @@ const Reports = () => {
     <div className="reports">
       <h3 className="reports-title">신고 목록</h3>
       <header className="reports-header">
-        <div className="reports-header-left">페이지네이션 조절</div>
-        <div className="reports-header-right">설정</div>
-      </header>
-      <main className="reports-main">
-        <div className="reports-main-head">
+        <div className="reports-header-left">
           <div
             className="reports-header-reset"
             onClick={() => setFilteredReports(reports)}
           >
             전체
           </div>
+          <PaginationControllerFlexible
+            arrayLengthDefault={arrayLengthDefault}
+            arrayLengthMax={arrayLengthMax}
+            arrayLengthMin={arrayLengthMin}
+            limit={limit}
+            setLimit={setLimit}
+            UNIT_NAME={UNIT_NAME}
+          />
+        </div>
+        <div className="reports-header-right">
           <div className="reports-main-unsolved">
             <span className="reports-main-unsolved-text">해결 안된 신고: </span>
-            <span className="reports-main-unsolved-number">{unsolved}</span>
+            <span
+              className="reports-main-unsolved-number"
+              data-filter={"0"}
+              id="report_false"
+              onClick={(e) => handleFilter(e)}
+            >
+              {unsolved}
+            </span>
           </div>
+          설정
         </div>
+      </header>
+      <main className="reports-main">
         <table className="reports-main-table">
           <thead className="reports-main-table-header">
             <tr className="reports-main-table-header-row">
@@ -139,7 +167,7 @@ const Reports = () => {
             </tr>
           </thead>
           <tbody className="reports-main-table-body">
-            {filteredReports.map((report) => (
+            {filteredReports.slice(offset, offset + limit).map((report) => (
               <tr
                 className="reports-main-table-body-row"
                 key={report.report_id}
@@ -182,7 +210,14 @@ const Reports = () => {
           </tbody>
         </table>
       </main>
-      <div className="reports-search-container">검색</div>
+      <div className="reports-search-container">
+        <Pagination
+          total={filteredReports.length}
+          limit={limit}
+          page={page}
+          setPage={setPage}
+        />
+      </div>
       <div className="reports-pagination-container">페이징</div>
     </div>
   );
