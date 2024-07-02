@@ -59,9 +59,105 @@
           }
           .reports-main-table-body-cell.selectable {
             cursor: pointer;
+
+            .reports-main-table-body-cell-container {
+              p {
+                margin-left: 5px;
+                padding: 2px;
+                border: 1px solid #ccc;
+                font-size: 12px;
+              }
+              p:hover {
+                background-color: aquamarine;
+                color: white;
+              }
+              .reports-dropdown-container {
+                position: absolute;
+                border: 1px solid #ccc;
+                background-color: #fff;
+                z-index: 9;
+                padding: 5px;
+                right: 18px;
+                width: 100px;
+                margin-top: 5px;
+                visibility: hidden;
+                max-height: 0;
+                opacity: 0;
+                transition: all 0.5s ease-in-out;
+                .reports-dropdown-item {
+                  padding: 5px;
+                }
+                .reports-dropdown-item:hover {
+                  color: aquamarine;
+                }
+              }
+              .reports-dropdown-container-active {
+                position: absolute;
+                border: 1px solid #ccc;
+                background-color: #fff;
+                z-index: 9;
+                padding: 5px;
+                right: 18px;
+                width: 100px;
+                margin-top: 5px;
+                visibility: visible;
+                max-height: 200px;
+                opacity: 1;
+                transition: all 0.5s ease-in-out;
+                .reports-dropdown-item {
+                  padding: 5px;
+                }
+                .reports-dropdown-item:hover {
+                  color: aquamarine;
+                }
+              }
+            }
           }
         }
       }
+    }
+  }
+  .reports-detail-container {
+    position: absolute;
+    left: 50%;
+    top: 40%;
+    transform: translate(-50%, -40%);
+    z-index: 9;
+    width: 350px;
+    height: 0;
+    opacity: 0;
+
+    border: 1px solid #ccc;
+    background-color: white;
+    text-align: center;
+    vertical-align: center;
+  }
+  .reports-detail-container-active {
+    position: absolute;
+    left: 50%;
+    top: 40%;
+    transform: translate(-50%, -40%);
+    z-index: 9;
+    width: 350px;
+    /* height: 100%; */
+    opacity: 1;
+    border: 1px solid #ccc;
+    background-color: white;
+    text-align: center;
+    vertical-align: center;
+    transition: all 0.5s;
+
+    figure {
+      position: absolute;
+      right: 0;
+      top: 0;
+      color: #ccc;
+    }
+    figure:hover {
+      color: black;
+    }
+    p {
+      padding: 20px 10px;
     }
   }
 }

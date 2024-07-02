@@ -12,8 +12,9 @@ import { useState } from "react";
 import PaginationControllerFlexible from "../../../components/ui/PaginationControllerFlexible";
 import Pagination from "../../../components/ui/Pagination";
 import Search from "../../../components/ui/Search";
-import { keyboard } from "@testing-library/user-event/dist/keyboard";
 import NoSearchData from "../../../components/ui/NoSearchData";
+import { Link } from "react-router-dom";
+import { FaRegWindowClose } from "react-icons/fa";
 
 const Reports = () => {
   const arrayLengthDefault = 5;
@@ -25,7 +26,9 @@ const Reports = () => {
   const offset = (page - 1) * limit;
 
   const [filteredReports, setFilteredReports] = useState(reports);
-  const unsolved = reports.filter((report) => report.report_false === 0).length;
+  const unsolved = filteredReports.filter(
+    (report) => report.report_false === 0
+  ).length;
   const [sorts, setSorts] = useState({
     report_cate: "desc",
     user_id: "desc",
@@ -34,6 +37,15 @@ const Reports = () => {
     report_detail: "desc",
     report_date: "desc",
     report_false: "desc",
+  });
+
+  const [detail, setDetail] = useState<string>("");
+  // 신고 상세 오픈
+  const [isOpen, setIsOpen] = useState(false);
+  // 신고 오픈
+  const [open, setOpen] = useState<{ isOn: boolean; id: number }>({
+    isOn: false,
+    id: 0,
   });
 
   // 정렬
@@ -113,6 +125,55 @@ const Reports = () => {
     { keyword: "아이디", key: "user_id" },
     { keyword: "신고 상세", key: "report_detail" },
   ];
+
+  // 신고 상세 보기
+  const handleDeatil = (report_detail: string | undefined) => {
+    console.log(detail);
+    if (report_detail) {
+      setDetail(report_detail);
+      setIsOpen(true);
+    }
+  };
+
+  // 신고 dropdown 열기
+  const handleOpen = (
+    e: React.MouseEvent<HTMLParagraphElement, MouseEvent>,
+    id: number
+  ) => {
+    e.stopPropagation();
+    setOpen({
+      id,
+      isOn: !open.isOn,
+    });
+  };
+  // 신고 처리하기
+  const handleReport = (
+    e: React.MouseEvent<HTMLLIElement, MouseEvent>,
+    id: number
+  ) => {
+    e.stopPropagation();
+    if (!window.confirm("신고를 처리하시겠습니까?")) {
+      setOpen({
+        ...open,
+        isOn: !open.isOn,
+      });
+      return;
+    }
+    const report_false = Number(e.currentTarget.dataset.report);
+    console.log(report_false);
+    const newReports = filteredReports.map((report) => {
+      if (report.report_id === id) {
+        return {
+          ...report,
+          report_false: report_false,
+        };
+      } else {
+        return { ...report };
+      }
+    });
+
+    setFilteredReports(newReports);
+  };
 
   return (
     <div className="reports">
@@ -197,15 +258,31 @@ const Reports = () => {
                   {reportName(report.report_cate)}
                 </td>
                 <td className="reports-main-table-body-cell">
-                  {report.user_id}
+                  <Link to={`/admin/users/${report.user_id}`}>
+                    {report.user_id}
+                  </Link>
                 </td>
                 <td className="reports-main-table-body-cell">
-                  {report.reported_user_id}
+                  <Link to={`/admin/users/${report.reported_user_id}`}>
+                    {report.reported_user_id}
+                  </Link>
                 </td>
                 <td className="reports-main-table-body-cell">
-                  {report.msg_id || report.post_id}
+                  <Link
+                    to={report.msg_id ? `.` : `/admin/posts/${report.post_id}`}
+                  >
+                    {report.msg_id || report.post_id}
+                  </Link>
                 </td>
-                <td className="reports-main-table-body-cell">
+                <td
+                  className="reports-main-table-body-cell"
+                  onClick={() => handleDeatil(report.report_detail)}
+                  style={
+                    report.report_detail?.length !== 0
+                      ? { cursor: "pointer" }
+                      : {}
+                  }
+                >
                   {report.report_detail && report.report_detail.length > 10
                     ? report.report_detail.slice(0, 10) + "..."
                     : report.report_detail}
@@ -219,13 +296,56 @@ const Reports = () => {
                   id="report_false"
                   onClick={(e) => handleFilter(e)}
                 >
-                  {reportResult(report.report_false)}
+                  {report.report_false === 0 ? (
+                    <div className="reports-main-table-body-cell-container">
+                      {reportResult(report.report_false)}{" "}
+                      <p onClick={(e) => handleOpen(e, report.report_id)}>
+                        처리
+                      </p>
+                      <ul
+                        className={
+                          open.isOn && report.report_id === open.id
+                            ? "reports-dropdown-container-active"
+                            : "reports-dropdown-container"
+                        }
+                      >
+                        <li
+                          className="reports-dropdown-item"
+                          data-report="1"
+                          onClick={(e) => handleReport(e, report.report_id)}
+                        >
+                          신고승인
+                        </li>
+                        <li
+                          className="reports-dropdown-item"
+                          data-report="2"
+                          onClick={(e) => handleReport(e, report.report_id)}
+                        >
+                          허위신고
+                        </li>
+                      </ul>
+                    </div>
+                  ) : (
+                    reportResult(report.report_false)
+                  )}
                 </td>
               </tr>
             ))}
           </tbody>
         </table>
       </main>
+      <div
+        className={
+          isOpen
+            ? "reports-detail-container-active"
+            : "reports-detail-container"
+        }
+      >
+        <figure onClick={() => setIsOpen(false)}>
+          <FaRegWindowClose />
+        </figure>
+        <p>{detail}</p>
+      </div>
       <div className="reports-search-container">
         <Search
           array={reports}
