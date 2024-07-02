@@ -1,7 +1,9 @@
 .users-table-responsive {
   display: flex;
-  gap: 10px;
+  gap: 20px;
   flex-wrap: wrap;
+  margin: 0 auto;
+  justify-content: space-evenly;
 
   .users-table-responsive-row {
     border: 1px solid #ddd;
@@ -25,44 +27,44 @@
     background-color: rgba(127, 255, 212, 0.341);
   }
 }
-@media screen and (max-width: 592px) {
+@media screen and (max-width: 574px) {
   .users-table-responsive-row {
-    max-width: 500px;
+    max-width: 100%;
   }
 }
-@media screen and (min-width: 592px) and (max-width: 818px) {
+@media screen and (min-width: 574px) and (max-width: 810px) {
   .users-table-responsive {
+    justify-content: space-evenly;
     .users-table-responsive-row {
-      max-width: 43% !important;
-      max-height: 43% !important;
+      width: 43% !important;
+      height: 43% !important;
     }
-    .users-table-responsive::after {
-      content: "";
-      max-width: 43% !important;
-      max-height: 43% !important;
-      border: 0px solid #ddd;
-      border-radius: 10px;
-      padding: 10px;
-      flex-grow: 1;
-      flex-shrink: 1;
-    }
-  }
-}
-@media screen and (min-width: 818px) {
-  .users-table-responsive {
-    visibility: visible;
-  }
-  .users-table-responsive-row {
-    max-width: 28% !important;
-    max-height: 28% !important;
   }
   .users-table-responsive::after {
     content: "";
-    max-width: 56% !important;
-    max-height: 28% !important;
+    width: 43% !important;
+    height: 100% !important;
     border: 0px solid #ddd;
-    border-radius: 10px;
     padding: 10px;
+    border-radius: 10px;
+    flex-grow: 1;
+    flex-shrink: 1;
+  }
+}
+@media screen and (min-width: 810px) and (max-width: 977px) {
+  .users-table-responsive {
+    .users-table-responsive-row {
+      max-width: 28% !important;
+      max-height: 28% !important;
+    }
+  }
+  .users-table-responsive::after {
+    content: "";
+    max-width: 28% !important;
+    max-height: 100% !important;
+    border: 0px solid #ddd;
+    padding: 10px;
+    border-radius: 10px;
     flex-grow: 1;
     flex-shrink: 1;
   }
