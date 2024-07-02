@@ -1,0 +1,10 @@
+.no-search-data {
+  margin: 0 auto;
+  img {
+    width: 350px;
+    height: 350px;
+  }
+  p {
+    text-align: center;
+  }
+}

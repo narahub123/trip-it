@@ -34,6 +34,7 @@
     .reports-main-table {
       width: 100%;
       border: 1px solid #ddd;
+      border-collapse: collapse;
 
       th,
       td {
@@ -43,6 +44,7 @@
 
       .reports-main-table-header {
         .reports-main-table-header-row {
+          border-bottom: 1px solid #ddd;
           .reports-main-table-header-cell {
             cursor: pointer;
           }

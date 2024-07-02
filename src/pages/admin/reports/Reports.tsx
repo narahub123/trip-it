@@ -11,6 +11,9 @@ import "./reports.css";
 import { useState } from "react";
 import PaginationControllerFlexible from "../../../components/ui/PaginationControllerFlexible";
 import Pagination from "../../../components/ui/Pagination";
+import Search from "../../../components/ui/Search";
+import { keyboard } from "@testing-library/user-event/dist/keyboard";
+import NoSearchData from "../../../components/ui/NoSearchData";
 
 const Reports = () => {
   const arrayLengthDefault = 5;
@@ -105,6 +108,12 @@ const Reports = () => {
     setFilteredReports(newReports);
   };
 
+  // 검색
+  const keywordArray = [
+    { keyword: "아이디", key: "user_id" },
+    { keyword: "신고 상세", key: "report_detail" },
+  ];
+
   return (
     <div className="reports">
       <h3 className="reports-title">신고 목록</h3>
@@ -167,6 +176,13 @@ const Reports = () => {
             </tr>
           </thead>
           <tbody className="reports-main-table-body">
+            {filteredReports.length === 0 && (
+              <tr className="reports-main-table-body-row">
+                <td className="reports-main-table-body-cell" colSpan={7}>
+                  <NoSearchData />
+                </td>
+              </tr>
+            )}
             {filteredReports.slice(offset, offset + limit).map((report) => (
               <tr
                 className="reports-main-table-body-row"
@@ -211,6 +227,13 @@ const Reports = () => {
         </table>
       </main>
       <div className="reports-search-container">
+        <Search
+          array={reports}
+          setArray={setFilteredReports}
+          keywordArray={keywordArray}
+        />
+      </div>
+      <div className="reports-pagination-container">
         <Pagination
           total={filteredReports.length}
           limit={limit}
@@ -218,7 +241,6 @@ const Reports = () => {
           setPage={setPage}
         />
       </div>
-      <div className="reports-pagination-container">페이징</div>
     </div>
   );
 };
