@@ -19,8 +19,8 @@ const UsersGallery = ({ filteredUsers, limit, offset }: UsersGalleryProps) => {
           </li>
         )}
         {filteredUsers.slice(offset, offset + limit).map((user) => (
-          <li className="users-gallery-item" key={user.user_id}>
-            <Link to={`${user.user_id}`}>
+          <li className="users-gallery-item" key={user.userId}>
+            <Link to={`${user.userId}`}>
               <figure className="users-gallery-item-image">
                 <img
                   src={
@@ -34,7 +34,7 @@ const UsersGallery = ({ filteredUsers, limit, offset }: UsersGalleryProps) => {
               <div className="users-gallery-item-bottom-cap">
                 <ul>
                   <li className="users-gallery-item-nickname">
-                    닉네임(아이디) : {user.nickname}({user.user_id})
+                    닉네임(아이디) : {user.nickname}({user.userId})
                   </li>
                   <li className="users-gallery-item-username">
                     이름: {user.username}
@@ -43,7 +43,7 @@ const UsersGallery = ({ filteredUsers, limit, offset }: UsersGalleryProps) => {
                     이메일: {user.email}
                   </li>
                   <li className="users-gallery-item-reports">
-                    신고수: {user.report_count}
+                    신고수: {user.reportCount}
                   </li>
                   <li className="users-gallery-item-gender">
                     성별: {user.gender === "m" ? "남자" : "여자"}

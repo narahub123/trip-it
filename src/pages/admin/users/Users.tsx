@@ -32,7 +32,7 @@ const Users = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [filteredUsers, setFilteredUsers] = useState(users);
   const [sorts, setSorts] = useState({
-    user_id: "asc",
+    userId: "asc",
     username: "asc",
     nickname: "asc",
     gender: "desc",
@@ -40,12 +40,12 @@ const Users = () => {
     role: "asc",
     regdate: "asc",
     email: "asc",
-    report_count: "asc",
+    reportCount: "asc",
   });
 
   const keywordArray = [
     { keyword: "이름", key: "username" },
-    { keyword: "아이디", key: "user_id" },
+    { keyword: "아이디", key: "userId" },
     { keyword: "닉네임", key: "nickname" },
     { keyword: "소개글", key: "user_intro" },
   ];
@@ -167,11 +167,11 @@ const Users = () => {
               <li
                 className="users-header-sorts-item"
                 data-sort="asc"
-                id="user_id"
+                id="userId"
                 onClick={(e) => handleSort(e)}
               >
                 아이디{" "}
-                {sorts.user_id === "desc" ? <LuChevronDown /> : <LuChevronUp />}
+                {sorts.userId === "desc" ? <LuChevronDown /> : <LuChevronUp />}
               </li>
               <li
                 className="users-header-sorts-item"
@@ -220,11 +220,11 @@ const Users = () => {
               <li
                 className="users-header-sorts-item"
                 data-sort="asc"
-                id="report_count"
+                id="reportCount"
                 onClick={(e) => handleSort(e)}
               >
                 신고수{" "}
-                {sorts.report_count === "desc" ? (
+                {sorts.reportCount === "desc" ? (
                   <LuChevronDown />
                 ) : (
                   <LuChevronUp />

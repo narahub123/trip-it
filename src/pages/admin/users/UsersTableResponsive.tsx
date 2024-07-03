@@ -18,10 +18,10 @@ const UsersTableResponsive = ({
   return (
     <table className="users-table-responsive">
       {filteredUsers.slice(offset, offset + limit).map((user) => (
-        <tr className="users-table-responsive-row" key={user.user_id}>
-          <Link to={`${user.user_id}`} key={user.user_id}>
+        <tr className="users-table-responsive-row" key={user.userId}>
+          <Link to={`${user.userId}`} key={user.userId}>
             <td>
-              <span className="cell-header">아이디</span> {user.user_id}
+              <span className="cell-header">아이디</span> {user.userId}
             </td>
             <td>
               <span className="cell-header">이름</span> {user.username}
@@ -37,7 +37,7 @@ const UsersTableResponsive = ({
               <span className="cell-header">이메일</span> {user.email}
             </td>
             <td>
-              <span className="cell-header">신고수</span> {user.report_count}
+              <span className="cell-header">신고수</span> {user.reportCount}
             </td>
           </Link>
         </tr>

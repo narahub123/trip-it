@@ -29,9 +29,9 @@ const Schedules = ({ schedules }: SchedulesProps) => {
   const [showDelete, setShowDelete] = useState(false);
 
   const scheduleDeletions = schedules.map((schedule) => {
-    const schedule_id = schedule.schedule_id ? schedule.schedule_id : 0;
+    const scheduleId = schedule.scheduleId ? schedule.scheduleId : 0;
     const deletion = {
-      schedule_id,
+      scheduleId,
       deletion: false,
     };
 
@@ -43,7 +43,7 @@ const Schedules = ({ schedules }: SchedulesProps) => {
   // 삭제할 일정 배열
   const [deletions, setDeletions] = useState<
     {
-      schedule_id: number;
+      scheduleId: number;
       deletion: boolean;
     }[]
   >(scheduleDeletions);
@@ -69,28 +69,28 @@ const Schedules = ({ schedules }: SchedulesProps) => {
     // 지역 코드 오름차순
     if (id === "areacodeSortIncl") {
       sortedSchedules = [...schedules].sort((schedule1, schedule2) => {
-        if (!schedule1.metro_id || !schedule2.metro_id) return -1;
+        if (!schedule1.metroId || !schedule2.metroId) return -1;
 
-        return schedule1.metro_id?.localeCompare(schedule2.metro_id);
+        return schedule1.metroId?.localeCompare(schedule2.metroId);
       });
     }
 
     // 지역 코드 내림차순
     if (id === "areacodeSortDecl") {
       sortedSchedules = [...schedules].sort((schedule1, schedule2) => {
-        if (!schedule1.metro_id || !schedule2.metro_id) return -1;
+        if (!schedule1.metroId || !schedule2.metroId) return -1;
 
-        return schedule2.metro_id?.localeCompare(schedule1.metro_id);
+        return schedule2.metroId?.localeCompare(schedule1.metroId);
       });
     }
 
     // 지역 이름 오름차순
     if (id === "areaNameSortIncl") {
       sortedSchedules = [...schedules].sort((schedule1, schedule2) => {
-        if (!schedule1.metro_id || !schedule2.metro_id) return -1;
+        if (!schedule1.metroId || !schedule2.metroId) return -1;
 
-        return metroName(schedule1.metro_id)?.localeCompare(
-          metroName(schedule2.metro_id)
+        return metroName(schedule1.metroId)?.localeCompare(
+          metroName(schedule2.metroId)
         );
       });
     }
@@ -98,10 +98,10 @@ const Schedules = ({ schedules }: SchedulesProps) => {
     // 지역 이름 내림차순
     if (id === "areaNameSortDecl") {
       sortedSchedules = [...schedules].sort((schedule1, schedule2) => {
-        if (!schedule1.metro_id || !schedule2.metro_id) return -1;
+        if (!schedule1.metroId || !schedule2.metroId) return -1;
 
-        return metroName(schedule2.metro_id)?.localeCompare(
-          metroName(schedule1.metro_id)
+        return metroName(schedule2.metroId)?.localeCompare(
+          metroName(schedule1.metroId)
         );
       });
     }
@@ -109,30 +109,30 @@ const Schedules = ({ schedules }: SchedulesProps) => {
     // 일정 시작 오름차순
     if (id === "startDateSortIncl") {
       sortedSchedules = [...schedules].sort((schedule1, schedule2) => {
-        if (!schedule1.start_date || !schedule2.start_date) return -1;
+        if (!schedule1.startDate || !schedule2.startDate) return -1;
 
-        return schedule1.start_date?.localeCompare(schedule2.start_date);
+        return schedule1.startDate?.localeCompare(schedule2.startDate);
       });
     }
 
     // 일정 시작 내림차순
     if (id === "startDateSortDecl") {
       sortedSchedules = [...schedules].sort((schedule1, schedule2) => {
-        if (!schedule1.start_date || !schedule2.start_date) return -1;
+        if (!schedule1.startDate || !schedule2.startDate) return -1;
 
-        return schedule2.start_date?.localeCompare(schedule1.start_date);
+        return schedule2.startDate?.localeCompare(schedule1.startDate);
       });
     }
 
     // 일정 기간 오름차순
     if (id === "durationSortIncl") {
       sortedSchedules = [...schedules].sort((schedule1, schedule2) => {
-        if (!schedule1.start_date || !schedule2.start_date) return -1;
+        if (!schedule1.startDate || !schedule2.startDate) return -1;
 
         const duration1 =
-          Number(schedule1.end_date) - Number(schedule1.start_date);
+          Number(schedule1.endDate) - Number(schedule1.startDate);
         const duration2 =
-          Number(schedule2.end_date) - Number(schedule2.start_date);
+          Number(schedule2.endDate) - Number(schedule2.startDate);
 
         return duration2 - duration1;
       });
@@ -141,12 +141,12 @@ const Schedules = ({ schedules }: SchedulesProps) => {
     // 일정 기간 내림차순
     if (id === "durationSortDecl") {
       sortedSchedules = [...schedules].sort((schedule1, schedule2) => {
-        if (!schedule1.start_date || !schedule2.start_date) return -1;
+        if (!schedule1.startDate || !schedule2.startDate) return -1;
 
         const duration1 =
-          Number(schedule1.end_date) - Number(schedule1.start_date);
+          Number(schedule1.endDate) - Number(schedule1.startDate);
         const duration2 =
-          Number(schedule2.end_date) - Number(schedule2.start_date);
+          Number(schedule2.endDate) - Number(schedule2.startDate);
 
         return duration1 - duration2;
       });
@@ -155,18 +155,18 @@ const Schedules = ({ schedules }: SchedulesProps) => {
     // 등록일 오름차순
     if (id === "registerDateSortIncl") {
       sortedSchedules = [...schedules].sort((schedule1, schedule2) => {
-        if (!schedule1.register_date || !schedule2.register_date) return -1;
+        if (!schedule1.registerDate || !schedule2.registerDate) return -1;
 
-        return schedule1.register_date?.localeCompare(schedule2.register_date);
+        return schedule1.registerDate?.localeCompare(schedule2.registerDate);
       });
     }
 
     // 등록일 내림차순
     if (id === "registerDateSortDecl") {
       sortedSchedules = [...schedules].sort((schedule1, schedule2) => {
-        if (!schedule1.register_date || !schedule2.register_date) return -1;
+        if (!schedule1.registerDate || !schedule2.registerDate) return -1;
 
-        return schedule2.register_date?.localeCompare(schedule1.register_date);
+        return schedule2.registerDate?.localeCompare(schedule1.registerDate);
       });
     }
     setFilteredSchedules(sortedSchedules);
@@ -193,7 +193,7 @@ const Schedules = ({ schedules }: SchedulesProps) => {
     const keyword = e.currentTarget.value;
     console.log(keyword);
     const newSchedules = schedules.filter((schedule) =>
-      schedule.schedule_title?.includes(keyword)
+      schedule.scheduleTitle?.includes(keyword)
     );
 
     console.log(newSchedules);
@@ -216,7 +216,7 @@ const Schedules = ({ schedules }: SchedulesProps) => {
     // 삭제할 scheduleIds 배열
     const deletionArray = deletions
       .filter((deletion) => deletion.deletion === true)
-      .map((result) => result.schedule_id);
+      .map((result) => result.scheduleId);
 
     if (deletionArray.length === 0) {
       window.alert("삭제할 일정을 선택해주세요.");
@@ -229,8 +229,8 @@ const Schedules = ({ schedules }: SchedulesProps) => {
 
     // api에서 받아 온 배열 조작
     const newSchedules = filteredSchedules.filter((schedule) => {
-      if (schedule.schedule_id)
-        return !deletionArray.includes(schedule.schedule_id);
+      if (schedule.scheduleId)
+        return !deletionArray.includes(schedule.scheduleId);
     });
 
     console.log(newSchedules);
@@ -243,7 +243,7 @@ const Schedules = ({ schedules }: SchedulesProps) => {
   // 일괄 선택
   const handleSelectAll = () => {
     const newDeletions = deletions.map((deletion) => ({
-      schedule_id: deletion.schedule_id,
+      scheduleId: deletion.scheduleId,
       deletion: !deletion.deletion,
     }));
 

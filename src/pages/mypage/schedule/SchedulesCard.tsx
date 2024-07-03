@@ -10,7 +10,7 @@ import { useEffect, useRef, useState } from "react";
 import { debounce } from "../../../utils/debounce";
 
 export interface DeletionsType {
-  schedule_id: number;
+  scheduleId: number;
   deletion: boolean;
 }
 
@@ -30,25 +30,25 @@ const SchedulesCard = ({
   setDeletions,
 }: SchedulesCardProps) => {
   const inputRef = useRef<HTMLInputElement>(null);
-  const defaultImage = useDefaultImage(schedule.metro_id);
+  const defaultImage = useDefaultImage(schedule.metroId);
 
-  const { start_date, end_date, register_date, schedule_id } = schedule;
-  const start: DestrucDateType = start_date
-    ? dateFormatFromLocalDate(start_date)
+  const { startDate, endDate, registerDate, scheduleId } = schedule;
+  const start: DestrucDateType = startDate
+    ? dateFormatFromLocalDate(startDate)
     : { year: 0, month: 0, date: 0 };
 
-  const end: DestrucDateType = end_date
-    ? dateFormatFromLocalDate(end_date)
+  const end: DestrucDateType = endDate
+    ? dateFormatFromLocalDate(endDate)
     : { year: 0, month: 0, date: 0 };
 
-  const register: DestrucDateType = register_date
-    ? dateFormatFromLocalDate(register_date)
+  const register: DestrucDateType = registerDate
+    ? dateFormatFromLocalDate(registerDate)
     : { year: 0, month: 0, date: 0 };
 
   useEffect(() => {
     // deletion과 카드의 id가 같은 것 같기
     const result = deletions.find(
-      (deletion) => deletion.schedule_id === schedule_id
+      (deletion) => deletion.scheduleId === scheduleId
     );
 
     if (result) {
@@ -58,7 +58,7 @@ const SchedulesCard = ({
         inputRef.current?.setAttribute("checked", "true");
       }
     }
-  }, [deletions, schedule_id]);
+  }, [deletions, scheduleId]);
 
   const handleDeletion = (e: React.ChangeEvent<HTMLInputElement>) => {
     const checked = e.currentTarget.checked;
@@ -66,9 +66,9 @@ const SchedulesCard = ({
 
     if (checked) {
       const newDeletions = deletions.map((deletion) => {
-        if (deletion.schedule_id === Number(id)) {
+        if (deletion.scheduleId === Number(id)) {
           return {
-            schedule_id: Number(id),
+            scheduleId: Number(id),
             deletion: true,
           };
         } else {
@@ -80,9 +80,9 @@ const SchedulesCard = ({
       setDeletions(newDeletions);
     } else if (!checked) {
       const newDeletions = deletions.map((deletion) => {
-        if (deletion.schedule_id === Number(id)) {
+        if (deletion.scheduleId === Number(id)) {
           return {
-            schedule_id: Number(id),
+            scheduleId: Number(id),
             deletion: false,
           };
         } else {
@@ -102,7 +102,7 @@ const SchedulesCard = ({
       style={{
         backgroundImage: `url(${defaultImage})`,
       }}
-      key={schedule.schedule_id}
+      key={schedule.scheduleId}
     >
       {/* 삭제 체크 박스 */}
       <div className="schedules-card-delete">
@@ -110,21 +110,21 @@ const SchedulesCard = ({
           <input
             type="checkbox"
             className="deletion"
-            id={schedule_id.toString()}
+            id={scheduleId.toString()}
             onChange={(e) => handleDeletion(e)}
             checked={
-              deletions.find((deletion) => deletion.schedule_id === schedule_id)
+              deletions.find((deletion) => deletion.scheduleId === scheduleId)
                 ?.deletion
             }
             ref={inputRef}
           />
         )}
       </div>
-      <Link to={`${schedule.schedule_id}`} className="schedules-card-link">
+      <Link to={`${schedule.scheduleId}`} className="schedules-card-link">
         <div className="schedules-card-container">
           <div className="schedules-card-cap">
             <div className="schedules-card-cap-container">
-              <p className="schedules-card-title">{schedule.schedule_title}</p>
+              <p className="schedules-card-title">{schedule.scheduleTitle}</p>
               <p className="schedules-card-duration">
                 {`${start.year}.${start.month + 1}.${start.date}.`} -{" "}
                 {`${end.year}.${end.month + 1}.${end.date}.`}
@@ -134,7 +134,7 @@ const SchedulesCard = ({
                   {`${register.year}.${register.month + 1}.${register.date}.`}
                 </p>
                 <p className="schedules-card-location">
-                  {schedule.metro_id && metroName(schedule.metro_id)}
+                  {schedule.metroId && metroName(schedule.metroId)}
                 </p>
               </div>
             </div>

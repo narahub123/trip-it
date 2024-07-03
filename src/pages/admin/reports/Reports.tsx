@@ -27,16 +27,16 @@ const Reports = () => {
 
   const [filteredReports, setFilteredReports] = useState(reports);
   const unsolved = filteredReports.filter(
-    (report) => report.report_false === 0
+    (report) => report.reportFalse === 0
   ).length;
   const [sorts, setSorts] = useState({
-    report_cate: "desc",
-    user_id: "desc",
-    reported_user_id: "desc",
-    post_id: "desc",
-    report_detail: "desc",
-    report_date: "desc",
-    report_false: "desc",
+    reportId: "desc",
+    userId: "desc",
+    reportedUserId: "desc",
+    postId: "desc",
+    reportDetail: "desc",
+    reportDate: "desc",
+    reportFalse: "desc",
   });
 
   const [detail, setDetail] = useState<string>("");
@@ -109,7 +109,7 @@ const Reports = () => {
     console.log(id);
     console.log(filter);
 
-    const newFilter = id === "report_false" ? Number(filter) : filter;
+    const newFilter = id === "reportFalse" ? Number(filter) : filter;
 
     const newReports = filteredReports.filter(
       (report) => report[id as keyof ReportType] === newFilter
@@ -122,15 +122,15 @@ const Reports = () => {
 
   // 검색
   const keywordArray = [
-    { keyword: "아이디", key: "user_id" },
-    { keyword: "신고 상세", key: "report_detail" },
+    { keyword: "아이디", key: "userId" },
+    { keyword: "신고 상세", key: "reportDetail" },
   ];
 
   // 신고 상세 보기
-  const handleDeatil = (report_detail: string | undefined) => {
+  const handleDeatil = (reportDetail: string | undefined) => {
     console.log(detail);
-    if (report_detail) {
-      setDetail(report_detail);
+    if (reportDetail) {
+      setDetail(reportDetail);
       setIsOpen(true);
     }
   };
@@ -159,13 +159,13 @@ const Reports = () => {
       });
       return;
     }
-    const report_false = Number(e.currentTarget.dataset.report);
-    console.log(report_false);
+    const reportFalse = Number(e.currentTarget.dataset.report);
+    console.log(reportFalse);
     const newReports = filteredReports.map((report) => {
-      if (report.report_id === id) {
+      if (report.reportId === id) {
         return {
           ...report,
-          report_false: report_false,
+          reportFalse: reportFalse,
         };
       } else {
         return { ...report };
@@ -201,7 +201,7 @@ const Reports = () => {
             <span
               className="reports-main-unsolved-number"
               data-filter={"0"}
-              id="report_false"
+              id="reportFalse"
               onClick={(e) => handleFilter(e)}
             >
               {unsolved}
@@ -245,66 +245,63 @@ const Reports = () => {
               </tr>
             )}
             {filteredReports.slice(offset, offset + limit).map((report) => (
-              <tr
-                className="reports-main-table-body-row"
-                key={report.report_id}
-              >
+              <tr className="reports-main-table-body-row" key={report.reportId}>
                 <td
                   className="reports-main-table-body-cell selectable"
-                  data-filter={report.report_cate}
-                  id="report_cate"
+                  data-filter={report.reportId}
+                  id="reportId"
                   onClick={(e) => handleFilter(e)}
                 >
-                  {reportName(report.report_cate)}
+                  {reportName(report.reportCate)}
                 </td>
                 <td className="reports-main-table-body-cell">
-                  <Link to={`/admin/users/${report.user_id}`}>
-                    {report.user_id}
+                  <Link to={`/admin/users/${report.userId}`}>
+                    {report.userId}
                   </Link>
                 </td>
                 <td className="reports-main-table-body-cell">
-                  <Link to={`/admin/users/${report.reported_user_id}`}>
-                    {report.reported_user_id}
+                  <Link to={`/admin/users/${report.reportedUserId}`}>
+                    {report.reportedUserId}
                   </Link>
                 </td>
                 <td className="reports-main-table-body-cell">
                   <Link
-                    to={report.msg_id ? `.` : `/admin/posts/${report.post_id}`}
+                    to={report.msgId ? `.` : `/admin/posts/${report.postId}`}
                   >
-                    {report.msg_id || report.post_id}
+                    {report.msgId || report.postId}
                   </Link>
                 </td>
                 <td
                   className="reports-main-table-body-cell"
-                  onClick={() => handleDeatil(report.report_detail)}
+                  onClick={() => handleDeatil(report.reportDetail)}
                   style={
-                    report.report_detail?.length !== 0
+                    report.reportDetail?.length !== 0
                       ? { cursor: "pointer" }
                       : {}
                   }
                 >
-                  {report.report_detail && report.report_detail.length > 10
-                    ? report.report_detail.slice(0, 10) + "..."
-                    : report.report_detail}
+                  {report.reportDetail && report.reportDetail.length > 10
+                    ? report.reportDetail.slice(0, 10) + "..."
+                    : report.reportDetail}
                 </td>
                 <td className="reports-main-table-body-cell">
-                  {dateFromLocalDateToDot(report.report_date)}
+                  {dateFromLocalDateToDot(report.reportDate)}
                 </td>
                 <td
                   className="reports-main-table-body-cell selectable"
-                  data-filter={report.report_false}
-                  id="report_false"
+                  data-filter={report.reportFalse}
+                  id="reportFalse"
                   onClick={(e) => handleFilter(e)}
                 >
-                  {report.report_false === 0 ? (
+                  {report.reportFalse === 0 ? (
                     <div className="reports-main-table-body-cell-container">
-                      {reportResult(report.report_false)}{" "}
-                      <p onClick={(e) => handleOpen(e, report.report_id)}>
+                      {reportResult(report.reportFalse)}{" "}
+                      <p onClick={(e) => handleOpen(e, report.reportId)}>
                         처리
                       </p>
                       <ul
                         className={
-                          open.isOn && report.report_id === open.id
+                          open.isOn && report.reportId === open.id
                             ? "reports-dropdown-container-active"
                             : "reports-dropdown-container"
                         }
@@ -312,21 +309,21 @@ const Reports = () => {
                         <li
                           className="reports-dropdown-item"
                           data-report="1"
-                          onClick={(e) => handleReport(e, report.report_id)}
+                          onClick={(e) => handleReport(e, report.reportId)}
                         >
                           신고승인
                         </li>
                         <li
                           className="reports-dropdown-item"
                           data-report="2"
-                          onClick={(e) => handleReport(e, report.report_id)}
+                          onClick={(e) => handleReport(e, report.reportId)}
                         >
                           허위신고
                         </li>
                       </ul>
                     </div>
                   ) : (
-                    reportResult(report.report_false)
+                    reportResult(report.reportFalse)
                   )}
                 </td>
               </tr>
@@ -353,14 +350,14 @@ const Reports = () => {
           keywordArray={keywordArray}
         />
       </section>
-      <section className="reports-pagination-container">
+      <div className="reports-pagination-container">
         <Pagination
           total={filteredReports.length}
           limit={limit}
           page={page}
           setPage={setPage}
         />
-      </section>
+      </div>
     </div>
   );
 };

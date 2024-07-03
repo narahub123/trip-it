@@ -36,22 +36,22 @@ export interface ScheduleFinal {
 }
 
 export interface ScheduleReturnType {
-  schedule_id: number;
-  metro_id: string;
-  start_date: string;
-  end_date: string;
-  schedule_title: string;
-  register_date: string;
-  user_id: string;
-  schedule_details: ScheduleDetailType[];
+  scheduleId: number;
+  metroId: string;
+  startDate: string;
+  endDate: string;
+  scheduleTitle: string;
+  registerDate: string;
+  userId: string;
+  scheduleDetails: ScheduleDetailType[];
 }
 
 export interface ScheduleDetailReturnType {
-  schedule_detail_id: number;
-  scheduel_id: number;
-  schedule_order: string; // column
-  start_time: string;
-  end_time: string;
-  content_id: string;
+  scheduleDetailId: number;
+  scheduelId: number;
+  scheduleOrder: string; // column
+  startTime: string;
+  endTime: string;
+  contentId: string;
   createdAt: string;
 }

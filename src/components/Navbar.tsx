@@ -23,7 +23,6 @@ const Navbar = () => {
         <NavLink to="/mypage">MyPage</NavLink>
         <NavLink to="/admin">Admin</NavLink>
         <NavLink to="/login">log in</NavLink>
-        <NavLink to="/signin">sign in</NavLink>
       </nav>
     </div>
   );

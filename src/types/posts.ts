@@ -3,9 +3,9 @@ export interface PostType {
   nickname: string;
   gender: string;
   birth: string;
-  start_date: string;
-  end_date: string;
-  metro_id: string;
+  startDate: string;
+  endDate: string;
+  metroId: string;
   postId: number;
   postTitle: string;
   postContent: string;

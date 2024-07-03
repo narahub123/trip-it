@@ -1,5 +1,5 @@
 export interface UserType {
-  user_id: number;
+  userId: number;
   email: string;
   username: string;
   nickname: string;
@@ -10,6 +10,6 @@ export interface UserType {
   role: string;
   regdate: string;
   userpic: string;
-  report_count: number;
-  end_date: string | undefined;
+  reportCount: number;
+  endDate: string | undefined;
 }

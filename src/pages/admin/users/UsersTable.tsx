@@ -6,7 +6,7 @@ import { Link, useNavigate } from "react-router-dom";
 
 export interface UsersTableProps {
   sorts: {
-    user_id: string;
+    userId: string;
     username: string;
     nickname: string;
     gender: string;
@@ -14,7 +14,7 @@ export interface UsersTableProps {
     role: string;
     regdate: string;
     email: string;
-    report_count: string;
+    reportCount: string;
   };
 
   handleSort: (
@@ -42,12 +42,12 @@ const UsersTable = ({
         <tr className="users-table-header-row" key={`usersHeaderRow`}>
           <th
             data-sort="asc"
-            key={`user_id`}
-            id="user_id"
+            key={`userId`}
+            id="userId"
             onClick={(e) => handleSort(e)}
           >
             아이디{" "}
-            {sorts.user_id === "desc" ? <LuChevronDown /> : <LuChevronUp />}
+            {sorts.userId === "desc" ? <LuChevronDown /> : <LuChevronUp />}
           </th>
           <th
             data-sort="asc"
@@ -118,11 +118,7 @@ const UsersTable = ({
             onClick={(e) => handleSort(e)}
           >
             신고건수{" "}
-            {sorts.report_count === "desc" ? (
-              <LuChevronDown />
-            ) : (
-              <LuChevronUp />
-            )}
+            {sorts.reportCount === "desc" ? <LuChevronDown /> : <LuChevronUp />}
           </th>
         </tr>
       </thead>
@@ -131,9 +127,9 @@ const UsersTable = ({
           <tr
             className="users-table-row"
             key={`user${index}`}
-            onClick={() => handleLink(user.user_id)}
+            onClick={() => handleLink(user.userId)}
           >
-            <td key={`user${index}_id`}>{user.user_id}</td>
+            <td key={`user${index}_id`}>{user.userId}</td>
             <td key={`user${index}_name`}>{user.username}</td>
             <td key={`user${index}_nick`}>{user.nickname}</td>
             <td key={`user${index}_gender`}>
@@ -143,7 +139,7 @@ const UsersTable = ({
             <td key={`user${index}_role`}>{user.role}</td>
             <td key={`user${index}_regdate`}>{user.regdate}</td>
             <td key={`user${index}_email`}>{user.email}</td>
-            <td key={`user${index}_reports`}>{user.report_count}</td>
+            <td key={`user${index}_reports`}>{user.reportCount}</td>
           </tr>
         ))}
       </tbody>

@@ -11,9 +11,9 @@ const Schedule = () => {
   const schedules = useSelector((state: Rootstate) => state.return.schedules);
   // 목록에서 현재 일정 가져오기
   const curSchedule = schedules.find((item) => {
-    console.log(item.schedule_id === Number(scheduleId));
+    console.log(item.scheduleId === Number(scheduleId));
 
-    if (scheduleId) return item.schedule_id.toString() === scheduleId;
+    if (scheduleId) return item.scheduleId.toString() === scheduleId;
   });
 
   // 일정 상세
@@ -25,7 +25,7 @@ const Schedule = () => {
 
   useEffect(() => {
     if (scheduleId)
-      store.dispatch(getSchedule({ schedule_id: Number(scheduleId) }));
+      store.dispatch(getSchedule({ scheduleId: Number(scheduleId) }));
   }, []);
   return <div className="schedule">schedule</div>;
 };

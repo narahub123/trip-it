@@ -8,13 +8,13 @@ export const reportList = {
 export const reportFalsy = ["대기중", "처리완료", "허위신고", "중복신고"];
 
 export const reportsHeaders = {
-  "신고 종류": "report_cate",
-  신고자: "user_id",
-  대상자: "reported_user_id",
-  "신고 글/메시지": "post_id" || "msg_id",
-  "신고 상세": "report_detail",
-  "신고 날짜": "report_date",
-  "처리 여부": "report_false",
+  "신고 종류": "reportCate",
+  신고자: "userId",
+  대상자: "reportedUserId",
+  "신고 글/메시지": "postId" || "msgId",
+  "신고 상세": "reportDetail",
+  "신고 날짜": "reportDate",
+  "처리 여부": "reportFalse",
 };
 
 export const reportName = (report: string) => {

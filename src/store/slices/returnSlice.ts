@@ -56,15 +56,15 @@ export const getSchedules = createAsyncThunk<ScheduleReturnType[]>(
 );
 
 export interface getScheduleProps {
-  schedule_id: number;
+  scheduleId: number;
 }
 
 // 개인 일정 받아오기
 export const getSchedule = createAsyncThunk(
   "returnSlice/getSchedule",
-  async ({ schedule_id }: getScheduleProps) => {
+  async ({ scheduleId }: getScheduleProps) => {
     // 일정을 받을 db 주소
-    const url = `${baseURL}/mypage/schedules/${schedule_id}`;
+    const url = `${baseURL}/mypage/schedules/${scheduleId}`;
 
     console.log(url);
 
