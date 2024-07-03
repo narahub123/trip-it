@@ -6,7 +6,7 @@ export interface UserType {
   password: string;
   birth: string;
   gender: string;
-  user_intro: string;
+  intro: string;
   role: string;
   regdate: string;
   userpic: string;

@@ -7,27 +7,52 @@ import {
   uploadBytesResumable,
 } from "firebase/storage";
 import { app } from "../../../firebase";
+import axios from "axios";
+
+import { getCookie } from "../../../utils/Cookie";
 
 export interface FormDataType {
   userpic?: string;
 }
 
+const baseURL = process.env.REACT_APP_SERVER_URL;
+
 const Profile = () => {
   const imageRef = useRef<HTMLInputElement>(null);
-  const user = {
-    gender: "f",
-    nickname: "몰러",
+
+  const [user, setUser] = useState({
+    gender: "",
+    nickname: "",
     userpic: "",
-    userIntro: "",
-  };
+    intro: "",
+  });
+
+  console.log(user);
+
+  useEffect(() => {
+    axios
+      .get(`${baseURL}/mypage/profile`, {
+        headers: {
+          "Content-Type": "application/json",
+          Access: `${localStorage.getItem("access")}`,
+          Refresh: `${getCookie("refresh")}`,
+        },
+      })
+      .then((response) => {
+        setUser(response.data);
+        return response.data;
+      });
+  }, []);
 
   const [image, setImage] = useState<File | undefined>(undefined);
   const [formData, setFormData] = useState({
     gender: user.gender,
     nickname: user.nickname,
     userpic: user.userpic,
-    userIntro: user.userIntro,
+    intro: user.intro,
   });
+
+  const [popupMsg, setPopupMsg] = useState("");
 
   // 기존 정보와 변경이 있는지 여부 확인
   const hasChanged = (): string => {
@@ -78,7 +103,7 @@ const Profile = () => {
       () => {
         getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
           // formData 업데이트
-          setFormData({ ...formData, userpic: downloadURL });
+          setFormData({ ...user, userpic: downloadURL });
         });
       }
     );
@@ -89,7 +114,7 @@ const Profile = () => {
     console.log(e.currentTarget.value);
 
     const updatedFormData = {
-      ...formData,
+      ...user,
       [e.currentTarget.className]: e.currentTarget.value,
     };
 
@@ -98,7 +123,7 @@ const Profile = () => {
 
   console.log(formData);
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     if (!window.confirm(`업데이트하시겠습니까?`)) {
       return;
     }
@@ -110,6 +135,45 @@ const Profile = () => {
     //   },
     //   body: JSON.stringify(formData),
     // });
+
+    await axios
+      .post(
+        baseURL + "/mypage/profile/update",
+        {
+          nickname: formData.nickname,
+          userpic: formData.userpic,
+          intro: formData.intro,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Access: `${localStorage.getItem("access")}`,
+            Refresh: `${getCookie("refresh")}`,
+          },
+          withCredentials: true,
+        }
+      )
+      .then((response) => {
+        console.log(response);
+        if (response.status === 200) {
+          window.alert("업데이트가 완료되었습니다.");
+        }
+        console.log(response.data);
+      })
+      .catch(function (err) {
+        console.log(err.response);
+
+        const msg = err.response.data.title;
+        const status = err.response.data.status;
+        setPopupMsg(msg);
+        //errorhandling
+        // if (status === 404) {
+        //   const reply = `데이터베이스와의 연결 상태가 좋지 못합니다. \n잠시 후에 다시 이용해주세요`;
+        //   console.log(reply);
+        //   setPopupMsg(reply);
+        // }
+        console.log(msg, status);
+      });
   };
 
   console.log(hasChanged());
@@ -134,8 +198,8 @@ const Profile = () => {
         >
           <img
             src={
-              formData.userpic.length !== 0
-                ? formData.userpic
+              user.userpic.length !== 0
+                ? user.userpic
                 : user.gender === "f"
                 ? `/images/female-profile-image.jpg`
                 : `/images/male-profile-image.jpg`
@@ -151,8 +215,8 @@ const Profile = () => {
         />
         <input
           type="text"
-          className="userIntro"
-          defaultValue={user.userIntro}
+          className="intro"
+          defaultValue={user.intro}
           placeholder="자기소개를 적어주세요"
           onChange={(e) => handleChange(e)}
         />
@@ -160,6 +224,7 @@ const Profile = () => {
           프로필 수정
         </button>
       </form>
+      <div className="profile-popup">{popupMsg}</div>
     </div>
   );
 };

@@ -17,7 +17,7 @@
       }
     }
     .nickname,
-    .userIntro {
+    .intro {
       width: 50%;
       margin-top: 20px;
       padding: 15px;
@@ -39,5 +39,8 @@
     button:disabled {
       background-color: rgba(128, 128, 128, 0.163);
     }
+  }
+  .profile-popup {
+    position: absolute;
   }
 }
