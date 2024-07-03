@@ -77,7 +77,7 @@ const Search = ({ array, setArray, keywordArray }: SearchProps) => {
           fontSize: "clamp(12px, 2vw, 16px)",
           paddingLeft: "5px",
         }}
-        autoFocus
+        // autoFocus
         onChange={(e) => handleSearchChange(e)}
       />
     </div>

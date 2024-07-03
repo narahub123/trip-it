@@ -36,7 +36,7 @@ export interface ScheduleFinal {
 }
 
 export interface ScheduleReturnType {
-  schedule_id: string;
+  schedule_id: number;
   metro_id: string;
   start_date: string;
   end_date: string;

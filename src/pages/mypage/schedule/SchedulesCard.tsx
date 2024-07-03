@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { metros } from "../../../data/metros";
 import useDefaultImage from "../../../hooks/useDefaultImage";
-import { ScheduleType } from "../../../types/schedules";
+import { ScheduleReturnType, ScheduleType } from "../../../types/schedules";
 import "./schedulesCard.css";
 import { metroName } from "../../../utils/metro";
 import { dateFormatFromLocalDate } from "../../../utils/date";
@@ -10,12 +10,12 @@ import { useEffect, useRef, useState } from "react";
 import { debounce } from "../../../utils/debounce";
 
 export interface DeletionsType {
-  schedule_id: string;
+  schedule_id: number;
   deletion: boolean;
 }
 
 export interface SchedulesCardProps {
-  schedule: ScheduleType;
+  schedule: ScheduleReturnType;
   showDelete: boolean;
   setShowDelete: (value: boolean) => void;
   deletions: DeletionsType[];
@@ -66,9 +66,9 @@ const SchedulesCard = ({
 
     if (checked) {
       const newDeletions = deletions.map((deletion) => {
-        if (deletion.schedule_id === id) {
+        if (deletion.schedule_id === Number(id)) {
           return {
-            schedule_id: id,
+            schedule_id: Number(id),
             deletion: true,
           };
         } else {
@@ -80,9 +80,9 @@ const SchedulesCard = ({
       setDeletions(newDeletions);
     } else if (!checked) {
       const newDeletions = deletions.map((deletion) => {
-        if (deletion.schedule_id === id) {
+        if (deletion.schedule_id === Number(id)) {
           return {
-            schedule_id: id,
+            schedule_id: Number(id),
             deletion: false,
           };
         } else {
@@ -110,7 +110,7 @@ const SchedulesCard = ({
           <input
             type="checkbox"
             className="deletion"
-            id={schedule_id}
+            id={schedule_id.toString()}
             onChange={(e) => handleDeletion(e)}
             checked={
               deletions.find((deletion) => deletion.schedule_id === schedule_id)
