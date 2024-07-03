@@ -34,3 +34,24 @@ export interface ScheduleFinal {
   schedule_name?: string;
   schedule_details?: ScheduleDetailType[];
 }
+
+export interface ScheduleReturnType {
+  schedule_id: string;
+  metro_id: string;
+  start_date: string;
+  end_date: string;
+  schedule_title: string;
+  register_date: string;
+  user_id: string;
+  schedule_details: ScheduleDetailType[];
+}
+
+export interface ScheduleDetailReturnType {
+  schedule_detail_id: number;
+  scheduel_id: number;
+  schedule_order: string; // column
+  start_time: string;
+  end_time: string;
+  content_id: string;
+  createdAt: string;
+}

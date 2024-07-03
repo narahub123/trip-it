@@ -23,6 +23,8 @@ function Normal() {
 
   const baseUrl = `${baseURL}`;
 
+  console.log(baseUrl);
+
   async function doLogin() {
     await axios
       .post(
@@ -39,6 +41,8 @@ function Normal() {
         }
       )
       .then((response) => {
+        console.log(response);
+
         let access = response.data.access;
         let refresh = response.data.refresh;
         localStorage.setItem("access", access);

@@ -40,35 +40,35 @@ function Trip() {
   }, []);
 
   // schedule data(practice)
-  const schedules: ScheduleType[] = [
-    {
-      schedule_id: "1",
-      metro_id: "1",
-      start_date: "20240626",
-      end_date: "20240628",
-      register_date: "20240621",
-      user_id: "1",
-      schedule_title: "서울 여행",
-    },
-    {
-      schedule_id: "2",
-      metro_id: "2",
-      start_date: "20240704",
-      end_date: "20240712",
-      register_date: "20240511",
-      user_id: "1",
-      schedule_title: "인천 여행",
-    },
-    {
-      schedule_id: "3",
-      metro_id: "3",
-      start_date: "20240504",
-      end_date: "20240513",
-      register_date: "20240211",
-      user_id: "1",
-      schedule_title: "부산 여행",
-    },
-  ];
+  // const schedules: ScheduleType[] = [
+  //   {
+  //     schedule_id: "1",
+  //     metro_id: "1",
+  //     start_date: "20240626",
+  //     end_date: "20240628",
+  //     register_date: "20240621",
+  //     user_id: "1",
+  //     schedule_title: "서울 여행",
+  //   },
+  //   {
+  //     schedule_id: "2",
+  //     metro_id: "2",
+  //     start_date: "20240704",
+  //     end_date: "20240712",
+  //     register_date: "20240511",
+  //     user_id: "1",
+  //     schedule_title: "인천 여행",
+  //   },
+  //   {
+  //     schedule_id: "3",
+  //     metro_id: "3",
+  //     start_date: "20240504",
+  //     end_date: "20240513",
+  //     register_date: "20240211",
+  //     user_id: "1",
+  //     schedule_title: "부산 여행",
+  //   },
+  // ];
 
   // post data(practice)
   const posts = [
@@ -104,7 +104,11 @@ function Trip() {
               <Route path="personal" element={<Personal />} />
               <Route
                 path="schedules"
-                element={<Schedules schedules={schedules} />}
+                element={
+                  <Schedules
+                  // schedules={schedules}
+                  />
+                }
               />
               <Route path="schedules/:scheduleId" element={<Schedule />} />
               <Route path="posts" element={<Posts posts={posts} />} />
@@ -115,7 +119,11 @@ function Trip() {
               <Route path="users" element={<User />} />
               <Route
                 path="schedules"
-                element={<Schedules schedules={schedules} />}
+                element={
+                  <Schedules
+                  //  schedules={schedules}
+                  />
+                }
               />
               <Route path="posts" element={<Posts posts={posts} />} />
               <Route path="reports" element={<Reports />} />

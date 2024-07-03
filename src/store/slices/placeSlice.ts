@@ -73,7 +73,7 @@ export const fetchPlaces = createAsyncThunk(
       const url = `${baseURL}/places/${areacode}/${contentTypeId}/${pageNo.toString()}`;
       // const url = `${baseURL}/home/test/${areacode}/${pageNo}`
 
-      http: console.log(url);
+      console.log(url);
 
       const response = await fetch(url);
 
