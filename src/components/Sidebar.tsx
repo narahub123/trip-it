@@ -42,7 +42,7 @@ const Sidebar = () => {
           </li>
           <li>
             <NavLink
-              to="mypage/bans"
+              to="mypage/blockedlist/user"
               className={({ isActive }) => (isActive ? "active" : "")}
             >
               <span className="sidebar-text">내 차단 목록</span>

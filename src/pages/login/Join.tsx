@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 const baseURL = process.env.REACT_APP_SERVER_URL;
 
 function Join() {
-  const baseUrl = `${baseURL}/`;
+  const baseUrl = `${baseURL}`;
 
   let navigate = useNavigate();
 

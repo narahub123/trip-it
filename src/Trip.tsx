@@ -112,7 +112,7 @@ function Trip() {
               <Route path="schedules/:scheduleId" element={<Schedule />} />
               <Route path="posts" element={<Posts posts={posts} />} />
               <Route path="posts/:postId" element={<Detail />} />
-              <Route path="bans" element={<Bans />} />
+              <Route path="blockedlist/user" element={<Bans />} />
             </Route>
             <Route path="/admin" element={<Admin />}>
               <Route path="users" element={<User />} />
