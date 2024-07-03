@@ -107,11 +107,7 @@ function Trip() {
               <Route path="personal" element={<Personal />} />
               <Route
                 path="schedules"
-                element={
-                  <Schedules
-                  //  schedules={schedules}
-                  />
-                }
+                element={<Schedules schedules={schedules} />}
               />
               <Route path="schedules/:scheduleId" element={<Schedule />} />
               <Route path="posts" element={<Posts posts={posts} />} />
@@ -122,11 +118,7 @@ function Trip() {
               <Route path="users" element={<User />} />
               <Route
                 path="schedules"
-                element={
-                  <Schedules
-                  // schedules={schedules}
-                  />
-                }
+                element={<Schedules schedules={schedules} />}
               />
               <Route path="posts" element={<Posts posts={posts} />} />
               <Route path="reports" element={<Reports />} />
