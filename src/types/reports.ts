@@ -8,6 +8,10 @@ export interface ReportRequestType {
   reportDate: string;
   reportFalse: number;
 }
+export interface ReportTestType extends ReportRequestType {
+  _id: string;
+}
+
 export interface ReportType extends ReportRequestType {
   reportId: number;
 }
