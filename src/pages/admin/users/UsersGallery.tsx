@@ -4,9 +4,11 @@ import "./usersGallery.css";
 
 export interface UsersGalleryProps {
   filteredUsers: UserType[];
+  offset: number;
+  limit: number;
 }
 
-const UsersGallery = ({ filteredUsers }: UsersGalleryProps) => {
+const UsersGallery = ({ filteredUsers, limit, offset }: UsersGalleryProps) => {
   return (
     <div className="users-gallery">
       <ul className="users-gallery-container">
@@ -16,7 +18,7 @@ const UsersGallery = ({ filteredUsers }: UsersGalleryProps) => {
             <p>검색 결과가 없습니다.</p>
           </li>
         )}
-        {filteredUsers.map((user) => (
+        {filteredUsers.slice(offset, offset + limit).map((user) => (
           <li className="users-gallery-item" key={user.user_id}>
             <Link to={`${user.user_id}`}>
               <figure className="users-gallery-item-image">

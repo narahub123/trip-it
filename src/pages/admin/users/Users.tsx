@@ -259,7 +259,13 @@ const Users = () => {
             />
           </div>
         )}
-        {hash === "#gallery" && <UsersGallery filteredUsers={filteredUsers} />}
+        {hash === "#gallery" && (
+          <UsersGallery
+            filteredUsers={filteredUsers}
+            limit={limit}
+            offset={offset}
+          />
+        )}
       </main>
       <section className="user-search">
         <Search

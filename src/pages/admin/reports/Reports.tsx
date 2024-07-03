@@ -346,21 +346,21 @@ const Reports = () => {
         </figure>
         <p>{detail}</p>
       </div>
-      <div className="reports-search-container">
+      <section className="reports-search-container">
         <Search
           array={reports}
           setArray={setFilteredReports}
           keywordArray={keywordArray}
         />
-      </div>
-      <div className="reports-pagination-container">
+      </section>
+      <section className="reports-pagination-container">
         <Pagination
           total={filteredReports.length}
           limit={limit}
           page={page}
           setPage={setPage}
         />
-      </div>
+      </section>
     </div>
   );
 };
