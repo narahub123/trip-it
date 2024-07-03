@@ -25,6 +25,7 @@ import Post from "./pages/community/Post";
 import User from "./pages/admin/users/Users";
 import Reports from "./pages/admin/reports/Reports";
 import { ScheduleReturnType, ScheduleType } from "./types/schedules";
+import ReportTest from "./pages/admin/reports/test/ReportTest";
 
 function Trip() {
   useEffect(() => {
@@ -122,6 +123,7 @@ function Trip() {
               />
               <Route path="posts" element={<Posts posts={posts} />} />
               <Route path="reports" element={<Reports />} />
+              <Route path="reports/test" element={<ReportTest />} />
             </Route>
           </Route>
           <Route path="/login" element={<Login />}></Route>

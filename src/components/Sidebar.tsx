@@ -85,6 +85,15 @@ const Sidebar = () => {
               <span className="sidebar-new-reports">4</span>
             </NavLink>
           </li>
+          {/* 테스트 용 */}
+          <li>
+            <NavLink
+              to="admin/reports/test"
+              className={({ isActive }) => (isActive ? "active" : "")}
+            >
+              <span className="sidebar-text">신고 하기(연습)</span>{" "}
+            </NavLink>
+          </li>
         </ul>
       )}
     </aside>
