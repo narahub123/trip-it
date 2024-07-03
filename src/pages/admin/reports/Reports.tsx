@@ -8,13 +8,14 @@ import { reports } from "../../../data/test";
 import { ReportType } from "../../../types/reports";
 import { dateFromLocalDateToDot } from "../../../utils/date";
 import "./reports.css";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import PaginationControllerFlexible from "../../../components/ui/PaginationControllerFlexible";
 import Pagination from "../../../components/ui/Pagination";
 import Search from "../../../components/ui/Search";
 import NoSearchData from "../../../components/ui/NoSearchData";
 import { Link } from "react-router-dom";
 import { FaRegWindowClose } from "react-icons/fa";
+import { GetAllReportsForAdminAPI } from "../../../apis/reports";
 
 const Reports = () => {
   const arrayLengthDefault = 5;
@@ -38,6 +39,14 @@ const Reports = () => {
     reportDate: "desc",
     reportFalse: "desc",
   });
+
+  useEffect(() => {
+    GetAllReportsForAdminAPI()
+      .then((res) => {
+        return setFilteredReports(res.data);
+      })
+      .catch((error) => console.log(error));
+  }, []);
 
   const [detail, setDetail] = useState<string>("");
   // 신고 상세 오픈
@@ -338,7 +347,12 @@ const Reports = () => {
             : "reports-detail-container"
         }
       >
-        <figure onClick={() => setIsOpen(false)}>
+        <figure
+          onClick={() => {
+            setIsOpen(false);
+            setDetail("");
+          }}
+        >
           <FaRegWindowClose />
         </figure>
         <p>{detail}</p>

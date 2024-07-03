@@ -25,3 +25,8 @@ export const GetAllReportsByIdAPI = async (userId: number) => {
 };
 
 // 관리자 신고 목록 보기
+export const GetAllReportsForAdminAPI = async () => {
+  const response = await axios.get(`${baseURL}/reports/admin`);
+
+  return response;
+};

@@ -1,6 +1,10 @@
 import { LuSiren } from "react-icons/lu";
 import "./reportTest.css";
-import { AddReportAPI, GetAllReportsByIdAPI } from "../../../../apis/reports";
+import {
+  AddReportAPI,
+  GetAllReportsByIdAPI,
+  GetAllReportsForAdminAPI,
+} from "../../../../apis/reports";
 import { reports } from "../../../../data/test";
 import { useEffect, useState } from "react";
 import { ReportTestType } from "../../../../types/reports";
@@ -12,10 +16,15 @@ const ReportTest = () => {
   const [reports, setReports] = useState<ReportTestType[]>([]);
 
   useEffect(() => {
-    GetAllReportsByIdAPI(userId)
-      .then((response) => {
-        console.log(response.data);
-        return setReports(response.data);
+    // GetAllReportsByIdAPI(userId)
+    //   .then((response) => {
+    //     console.log(response.data);
+    //     return setReports(response.data);
+    //   })
+    //   .catch((error) => console.log(error));
+    GetAllReportsForAdminAPI()
+      .then((res) => {
+        return setReports(res.data);
       })
       .catch((error) => console.log(error));
   }, []);
