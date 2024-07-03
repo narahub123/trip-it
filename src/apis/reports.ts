@@ -30,3 +30,18 @@ export const GetAllReportsForAdminAPI = async () => {
 
   return response;
 };
+
+// 신고 처리하기
+export const updateReportAPI = async (id: string, reportFalse: number) => {
+  try {
+    const response = await axios.post(`${baseURL}/reports/update`, {
+      id,
+      reportFalse,
+    });
+    return response.data;
+  } catch (error) {
+    console.error(error);
+
+    return { status: "rejected" };
+  }
+};

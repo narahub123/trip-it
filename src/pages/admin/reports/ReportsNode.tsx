@@ -15,7 +15,10 @@ import Search from "../../../components/ui/Search";
 import NoSearchData from "../../../components/ui/NoSearchData";
 import { Link } from "react-router-dom";
 import { FaRegWindowClose } from "react-icons/fa";
-import { GetAllReportsForAdminAPI } from "../../../apis/reports";
+import {
+  GetAllReportsForAdminAPI,
+  updateReportAPI,
+} from "../../../apis/reports";
 import { useDispatch, useSelector } from "react-redux";
 import { setReports } from "../../../store/slices/returnSlice";
 import { Rootstate } from "../../../store/store";
@@ -162,7 +165,7 @@ const ReportsNode = () => {
     });
   };
   // 신고 처리하기
-  const handleReport = (
+  const handleReport = async (
     e: React.MouseEvent<HTMLLIElement, MouseEvent>,
     id: string
   ) => {
@@ -174,8 +177,17 @@ const ReportsNode = () => {
       });
       return;
     }
+
     const reportFalse = Number(e.currentTarget.dataset.report);
     console.log(reportFalse);
+
+    updateReportAPI(id, reportFalse)
+      .then((res) => console.log(res))
+      .catch((err) => {
+        console.log(err);
+        return;
+      });
+
     const newReports = filteredReports.map((report) => {
       if (report._id === id) {
         return {
