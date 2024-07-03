@@ -3,6 +3,7 @@ import axios from "axios";
 import { ScheduleReturnType } from "../../types/schedules";
 import { convertStringToJson } from "../../utils/convertStringToJson";
 import { getCookie } from "../../utils/Cookie";
+import { ReportTestType } from "../../types/reports";
 
 const baseURL = process.env.REACT_APP_SERVER_URL;
 
@@ -11,11 +12,13 @@ export interface ReturnState {
   status: string;
   error?: string;
   schedule?: ScheduleReturnType;
+  reports: ReportTestType[];
 }
 
 const initialState: ReturnState = {
   schedules: [],
   status: "idle",
+  reports: [],
 };
 
 // 일정 목록 받아오기
@@ -102,6 +105,12 @@ const returnSlice = createSlice({
     setSchedules: (state, action) => {
       state.schedules = action.payload;
     },
+    clearReport: (state) => {
+      state.reports = [];
+    },
+    setReports: (state, action) => {
+      state.reports = action.payload;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -134,6 +143,6 @@ const returnSlice = createSlice({
   },
 });
 
-export const { setSchedules } = returnSlice.actions;
+export const { setSchedules, setReports, clearReport } = returnSlice.actions;
 
 export default returnSlice.reducer;

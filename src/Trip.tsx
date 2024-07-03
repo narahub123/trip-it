@@ -26,6 +26,7 @@ import User from "./pages/admin/users/Users";
 import Reports from "./pages/admin/reports/Reports";
 import { ScheduleReturnType, ScheduleType } from "./types/schedules";
 import ReportTest from "./pages/admin/reports/test/ReportTest";
+import ReportsNode from "./pages/admin/reports/ReportsNode";
 
 function Trip() {
   useEffect(() => {
@@ -122,7 +123,8 @@ function Trip() {
                 element={<Schedules schedules={schedules} />}
               />
               <Route path="posts" element={<Posts posts={posts} />} />
-              <Route path="reports" element={<Reports />} />
+              {/* <Route path="reports" element={<Reports />} /> */}
+              <Route path="reports" element={<ReportsNode />} />
               <Route path="reports/test" element={<ReportTest />} />
             </Route>
           </Route>

@@ -4,8 +4,8 @@ import {
   reportResult,
   reportsHeaders,
 } from "../../../data/reports";
-import { reports } from "../../../data/test";
-import { ReportType } from "../../../types/reports";
+
+import { ReportTestType, ReportType } from "../../../types/reports";
 import { dateFromLocalDateToDot } from "../../../utils/date";
 import "./reports.css";
 import { useEffect, useState } from "react";
@@ -16,8 +16,13 @@ import NoSearchData from "../../../components/ui/NoSearchData";
 import { Link } from "react-router-dom";
 import { FaRegWindowClose } from "react-icons/fa";
 import { GetAllReportsForAdminAPI } from "../../../apis/reports";
+import { useDispatch, useSelector } from "react-redux";
+import { setReports } from "../../../store/slices/returnSlice";
+import { Rootstate } from "../../../store/store";
 
-const Reports = () => {
+const ReportsNode = () => {
+  const dispatch = useDispatch();
+  const reports = useSelector((state: Rootstate) => state.return.reports);
   const arrayLengthDefault = 5;
   const arrayLengthMax = 10;
   const arrayLengthMin = 1;
@@ -26,12 +31,12 @@ const Reports = () => {
   const [page, setPage] = useState(1);
   const offset = (page - 1) * limit;
 
-  const [filteredReports, setFilteredReports] = useState(reports);
+  const [filteredReports, setFilteredReports] = useState<ReportTestType[]>([]);
   const unsolved = filteredReports.filter(
     (report) => report.reportFalse === 0
   ).length;
   const [sorts, setSorts] = useState({
-    reportId: "desc",
+    _id: "desc",
     userId: "desc",
     reportedUserId: "desc",
     postId: "desc",
@@ -40,13 +45,22 @@ const Reports = () => {
     reportFalse: "desc",
   });
 
+  useEffect(() => {
+    GetAllReportsForAdminAPI()
+      .then((res) => {
+        dispatch(setReports(res.data));
+        setFilteredReports(res.data);
+      })
+      .catch((error) => console.log(error));
+  }, []);
+
   const [detail, setDetail] = useState<string>("");
   // 신고 상세 오픈
   const [isOpen, setIsOpen] = useState(false);
   // 신고 오픈
-  const [open, setOpen] = useState<{ isOn: boolean; id: number }>({
+  const [open, setOpen] = useState<{ isOn: boolean; id: string }>({
     isOn: false,
-    id: 0,
+    id: "",
   });
 
   // 정렬
@@ -113,7 +127,7 @@ const Reports = () => {
     const newFilter = id === "reportFalse" ? Number(filter) : filter;
 
     const newReports = filteredReports.filter(
-      (report) => report[id as keyof ReportType] === newFilter
+      (report) => report[id as keyof ReportTestType] === newFilter
     );
 
     console.log(newReports);
@@ -139,7 +153,7 @@ const Reports = () => {
   // 신고 dropdown 열기
   const handleOpen = (
     e: React.MouseEvent<HTMLParagraphElement, MouseEvent>,
-    id: number
+    id: string
   ) => {
     e.stopPropagation();
     setOpen({
@@ -150,7 +164,7 @@ const Reports = () => {
   // 신고 처리하기
   const handleReport = (
     e: React.MouseEvent<HTMLLIElement, MouseEvent>,
-    id: number
+    id: string
   ) => {
     e.stopPropagation();
     if (!window.confirm("신고를 처리하시겠습니까?")) {
@@ -163,7 +177,7 @@ const Reports = () => {
     const reportFalse = Number(e.currentTarget.dataset.report);
     console.log(reportFalse);
     const newReports = filteredReports.map((report) => {
-      if (report.reportId === id) {
+      if (report._id === id) {
         return {
           ...report,
           reportFalse: reportFalse,
@@ -246,11 +260,11 @@ const Reports = () => {
               </tr>
             )}
             {filteredReports.slice(offset, offset + limit).map((report) => (
-              <tr className="reports-main-table-body-row" key={report.reportId}>
+              <tr className="reports-main-table-body-row" key={report._id}>
                 <td
                   className="reports-main-table-body-cell selectable"
-                  data-filter={report.reportId}
-                  id="reportId"
+                  data-filter={report._id}
+                  id="_id"
                   onClick={(e) => handleFilter(e)}
                 >
                   {reportName(report.reportCate)}
@@ -297,12 +311,10 @@ const Reports = () => {
                   {report.reportFalse === 0 ? (
                     <div className="reports-main-table-body-cell-container">
                       {reportResult(report.reportFalse)}{" "}
-                      <p onClick={(e) => handleOpen(e, report.reportId)}>
-                        처리
-                      </p>
+                      <p onClick={(e) => handleOpen(e, report._id)}>처리</p>
                       <ul
                         className={
-                          open.isOn && report.reportId === open.id
+                          open.isOn && report._id === open.id
                             ? "reports-dropdown-container-active"
                             : "reports-dropdown-container"
                         }
@@ -310,14 +322,14 @@ const Reports = () => {
                         <li
                           className="reports-dropdown-item"
                           data-report="1"
-                          onClick={(e) => handleReport(e, report.reportId)}
+                          onClick={(e) => handleReport(e, report._id)}
                         >
                           신고승인
                         </li>
                         <li
                           className="reports-dropdown-item"
                           data-report="2"
-                          onClick={(e) => handleReport(e, report.reportId)}
+                          onClick={(e) => handleReport(e, report._id)}
                         >
                           허위신고
                         </li>
@@ -368,4 +380,4 @@ const Reports = () => {
   );
 };
 
-export default Reports;
+export default ReportsNode;
