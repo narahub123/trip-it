@@ -32,10 +32,13 @@ export const GetAllReportsForAdminAPI = async () => {
 };
 
 // 신고 처리하기
-export const updateReportAPI = async (id: string, reportFalse: number) => {
+export const updateReportAPI = async (
+  reportId: string,
+  reportFalse: number
+) => {
   try {
     const response = await axios.post(`${baseURL}/reports/update`, {
-      id,
+      reportId,
       reportFalse,
     });
     return response.data;

@@ -48,6 +48,7 @@ const ReportsNode = () => {
     reportFalse: "desc",
   });
 
+  // 신고 불러오기
   useEffect(() => {
     GetAllReportsForAdminAPI()
       .then((res) => {
@@ -57,6 +58,7 @@ const ReportsNode = () => {
       .catch((error) => console.log(error));
   }, []);
 
+  // 신고 상세 창 띄우기
   const [detail, setDetail] = useState<string>("");
   // 신고 상세 오픈
   const [isOpen, setIsOpen] = useState(false);
@@ -167,7 +169,7 @@ const ReportsNode = () => {
   // 신고 처리하기
   const handleReport = async (
     e: React.MouseEvent<HTMLLIElement, MouseEvent>,
-    id: string
+    reportId: string
   ) => {
     e.stopPropagation();
     if (!window.confirm("신고를 처리하시겠습니까?")) {
@@ -181,7 +183,7 @@ const ReportsNode = () => {
     const reportFalse = Number(e.currentTarget.dataset.report);
     console.log(reportFalse);
 
-    updateReportAPI(id, reportFalse)
+    updateReportAPI(reportId, reportFalse)
       .then((res) => console.log(res))
       .catch((err) => {
         console.log(err);
@@ -189,7 +191,7 @@ const ReportsNode = () => {
       });
 
     const newReports = filteredReports.map((report) => {
-      if (report._id === id) {
+      if (report._id === reportId) {
         return {
           ...report,
           reportFalse: reportFalse,

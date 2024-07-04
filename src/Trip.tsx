@@ -29,17 +29,17 @@ import ReportTest from "./pages/admin/reports/test/ReportTest";
 import ReportsNode from "./pages/admin/reports/ReportsNode";
 
 function Trip() {
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const res = await refreshAPI.get("");
-      } catch (err) {
-        console.log("에러확인 : ", err);
-      }
-    };
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     try {
+  //       const res = await refreshAPI.get("");
+  //     } catch (err) {
+  //       console.log("에러확인 : ", err);
+  //     }
+  //   };
 
-    fetchData();
-  }, []);
+  //   fetchData();
+  // }, []);
 
   // schedule data(practice)
   const schedules: ScheduleReturnType[] = [
