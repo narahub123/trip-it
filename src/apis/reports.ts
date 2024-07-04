@@ -36,11 +36,13 @@ export const updateReportAPI = async (
   reportId: string,
   reportFalse: number
 ) => {
+  console.log(reportId);
   try {
     const response = await axios.post(`${baseURL}/reports/update`, {
       reportId,
       reportFalse,
     });
+
     return response.data;
   } catch (error) {
     console.error(error);

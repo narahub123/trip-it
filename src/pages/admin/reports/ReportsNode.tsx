@@ -35,9 +35,11 @@ const ReportsNode = () => {
   const offset = (page - 1) * limit;
 
   const [filteredReports, setFilteredReports] = useState<ReportTestType[]>([]);
+
   const unsolved = filteredReports.filter(
     (report) => report.reportFalse === 0
   ).length;
+
   const [sorts, setSorts] = useState({
     _id: "desc",
     userId: "desc",
@@ -177,6 +179,7 @@ const ReportsNode = () => {
         ...open,
         isOn: !open.isOn,
       });
+
       return;
     }
 
@@ -201,8 +204,15 @@ const ReportsNode = () => {
       }
     });
 
+    setOpen({
+      ...open,
+      isOn: !open.isOn,
+    });
     setFilteredReports(newReports);
+    dispatch(setReports(newReports));
   };
+
+  console.log(filteredReports);
 
   return (
     <div className="reports">

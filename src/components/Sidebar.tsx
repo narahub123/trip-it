@@ -1,7 +1,11 @@
+import { useSelector } from "react-redux";
+import { Rootstate } from "../store/store";
 import "./sidebar.css";
 import { Link, NavLink, useLocation } from "react-router-dom";
 const Sidebar = () => {
   const { pathname } = useLocation();
+  const reports = useSelector((state: Rootstate) => state.return.reports);
+  const unsolved = reports.filter((report) => report.reportFalse === 0).length;
   console.log(pathname);
 
   return (
@@ -82,7 +86,7 @@ const Sidebar = () => {
               className={({ isActive }) => (isActive ? "active" : "")}
             >
               <span className="sidebar-text">신고 목록</span>{" "}
-              <span className="sidebar-new-reports">4</span>
+              <span className="sidebar-new-reports">{unsolved}</span>
             </NavLink>
           </li>
           {/* 테스트 용 */}
