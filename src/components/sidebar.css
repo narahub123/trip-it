@@ -1,4 +1,5 @@
 .sidebar {
+  position: fixed;
   width: 150px;
   user-select: none;
   /* 그림자 부분 */

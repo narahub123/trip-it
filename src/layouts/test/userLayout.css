@@ -4,9 +4,9 @@
   height: 100%;
 
   .user-layout-main {
-    margin-left: 170px;
     width: 100%;
     height: 100%;
+    overflow-y: hidden;
     flex-grow: 1;
   }
 

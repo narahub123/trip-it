@@ -1,9 +1,9 @@
 import { Outlet } from "react-router-dom";
 import "./rootLayout.css";
-import { Rootstate } from "../store/store";
+import { Rootstate } from "../../store/store";
 import { useSelector } from "react-redux";
-import HomeModal from "../pages/home/HomeModal";
-import Header from "../components/Header";
+import HomeModal from "../../pages/home/HomeModal";
+import Header from "../../components/Header";
 
 const RootLayout = () => {
   // 모달 활성화 확인
@@ -13,10 +13,12 @@ const RootLayout = () => {
   console.log(schedule);
 
   return (
-    <div className="root-layout">
+    <div className="test-root-layout">
       {active && <HomeModal />}
-      <Header />
-      <main className="root-layout-main">
+      <header className="test-root-layout-header">
+        <Header />
+      </header>
+      <main className="test-root-layout-main">
         <Outlet />
       </main>
     </div>

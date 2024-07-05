@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import RootLayout from "./layouts/RootLayout";
+import TestRootLayout from "./layouts/test/RootLayout";
 import { Route, Routes } from "react-router-dom";
 import Home from "./pages/home/Home";
 import Community from "./pages/community/Community";
@@ -8,6 +9,7 @@ import Admin from "./pages/admin/Admin";
 import Login from "./pages/login/Login";
 import ScheduleLayout from "./layouts/ScheduleLayout";
 import UserLayout from "./layouts/UserLayout";
+import TestUserLayout from "./layouts/test/UserLayout";
 import { Provider } from "react-redux";
 import { store } from "./store/store";
 import Profile from "./pages/mypage/profile/Profile";
@@ -28,6 +30,7 @@ import { ScheduleReturnType, ScheduleType } from "./types/schedules";
 import ReportTest from "./pages/admin/reports/test/ReportTest";
 import ReportsNode from "./pages/admin/reports/ReportsNode";
 import Header from "./components/Header";
+import TestUsers from "./pages/admin/test/TestUsers";
 
 function Trip() {
   // useEffect(() => {
@@ -132,6 +135,11 @@ function Trip() {
           <Route path="/login" element={<Login />}></Route>
           <Route path="/login/normal" element={<Normal />} />
           <Route path="/join" element={<Join />} />
+        </Route>
+        <Route path="/test" element={<TestRootLayout />}>
+          <Route path="admin" element={<TestUserLayout />}>
+            <Route path="users" element={<TestUsers />}></Route>
+          </Route>
         </Route>
         <Route path="/planner/:metro_name" element={<ScheduleLayout />}></Route>
       </Routes>
