@@ -1,2 +1,15 @@
+:root {
+  --admin_background: white;
+  --admin_color: black;
+}
+
+[data-theme="dark"] {
+  --admin_background: black;
+  --admin_color: #ccc;
+}
+
 .admin {
+  background-color: var(--admin_background);
+  color: var(--admin_color);
+  min-height: 0;
 }
