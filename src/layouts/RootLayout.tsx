@@ -1,6 +1,5 @@
 import { Outlet } from "react-router-dom";
 import "./rootLayout.css";
-import Navbar from "../components/Navbar";
 import { Rootstate } from "../store/store";
 import { useSelector } from "react-redux";
 import HomeModal from "../pages/home/HomeModal";

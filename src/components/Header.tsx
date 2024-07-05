@@ -6,8 +6,8 @@ import { removeCookie } from "../utils/Cookie";
 function Header() {
   //   const headerLeftButtonList = ["홈", "플래너", "커뮤니티"];
   //   const nav = ["/home", "/planner", "/community"];
-  const headerLeftButtonList = ["홈", "커뮤니티"];
-  const nav = ["/", "/community"];
+  const headerLeftButtonList = ["홈", "커뮤니티", "마이페이지", "관리자페이지"];
+  const nav = ["/", "/community", "/mypage", "/admin"];
   const [clicked, setClicked] = useState(0);
   const [write, setWrite] = useState(0);
 
