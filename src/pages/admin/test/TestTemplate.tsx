@@ -3,12 +3,7 @@ import ViewPanel from "../../../components/ui/ViewPanel";
 import "./testTemplate.css";
 import { useEffect, useState } from "react";
 import { GetAllReportsForAdminAPI } from "../../../apis/reports";
-import {
-  reportName,
-  reportResult,
-  reportsHeaders,
-} from "../../../data/reports";
-import { dateFromLocalDateToDot } from "../../../utils/date";
+import { reportsHeaders } from "../../../data/reports";
 import TestTable from "./TestTable";
 import TestTableCards from "./TestTableCards";
 import SidebarUpper from "../../../components/SidebarUpper";
