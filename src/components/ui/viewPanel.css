@@ -1,0 +1,18 @@
+.view-panel {
+  display: inline-flex;
+  border: 1px solid gray;
+  border-radius: 6px;
+
+  .view-panel-item {
+    margin: 2px;
+    color: gray;
+    cursor: pointer;
+    width: 16px;
+    height: 16px;
+    line-height: 16px;
+  }
+
+  .view-panel-item.active {
+    color: black;
+  }
+}

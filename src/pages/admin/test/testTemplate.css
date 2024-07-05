@@ -1,0 +1,21 @@
+.template {
+  .template-title {
+    text-align: center;
+    padding: 20px;
+  }
+  .template-panels {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    .template-panels-left {
+    }
+    .template-panels-right {
+    }
+  }
+  .template-main {
+  }
+  .template-search {
+  }
+  .template-pagination {
+  }
+}

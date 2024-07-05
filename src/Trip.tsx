@@ -1,9 +1,7 @@
-import React, { useEffect } from "react";
 import RootLayout from "./layouts/RootLayout";
 import TestRootLayout from "./layouts/test/RootLayout";
 import { Route, Routes } from "react-router-dom";
 import Home from "./pages/home/Home";
-import Community from "./pages/community/Community";
 import MyPage from "./pages/mypage/MyPage";
 import Admin from "./pages/admin/Admin";
 import Login from "./pages/login/Login";
@@ -30,7 +28,7 @@ import { ScheduleReturnType, ScheduleType } from "./types/schedules";
 import ReportTest from "./pages/admin/reports/test/ReportTest";
 import ReportsNode from "./pages/admin/reports/ReportsNode";
 import Header from "./components/Header";
-import TestUsers from "./pages/admin/test/TestUsers";
+import TestUsers from "./pages/admin/test/TestTemplate";
 
 function Trip() {
   // useEffect(() => {
