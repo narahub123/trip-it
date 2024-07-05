@@ -20,7 +20,7 @@ const Home = () => {
     setSearch(search);
   };
 
-  // 리덕스 초기화 
+  // 리덕스 초기화
   useEffect(() => {
     dispatch(resetSchedule());
     dispatch(resetDates());
@@ -39,10 +39,11 @@ const Home = () => {
             type="search"
             placeholder="여행할 도시를 검색해주세요"
             style={{
-              width: "70%",
+              width: "50%",
               height: "clamp(40px, 2vw, 60px)",
               fontSize: "clamp(12px, 2vw, 16px)",
               paddingLeft: "5px",
+              margin: "0 auto",
             }}
             autoFocus
             onChange={(e) => handleChange(e)}

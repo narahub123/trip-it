@@ -45,7 +45,7 @@ const HomeModal = () => {
     // schedule에 areaCode 추가
     dispatch(addAreaCode(areaCode));
     // schedule 페이지로 이동
-    navigate(`/schedule/${metro?.name}#step1`);
+    navigate(`/planner/${metro?.name}#step1`);
     // 모달창 닫기
     dispatch(setActive());
   };

@@ -27,6 +27,7 @@ import Reports from "./pages/admin/reports/Reports";
 import { ScheduleReturnType, ScheduleType } from "./types/schedules";
 import ReportTest from "./pages/admin/reports/test/ReportTest";
 import ReportsNode from "./pages/admin/reports/ReportsNode";
+import Header from "./components/Header";
 
 function Trip() {
   // useEffect(() => {
@@ -132,10 +133,7 @@ function Trip() {
           <Route path="/login/normal" element={<Normal />} />
           <Route path="/join" element={<Join />} />
         </Route>
-        <Route
-          path="/schedule/:metro_name"
-          element={<ScheduleLayout />}
-        ></Route>
+        <Route path="/planner/:metro_name" element={<ScheduleLayout />}></Route>
       </Routes>
     </Provider>
   );

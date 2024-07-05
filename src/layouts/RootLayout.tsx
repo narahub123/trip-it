@@ -1,12 +1,10 @@
-import React from "react";
 import { Outlet } from "react-router-dom";
-
 import "./rootLayout.css";
 import Navbar from "../components/Navbar";
-
 import { Rootstate } from "../store/store";
 import { useSelector } from "react-redux";
 import HomeModal from "../pages/home/HomeModal";
+import Header from "../components/Header";
 
 const RootLayout = () => {
   // 모달 활성화 확인
@@ -18,7 +16,7 @@ const RootLayout = () => {
   return (
     <div className="rootLayout">
       {active && <HomeModal />}
-      <Navbar />
+      <Header />
       <div className="blank" />
       <main>
         <Outlet />
