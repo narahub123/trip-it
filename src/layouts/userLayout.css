@@ -10,3 +10,14 @@
     flex-grow: 1;
   }
 }
+
+@media screen and (max-width: 516px) {
+  .user-layout {
+    .sidebar {
+      display: none;
+    }
+    .user-layout-main {
+      margin-left: 0px;
+    }
+  }
+}

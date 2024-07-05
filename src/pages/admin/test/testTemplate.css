@@ -3,6 +3,7 @@
     text-align: center;
     padding: 20px;
   }
+
   .template-panels {
     display: flex;
     justify-content: space-between;
@@ -17,5 +18,15 @@
   .template-search {
   }
   .template-pagination {
+  }
+}
+
+@media screen and (max-width: 516px) {
+}
+@media screen and (min-width: 517px) {
+  .template {
+    .sidebar-upper {
+      display: none;
+    }
   }
 }

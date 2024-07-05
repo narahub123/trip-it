@@ -1,0 +1,25 @@
+.sidebar-upper {
+  text-align: center;
+  border: 1px solid #ccc;
+  p {
+    padding: 8px;
+    cursor: pointer;
+  }
+
+  .sidebar-upper-container {
+    max-height: 0px;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 1s ease;
+  }
+  .sidebar-upper-container-active {
+    max-height: 400px;
+    opacity: 1;
+    visibility: visible;
+    transition: all 1s ease;
+  }
+
+  li {
+    padding: 8px;
+  }
+}
