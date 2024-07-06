@@ -1,0 +1,43 @@
+.test-sort-panel {
+  text-align: center;
+
+  p {
+    display: inline;
+    cursor: pointer;
+  }
+
+  .wrap {
+    position: relative;
+    width: 150px;
+    z-index: 9;
+    .test-sort-panel-container {
+      border: 1px solid #ccc;
+      position: absolute;
+      background-color: #fff;
+      max-height: 0px;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.5s ease;
+
+      .test-sort-panel-cell {
+        padding: 8px;
+        display: flex;
+        justify-content: center;
+      }
+    }
+    .test-sort-panel-container-active {
+      border: 1px solid #ccc;
+      position: absolute;
+      background-color: #fff;
+      max-height: 400px;
+      opacity: 1;
+      visibility: visible;
+      transition: all 0.5s ease;
+      .test-sort-panel-cell {
+        padding: 8px;
+        display: flex;
+        justify-content: center;
+      }
+    }
+  }
+}

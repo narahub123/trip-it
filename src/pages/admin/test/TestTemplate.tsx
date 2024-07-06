@@ -11,6 +11,7 @@ import { users } from "../../../data/test";
 import TestGallery from "./TestGallery";
 import { GetAllReportsAPI } from "./testReports";
 import TestPagination from "./TestPagination";
+import TestSortPanel from "./TestSortPanel";
 
 const TestTemplate = () => {
   const { hash } = useLocation();
@@ -19,13 +20,20 @@ const TestTemplate = () => {
   const [limit, setLimit] = useState(5);
   const [page, setPage] = useState(1);
   const [totalPage, setTotalPage] = useState(0);
+  const [openSort, setOpenSort] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [sorts, setSorts] = useState({ reportDate: "desc" });
 
   console.log(page);
 
   useEffect(() => {
     setLoading(true);
-    GetAllReportsAPI(page, limit).then((res) => {
+    GetAllReportsAPI(
+      page,
+      limit,
+      Object.keys(sorts)[0],
+      sorts[Object.keys(sorts)[0] as keyof typeof sorts]
+    ).then((res) => {
       const newItems = res.data.reports.map((item: any) => {
         return {
           ...item,
@@ -37,7 +45,7 @@ const TestTemplate = () => {
       setItems(newItems);
       setTotalPage(res.data.totalPages);
     });
-  }, [page, limit]);
+  }, [page, limit, sorts]);
 
   console.log(items);
   console.log(loading);
@@ -62,13 +70,26 @@ const TestTemplate = () => {
         <div className="template-panels-left">
           <ViewPanel hash={hash} />
         </div>
-        <div className="template-panels-right">right</div>
+        <div className="template-panels-right">
+          <TestSortPanel
+            headers={reportsHeaders}
+            sorts={sorts}
+            setSorts={setSorts}
+            openSort={openSort}
+            setOpenSort={setOpenSort}
+          />
+        </div>
       </section>
       <section className={loading ? "template-main loading" : "template-main"}>
         {hash === "#table" && (
           <>
-            <TestTable items={items} headers={reportsHeaders} />
             <TestTableCards items={items} />
+            <TestTable
+              items={items}
+              headers={reportsHeaders}
+              sorts={sorts}
+              setSorts={setSorts}
+            />
           </>
         )}
         {hash === "#gallery" && <TestGallery items={users} />}

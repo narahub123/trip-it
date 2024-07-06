@@ -1,20 +1,35 @@
 import "./testTable.css";
 import { dateFromLocalDateToDot } from "../../../utils/date";
-import { reportResult } from "../../../data/reports";
-import { LuChevronUp } from "react-icons/lu";
+import { reportName, reportResult } from "../../../data/reports";
+import { LuChevronDown, LuChevronUp } from "react-icons/lu";
 
 export interface TestTableProps {
   headers: { [key: string]: string };
   items: any[];
+  sorts: any;
+  setSorts: (value: any) => void;
 }
 
-const TestTable = ({ headers, items }: TestTableProps) => {
+const TestTable = ({ headers, items, sorts, setSorts }: TestTableProps) => {
+  const handleSort = (
+    e: React.MouseEvent<HTMLTableHeaderCellElement, MouseEvent>
+  ) => {
+    const prop = e.currentTarget.id;
+    const sort = e.currentTarget.dataset.sort;
+
+    if (sort === "asc") {
+      e.currentTarget.dataset.sort = "desc";
+      setSorts({ [prop]: "desc" });
+    } else {
+      e.currentTarget.dataset.sort = "asc";
+      setSorts({ [prop]: "asc" });
+    }
+  };
   return (
     <table className="template-main-table">
       <thead className="template-main-table-head">
         <tr className="template-main-table-head-row">
-          {Object.keys(headers)
-          .map((name) => {
+          {Object.keys(headers).map((name) => {
             const key = headers[`${name}` as keyof typeof headers];
             return (
               <th
@@ -22,11 +37,17 @@ const TestTable = ({ headers, items }: TestTableProps) => {
                 data-sort="asc"
                 className="template-main-table-head-cell"
                 id={key}
+                onClick={(e) => handleSort(e)}
               >
                 <div className="template-main-table-head-cell-container">
                   <p>{name}</p>
                   <p>
-                    <LuChevronUp />
+                    {Object.keys(sorts)[0] === key &&
+                    sorts[Object.keys(sorts)[0]] === "desc" ? (
+                      <LuChevronDown />
+                    ) : (
+                      <LuChevronUp />
+                    )}
                   </p>
                 </div>
               </th>
@@ -36,8 +57,10 @@ const TestTable = ({ headers, items }: TestTableProps) => {
       </thead>
       <tbody className="template-main-table-body">
         {items.map((item) => (
-          <tr className="template-main-table-body-row">
-            <td className="template-main-table-body-cell">{item.reportCate}</td>
+          <tr className="template-main-table-body-row" key={item.reportId}>
+            <td className="template-main-table-body-cell">
+              {reportName(item.reportCate)}
+            </td>
             <td className="template-main-table-body-cell">
               {typeof item.userId === "number"
                 ? item.userId
