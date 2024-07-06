@@ -4,11 +4,13 @@ import { dateFromLocalDateToDot } from "../../../utils/date";
 
 export interface TestTableCards {
   items: any[];
+  limit: number;
+  offset: number;
 }
-const TestTableCards = ({ items }: TestTableCards) => {
+const TestTableCards = ({ items, limit, offset }: TestTableCards) => {
   return (
     <ul className="template-main-tables-container">
-      {items.map((item) => (
+      {items.slice(offset, offset + limit).map((item) => (
         <table
           className="template-main-tables-table"
           key={item.reportId}

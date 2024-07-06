@@ -9,11 +9,15 @@ import TestTableCards from "./TestTableCards";
 import SidebarUpper from "../../../components/SidebarUpper";
 import { users } from "../../../data/test";
 import TestGallery from "./TestGallery";
+import Pagination from "../../../components/ui/Pagination";
 
 const TestTemplate = () => {
   const { hash } = useLocation();
   const [items, setItems] = useState<any[]>([]);
   const [upperOn, setUpperOn] = useState(false);
+  const [limit, setLimit] = useState(5);
+  const [page, setPage] = useState(1);
+  const offset = (page - 1) * limit;
 
   useEffect(() => {
     GetAllReportsForAdminAPI().then((res) => {
@@ -28,9 +32,6 @@ const TestTemplate = () => {
     });
   }, []);
 
-  console.log(items);
-  console.log(upperOn);
-
   return (
     <div className="template">
       <section className="template-title">
@@ -44,7 +45,6 @@ const TestTemplate = () => {
       </section>
 
       <section className="template-panels">
-        {/* view panel */}
         {/* page panel */}
         {/* total */}
         {/* control panel */}
@@ -57,14 +57,28 @@ const TestTemplate = () => {
       <section className="template-main">
         {hash === "#table" && (
           <>
-            <TestTable headers={reportsHeaders} items={items} />
-            <TestTableCards items={items} />
+            <TestTable
+              headers={reportsHeaders}
+              items={items}
+              limit={limit}
+              offset={offset}
+            />
+            <TestTableCards items={items} limit={limit} offset={offset} />
           </>
         )}
-        {hash === "#gallery" && <TestGallery items={users} />}
+        {hash === "#gallery" && (
+          <TestGallery items={users} limit={limit} offset={offset} />
+        )}
       </section>
       <section className="template-search">search</section>
-      <section className="template-pagination">pagination</section>
+      <section className="template-pagination">
+        <Pagination
+          total={items.length}
+          limit={limit}
+          page={page}
+          setPage={setPage}
+        />
+      </section>
     </div>
   );
 };
