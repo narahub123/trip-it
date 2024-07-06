@@ -7,6 +7,8 @@ import { reportsHeaders } from "../../../data/reports";
 import TestTable from "./TestTable";
 import TestTableCards from "./TestTableCards";
 import SidebarUpper from "../../../components/SidebarUpper";
+import { users } from "../../../data/test";
+import TestGallery from "./TestGallery";
 
 const TestTemplate = () => {
   const { hash } = useLocation();
@@ -59,6 +61,7 @@ const TestTemplate = () => {
             <TestTableCards items={items} />
           </>
         )}
+        {hash === "#gallery" && <TestGallery items={users} />}
       </section>
       <section className="template-search">search</section>
       <section className="template-pagination">pagination</section>
