@@ -6,35 +6,32 @@ import { LuChevronUp } from "react-icons/lu";
 export interface TestTableProps {
   headers: { [key: string]: string };
   items: any[];
-  limit: number;
-  offset: number;
 }
 
-const TestTable = ({ headers, items, limit, offset }: TestTableProps) => {
+const TestTable = ({ headers, items }: TestTableProps) => {
   return (
     <table className="template-main-table">
       <thead className="template-main-table-head">
         <tr className="template-main-table-head-row">
           {Object.keys(headers)
-            .slice(offset, offset + limit)
-            .map((name) => {
-              const key = headers[`${name}` as keyof typeof headers];
-              return (
-                <th
-                  key={key}
-                  data-sort="asc"
-                  className="template-main-table-head-cell"
-                  id={key}
-                >
-                  <div className="template-main-table-head-cell-container">
-                    <p>{name}</p>
-                    <p>
-                      <LuChevronUp />
-                    </p>
-                  </div>
-                </th>
-              );
-            })}
+          .map((name) => {
+            const key = headers[`${name}` as keyof typeof headers];
+            return (
+              <th
+                key={key}
+                data-sort="asc"
+                className="template-main-table-head-cell"
+                id={key}
+              >
+                <div className="template-main-table-head-cell-container">
+                  <p>{name}</p>
+                  <p>
+                    <LuChevronUp />
+                  </p>
+                </div>
+              </th>
+            );
+          })}
         </tr>
       </thead>
       <tbody className="template-main-table-body">

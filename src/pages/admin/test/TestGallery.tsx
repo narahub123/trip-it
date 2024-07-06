@@ -2,15 +2,13 @@ import "./testGallery.css";
 
 interface TestGalleryProps {
   items: any[];
-  limit: number;
-  offset: number;
 }
 
-const TestGallery = ({ items, limit, offset }: TestGalleryProps) => {
+const TestGallery = ({ items }: TestGalleryProps) => {
   return (
     <div className="test-gallery">
       <ul className="test-gallery-container">
-        {items.slice(offset, offset + limit).map((item) => (
+        {items.map((item) => (
           <li className="test-gallery-item" key={item.userId}>
             <figure className="test-gallery-item-background-image">
               <img src={item.userpic} alt="사진" />

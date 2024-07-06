@@ -1,0 +1,21 @@
+.test-pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  .test-pageController {
+    padding: 10px;
+  }
+  .test-pageNum {
+    padding: 10px;
+  }
+  .test-pageNum.active {
+    color: red;
+    font-weight: bold;
+    cursor: revert;
+    transform: revert;
+  }
+  .test-pageNum:hover {
+    font-weight: bold;
+  }
+}
