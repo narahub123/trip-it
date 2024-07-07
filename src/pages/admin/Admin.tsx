@@ -5,7 +5,7 @@ import { Outlet } from "react-router-dom";
 const Admin = () => {
   return (
     <div className="admin" data-theme="light">
-      {/* <DarkMode /> */}
+      <DarkMode />
       <Outlet />
     </div>
   );
