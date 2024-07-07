@@ -56,6 +56,13 @@ const TestTable = ({ headers, items, sorts, setSorts }: TestTableProps) => {
         </tr>
       </thead>
       <tbody className="template-main-table-body">
+        {items.length === 0 && (
+          <tr className="template-main-table-body-row" key={"none"}>
+            <td className="template-main-table-body-cell" colSpan={8}>
+              검색 결과가 없습니다.
+            </td>
+          </tr>
+        )}
         {items.map((item) => (
           <tr className="template-main-table-body-row" key={item.reportId}>
             <td className="template-main-table-body-cell">

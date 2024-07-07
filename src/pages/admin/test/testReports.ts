@@ -7,10 +7,12 @@ export const GetAllReportsAPI = async (
   page?: number,
   limit?: number,
   key?: string,
-  value?: string
+  value?: string,
+  keyword?: string,
+  search?: string | number
 ) => {
   const response = await axios.get(
-    `${baseURL}/reports/admin/test?page=${page}&limit=${limit}&sortKey=${key}&sortValue=${value}`
+    `${baseURL}/reports/admin/test?page=${page}&limit=${limit}&sortKey=${key}&sortValue=${value}&keyword=${keyword}&search=${search}`
   );
 
   return response;
