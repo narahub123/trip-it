@@ -1,6 +1,6 @@
 import RootLayout from "./layouts/RootLayout";
 import TestRootLayout from "./layouts/test/RootLayout";
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, useLocation, useNavigate } from "react-router-dom";
 import Home from "./pages/home/Home";
 import MyPage from "./pages/mypage/MyPage";
 import Admin from "./pages/admin/Admin";
@@ -29,6 +29,8 @@ import ReportTest from "./pages/admin/reports/test/ReportTest";
 import ReportsNode from "./pages/admin/reports/ReportsNode";
 import Header from "./components/Header";
 import TestUsers from "./pages/admin/test/TestTemplate";
+import { useEffect } from "react";
+import refreshAPIForNode from "./utils/TokenRefresherNode";
 
 function Trip() {
   // useEffect(() => {
@@ -42,6 +44,23 @@ function Trip() {
 
   //   fetchData();
   // }, []);
+
+  const navigate = useNavigate();
+  const baseURL = process.env.REACT_APP_SERVER_URL;
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        await refreshAPIForNode.get(`${baseURL}${pathname}`);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+        if (error === "logout") navigate("/login");
+      }
+    };
+
+    fetchData();
+  }, []);
 
   // schedule data(practice)
   const schedules: ScheduleReturnType[] = [

@@ -62,16 +62,7 @@ const TestTemplate = () => {
         setTotalPage(res.data.totalPages);
       })
       .catch((err) => {
-        if (err.response.data.code === "logout") {
-          localStorage.clear();
-          removeCookie("access_token");
-          removeCookie("refresh_token");
-          removeCookie("refresh");
-          window.alert("토큰이 만료되어 자동으로 로그아웃 되었습니다.");
-          navigate("/login");
-        } else {
-          console.log(err.response.data.code);
-        }
+        console.log(err.response.data.code);
       });
   }, [page, limit, sorts, keyword, search]);
 
