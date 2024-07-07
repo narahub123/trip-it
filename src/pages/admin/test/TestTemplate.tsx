@@ -1,4 +1,4 @@
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import ViewPanel from "../../../components/ui/ViewPanel";
 import "./testTemplate.css";
 import { useEffect, useState } from "react";
@@ -13,8 +13,10 @@ import { GetAllReportsAPI } from "./testReports";
 import TestPagination from "./TestPagination";
 import TestSortPanel from "./TestSortPanel";
 import TestSearch from "./TestSearch";
+import { removeCookie } from "../../../utils/Cookie";
 
 const TestTemplate = () => {
+  const navigate = useNavigate();
   const { hash } = useLocation();
   const [items, setItems] = useState<any[]>([]);
   const [upperOn, setUpperOn] = useState(false);
@@ -46,18 +48,31 @@ const TestTemplate = () => {
       sorts[Object.keys(sorts)[0] as keyof typeof sorts],
       keyword,
       search
-    ).then((res) => {
-      const newItems = res.data.reports.map((item: any) => {
-        return {
-          ...item,
-          reportId: item._id,
-        };
-      });
+    )
+      .then((res) => {
+        const newItems = res.data.reports.map((item: any) => {
+          return {
+            ...item,
+            reportId: item._id,
+          };
+        });
 
-      setLoading(false);
-      setItems(newItems);
-      setTotalPage(res.data.totalPages);
-    });
+        setLoading(false);
+        setItems(newItems);
+        setTotalPage(res.data.totalPages);
+      })
+      .catch((err) => {
+        if (err.response.data.code === "logout") {
+          localStorage.clear();
+          removeCookie("access_token");
+          removeCookie("refresh_token");
+          removeCookie("refresh");
+          window.alert("토큰이 만료되어 자동으로 로그아웃 되었습니다.");
+          navigate("/login");
+        } else {
+          console.log(err.response.data.code);
+        }
+      });
   }, [page, limit, sorts, keyword, search]);
 
   console.log(items);

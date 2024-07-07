@@ -12,7 +12,8 @@ export const GetAllReportsAPI = async (
   search?: string | number
 ) => {
   const response = await axios.get(
-    `${baseURL}/reports/admin/test?page=${page}&limit=${limit}&sortKey=${key}&sortValue=${value}&keyword=${keyword}&search=${search}`
+    `${baseURL}/reports/admin/test?page=${page}&limit=${limit}&sortKey=${key}&sortValue=${value}&keyword=${keyword}&search=${search}`,
+    { withCredentials: true }
   );
 
   return response;
