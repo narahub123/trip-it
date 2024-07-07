@@ -12,8 +12,13 @@ function Join() {
 
   async function postInfo(e: any) {
     e.preventDefault();
+
+    // spring
+    // const url = baseURL + "/join";
+    // nodejs
+    const url = baseUrl + "/auth/join";
     await axios
-      .post(baseUrl + "/join", {
+      .post(url, {
         email: inputValue.email,
         password: inputValue.pw,
         username: inputValue.name,
@@ -38,7 +43,7 @@ function Join() {
         } else {
           setVal("");
         }
-        console.log("에러" + msg);
+        console.log("에러 " + msg);
       });
   }
 
