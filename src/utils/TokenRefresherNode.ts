@@ -17,6 +17,8 @@ refreshAPIForNode.interceptors.response.use(
   async (error) => {
     const { code } = error.response.data;
 
+    console.log(code);
+
     if (code === "logout" && !logoutMessageDisplayed) {
       logoutMessageDisplayed = true;
       localStorage.clear();

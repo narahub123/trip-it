@@ -14,9 +14,9 @@ function Join() {
     e.preventDefault();
 
     // spring
-    // const url = baseURL + "/join";
+    const url = baseURL + "/join";
     // nodejs
-    const url = baseUrl + "/auth/join";
+    // const url = baseUrl + "/auth/join";
     await axios
       .post(url, {
         email: inputValue.email,
