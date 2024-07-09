@@ -2,6 +2,7 @@ import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { PlaceApiType } from "../../types/place";
 import { Rootstate } from "../store";
 import { convertStringToJson } from "../../utils/convertStringToJson";
+import axios from "axios";
 // import { combineColumnPlaces } from "./columnPlacesSlice";
 
 export interface ContentIdsType {
@@ -56,7 +57,7 @@ export const fetchPlaces = createAsyncThunk(
     //다른 slice의 값 가져오기
     const { schedule } = getState() as Rootstate;
 
-    const areacode = schedule.schedule.metro_id || "1";
+    const metroId = schedule.schedule.metro_id || "1";
 
     try {
       if (hash === "#step3") {
@@ -70,26 +71,29 @@ export const fetchPlaces = createAsyncThunk(
         contentTypeId = "1";
       }
 
-      const url = `${baseURL}/places/${areacode}/${contentTypeId}/${pageNo.toString()}`;
-      // const url = `${baseURL}/home/test/${areacode}/${pageNo}`
+      // const url = `${baseURL}/places/${areacode}/${contentTypeId}/${pageNo.toString()}`;
+      const url = `${baseURL}/home/apiList/${metroId}/${pageNo}/${contentTypeId}`;
 
       console.log(url);
 
-      const response = await fetch(url);
+      // const response = await fetch(url);
+      const res = await axios.get(url);
 
+      const response = res.data;
       // console.log(response);
 
       // url를 변경하는 경우 try문은 지워야 함
       try {
         const jsonData = await response.json();
 
+        console.log(jsonData);
+
         return jsonData;
       } catch (error) {
-        try {
-          const textData = await response.text();
-          console.log(textData);
+        console.log("여기");
 
-          const jsonData: PlaceApiType[] | [] = convertStringToJson(textData);
+        try {
+          const jsonData: PlaceApiType[] | [] = convertStringToJson(response);
 
           console.log(jsonData);
 
@@ -113,13 +117,23 @@ export const fetchPlace = createAsyncThunk<
   "placeSlice/fetchPlace",
   async ({ contentId, addPlaceToColumnPlaces_1 = true }: PlaceProps) => {
     try {
-      const url = `${baseURL}/places/${contentId}`;
-      // const url = `${baseURL}/home/test/${areacode}/${pageNo}`
+      // const url = `${baseURL}/places/${contentId}`;
+      const url = `${baseURL}/home/apiDetail/${contentId}`;
 
-      const response = await fetch(url);
-      const jsonData = await response.json();
+      // nodejs
+      // const response = await fetch(url);
 
-      const place = jsonData[0];
+      // const jsonData = await response.json();
+
+      // const place = jsonData[0];
+
+      // spring
+      const res = await axios.get(url);
+
+      const response = res.data;
+
+      console.log(response);
+      const place = response;
 
       // 숙소가 아니면 추가 : 장소 추가 버튼을 눌렀을 때를 의미
       const addToColumnPlaces_1: boolean = addPlaceToColumnPlaces_1
@@ -148,7 +162,7 @@ export const fetchSearchedPlaces = createAsyncThunk(
 
     // console.log(keyword);
 
-    const areacode = schedule.schedule.metro_id || "1";
+    const metroId = schedule.schedule.metro_id || "1";
 
     try {
       if (hash === "#step3") {
@@ -162,8 +176,10 @@ export const fetchSearchedPlaces = createAsyncThunk(
         contentTypeId = "1";
       }
 
-      const url = `${baseURL}/places/search/${areacode}/${contentTypeId}/${keyword}/${pageNo.toString()}`;
-      // const url = `${baseURL}/home/test/${areacode}/${pageNo}`
+      // nodejs
+      // const url = `${baseURL}/places/search/${areacode}/${contentTypeId}/${keyword}/${pageNo.toString()}`;
+      // spring
+      const url = `${baseURL}/home//apiSearch/${metroId}/${pageNo}/${contentTypeId}/${keyword}`;
 
       console.log(url);
 

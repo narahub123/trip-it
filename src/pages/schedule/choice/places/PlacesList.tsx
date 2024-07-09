@@ -43,7 +43,7 @@ const PlacesList = () => {
   const location = useLocation();
   const { hash } = location;
 
-  const [contentTypeId, setContentTypeId] = useState("1");
+  const [contentTypeId, setContentTypeId] = useState("12");
   const [keyword, setKeyword] = useState("");
 
   // 선택한 장소를 모아둠

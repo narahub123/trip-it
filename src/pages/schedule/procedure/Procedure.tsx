@@ -279,14 +279,14 @@ const Procedure = () => {
 
     // 일정 보내고 목록 받기
     axios
-      .post(`${baseURL}/schedules`, valueNode)
-      // .post(`${baseURL}/home/saveSchedule`, value, {
-      //   headers: {
-      //     "Content-Type": "application/json",
-      //     Access: `${localStorage.getItem("access")}`,
-      //     Refresh: `${getCookie("refresh")}`,
-      //   },
-      // })
+      // .post(`${baseURL}/schedules`, valueNode)
+      .post(`${baseURL}/home/saveSchedule`, value, {
+        headers: {
+          "Content-Type": "application/json",
+          Access: `${localStorage.getItem("access")}`,
+          Refresh: `${getCookie("refresh")}`,
+        },
+      })
       .then((response) => {
         if (response.status === 200 || response.status === 201) {
           console.log("정상적으로 처리되었습니다.");

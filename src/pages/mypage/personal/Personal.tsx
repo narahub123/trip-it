@@ -188,7 +188,7 @@ const Personal = () => {
 
   return (
     <div className="personal">
-      <h3 className="join-title">개인 정보 수정</h3>
+      <h3 className="join-title">개인 정보</h3>
       <div className="personal-body">
         <div className="personal-body-title">
           입력사항
@@ -217,6 +217,7 @@ const Personal = () => {
               type="password"
               placeholder="비밀번호(8자~12자, 영문+숫자+특수문자 사용)"
               onChange={(e) => handleChange(e)}
+              disabled
             ></input>
           </div>
 
@@ -234,6 +235,7 @@ const Personal = () => {
               id="username"
               type="text"
               onChange={(e) => handleChange(e)}
+              disabled
             ></input>
           </div>
           <p className={`personal-error ${!isRight.username ? "visible" : ""}`}>
@@ -250,6 +252,7 @@ const Personal = () => {
               type="text"
               placeholder="닉네임"
               onChange={(e) => handleChange(e)}
+              disabled
             ></input>
           </div>
           <p className={`personal-error ${!isRight.nickname ? "visible" : ""}`}>
@@ -265,6 +268,7 @@ const Personal = () => {
               onClick={() => setOpen("gender")}
               onChange={(e) => handleChange(e)}
               value={formData.gender === "m" ? "남" : "여"}
+              disabled
             ></input>
             <ul
               className={"personal-ul" + (open === "gender" ? "-gender" : "")}
@@ -291,6 +295,7 @@ const Personal = () => {
                 maxLength={4}
                 id="year"
                 onChange={(e) => handleChange(e)}
+                disabled
               ></input>
             </div>
             <div className="personal-body-input">
@@ -301,6 +306,7 @@ const Personal = () => {
                   "personal-li" + (isRight.birth === true ? "confirm" : "")
                 }
                 onClick={() => setOpen("month")}
+                disabled
               ></input>
               <ul
                 className={"personal-ul" + (open === "month" ? "-month" : "")}
@@ -325,6 +331,7 @@ const Personal = () => {
                 defaultValue={`${date}일`}
                 className={"personal-li" + (isRight.birth ? "confirm" : "")}
                 onClick={() => setOpen("date")}
+                disabled
               />
               <ul className={"personal-ul" + (open === "date" ? "-date" : "")}>
                 {dateList.map(function (a, i) {

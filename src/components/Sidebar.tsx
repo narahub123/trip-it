@@ -25,7 +25,7 @@ const Sidebar = () => {
               to="mypage/personal"
               className={({ isActive }) => (isActive ? "active" : "")}
             >
-              <span className="sidebar-text">개인정보수정</span>
+              <span className="sidebar-text">개인정보</span>
             </NavLink>
           </li>
           <li>

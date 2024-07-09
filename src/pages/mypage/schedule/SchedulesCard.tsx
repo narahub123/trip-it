@@ -10,7 +10,7 @@ import { useEffect, useRef, useState } from "react";
 import { debounce } from "../../../utils/debounce";
 
 export interface DeletionsType {
-  scheduleId: number;
+  schedule_id: number;
   deletion: boolean;
 }
 
@@ -30,25 +30,25 @@ const SchedulesCard = ({
   setDeletions,
 }: SchedulesCardProps) => {
   const inputRef = useRef<HTMLInputElement>(null);
-  const defaultImage = useDefaultImage(schedule.metroId);
+  const defaultImage = useDefaultImage(schedule.metro_id);
 
-  const { startDate, endDate, registerDate, scheduleId } = schedule;
-  const start: DestrucDateType = startDate
-    ? dateFormatFromLocalDate(startDate)
+  const { start_date, end_date, register_date, schedule_id } = schedule;
+  const start: DestrucDateType = start_date
+    ? dateFormatFromLocalDate(start_date)
     : { year: 0, month: 0, date: 0 };
 
-  const end: DestrucDateType = endDate
-    ? dateFormatFromLocalDate(endDate)
+  const end: DestrucDateType = end_date
+    ? dateFormatFromLocalDate(end_date)
     : { year: 0, month: 0, date: 0 };
 
-  const register: DestrucDateType = registerDate
-    ? dateFormatFromLocalDate(registerDate)
+  const register: DestrucDateType = register_date
+    ? dateFormatFromLocalDate(register_date)
     : { year: 0, month: 0, date: 0 };
 
   useEffect(() => {
     // deletion과 카드의 id가 같은 것 같기
     const result = deletions.find(
-      (deletion) => deletion.scheduleId === scheduleId
+      (deletion) => deletion.schedule_id === schedule_id
     );
 
     if (result) {
@@ -58,7 +58,7 @@ const SchedulesCard = ({
         inputRef.current?.setAttribute("checked", "true");
       }
     }
-  }, [deletions, scheduleId]);
+  }, [deletions, schedule_id]);
 
   const handleDeletion = (e: React.ChangeEvent<HTMLInputElement>) => {
     const checked = e.currentTarget.checked;
@@ -66,9 +66,9 @@ const SchedulesCard = ({
 
     if (checked) {
       const newDeletions = deletions.map((deletion) => {
-        if (deletion.scheduleId === Number(id)) {
+        if (deletion.schedule_id === Number(id)) {
           return {
-            scheduleId: Number(id),
+            schedule_id: Number(id),
             deletion: true,
           };
         } else {
@@ -80,9 +80,9 @@ const SchedulesCard = ({
       setDeletions(newDeletions);
     } else if (!checked) {
       const newDeletions = deletions.map((deletion) => {
-        if (deletion.scheduleId === Number(id)) {
+        if (deletion.schedule_id === Number(id)) {
           return {
-            scheduleId: Number(id),
+            schedule_id: Number(id),
             deletion: false,
           };
         } else {
@@ -96,13 +96,15 @@ const SchedulesCard = ({
     console.log(id);
   };
 
+  console.log(schedule.schedule_id);
+
   return (
     <li
       className="schedules-card"
       style={{
         backgroundImage: `url(${defaultImage})`,
       }}
-      key={schedule.scheduleId}
+      key={schedule.schedule_id}
     >
       {/* 삭제 체크 박스 */}
       <div className="schedules-card-delete">
@@ -110,21 +112,21 @@ const SchedulesCard = ({
           <input
             type="checkbox"
             className="deletion"
-            id={scheduleId.toString()}
+            id={schedule.schedule_id.toString()}
             onChange={(e) => handleDeletion(e)}
             checked={
-              deletions.find((deletion) => deletion.scheduleId === scheduleId)
+              deletions.find((deletion) => deletion.schedule_id === schedule_id)
                 ?.deletion
             }
             ref={inputRef}
           />
         )}
       </div>
-      <Link to={`${schedule.scheduleId}`} className="schedules-card-link">
+      <Link to={`${schedule.schedule_id}`} className="schedules-card-link">
         <div className="schedules-card-container">
           <div className="schedules-card-cap">
             <div className="schedules-card-cap-container">
-              <p className="schedules-card-title">{schedule.scheduleTitle}</p>
+              <p className="schedules-card-title">{schedule.schedule_title}</p>
               <p className="schedules-card-duration">
                 {`${start.year}.${start.month + 1}.${start.date}.`} -{" "}
                 {`${end.year}.${end.month + 1}.${end.date}.`}
@@ -134,7 +136,7 @@ const SchedulesCard = ({
                   {`${register.year}.${register.month + 1}.${register.date}.`}
                 </p>
                 <p className="schedules-card-location">
-                  {schedule.metroId && metroName(schedule.metroId)}
+                  {schedule.metro_id && metroName(schedule.metro_id)}
                 </p>
               </div>
             </div>

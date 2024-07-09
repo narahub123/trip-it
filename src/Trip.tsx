@@ -33,68 +33,69 @@ import refreshAPIForNode from "./utils/TokenRefresherNode";
 // import Post from "./pages/community/Post";
 
 function Trip() {
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     try {
-  //       const res = await refreshAPI.get("");
-  //     } catch (err) {
-  //       console.log("에러확인 : ", err);
-  //     }
-  //   };
-
-  //   fetchData();
-  // }, []);
-
-  const navigate = useNavigate();
-  const baseURL = process.env.REACT_APP_SERVER_URL;
-  const { pathname } = useLocation();
-
   useEffect(() => {
     const fetchData = async () => {
       try {
-        await refreshAPIForNode.get(`${baseURL}${pathname}`);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-        if (error === "logout") navigate("/login");
+        const res = await refreshAPI.get("");
+      } catch (err) {
+        console.log("에러확인 : ", err);
       }
     };
 
     fetchData();
   }, []);
 
+  // for nodejs
+  const navigate = useNavigate();
+  const baseURL = process.env.REACT_APP_SERVER_URL;
+  const { pathname } = useLocation();
+
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     try {
+  //       await refreshAPIForNode.get(`${baseURL}${pathname}`);
+  //     } catch (error) {
+  //       console.error("Error fetching data:", error);
+  //       if (error === "logout") navigate("/login");
+  //     }
+  //   };
+
+  //   fetchData();
+  // }, []);
+
   // schedule data(practice)
-  const schedules: ScheduleReturnType[] = [
-    {
-      scheduleId: 1,
-      metroId: "1",
-      startDate: "20240626",
-      endDate: "20240628",
-      registerDate: "20240621",
-      userId: "1",
-      scheduleTitle: "서울 여행",
-      scheduleDetails: [],
-    },
-    {
-      scheduleId: 2,
-      metroId: "2",
-      startDate: "20240704",
-      endDate: "20240712",
-      registerDate: "20240511",
-      userId: "1",
-      scheduleTitle: "인천 여행",
-      scheduleDetails: [],
-    },
-    {
-      scheduleId: 3,
-      metroId: "3",
-      startDate: "20240504",
-      endDate: "20240513",
-      registerDate: "20240211",
-      userId: "1",
-      scheduleTitle: "부산 여행",
-      scheduleDetails: [],
-    },
-  ];
+  // const schedules: ScheduleReturnType[] = [
+  //   {
+  //     scheduleId: 1,
+  //     metroId: "1",
+  //     startDate: "20240626",
+  //     endDate: "20240628",
+  //     registerDate: "20240621",
+  //     userId: "1",
+  //     scheduleTitle: "서울 여행",
+  //     scheduleDetails: [],
+  //   },
+  //   {
+  //     scheduleId: 2,
+  //     metroId: "2",
+  //     startDate: "20240704",
+  //     endDate: "20240712",
+  //     registerDate: "20240511",
+  //     userId: "1",
+  //     scheduleTitle: "인천 여행",
+  //     scheduleDetails: [],
+  //   },
+  //   {
+  //     scheduleId: 3,
+  //     metroId: "3",
+  //     startDate: "20240504",
+  //     endDate: "20240513",
+  //     registerDate: "20240211",
+  //     userId: "1",
+  //     scheduleTitle: "부산 여행",
+  //     scheduleDetails: [],
+  //   },
+  // ];
 
   // post data(practice)
   const posts = [
@@ -130,7 +131,11 @@ function Trip() {
               <Route path="personal" element={<Personal />} />
               <Route
                 path="schedules"
-                element={<Schedules schedules={schedules} />}
+                element={
+                  <Schedules
+                  // schedules={schedules}
+                  />
+                }
               />
               <Route path="schedules/:scheduleId" element={<Schedule />} />
               <Route path="posts" element={<Posts posts={posts} />} />
@@ -141,7 +146,11 @@ function Trip() {
               <Route path="users" element={<User />} />
               <Route
                 path="schedules"
-                element={<Schedules schedules={schedules} />}
+                element={
+                  <Schedules
+                  // schedules={schedules}
+                  />
+                }
               />
               <Route path="posts" element={<Posts posts={posts} />} />
               {/* <Route path="reports" element={<Reports />} /> */}

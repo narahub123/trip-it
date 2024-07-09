@@ -36,14 +36,14 @@ export interface ScheduleFinal {
 }
 
 export interface ScheduleReturnType {
-  scheduleId: number;
-  metroId: string;
-  startDate: string;
-  endDate: string;
-  scheduleTitle: string;
-  registerDate: string;
-  userId: string;
-  scheduleDetails: ScheduleDetailType[];
+  schedule_id: number;
+  metro_id: string;
+  start_date: string;
+  end_date: string;
+  schedule_title: string;
+  register_date: string;
+  user_idd: string;
+  schedule_details: ScheduleDetailType[];
 }
 
 export interface ScheduleDetailReturnType {
