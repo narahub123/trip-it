@@ -20,8 +20,7 @@ import Schedule from "./pages/mypage/schedule/Schedule";
 import Normal from "./pages/login/Normal";
 import refreshAPI from "./utils/TokenRefresher";
 import Posts from "./pages/mypage/post/Posts";
-import Detail from "./pages/mypage/post/Detail";
-import Post from "./pages/community/Post";
+import Detail from "./pages/mypage/post/Detail"
 import User from "./pages/admin/users/Users";
 import Reports from "./pages/admin/reports/Reports";
 import { ScheduleReturnType, ScheduleType } from "./types/schedules";
@@ -31,6 +30,7 @@ import Header from "./components/Header";
 import TestUsers from "./pages/admin/test/TestTemplate";
 import { useEffect } from "react";
 import refreshAPIForNode from "./utils/TokenRefresherNode";
+import Post from "./pages/community/Post";
 
 function Trip() {
   // useEffect(() => {
