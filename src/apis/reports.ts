@@ -6,7 +6,7 @@ const baseURL = process.env.REACT_APP_SERVER_URL;
 // 신고하기
 export const AddReportAPI = async (value: ReportRequestType) =>
   await axios
-    .post(`${baseURL}/reports/add`, value)
+    .post(`${baseURL}/reports/add`, value, { withCredentials: true })
     .then((response) => {
       return response.data;
     })
@@ -19,6 +19,7 @@ export const AddReportAPI = async (value: ReportRequestType) =>
 export const GetAllReportsByIdAPI = async (userId: number) => {
   const response = await axios.get(`${baseURL}/reports/list`, {
     params: { userId },
+    withCredentials: true,
   });
 
   return response;
@@ -26,7 +27,9 @@ export const GetAllReportsByIdAPI = async (userId: number) => {
 
 // 관리자 신고 목록 보기
 export const GetAllReportsForAdminAPI = async () => {
-  const response = await axios.get(`${baseURL}/reports/admin`);
+  const response = await axios.get(`${baseURL}/reports/admin`, {
+    withCredentials: true,
+  });
 
   return response;
 };
@@ -38,10 +41,14 @@ export const updateReportAPI = async (
 ) => {
   console.log(reportId);
   try {
-    const response = await axios.post(`${baseURL}/reports/update`, {
-      reportId,
-      reportFalse,
-    });
+    const response = await axios.post(
+      `${baseURL}/reports/update`,
+      {
+        reportId,
+        reportFalse,
+      },
+      { withCredentials: true }
+    );
 
     return response.data;
   } catch (error) {
