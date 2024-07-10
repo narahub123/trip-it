@@ -3,6 +3,7 @@ import Valid from "../../login/Valid";
 import "./personal.css";
 import { dateList, monthList } from "../../../data/join";
 import { useRenderCount } from "@uidotdev/usehooks";
+import { fetchPersonalAPI, personallUpdataAPI } from "../../../apis/personal";
 
 const Personal = () => {
   const count = useRenderCount();
@@ -18,6 +19,16 @@ const Personal = () => {
     birth: "19850213",
   };
   const [formData, setFormData] = useState(user); // db에서 받아와야하는 정보
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    fetchPersonalAPI().then((res) => {
+      console.log(res.data);
+
+      setFormData(res.data);
+      setIsLoading(false);
+    });
+  }, []);
 
   const [month, setMonth] = useState(`${Number(formData.birth.slice(4, 6))}`);
   const [date, setDate] = useState(`${Number(formData.birth.slice(6))}`);
@@ -48,6 +59,14 @@ const Personal = () => {
 
   const [keepClicked, setKeepClicked] = useState(0);
   const [val, setVal] = useState("");
+  const [value, setValue] = useState("");
+  const handleSubmit = () => {
+    personallUpdataAPI(value)
+      .then((res) => {
+        window.alert("변경 완료되었습니다.");
+      })
+      .catch((err) => console.log(err));
+  };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     let key = e.currentTarget.id;
@@ -86,6 +105,9 @@ const Personal = () => {
     };
 
     setFormData(updatedUser);
+
+    console.log(value);
+    setValue(value);
   };
 
   const submitRequirements =
@@ -184,6 +206,10 @@ const Personal = () => {
     });
   };
 
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
   console.log(formData.gender);
 
   return (
@@ -217,7 +243,7 @@ const Personal = () => {
               type="password"
               placeholder="비밀번호(8자~12자, 영문+숫자+특수문자 사용)"
               onChange={(e) => handleChange(e)}
-              disabled
+              // disabled
             ></input>
           </div>
 
@@ -241,7 +267,7 @@ const Personal = () => {
           <p className={`personal-error ${!isRight.username ? "visible" : ""}`}>
             유저이름(한글 2~5글자)
           </p>
-          <div className="personal-body-input">
+          {/* <div className="personal-body-input">
             <input
               defaultValue={formData.nickname}
               className={
@@ -257,7 +283,7 @@ const Personal = () => {
           </div>
           <p className={`personal-error ${!isRight.nickname ? "visible" : ""}`}>
             닉네임(한글, 영어, 숫자 2~20글자)
-          </p>
+          </p> */}
           <div className="personal-body-input">
             <input
               type="button"
@@ -361,6 +387,7 @@ const Personal = () => {
                 : "")
             }
             disabled={!submitRequirements}
+            onClick={handleSubmit}
           >
             개인 정보 수정
           </button>
