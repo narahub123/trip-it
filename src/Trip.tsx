@@ -127,6 +127,7 @@ function Trip() {
           <Route index element={<Home />} />
           {/* <Route path="/community" element={<Post />} /> */}
           <Route element={<UserLayout />}>
+            {/* 마이페이지 */}
             <Route path="/mypage" element={<MyPage />}>
               <Route path="profile" element={<Profile />} />
               <Route path="personal" element={<Personal />} />
@@ -143,6 +144,7 @@ function Trip() {
               <Route path="posts/:postId" element={<Detail />} />
               <Route path="blockedlist/user" element={<Bans />} />
             </Route>
+            {/* 관리자 */}
             <Route path="/admin" element={<Admin />}>
               <Route path="users" element={<User />} />
               <Route

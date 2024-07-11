@@ -11,6 +11,7 @@ import { FiMoreVertical } from "react-icons/fi";
 import { getSchedules } from "../../../store/slices/returnSlice";
 import axios from "axios";
 import { getCookie } from "../../../utils/Cookie";
+import { fetchSchedulesAPI } from "../../../apis/schedule";
 
 export interface SchedulesProps {
   schedules: ScheduleReturnType[];
@@ -20,13 +21,25 @@ const Schedules = () =>
   // { schedules }: SchedulesProps
   {
     // db와 연결했을 때 사용
-    const schedules = useSelector((state: Rootstate) => state.return.schedules);
+    // const schedules = useSelector((state: Rootstate) => state.return.schedules);
 
+    const [schedules, setSchedules] = useState<ScheduleReturnType[]>([]);
+    const [loading, setLoading] = useState(true);
     console.log(schedules);
 
     // db와 연결했을 때 사용
     useEffect(() => {
-      store.dispatch(getSchedules());
+      // store.dispatch(getSchedules());
+      fetchSchedulesAPI()
+        .then((res) => {
+          console.log(res.data);
+          setSchedules(res.data);
+          setLoading(false);
+        })
+        .catch((err) => {
+          console.log(err);
+          setLoading(false);
+        });
     }, []);
 
     // 설정 열고 닫기
@@ -43,8 +56,6 @@ const Schedules = () =>
 
       return deletion;
     });
-
-    console.log(scheduleDeletions);
 
     // 삭제할 일정 배열
     const [deletions, setDeletions] = useState<
@@ -63,8 +74,6 @@ const Schedules = () =>
     const arrayLengthMax = 10;
     const arrayLengthDefault = 5;
 
-    const [filteredSchedules, setFilteredSchedules] =
-      useState<ScheduleReturnType[]>(schedules);
     const [limit, setLimit] = useState(arrayLengthDefault);
     const [page, setPage] = useState(1);
     const offset = (page - 1) * limit;
@@ -72,7 +81,7 @@ const Schedules = () =>
     const handleSort = (e: React.MouseEvent<HTMLLIElement, MouseEvent>) => {
       const id = e.currentTarget.id;
 
-      let sortedSchedules = filteredSchedules;
+      let sortedSchedules = schedules;
       // 지역 코드 오름차순
       if (id === "areacodeSortIncl") {
         sortedSchedules = [...schedules].sort((schedule1, schedule2) => {
@@ -180,7 +189,7 @@ const Schedules = () =>
           );
         });
       }
-      setFilteredSchedules(sortedSchedules);
+      setSchedules(sortedSchedules);
     };
 
     // 페이지네이션: 고정인 경우
@@ -211,7 +220,7 @@ const Schedules = () =>
 
       console.log(newSchedules);
 
-      setFilteredSchedules(newSchedules);
+      setSchedules(newSchedules);
     };
 
     // 설정 열기
@@ -241,12 +250,12 @@ const Schedules = () =>
       // console.log(deletionArray);
 
       // api에서 받아 온 배열 조작
-      const newSchedules = filteredSchedules.filter((schedule) => {
+      const newSchedules = schedules.filter((schedule) => {
         if (schedule.schedule_id)
           return !deletionArray.includes(schedule.schedule_id);
       });
 
-      setFilteredSchedules(newSchedules);
+      setSchedules(newSchedules);
 
       const scheduleIds: number[] = [];
 
@@ -287,7 +296,11 @@ const Schedules = () =>
       console.log(newDeletions);
     };
 
-    console.log(filteredSchedules);
+    console.log(schedules);
+
+    if (loading) {
+      return <div>loading...</div>;
+    }
 
     return (
       <div className="schedules">
@@ -471,7 +484,7 @@ const Schedules = () =>
         </div>
         <div className="schedules-cards">
           <ul className="schedules-cards-container">
-            {filteredSchedules.length === 0 && (
+            {schedules.length === 0 && (
               <>
                 <div className="schedules-cards-logo">
                   <img src={`/images/trip-it-logo.png`} alt="" />
@@ -479,18 +492,16 @@ const Schedules = () =>
                 </div>
               </>
             )}
-            {filteredSchedules
-              .slice(offset, offset + limit)
-              .map((schedule, index) => (
-                <SchedulesCard
-                  schedule={schedule}
-                  key={index}
-                  showDelete={showDelete}
-                  setShowDelete={setShowDelete}
-                  deletions={deletions}
-                  setDeletions={setDeletions}
-                />
-              ))}
+            {schedules.slice(offset, offset + limit).map((schedule, index) => (
+              <SchedulesCard
+                schedule={schedule}
+                key={index}
+                showDelete={showDelete}
+                setShowDelete={setShowDelete}
+                deletions={deletions}
+                setDeletions={setDeletions}
+              />
+            ))}
           </ul>
         </div>
         <div className="schedules-search">
