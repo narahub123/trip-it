@@ -30,6 +30,7 @@ import Header from "./components/Header";
 import TestUsers from "./pages/admin/test/TestTemplate";
 import { useEffect } from "react";
 import refreshAPIForNode from "./utils/TokenRefresherNode";
+import Blocks from "./pages/admin/blocks/Blocks";
 // import Post from "./pages/community/Post";
 
 function Trip() {
@@ -156,6 +157,7 @@ function Trip() {
                 }
               />
               <Route path="posts" element={<Posts />} />
+              <Route path="blocks" element={<Blocks />} />
               {/* <Route path="reports" element={<Reports />} /> */}
               <Route path="reports" element={<ReportsNode />} />
               <Route path="reports/test" element={<ReportTest />} />

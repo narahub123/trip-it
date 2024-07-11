@@ -24,7 +24,7 @@ const Bans = () => {
 
   useEffect(() => {
     axios
-      .get(`${baseURL}/mypage/blockedlist/user`, {
+      .get(`${baseURL}/admin/blocks`, {
         headers: {
           "Content-Type": "application/json",
           Access: `${localStorage.getItem("access")}`,
@@ -34,7 +34,8 @@ const Bans = () => {
       .then((response) => {
         console.log("응답", response.data);
         return setBans(response.data);
-      });
+      })
+      .catch((err) => console.log(err));
   }, []);
 
   // 차단

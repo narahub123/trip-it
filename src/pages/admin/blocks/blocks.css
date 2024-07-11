@@ -1,0 +1,28 @@
+.blocks {
+  margin-top: 30px;
+
+  .blocks-title {
+    text-align: center;
+    padding: 20px;
+  }
+  .blocks-panels {
+  }
+
+  .blocks-list {
+    .blocks-list-container {
+      border: 1px solid #ccc;
+      .blocks-list-item {
+        .blocks-list-userId {
+        }
+        .blocks-list-blockedId {
+        }
+        .blocks-list-blockDate {
+        }
+      }
+    }
+  }
+  .blocks-search {
+  }
+  .blocks-pagination {
+  }
+}

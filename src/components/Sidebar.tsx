@@ -82,6 +82,14 @@ const Sidebar = () => {
           </li>
           <li>
             <NavLink
+              to="admin/blocks"
+              className={({ isActive }) => (isActive ? "active" : "")}
+            >
+              <span className="sidebar-text">차단 목록</span>{" "}
+            </NavLink>
+          </li>
+          <li>
+            <NavLink
               to="admin/reports"
               className={({ isActive }) => (isActive ? "active" : "")}
             >
