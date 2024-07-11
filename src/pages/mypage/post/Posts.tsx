@@ -1,17 +1,32 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Pagination from "../../../components/ui/Pagination";
 import "./posts.css";
 import { metroName } from "../../../utils/metro";
 import PostsCard from "./PostsCard";
 import { FiMoreVertical } from "react-icons/fi";
+import { PostType } from "../../../types/posts";
+import { fetchPostsAPI } from "../../../apis/posts";
 
-export interface PostsProps {
-  posts: any[];
-}
-
-const Posts = ({ posts }: PostsProps) => {
+const Posts = () => {
   // db와 연결했을 때 사용
   // const posts = useSelector((state: Rootstate) => state.return.posts);
+
+  const [posts, setPosts] = useState<PostType[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetchPostsAPI()
+      .then((res) => {
+        console.log("받은 데이터", res.data);
+
+        setPosts(res.data);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.log(err);
+        setLoading(false);
+      });
+  }, []);
 
   // 설정 열고 닫기
   const [isOpen, setIsOpen] = useState(false);
@@ -19,9 +34,9 @@ const Posts = ({ posts }: PostsProps) => {
   const [showDelete, setShowDelete] = useState(false);
 
   const postDeletions = posts.map((post) => {
-    const post_id = post.post_id ? post.post_id : "";
+    const postId = post.postId ? post.postId : "";
     const deletion = {
-      post_id,
+      postId,
       deletion: false,
     };
 
@@ -31,12 +46,10 @@ const Posts = ({ posts }: PostsProps) => {
   // 삭제할 일정 배열
   const [deletions, setDeletions] = useState<
     {
-      post_id: string;
+      postId: string | number;
       deletion: boolean;
     }[]
-  >(postDeletions);
-
-  console.log(deletions);
+  >([]);
 
   const limitArray = [1, 2, 3, 4];
 
@@ -44,7 +57,6 @@ const Posts = ({ posts }: PostsProps) => {
   const arrayLengthMax = 10;
   const arrayLengthDefault = 5;
 
-  const [filteredPosts, setFilteredPosts] = useState(posts);
   const [limit, setLimit] = useState(arrayLengthDefault);
   const [page, setPage] = useState(1);
   const offset = (page - 1) * limit;
@@ -53,44 +65,42 @@ const Posts = ({ posts }: PostsProps) => {
   const areacodeSortIncl = () => {
     console.log("코드 오름");
     const sortedPosts = [...posts].sort((post1, post2) => {
-      if (!post1.metro_id || !post2.metro_id) return -1;
+      if (!post1.metroId || !post2.metroId) return -1;
 
-      return post1.metro_id?.localeCompare(post2.metro_id);
+      return post1.metroId?.localeCompare(post2.metroId);
     });
 
     console.log(sortedPosts);
 
-    setFilteredPosts(sortedPosts);
+    setPosts(sortedPosts);
   };
 
   // 지역 코드 내림차순
   const areacodeSortDecl = () => {
     console.log("코드 내림");
     const sortedPosts = [...posts].sort((post1, post2) => {
-      if (!post1.metro_id || !post2.metro_id) return -1;
+      if (!post1.metroId || !post2.metroId) return -1;
 
-      return post2.metro_id?.localeCompare(post1.metro_id);
+      return post2.metroId?.localeCompare(post1.metroId);
     });
 
     console.log(sortedPosts);
 
-    setFilteredPosts(sortedPosts);
+    setPosts(sortedPosts);
   };
 
   // 지역 이름 오름차순
   const areaNameSortIncl = () => {
     console.log("이름 오름");
     const sortedPosts = [...posts].sort((post1, post2) => {
-      if (!post1.metro_id || !post2.metro_id) return -1;
+      if (!post1.metroId || !post2.metroId) return -1;
 
-      return metroName(post1.metro_id)?.localeCompare(
-        metroName(post2.metro_id)
-      );
+      return metroName(post1.metroId)?.localeCompare(metroName(post2.metroId));
     });
 
     console.log(sortedPosts);
 
-    setFilteredPosts(sortedPosts);
+    setPosts(sortedPosts);
   };
 
   // 지역 이름 내림차순
@@ -98,30 +108,28 @@ const Posts = ({ posts }: PostsProps) => {
     console.log("이름 내림");
 
     const sortedPosts = [...posts].sort((post1, post2) => {
-      if (!post1.metro_id || !post2.metro_id) return -1;
+      if (!post1.metroId || !post2.metroId) return -1;
 
-      return metroName(post2.metro_id)?.localeCompare(
-        metroName(post1.metro_id)
-      );
+      return metroName(post2.metroId)?.localeCompare(metroName(post1.metroId));
     });
 
     console.log(sortedPosts);
 
-    setFilteredPosts(sortedPosts);
+    setPosts(sortedPosts);
   };
 
   // 일정 시작 오름차순
   const startDateSortIncl = () => {
     console.log("시작 오름");
     const sortedPosts = [...posts].sort((post1, post2) => {
-      if (!post1.start_date || !post2.start_date) return -1;
+      if (!post1.startDate || !post2.startDate) return -1;
 
-      return post1.start_date?.localeCompare(post2.start_date);
+      return post1.startDate?.localeCompare(post2.startDate);
     });
 
     console.log(sortedPosts);
 
-    setFilteredPosts(sortedPosts);
+    setPosts(sortedPosts);
   };
 
   // 일정 시작 내림차순
@@ -129,31 +137,31 @@ const Posts = ({ posts }: PostsProps) => {
     console.log("시작 내림");
 
     const sortedPosts = [...posts].sort((post1, post2) => {
-      if (!post1.start_date || !post2.start_date) return -1;
+      if (!post1.startDate || !post2.startDate) return -1;
 
-      return post2.start_date?.localeCompare(post1.start_date);
+      return post2.startDate?.localeCompare(post1.startDate);
     });
 
     console.log(sortedPosts);
 
-    setFilteredPosts(sortedPosts);
+    setPosts(sortedPosts);
   };
 
   // 일정 기간 오름차순
   const durationSortIncl = () => {
     console.log("기간 오름");
     const sortedPosts = [...posts].sort((post1, post2) => {
-      if (!post1.start_date || !post2.start_date) return -1;
+      if (!post1.startDate || !post2.startDate) return -1;
 
-      const duration1 = Number(post1.end_date) - Number(post1.start_date);
-      const duration2 = Number(post2.end_date) - Number(post2.start_date);
+      const duration1 = Number(post1.endDate) - Number(post1.startDate);
+      const duration2 = Number(post2.endDate) - Number(post2.startDate);
 
       return duration2 - duration1;
     });
 
     console.log(sortedPosts);
 
-    setFilteredPosts(sortedPosts);
+    setPosts(sortedPosts);
   };
 
   // 일정 기간 내림차순
@@ -161,31 +169,31 @@ const Posts = ({ posts }: PostsProps) => {
     console.log("기간 내림");
 
     const sortedPosts = [...posts].sort((post1, post2) => {
-      if (!post1.start_date || !post2.start_date) return -1;
+      if (!post1.startDate || !post2.startDate) return -1;
 
-      const duration1 = Number(post1.end_date) - Number(post1.start_date);
-      const duration2 = Number(post2.end_date) - Number(post2.start_date);
+      const duration1 = Number(post1.endDate) - Number(post1.startDate);
+      const duration2 = Number(post2.endDate) - Number(post2.startDate);
 
       return duration1 - duration2;
     });
 
     console.log(sortedPosts);
 
-    setFilteredPosts(sortedPosts);
+    setPosts(sortedPosts);
   };
 
   // 등록일 오름차순
   const registerDateSortIncl = () => {
     console.log("등록 오름");
     const sortedPosts = [...posts].sort((post1, post2) => {
-      if (!post1.post_date || !post2.post_date) return -1;
+      if (!post1.postDate || !post2.postDate) return -1;
 
-      return post1.post_date?.localeCompare(post2.post_date);
+      return post1.postDate?.localeCompare(post2.postDate);
     });
 
     console.log(sortedPosts);
 
-    setFilteredPosts(sortedPosts);
+    setPosts(sortedPosts);
   };
 
   // 등록일 내림차순
@@ -193,14 +201,14 @@ const Posts = ({ posts }: PostsProps) => {
     console.log("등록 내림");
 
     const sortedPosts = [...posts].sort((post1, post2) => {
-      if (!post1.post_date || !post2.post_date) return -1;
+      if (!post1.postDate || !post2.postDate) return -1;
 
-      return post2.post_date?.localeCompare(post1.post_date);
+      return post2.postDate?.localeCompare(post1.postDate);
     });
 
     console.log(sortedPosts);
 
-    setFilteredPosts(sortedPosts);
+    setPosts(sortedPosts);
   };
 
   // 페이지네이션: 고정인 경우
@@ -223,11 +231,11 @@ const Posts = ({ posts }: PostsProps) => {
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const keyword = e.currentTarget.value;
     console.log(keyword);
-    const newPosts = posts.filter((post) => post.post_title?.includes(keyword));
+    const newPosts = posts.filter((post) => post.postTitle?.includes(keyword));
 
     console.log(newPosts);
 
-    setFilteredPosts(newPosts);
+    setPosts(newPosts);
   };
 
   // 설정 열기
@@ -245,18 +253,18 @@ const Posts = ({ posts }: PostsProps) => {
     // 삭제할 postIds 배열
     const deletionArray = deletions
       .filter((deletion) => deletion.deletion === true)
-      .map((result) => result.post_id);
+      .map((result) => result.postId);
 
     // console.log(deletionArray);
 
     // api에서 받아 온 배열 조작
-    const newPosts = filteredPosts.filter((post) => {
-      if (post.post_id) return !deletionArray.includes(post.post_id);
+    const newPosts = posts.filter((post) => {
+      if (post.postId) return !deletionArray.includes(post.postId);
     });
 
     console.log(newPosts);
 
-    setFilteredPosts(newPosts);
+    setPosts(newPosts);
 
     // api에서 삭제
   };
@@ -264,7 +272,7 @@ const Posts = ({ posts }: PostsProps) => {
   // 일괄 선택
   const handleSelectAll = () => {
     const newDeletions = deletions.map((deletion) => ({
-      post_id: deletion.post_id,
+      postId: deletion.postId,
       deletion: !deletion.deletion,
     }));
 
@@ -272,7 +280,9 @@ const Posts = ({ posts }: PostsProps) => {
     console.log(newDeletions);
   };
 
-  console.log(filteredPosts);
+  console.log(posts);
+
+  if (loading) return <div>loading...</div>;
 
   return (
     <div className="posts">
@@ -434,7 +444,7 @@ const Posts = ({ posts }: PostsProps) => {
       </div>
       <div className="posts-cards">
         <ul className="posts-cards-container">
-          {filteredPosts.length === 0 && (
+          {posts.length === 0 && (
             <>
               <div className="posts-cards-logo">
                 <img src={`/images/trip-it-logo.png`} alt="" />
@@ -442,7 +452,7 @@ const Posts = ({ posts }: PostsProps) => {
               </div>
             </>
           )}
-          {filteredPosts.slice(offset, offset + limit).map((post, index) => (
+          {posts.slice(offset, offset + limit).map((post, index) => (
             <PostsCard
             // post={post}
             // key={index}

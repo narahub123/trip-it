@@ -140,7 +140,7 @@ function Trip() {
                 }
               />
               <Route path="schedules/:scheduleId" element={<Schedule />} />
-              <Route path="posts" element={<Posts posts={posts} />} />
+              <Route path="posts" element={<Posts />} />
               <Route path="posts/:postId" element={<Detail />} />
               <Route path="blockedlist/user" element={<Bans />} />
             </Route>
@@ -155,7 +155,7 @@ function Trip() {
                   />
                 }
               />
-              <Route path="posts" element={<Posts posts={posts} />} />
+              <Route path="posts" element={<Posts />} />
               {/* <Route path="reports" element={<Reports />} /> */}
               <Route path="reports" element={<ReportsNode />} />
               <Route path="reports/test" element={<ReportTest />} />
