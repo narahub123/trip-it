@@ -58,7 +58,9 @@ function Trip() {
         await refreshAPIForNode.get(`${baseURL}${pathname}`);
       } catch (error) {
         console.error("Error fetching data:", error);
+        // 리프레시 토큰이 없는 경우
         if (error === "logout") navigate("/login");
+        // 관리자가 아닌 경우
         if (error === "NoAdmin") {
           console.log("hi");
           navigate(-1);
@@ -68,62 +70,6 @@ function Trip() {
 
     fetchData();
   }, [pathname]);
-
-  // schedule data(practice)
-  // const schedules: ScheduleReturnType[] = [
-  //   {
-  //     scheduleId: 1,
-  //     metroId: "1",
-  //     startDate: "20240626",
-  //     endDate: "20240628",
-  //     registerDate: "20240621",
-  //     userId: "1",
-  //     scheduleTitle: "서울 여행",
-  //     scheduleDetails: [],
-  //   },
-  //   {
-  //     scheduleId: 2,
-  //     metroId: "2",
-  //     startDate: "20240704",
-  //     endDate: "20240712",
-  //     registerDate: "20240511",
-  //     userId: "1",
-  //     scheduleTitle: "인천 여행",
-  //     scheduleDetails: [],
-  //   },
-  //   {
-  //     scheduleId: 3,
-  //     metroId: "3",
-  //     startDate: "20240504",
-  //     endDate: "20240513",
-  //     registerDate: "20240211",
-  //     userId: "1",
-  //     scheduleTitle: "부산 여행",
-  //     scheduleDetails: [],
-  //   },
-  // ];
-
-  // post data(practice)
-  const posts = [
-    {
-      postId: "1",
-      scheduleId: "1",
-      metroId: "1",
-      startDate: "20240602",
-      endDate: "20240612",
-      postTitle: "모여라~",
-      personnel: 2,
-      userId: "1",
-      age: 32,
-      gender: "f",
-      postDate: "20240512",
-      postPic:
-        "https://res.heraldm.com/content/image/2023/08/19/20230819000100_0.jpg",
-      recruit_status: "n",
-      views: 2,
-      exposure_status: "y",
-    },
-  ];
 
   return (
     <Provider store={store}>

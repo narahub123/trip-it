@@ -18,6 +18,7 @@ const MyPage = () => {
         }
       });
   }, []);
+
   return (
     <div className="mypage">
       <Outlet />
