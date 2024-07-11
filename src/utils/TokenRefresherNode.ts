@@ -29,6 +29,12 @@ refreshAPIForNode.interceptors.response.use(
 
       return Promise.reject(code);
     }
+
+    // 관리자 페잊
+    if (code === "NoAdmin") {
+      window.alert(`관리자만 접근 가능합니다.`);
+      return Promise.reject(code);
+    }
   }
 );
 

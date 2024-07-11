@@ -59,11 +59,15 @@ function Trip() {
       } catch (error) {
         console.error("Error fetching data:", error);
         if (error === "logout") navigate("/login");
+        if (error === "NoAdmin") {
+          console.log("hi");
+          navigate(-1);
+        }
       }
     };
 
     fetchData();
-  }, []);
+  }, [pathname]);
 
   // schedule data(practice)
   // const schedules: ScheduleReturnType[] = [
