@@ -3,21 +3,21 @@ import { UserType } from "../../../types/user";
 import "./usersTableResponsive.css";
 
 export interface UsersTableResponsiveProps {
-  filteredUsers: UserType[];
+  users: UserType[];
   offset: number;
   limit: number;
 }
 
 const UsersTableResponsive = ({
-  filteredUsers,
+  users,
   limit,
   offset,
 }: UsersTableResponsiveProps) => {
-  console.log(filteredUsers.length);
+  console.log(users.length);
 
   return (
     <table className="users-table-responsive">
-      {filteredUsers.slice(offset, offset + limit).map((user) => (
+      {users.slice(offset, offset + limit).map((user) => (
         <tr className="users-table-responsive-row" key={user.userId}>
           <Link to={`${user.userId}`} key={user.userId}>
             <td>

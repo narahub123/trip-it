@@ -3,22 +3,22 @@ import { UserType } from "../../../types/user";
 import "./usersGallery.css";
 
 export interface UsersGalleryProps {
-  filteredUsers: UserType[];
+  users: UserType[];
   offset: number;
   limit: number;
 }
 
-const UsersGallery = ({ filteredUsers, limit, offset }: UsersGalleryProps) => {
+const UsersGallery = ({ users, limit, offset }: UsersGalleryProps) => {
   return (
     <div className="users-gallery">
       <ul className="users-gallery-container">
-        {filteredUsers.length === 0 && (
+        {users.length === 0 && (
           <li className="users-gallery-no-data">
             <img src="/images/trip-it-logo.png" alt="" />
             <p>검색 결과가 없습니다.</p>
           </li>
         )}
-        {filteredUsers.slice(offset, offset + limit).map((user) => (
+        {users.slice(offset, offset + limit).map((user) => (
           <li className="users-gallery-item" key={user.userId}>
             <Link to={`${user.userId}`}>
               <figure className="users-gallery-item-image">

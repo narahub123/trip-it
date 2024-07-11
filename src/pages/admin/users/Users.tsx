@@ -1,5 +1,5 @@
 import "./users.css";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import PaginationControllerFixed from "../../../components/ui/PaginationControllerFixed";
 import PaginationControllerFlexible from "../../../components/ui/PaginationControllerFlexible";
 import { RiGalleryView2 } from "react-icons/ri";
@@ -18,6 +18,8 @@ import UsersTableResponsive from "./UsersTableResponsive";
 import Search from "../../../components/ui/Search";
 import Pagination from "../../../components/ui/Pagination";
 import UsersGallery from "./UsersGallery";
+import axios from "axios";
+import { fetchUsersAPI } from "../../../apis/user";
 
 const Users = () => {
   const { hash } = useLocation();
@@ -30,7 +32,9 @@ const Users = () => {
   const [page, setPage] = useState(1);
   const offset = (page - 1) * limit;
   const [isOpen, setIsOpen] = useState(false);
-  const [filteredUsers, setFilteredUsers] = useState(users);
+  const [loading, setLoading] = useState(true);
+  const [users, setUsers] = useState<UserType[]>([]);
+  // const [users, setFilteredUsers] = useState<UserType[]>(users);
   const [sorts, setSorts] = useState({
     userId: "asc",
     username: "asc",
@@ -42,6 +46,20 @@ const Users = () => {
     email: "asc",
     reportCount: "asc",
   });
+
+  useEffect(() => {
+    fetchUsersAPI()
+      .then((res) => {
+        console.log(res);
+
+        setUsers(res.data);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.log(err);
+        setLoading(false);
+      });
+  }, []);
 
   const keywordArray = [
     { keyword: "이름", key: "username" },
@@ -62,7 +80,7 @@ const Users = () => {
     const id = e.currentTarget.id as keyof (typeof users)[0];
     const sort = e.currentTarget.dataset.sort;
 
-    let sortedUsers = filteredUsers;
+    let sortedUsers: UserType[] | undefined = users;
 
     sortedUsers = [...users].sort((user1, user2) => {
       if (user1[id] === null || user2[id] === null) return -1;
@@ -103,7 +121,7 @@ const Users = () => {
       return result;
     });
 
-    setFilteredUsers(sortedUsers);
+    setUsers(sortedUsers);
   };
 
   // 페이지네이션: 가변인 경우
@@ -113,6 +131,12 @@ const Users = () => {
     console.log(value);
     setLimit(Number(value));
   };
+
+  if (loading) {
+    return <div>loading...</div>;
+  }
+
+  console.log(users);
 
   console.log(limit);
 
@@ -248,35 +272,23 @@ const Users = () => {
             <UsersTable
               sorts={sorts}
               handleSort={handleSort}
-              filteredUsers={filteredUsers}
+              users={users}
               offset={offset}
               limit={limit}
             />
-            <UsersTableResponsive
-              filteredUsers={filteredUsers}
-              offset={offset}
-              limit={limit}
-            />
+            <UsersTableResponsive users={users} offset={offset} limit={limit} />
           </div>
         )}
         {hash === "#gallery" && (
-          <UsersGallery
-            filteredUsers={filteredUsers}
-            limit={limit}
-            offset={offset}
-          />
+          <UsersGallery users={users} limit={limit} offset={offset} />
         )}
       </main>
       <section className="user-search">
-        <Search
-          array={users}
-          setArray={setFilteredUsers}
-          keywordArray={keywordArray}
-        />
+        <Search array={users} setArray={setUsers} keywordArray={keywordArray} />
       </section>
       <section>
         <Pagination
-          total={filteredUsers.length}
+          total={users.length}
           limit={limit}
           page={page}
           setPage={setPage}

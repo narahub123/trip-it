@@ -20,7 +20,7 @@ export interface UsersTableProps {
   handleSort: (
     value: React.MouseEvent<HTMLTableHeaderCellElement, MouseEvent>
   ) => void;
-  filteredUsers: UserType[];
+  users: UserType[];
   offset: number;
   limit: number;
 }
@@ -28,12 +28,12 @@ export interface UsersTableProps {
 const UsersTable = ({
   sorts,
   handleSort,
-  filteredUsers,
+  users,
   limit,
   offset,
 }: UsersTableProps) => {
   const navigate = useNavigate();
-  const handleLink = (userId: number) => {
+  const handleLink = (userId: number | string) => {
     navigate(`${userId}`);
   };
   return (
@@ -123,7 +123,7 @@ const UsersTable = ({
         </tr>
       </thead>
       <tbody className="users-table-body">
-        {filteredUsers.slice(offset, offset + limit).map((user, index) => (
+        {users.slice(offset, offset + limit).map((user, index) => (
           <tr
             className="users-table-row"
             key={`user${index}`}

@@ -33,35 +33,36 @@ import refreshAPIForNode from "./utils/TokenRefresherNode";
 // import Post from "./pages/community/Post";
 
 function Trip() {
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const res = await refreshAPI.get("");
-      } catch (err) {
-        console.log("에러확인 : ", err);
-      }
-    };
+  // for spring
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     try {
+  //       const res = await refreshAPI.get("");
+  //     } catch (err) {
+  //       console.log("에러확인 : ", err);
+  //     }
+  //   };
 
-    fetchData();
-  }, []);
+  //   fetchData();
+  // }, []);
 
   // for nodejs
   const navigate = useNavigate();
   const baseURL = process.env.REACT_APP_SERVER_URL;
   const { pathname } = useLocation();
 
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     try {
-  //       await refreshAPIForNode.get(`${baseURL}${pathname}`);
-  //     } catch (error) {
-  //       console.error("Error fetching data:", error);
-  //       if (error === "logout") navigate("/login");
-  //     }
-  //   };
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        await refreshAPIForNode.get(`${baseURL}${pathname}`);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+        if (error === "logout") navigate("/login");
+      }
+    };
 
-  //   fetchData();
-  // }, []);
+    fetchData();
+  }, []);
 
   // schedule data(practice)
   // const schedules: ScheduleReturnType[] = [
