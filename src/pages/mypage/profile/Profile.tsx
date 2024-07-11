@@ -37,11 +37,13 @@ const Profile = () => {
           Access: `${localStorage.getItem("access")}`,
           Refresh: `${getCookie("refresh")}`,
         },
+        withCredentials: true,
       })
       .then((response) => {
         setUser(response.data);
         return response.data;
-      });
+      })
+      .catch((err) => console.log(err));
   }, []);
 
   const [image, setImage] = useState<File | undefined>(undefined);

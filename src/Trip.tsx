@@ -93,7 +93,8 @@ function Trip() {
               <Route path="schedules/:scheduleId" element={<Schedule />} />
               <Route path="posts" element={<Posts />} />
               <Route path="posts/:postId" element={<Detail />} />
-              <Route path="blockedlist/user" element={<Bans />} />
+              <Route path="blocks" element={<Blocks />} />
+              <Route path="reports" element={<Bans />} />
             </Route>
             {/* 관리자 */}
             <Route path="/admin" element={<Admin />}>
