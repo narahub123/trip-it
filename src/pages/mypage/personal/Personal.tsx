@@ -60,6 +60,7 @@ const Personal = () => {
   const [keepClicked, setKeepClicked] = useState(0);
   const [val, setVal] = useState("");
   const [value, setValue] = useState("");
+  
   const handleSubmit = () => {
     personallUpdataAPI(value)
       .then((res) => {

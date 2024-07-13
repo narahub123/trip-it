@@ -31,6 +31,7 @@ import TestUsers from "./pages/admin/test/TestTemplate";
 import { useEffect } from "react";
 import refreshAPIForNode from "./utils/TokenRefresherNode";
 import Blocks from "./pages/admin/blocks/Blocks";
+import BlockButton from "./pages/admin/blocks/test/BlockButton";
 // import Post from "./pages/community/Post";
 
 function Trip() {
@@ -94,6 +95,7 @@ function Trip() {
               <Route path="posts" element={<Posts />} />
               <Route path="posts/:postId" element={<Detail />} />
               <Route path="blocks" element={<Blocks />} />
+              <Route path="blocks/test" element={<BlockButton />} />
               <Route path="reports" element={<Bans />} />
             </Route>
             {/* 관리자 */}

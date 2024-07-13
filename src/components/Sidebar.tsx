@@ -54,6 +54,14 @@ const Sidebar = () => {
           </li>
           <li>
             <NavLink
+              to="mypage/blocks/test"
+              className={({ isActive }) => (isActive ? "active" : "")}
+            >
+              <span className="sidebar-text">차단 버튼</span>
+            </NavLink>
+          </li>
+          <li>
+            <NavLink
               to="mypage/reports"
               className={({ isActive }) => (isActive ? "active" : "")}
             >
