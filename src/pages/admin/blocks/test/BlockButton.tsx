@@ -13,7 +13,10 @@ const BlockButton = () => {
   };
 
   return (
-    <div className="blockButton" onClick={() => handleBlock(`차단테스트`)}>
+    <div
+      className="blockButton"
+      onClick={() => handleBlock(`668a4ddddbdac30540c63d64`)}
+    >
       <LuSiren />
     </div>
   );

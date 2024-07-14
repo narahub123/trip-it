@@ -5,7 +5,7 @@ const baseURL = process.env.REACT_APP_SERVER_URL;
 
 // 차단 목록 가져오기
 export const fetchBlocksAPI = async () => {
-  const blocks = axios.get(`${baseURL}/admin/blocks`, {
+  const blocks = axios.get(`${baseURL}/blocks`, {
     headers: {
       "Content-Type": "application/json",
       Access: `${localStorage.getItem("access")}`,
@@ -14,16 +14,18 @@ export const fetchBlocksAPI = async () => {
     withCredentials: true,
   });
 
+  console.log(blocks);
+
   return blocks;
 };
 
 // 차단 하기
-export const blockUserAPI = async (nickname: string) => {
+export const blockUserAPI = async (blockedId: string) => {
   axios
     .post(
       `${baseURL}/blockedlist/add`,
       {
-        nickname,
+        blockedId,
       },
       {
         headers: {

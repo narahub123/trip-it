@@ -9,14 +9,21 @@
   }
 
   .blocks-list {
-    .blocks-list-container {
+    .blocks-list-table {
+      border-collapse: collapse;
       border: 1px solid #ccc;
-      .blocks-list-item {
-        .blocks-list-userId {
+      .blocks-list-table-head {
+        .blocks-list-table-head-row {
+          .blocks-list-table-head-cell {
+            text-align: center;
+          }
         }
-        .blocks-list-blockedId {
-        }
-        .blocks-list-blockDate {
+      }
+      .blocks-list-table-body {
+        .blocks-list-table-body-row {
+          .blocks-list-table-body-cell {
+            text-align: center;
+          }
         }
       }
     }
