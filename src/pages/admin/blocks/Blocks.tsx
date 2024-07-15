@@ -4,17 +4,20 @@ import { fetchBlocksAPI, unblockUserAPI } from "../../../apis/blocks";
 import { BlockType } from "../../../types/blocks";
 import NoSearchData from "../../../components/ui/NoSearchData";
 import { useLocation } from "react-router-dom";
+import { LuChevronDown, LuChevronUp } from "react-icons/lu";
 
 const Blocks = () => {
   const { pathname } = useLocation();
-
-  console.log(pathname);
-
   const [blocks, setBlocks] = useState<BlockType[]>([]);
   const [loading, setLoading] = useState(true);
+  const [sorts, setSorts] = useState<{ [key: string]: string }>({
+    blockDate: "desc",
+  });
 
   useEffect(() => {
-    fetchBlocksAPI()
+    const sortKey = Object.keys(sorts)[0];
+    const sortValue = Object.values(sorts)[0];
+    fetchBlocksAPI(sortKey, sortValue)
       .then((res) => {
         console.log(res);
 
@@ -39,7 +42,7 @@ const Blocks = () => {
         console.log(err);
         setLoading(false);
       });
-  }, []);
+  }, [sorts]);
 
   const handleRelease = async (blockId: string | number) => {
     if (!window.confirm(`차단을 해제하시겠습니까?`)) {
@@ -71,9 +74,28 @@ const Blocks = () => {
       .catch((err) => console.log(err));
   };
 
+  const handleSort = (
+    e: React.MouseEvent<HTMLTableHeaderCellElement, MouseEvent>
+  ) => {
+    const sortKey = e.currentTarget.id;
+    const sort = e.currentTarget.dataset.sort;
+
+    console.log(sortKey, sort);
+
+    if (sort === "asc") {
+      e.currentTarget.dataset.sort = "desc";
+      setSorts({ [sortKey]: "desc" });
+    } else {
+      e.currentTarget.dataset.sort = "asc";
+      setSorts({ [sortKey]: "asc" });
+    }
+  };
+
   if (loading) return <div className="blocks">loading...</div>;
 
   console.log("blocks", blocks);
+  console.log(Object.keys(sorts)[0]);
+  console.log(sorts[Object.keys(sorts)[0] as keyof typeof sorts]);
 
   return (
     <div className="blocks">
@@ -84,12 +106,67 @@ const Blocks = () => {
         <table className="blocks-list-table">
           <thead className="blocks-list-table-head">
             <tr className="blocks-list-table-head-row" key={"block nosearch"}>
-              <th className="blocks-list-table-head-cell">차단 아이디</th>
-              {pathname !== "/mypage/blocks" && (
-                <th className="blocks-list-table-head-cell">차단한 유저</th>
-              )}
-              <th className="blocks-list-table-head-cell">차단당한 유저</th>
-              <th className="blocks-list-table-head-cell">차단 날짜</th>
+              <th
+                className="blocks-list-table-head-cell"
+                id="index"
+                data-sort="asc"
+                onClick={(e) => handleSort(e)}
+              >
+                번호
+              </th>
+              {/* {pathname !== "/mypage/blocks" && ( */}
+              <th
+                className="blocks-list-table-head-cell"
+                id="userId.nickname"
+                data-sort="asc"
+                onClick={(e) => handleSort(e)}
+              >
+                차단한 유저
+                <span>
+                  {Object.keys(sorts)[0] === "userId.nickname" &&
+                  sorts[Object.keys(sorts)[0] as keyof typeof sorts] ===
+                    "desc" ? (
+                    <LuChevronDown />
+                  ) : (
+                    <LuChevronUp />
+                  )}
+                </span>
+              </th>
+              {/* )} */}
+              <th
+                className="blocks-list-table-head-cell"
+                id="blockedId.nickname"
+                data-sort="asc"
+                onClick={(e) => handleSort(e)}
+              >
+                차단당한 유저
+                <span>
+                  {Object.keys(sorts)[0] === "blockedId.nickname" &&
+                  sorts[Object.keys(sorts)[0] as keyof typeof sorts] ===
+                    "desc" ? (
+                    <LuChevronDown />
+                  ) : (
+                    <LuChevronUp />
+                  )}
+                </span>
+              </th>
+              <th
+                className="blocks-list-table-head-cell"
+                id="blockDate"
+                data-sort="asc"
+                onClick={(e) => handleSort(e)}
+              >
+                차단 날짜
+                <span>
+                  {Object.keys(sorts)[0] === "blockDate" &&
+                  sorts[Object.keys(sorts)[0] as keyof typeof sorts] ===
+                    "desc" ? (
+                    <LuChevronDown />
+                  ) : (
+                    <LuChevronUp />
+                  )}
+                </span>
+              </th>
               <th className="blocks-list-table-head-cell">차단 해재</th>
             </tr>
           </thead>
@@ -102,14 +179,14 @@ const Blocks = () => {
             {blocks.map((block, index) => (
               <tr className="blocks-list-table-body-row" key={block.blockId}>
                 <td className="blocks-list-table-body-cell">{index + 1}</td>
-                {pathname !== "/mypage/blocks" && (
-                  <td
-                    className="blocks-list-table-body-cell"
-                    id={`${block.userId._id}`}
-                  >
-                    {block.userId.nickname}
-                  </td>
-                )}
+                {/* {pathname !== "/mypage/blocks" && ( */}
+                <td
+                  className="blocks-list-table-body-cell"
+                  id={`${block.userId._id}`}
+                >
+                  {block.userId.nickname}
+                </td>
+                {/* )} */}
                 <td
                   className="blocks-list-table-body-cell"
                   id={`${block.blockedId._id}`}

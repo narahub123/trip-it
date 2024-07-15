@@ -4,15 +4,18 @@ import { getCookie } from "../utils/Cookie";
 const baseURL = process.env.REACT_APP_SERVER_URL;
 
 // 차단 목록 가져오기
-export const fetchBlocksAPI = async () => {
-  const blocks = axios.get(`${baseURL}/blocks`, {
-    headers: {
-      "Content-Type": "application/json",
-      Access: `${localStorage.getItem("access")}`,
-      Refresh: `${getCookie("refresh")}`,
-    },
-    withCredentials: true,
-  });
+export const fetchBlocksAPI = async (sortKey?: string, sortValue?: string) => {
+  const blocks = axios.get(
+    `${baseURL}/blocks?sortKey=${sortKey}&sortValue=${sortValue}`,
+    {
+      headers: {
+        "Content-Type": "application/json",
+        Access: `${localStorage.getItem("access")}`,
+        Refresh: `${getCookie("refresh")}`,
+      },
+      withCredentials: true,
+    }
+  );
 
   return blocks;
 };

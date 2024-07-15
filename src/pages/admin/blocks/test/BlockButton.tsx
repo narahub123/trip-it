@@ -15,7 +15,7 @@ const BlockButton = () => {
   return (
     <div
       className="blockButton"
-      onClick={() => handleBlock(`6694adf80f867aa5d7e65624`)}
+      onClick={() => handleBlock(`6694c7b08e22cab11961654c`)}
     >
       <LuSiren />
     </div>
