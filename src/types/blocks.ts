@@ -1,6 +1,6 @@
 export interface BlockType {
   blockId: string | number;
-  userId: string | number;
-  blockedId: string;
+  userId: any;
+  blockedId: any;
   blockDate: string;
 }

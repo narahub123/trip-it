@@ -3,8 +3,13 @@ import "./blocks.css";
 import { fetchBlocksAPI, unblockUserAPI } from "../../../apis/blocks";
 import { BlockType } from "../../../types/blocks";
 import NoSearchData from "../../../components/ui/NoSearchData";
+import { useLocation } from "react-router-dom";
 
 const Blocks = () => {
+  const { pathname } = useLocation();
+
+  console.log(pathname);
+
   const [blocks, setBlocks] = useState<BlockType[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -80,8 +85,10 @@ const Blocks = () => {
           <thead className="blocks-list-table-head">
             <tr className="blocks-list-table-head-row" key={"block nosearch"}>
               <th className="blocks-list-table-head-cell">차단 아이디</th>
-              <th className="blocks-list-table-head-cell">유저 아이디</th>
-              <th className="blocks-list-table-head-cell">차단 유저 아이디</th>
+              {pathname !== "/mypage/blocks" && (
+                <th className="blocks-list-table-head-cell">차단한 유저</th>
+              )}
+              <th className="blocks-list-table-head-cell">차단당한 유저</th>
               <th className="blocks-list-table-head-cell">차단 날짜</th>
               <th className="blocks-list-table-head-cell">차단 해재</th>
             </tr>
@@ -95,9 +102,19 @@ const Blocks = () => {
             {blocks.map((block, index) => (
               <tr className="blocks-list-table-body-row" key={block.blockId}>
                 <td className="blocks-list-table-body-cell">{index + 1}</td>
-                <td className="blocks-list-table-body-cell">{block.userId}</td>
-                <td className="blocks-list-table-body-cell">
-                  {block.blockedId}
+                {pathname !== "/mypage/blocks" && (
+                  <td
+                    className="blocks-list-table-body-cell"
+                    id={`${block.userId._id}`}
+                  >
+                    {block.userId.nickname}
+                  </td>
+                )}
+                <td
+                  className="blocks-list-table-body-cell"
+                  id={`${block.blockedId._id}`}
+                >
+                  {block.blockedId.nickname}
                 </td>
                 <td className="blocks-list-table-body-cell">
                   {block.blockDate}
