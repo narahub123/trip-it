@@ -12,10 +12,13 @@
     .blocks-list-table {
       border-collapse: collapse;
       border: 1px solid #ccc;
+      width: 100%;
       .blocks-list-table-head {
+        border-bottom: 1px solid #ccc;
         .blocks-list-table-head-row {
           .blocks-list-table-head-cell {
             text-align: center;
+            padding: 8px;
           }
         }
       }

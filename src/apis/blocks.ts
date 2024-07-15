@@ -14,8 +14,6 @@ export const fetchBlocksAPI = async () => {
     withCredentials: true,
   });
 
-  console.log(blocks);
-
   return blocks;
 };
 
@@ -37,14 +35,33 @@ export const blockUserAPI = async (blockedId: string) => {
       }
     )
     .then((response) => {
-      console.log(response.data);
-      if (!response.data) {
-        window.alert(
-          `차단 멤버가 추가되었지만 네트워크 문제로 확인할 수 없습니다.`
-        );
-      }
-
-      window.alert("차단되었습니다.");
+      console.log(response);
+      return response;
     })
-    .catch();
+    .catch((err) => {
+      console.log(err.response.data.code);
+      if (err.response.data.code === 11000) {
+        alert(`이미 차단한 사용자입니다.`);
+      }
+    });
+};
+
+// 차단 해제 하기
+export const unblockUserAPI = async (blockId: string | number) => {
+  const blocks = axios.post(
+    `${baseURL}/blockedlist/release`,
+    {
+      blockId,
+    },
+    {
+      headers: {
+        "Content-Type": "application/json",
+        Access: `${localStorage.getItem("access")}`,
+        Refresh: `${getCookie("refresh")}`,
+      },
+      withCredentials: true,
+    }
+  );
+
+  return blocks;
 };
