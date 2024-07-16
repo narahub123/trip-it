@@ -11,7 +11,8 @@ export const fetchBlocksAPI = async (
   search?: string
 ) => {
   const blocks = axios.get(
-`${baseURL}/blocks?sortKey=${sortKey}&sortValue=${sortValue}&keyword=${keyword}&search=${search}`,
+    `${baseURL}/block/user`, // 마이페이지
+    // `${baseURL}/blocks?sortKey=${sortKey}&sortValue=${sortValue}&keyword=${keyword}&search=${search}`,
     {
       headers: {
         "Content-Type": "application/json",
@@ -26,12 +27,13 @@ export const fetchBlocksAPI = async (
 };
 
 // 차단 하기
-export const blockUserAPI = async (blockedId: string) => {
+export const blockUserAPI = async (nickname: string) => {
   axios
     .post(
-      `${baseURL}/blockedlist/add`,
+      `${baseURL}/block/add`, // spring
+      // `${baseURL}/blockedlist/add`, // nodejs
       {
-        blockedId,
+        nickname,
       },
       {
         headers: {

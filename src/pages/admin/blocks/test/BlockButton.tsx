@@ -10,13 +10,12 @@ const BlockButton = () => {
     }
 
     const response = blockUserAPI(nickname);
+
+    console.log(response);
   };
 
   return (
-    <div
-      className="blockButton"
-      onClick={() => handleBlock(`6694c7b08e22cab11961654c`)}
-    >
+    <div className="blockButton" onClick={() => handleBlock(`강고양이`)}>
       <LuSiren />
     </div>
   );
