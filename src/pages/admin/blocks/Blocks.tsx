@@ -13,11 +13,13 @@ const Blocks = () => {
   const [sorts, setSorts] = useState<{ [key: string]: string }>({
     blockDate: "desc",
   });
+  const [keyword, setKeyword] = useState("blockedId.nickname");
+  const [search, setSearch] = useState("");
 
   useEffect(() => {
     const sortKey = Object.keys(sorts)[0];
     const sortValue = Object.values(sorts)[0];
-    fetchBlocksAPI(sortKey, sortValue)
+    fetchBlocksAPI(sortKey, sortValue, keyword, search)
       .then((res) => {
         console.log(res);
 
@@ -42,7 +44,7 @@ const Blocks = () => {
         console.log(err);
         setLoading(false);
       });
-  }, [sorts]);
+  }, [sorts, keyword, search]);
 
   const handleRelease = async (blockId: string | number) => {
     if (!window.confirm(`차단을 해제하시겠습니까?`)) {
@@ -89,6 +91,12 @@ const Blocks = () => {
       e.currentTarget.dataset.sort = "asc";
       setSorts({ [sortKey]: "asc" });
     }
+  };
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    console.log(e.currentTarget.value);
+    const search = e.currentTarget.value;
+    setSearch(search);
   };
 
   if (loading) return <div className="blocks">loading...</div>;
@@ -209,7 +217,14 @@ const Blocks = () => {
           </tbody>
         </table>
       </div>
-      <div className="blocks-search">검색</div>
+      <div className="blocks-search">
+        <select name="" id="keyword">
+          <option value="userId.nickname">차단한 유저</option>
+          <option value="blockedId.nickname">차단당한 유저</option>
+          <option value="blockDate">차단 날짜</option>
+        </select>
+        <input type="text" onChange={(e) => handleChange(e)} />
+      </div>
       <div className="blocks-pagination">페이징</div>
     </div>
   );
