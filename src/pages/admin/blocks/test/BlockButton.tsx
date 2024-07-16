@@ -4,18 +4,25 @@ import { blockUserAPI } from "../../../../apis/blocks";
 
 const BlockButton = () => {
   // 블락하기
-  const handleBlock = (nickname: string) => {
+  const handleBlock = async (nickname: string) => {
     if (!window.confirm(`차단 하시겠습니까?`)) {
       return;
     }
 
-    const response = blockUserAPI(nickname);
+    try {
+      const response = blockUserAPI(nickname);
 
-    console.log(response);
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+      if (error === 1) {
+        alert("자신을 차단할 수 없습니다.");
+      }
+    }
   };
 
   return (
-    <div className="blockButton" onClick={() => handleBlock(`강고양이`)}>
+    <div className="blockButton" onClick={() => handleBlock(`해린2`)}>
       <LuSiren />
     </div>
   );

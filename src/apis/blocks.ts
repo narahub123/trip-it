@@ -11,7 +11,7 @@ export const fetchBlocksAPI = async (
   search?: string
 ) => {
   const blocks = axios.get(
-    `${baseURL}/block/user`, // 마이페이지
+    `${baseURL}/block/user?sortKey=${sortKey}&sortValue=${sortValue}`, // 마이페이지
     // `${baseURL}/blocks?sortKey=${sortKey}&sortValue=${sortValue}&keyword=${keyword}&search=${search}`,
     {
       headers: {
@@ -28,7 +28,7 @@ export const fetchBlocksAPI = async (
 
 // 차단 하기
 export const blockUserAPI = async (nickname: string) => {
-  axios
+  await axios
     .post(
       `${baseURL}/block/add`, // spring
       // `${baseURL}/blockedlist/add`, // nodejs
@@ -50,8 +50,15 @@ export const blockUserAPI = async (nickname: string) => {
     })
     .catch((err) => {
       console.log(err.response.data.code);
+      console.log(err.response.data.message);
       if (err.response.data.code === 11000) {
         alert(`이미 차단한 사용자입니다.`);
+      }
+      if (err.response.data.code === "1") {
+        alert("자기 자신을 차단할 수 없습니다.");
+      }
+      if (err.response.data.code === "2") {
+        alert("이미 차단한 사용자입니다.");
       }
     });
 };
