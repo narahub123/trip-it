@@ -11,8 +11,8 @@ export const fetchBlocksAPI = async (
   search?: string
 ) => {
   const blocks = axios.get(
-    `${baseURL}/block/user?sortKey=${sortKey}&sortValue=${sortValue}`, // 마이페이지
-    // `${baseURL}/blocks?sortKey=${sortKey}&sortValue=${sortValue}&keyword=${keyword}&search=${search}`,
+    // `${baseURL}/block/user?sortKey=${sortKey}&sortValue=${sortValue}`, // 마이페이지
+    `${baseURL}/blocks?sortKey=${sortKey}&sortValue=${sortValue}&keyword=${keyword}&search=${search}`,
     {
       headers: {
         "Content-Type": "application/json",
@@ -30,8 +30,8 @@ export const fetchBlocksAPI = async (
 export const blockUserAPI = async (nickname: string) => {
   await axios
     .post(
-      `${baseURL}/block/add`, // spring
-      // `${baseURL}/blockedlist/add`, // nodejs
+      // `${baseURL}/block/add`, // spring
+      `${baseURL}/blockedlist/add`, // nodejs
       {
         nickname,
       },

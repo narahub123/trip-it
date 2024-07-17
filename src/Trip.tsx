@@ -36,41 +36,41 @@ import BlockButton from "./pages/admin/blocks/test/BlockButton";
 
 function Trip() {
   // for spring
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const res = await refreshAPI.get("");
-      } catch (err) {
-        console.log("에러확인 : ", err);
-      }
-    };
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     try {
+  //       const res = await refreshAPI.get("");
+  //     } catch (err) {
+  //       console.log("에러확인 : ", err);
+  //     }
+  //   };
 
-    fetchData();
-  }, []);
+  //   fetchData();
+  // }, []);
 
   // for nodejs
   const navigate = useNavigate();
   const baseURL = process.env.REACT_APP_SERVER_URL;
   const { pathname } = useLocation();
 
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     try {
-  //       await refreshAPIForNode.get(`${baseURL}${pathname}`);
-  //     } catch (error) {
-  //       console.error("Error fetching data:", error);
-  //       // 리프레시 토큰이 없는 경우
-  //       if (error === "logout") navigate("/login");
-  //       // 관리자가 아닌 경우
-  //       if (error === "NoAdmin") {
-  //         console.log("hi");
-  //         navigate(-1);
-  //       }
-  //     }
-  //   };
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        await refreshAPIForNode.get(`${baseURL}${pathname}`);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+        // 리프레시 토큰이 없는 경우
+        if (error === "logout") navigate("/login");
+        // 관리자가 아닌 경우
+        if (error === "NoAdmin") {
+          console.log("hi");
+          navigate(-1);
+        }
+      }
+    };
 
-  //   fetchData();
-  // }, [pathname]);
+    fetchData();
+  }, [pathname]);
 
   return (
     <Provider store={store}>

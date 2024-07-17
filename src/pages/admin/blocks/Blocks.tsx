@@ -190,20 +190,20 @@ const Blocks = () => {
                 {/* {pathname !== "/mypage/blocks" && ( */}
                 <td
                   className="blocks-list-table-body-cell"
-                  // id={`${block.userId._id}`}
-                  id={`${block.userId}`}
+                  id={`${block.userId._id}`}
+                  // id={`${block.userId}`}
                 >
-                  {/* {block.userId.nickname} */}
-                  {block.userId}
+                  {block.userId.nickname}
+                  {/* {block.userId} */}
                 </td>
                 {/* )} */}
                 <td
                   className="blocks-list-table-body-cell"
-                  // id={`${block.blockedId._id}`}
-                  id={`${block.blockedId}`}
+                  id={`${block.blockedId._id}`}
+                  // id={`${block.blockedId}`}
                 >
-                  {/* {block.blockedId.nickname} */}
-                  {block.nickname}
+                  {block.blockedId.nickname}
+                  {/* {block.nickname} */}
                 </td>
                 <td className="blocks-list-table-body-cell">
                   {block.blockDate}
