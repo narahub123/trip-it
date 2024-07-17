@@ -8,11 +8,13 @@ export const fetchBlocksAPI = async (
   sortKey?: string,
   sortValue?: string,
   keyword?: string,
-  search?: string
+  search?: string,
+  limit?: number,
+  page?: number
 ) => {
   const blocks = axios.get(
     // `${baseURL}/block/user?sortKey=${sortKey}&sortValue=${sortValue}`, // 마이페이지
-    `${baseURL}/blocks?sortKey=${sortKey}&sortValue=${sortValue}&keyword=${keyword}&search=${search}`,
+    `${baseURL}/blocks?sortKey=${sortKey}&sortValue=${sortValue}&keyword=${keyword}&search=${search}&limit=${limit}&page=${page}`,
     {
       headers: {
         "Content-Type": "application/json",

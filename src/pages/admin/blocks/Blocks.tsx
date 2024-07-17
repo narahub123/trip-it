@@ -5,6 +5,7 @@ import { BlockType } from "../../../types/blocks";
 import NoSearchData from "../../../components/ui/NoSearchData";
 import { useLocation } from "react-router-dom";
 import { LuChevronDown, LuChevronUp } from "react-icons/lu";
+import TestPagination from "../test/TestPagination";
 
 const Blocks = () => {
   const { pathname } = useLocation();
@@ -15,11 +16,14 @@ const Blocks = () => {
   });
   const [keyword, setKeyword] = useState("userNickname");
   const [search, setSearch] = useState("");
+  const [limit, setLimit] = useState(5);
+  const [page, setPage] = useState(1);
+  const [totalBlocks, setTotalBlocks] = useState(0);
 
   useEffect(() => {
     const sortKey = Object.keys(sorts)[0];
     const sortValue = Object.values(sorts)[0];
-    fetchBlocksAPI(sortKey, sortValue, keyword, search)
+    fetchBlocksAPI(sortKey, sortValue, keyword, search, limit, page)
       .then((res) => {
         console.log(res);
 
@@ -37,14 +41,15 @@ const Blocks = () => {
           return { ...block, blockDate: `${year}.${month}.${date}.` };
         });
 
-        setBlocks(newBlockList);
+        setBlocks(newBlockList[0].blocks);
+        setTotalBlocks(newBlockList[0].totalBlocks[0].count);
         setLoading(false);
       })
       .catch((err) => {
         console.log(err);
         setLoading(false);
       });
-  }, [sorts, keyword, search]);
+  }, [sorts, keyword, search, limit, page]);
 
   const handleRelease = async (blockId: string | number) => {
     if (!window.confirm(`차단을 해제하시겠습니까?`)) {
@@ -111,6 +116,10 @@ const Blocks = () => {
   if (loading) return <div className="blocks">loading...</div>;
 
   console.log("blocks", blocks);
+  console.log("totalBlocks", totalBlocks);
+  console.log("limit", limit);
+  console.log("page", page);
+
   console.log(Object.keys(sorts)[0]);
   console.log(sorts[Object.keys(sorts)[0] as keyof typeof sorts]);
 
@@ -242,7 +251,14 @@ const Blocks = () => {
           <input type="date" onChange={(e) => handleSearch(e)} value={search} />
         )}
       </div>
-      <div className="blocks-pagination">페이징</div>
+      <div className="blocks-pagination">
+        <TestPagination
+          total={totalBlocks}
+          limit={limit}
+          page={page}
+          setPage={setPage}
+        />
+      </div>
     </div>
   );
 };
