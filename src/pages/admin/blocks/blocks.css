@@ -26,6 +26,7 @@
         .blocks-list-table-body-row {
           .blocks-list-table-body-cell {
             text-align: center;
+            padding: 8px;
           }
         }
       }

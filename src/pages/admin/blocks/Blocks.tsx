@@ -13,7 +13,7 @@ const Blocks = () => {
   const [sorts, setSorts] = useState<{ [key: string]: string }>({
     blockDate: "desc",
   });
-  const [keyword, setKeyword] = useState("blockedId.nickname");
+  const [keyword, setKeyword] = useState("userNickname");
   const [search, setSearch] = useState("");
 
   useEffect(() => {
@@ -93,8 +93,17 @@ const Blocks = () => {
     }
   };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleKeyword = (
+    e: React.MouseEvent<HTMLSelectElement, MouseEvent>
+  ) => {
+    const value = e.currentTarget.value;
+
+    setKeyword(value);
+    setSearch("");
+  };
+  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     console.log(e.currentTarget.value);
+
     const search = e.currentTarget.value;
     setSearch(search);
   };
@@ -125,13 +134,13 @@ const Blocks = () => {
               {/* {pathname !== "/mypage/blocks" && ( */}
               <th
                 className="blocks-list-table-head-cell"
-                id="userId.nickname"
+                id="userNickname"
                 data-sort="asc"
                 onClick={(e) => handleSort(e)}
               >
                 차단한 유저
                 <span>
-                  {Object.keys(sorts)[0] === "userId.nickname" &&
+                  {Object.keys(sorts)[0] === "userNickname" &&
                   sorts[Object.keys(sorts)[0] as keyof typeof sorts] ===
                     "desc" ? (
                     <LuChevronDown />
@@ -143,13 +152,13 @@ const Blocks = () => {
               {/* )} */}
               <th
                 className="blocks-list-table-head-cell"
-                id="blockedId.nickname"
+                id="blockedUserNickname"
                 data-sort="asc"
                 onClick={(e) => handleSort(e)}
               >
                 차단당한 유저
                 <span>
-                  {Object.keys(sorts)[0] === "blockedId.nickname" &&
+                  {Object.keys(sorts)[0] === "blockedUserNickname" &&
                   sorts[Object.keys(sorts)[0] as keyof typeof sorts] ===
                     "desc" ? (
                     <LuChevronDown />
@@ -222,12 +231,16 @@ const Blocks = () => {
         </table>
       </div>
       <div className="blocks-search">
-        <select name="" id="keyword">
-          <option value="userId.nickname">차단한 유저</option>
-          <option value="blockedId.nickname">차단당한 유저</option>
+        <select name="" id="keyword" onClick={(e) => handleKeyword(e)}>
+          <option value="userNickname">차단한 유저</option>
+          <option value="blockedUserNickname">차단당한 유저</option>
           <option value="blockDate">차단 날짜</option>
         </select>
-        <input type="text" onChange={(e) => handleChange(e)} />
+        {keyword !== "blockDate" ? (
+          <input type="text" onChange={(e) => handleSearch(e)} value={search} />
+        ) : (
+          <input type="date" onChange={(e) => handleSearch(e)} value={search} />
+        )}
       </div>
       <div className="blocks-pagination">페이징</div>
     </div>
