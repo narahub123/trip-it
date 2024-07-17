@@ -27,13 +27,15 @@ export const fetchBlocksAPI = async (
 };
 
 // 차단 하기
-export const blockUserAPI = async (nickname: string) => {
+// export const blockUserAPI = async (nickname: string) => {
+export const blockUserAPI = async (blockedId: string) => {
   await axios
     .post(
       // `${baseURL}/block/add`, // spring
       `${baseURL}/blockedlist/add`, // nodejs
       {
-        nickname,
+        // nickname
+        blockedId,
       },
       {
         headers: {

@@ -193,16 +193,16 @@ const Blocks = () => {
                   id={`${block.userId._id}`}
                   // id={`${block.userId}`}
                 >
-                  {block.userId.nickname}
+                  {block.userNickname}
                   {/* {block.userId} */}
                 </td>
                 {/* )} */}
                 <td
                   className="blocks-list-table-body-cell"
-                  id={`${block.blockedId._id}`}
+                  id={`${block.blockedId}`}
                   // id={`${block.blockedId}`}
                 >
-                  {block.blockedId.nickname}
+                  {block.blockedUserNickname}
                   {/* {block.nickname} */}
                 </td>
                 <td className="blocks-list-table-body-cell">
