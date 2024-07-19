@@ -187,6 +187,7 @@ const Profile = () => {
           type="file"
           ref={imageRef}
           hidden
+          accept="image/png, image/jpg, image/jpeg"
           className="userpic"
           onChange={(e) =>
             setImage(

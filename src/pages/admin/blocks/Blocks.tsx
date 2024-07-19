@@ -29,20 +29,22 @@ const Blocks = () => {
 
         const blocklist = res.data;
 
-        const newBlockList = blocklist.map((block: BlockType) => {
-          const newBlockDate = new Date(block.blockDate);
+        // const newBlockList = blocklist.map((block: any) => {
+        //   const newBlockDate = new Date(block.blockDate);
 
-          const year = newBlockDate.getFullYear();
-          const month = (newBlockDate.getMonth() + 1)
-            .toString()
-            .padStart(2, "0");
-          const date = newBlockDate.getDate().toString().padStart(2, "0");
+        //   const year = newBlockDate.getFullYear();
+        //   const month = (newBlockDate.getMonth() + 1)
+        //     .toString()
+        //     .padStart(2, "0");
+        //   const date = newBlockDate.getDate().toString().padStart(2, "0");
 
-          return { ...block, blockDate: `${year}.${month}.${date}.` };
-        });
+        //   return { ...block, blockDate: `${year}.${month}.${date}.` };
+        // });
 
-        setBlocks(newBlockList[0].blocks);
-        setTotalBlocks(newBlockList[0].totalBlocks[0].count);
+        // setBlocks(newBlockList[0].blocks);
+
+        setBlocks(res.data);
+        // setTotalBlocks(newBlockList[0].totalBlocks[0].count);
         setLoading(false);
       })
       .catch((err) => {
@@ -161,7 +163,8 @@ const Blocks = () => {
               {/* )} */}
               <th
                 className="blocks-list-table-head-cell"
-                id="blockedUserNickname"
+                // id="blockedUserNickname" // node
+                id="nickname" // spring
                 data-sort="asc"
                 onClick={(e) => handleSort(e)}
               >
@@ -208,8 +211,8 @@ const Blocks = () => {
                 {/* {pathname !== "/mypage/blocks" && ( */}
                 <td
                   className="blocks-list-table-body-cell"
-                  id={`${block.userId._id}`}
-                  // id={`${block.userId}`}
+                  // id={`${block.userId._id}`}
+                  id={`${block.userId}`}
                 >
                   {block.userNickname}
                   {/* {block.userId} */}
@@ -217,8 +220,8 @@ const Blocks = () => {
                 {/* )} */}
                 <td
                   className="blocks-list-table-body-cell"
-                  id={`${block.blockedId}`}
                   // id={`${block.blockedId}`}
+                  id={`${block.nickname}`}
                 >
                   {block.blockedUserNickname}
                   {/* {block.nickname} */}

@@ -18,8 +18,8 @@ export interface SchedulesCardProps {
   schedule: ScheduleReturnType;
   showDelete: boolean;
   setShowDelete: (value: boolean) => void;
-  deletions: DeletionsType[];
-  setDeletions: (value: DeletionsType[]) => void;
+  deletions: number[];
+  setDeletions: (value: number[]) => void;
 }
 
 const SchedulesCard = ({
@@ -45,56 +45,58 @@ const SchedulesCard = ({
     ? dateFormatFromLocalDate(register_date)
     : { year: 0, month: 0, date: 0 };
 
-  useEffect(() => {
-    // deletion과 카드의 id가 같은 것 같기
-    const result = deletions.find(
-      (deletion) => deletion.schedule_id === schedule_id
-    );
+  // useEffect(() => {
+  //   // deletion과 카드의 id가 같은 것 같기
+  //   const result = deletions.find(
+  //     (deletion) => deletion.schedule_id === schedule_id
+  //   );
 
-    if (result) {
-      if (result.deletion) {
-        inputRef.current?.removeAttribute("checked");
-      } else {
-        inputRef.current?.setAttribute("checked", "true");
-      }
-    }
-  }, [deletions, schedule_id]);
+  //   if (result) {
+  //     if (result.deletion) {
+  //       inputRef.current?.removeAttribute("checked");
+  //     } else {
+  //       inputRef.current?.setAttribute("checked", "true");
+  //     }
+  //   }
+  // }, [deletions, schedule_id]);
 
   const handleDeletion = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const checked = e.currentTarget.checked;
-    const id = e.currentTarget.id;
+    const id = Number(e.currentTarget.id);
 
-    if (checked) {
-      const newDeletions = deletions.map((deletion) => {
-        if (deletion.schedule_id === Number(id)) {
-          return {
-            schedule_id: Number(id),
-            deletion: true,
-          };
-        } else {
-          return deletion;
-        }
-      });
-      console.log(newDeletions);
-
-      setDeletions(newDeletions);
-    } else if (!checked) {
-      const newDeletions = deletions.map((deletion) => {
-        if (deletion.schedule_id === Number(id)) {
-          return {
-            schedule_id: Number(id),
-            deletion: false,
-          };
-        } else {
-          return deletion;
-        }
-      });
-
-      console.log(newDeletions);
-      setDeletions(newDeletions);
-    }
     console.log(id);
+    setDeletions([id]);
   };
+  //   if (checked) {
+  //     const newDeletions = deletions.map((deletion) => {
+  //       if (deletion.schedule_id === Number(id)) {
+  //         return {
+  //           schedule_id: Number(id),
+  //           deletion: true,
+  //         };
+  //       } else {
+  //         return deletion;
+  //       }
+  //     });
+  //     console.log(newDeletions);
+
+  //     setDeletions(newDeletions);
+  //   } else if (!checked) {
+  //     const newDeletions = deletions.map((deletion) => {
+  //       if (deletion.schedule_id === Number(id)) {
+  //         return {
+  //           schedule_id: Number(id),
+  //           deletion: false,
+  //         };
+  //       } else {
+  //         return deletion;
+  //       }
+  //     });
+
+  //     console.log(newDeletions);
+  //     setDeletions(newDeletions);
+  //   }
+  //   console.log(id);
+  // };
 
   console.log(schedule.schedule_id);
 
@@ -114,10 +116,10 @@ const SchedulesCard = ({
             className="deletion"
             id={schedule.schedule_id.toString()}
             onChange={(e) => handleDeletion(e)}
-            checked={
-              deletions.find((deletion) => deletion.schedule_id === schedule_id)
-                ?.deletion
-            }
+            // checked={
+            //   deletions.find((deletion) => deletion.schedule_id === schedule_id)
+            //     ?.deletion
+            // }
             ref={inputRef}
           />
         )}

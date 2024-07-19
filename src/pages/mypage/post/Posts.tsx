@@ -5,7 +5,7 @@ import { metroName } from "../../../utils/metro";
 import PostsCard from "./PostsCard";
 import { FiMoreVertical } from "react-icons/fi";
 import { PostType } from "../../../types/posts";
-import { fetchPostsAPI } from "../../../apis/posts";
+import { DeletePostAPI, fetchPostsAPI } from "../../../apis/posts";
 
 const Posts = () => {
   // db와 연결했을 때 사용
@@ -13,6 +13,13 @@ const Posts = () => {
 
   const [posts, setPosts] = useState<PostType[]>([]);
   const [loading, setLoading] = useState(true);
+  const [postId, setPostId] = useState(0);
+
+  const handleSubmit = () => {
+    DeletePostAPI(postId)
+      .then((res) => res.data)
+      .catch((err) => console.log(err));
+  };
 
   useEffect(() => {
     fetchPostsAPI()
@@ -454,16 +461,20 @@ const Posts = () => {
           )}
           {posts.slice(offset, offset + limit).map((post, index) => (
             <PostsCard
-            // post={post}
-            // key={index}
-            // showDelete={showDelete}
-            // setShowDelete={setShowDelete}
-            // deletions={deletions}
-            // setDeletions={setDeletions}
+              post={post}
+              setPostId={setPostId}
+              // key={index}
+              // showDelete={showDelete}
+              // setShowDelete={setShowDelete}
+              // deletions={deletions}
+              // setDeletions={setDeletions}
             />
           ))}
         </ul>
       </div>
+      <button type="button" onClick={handleSubmit}>
+        삭제
+      </button>
       <div className="posts-search">
         <input
           id="search"

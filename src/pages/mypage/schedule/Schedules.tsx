@@ -58,13 +58,7 @@ const Schedules = () =>
     });
 
     // 삭제할 일정 배열
-    const [deletions, setDeletions] = useState<
-      {
-        schedule_id: number;
-        deletion: boolean;
-      }[]
-    >(scheduleDeletions);
-
+    const [deletions, setDeletions] = useState<number[]>([]);
     console.log(deletions);
     const baseURL = process.env.REACT_APP_SERVER_URL;
 
@@ -235,12 +229,16 @@ const Schedules = () =>
 
     // 삭제
     const handleDelete = () => {
-      // 삭제할 schedule_ids 배열
-      const deletionArray = deletions
-        .filter((deletion) => deletion.deletion === true)
-        .map((result) => result.schedule_id);
+      console.log("hi");
 
-      if (deletionArray.length === 0) {
+      // 삭제할 schedule_ids 배열
+      // const deletionArray = deletions
+      //   .filter((deletion) => deletion.deletion === true)
+      //   .map((result) => result.schedule_id);
+
+      console.log(deletions);
+
+      if (deletions.length === 0) {
         window.alert("삭제할 일정을 선택해주세요.");
         return;
       }
@@ -250,30 +248,26 @@ const Schedules = () =>
       // console.log(deletionArray);
 
       // api에서 받아 온 배열 조작
-      const newSchedules = schedules.filter((schedule) => {
-        if (schedule.schedule_id)
-          return !deletionArray.includes(schedule.schedule_id);
-      });
-
-      setSchedules(newSchedules);
+      // const newSchedules = schedules.filter((schedule) => {
+      //   if (schedule.schedule_id)
+      //     return !deletionArray.includes(schedule.schedule_id);
+      // });
 
       const scheduleIds: number[] = [];
 
-      for (const deletion of deletions) {
-        if (deletion.deletion === true) {
-          scheduleIds.push(deletion.schedule_id);
-        }
-      }
-
-      console.log(schedules);
-      console.log(scheduleIds);
+      // for (const deletion of deletions) {
+      //   if (deletion.deletion === true) {
+      //     scheduleIds.push(deletion.schedule_id);
+      //   }
+      // }
 
       const url = `${baseURL}/mypage/schedules/delete-schedules`;
+      // const url = `${baseURL}/mypage/schedules/${schedulesId}`;
       console.log(url);
 
       // api에서 삭제
       axios
-        .post(url, scheduleIds, {
+        .post(url, deletions, {
           headers: {
             "Content-Type": "application/json",
             Access: `${localStorage.getItem("access")}`,
@@ -281,20 +275,20 @@ const Schedules = () =>
           },
           withCredentials: true,
         })
-        .then((response) => console.log(response.data))
+        .then((res) => setSchedules(res.data))
         .catch((err) => console.log(err));
     };
 
     // 일괄 선택
-    const handleSelectAll = () => {
-      const newDeletions = deletions.map((deletion) => ({
-        schedule_id: deletion.schedule_id,
-        deletion: !deletion.deletion,
-      }));
+    // const handleSelectAll = () => {
+    //   const newDeletions = deletions.map((deletion) => ({
+    //     schedule_id: deletion.schedule_id,
+    //     deletion: !deletion.deletion,
+    //   }));
 
-      setDeletions(newDeletions);
-      console.log(newDeletions);
-    };
+    //   setDeletions(newDeletions);
+    //   console.log(newDeletions);
+    // };
 
     console.log(schedules);
 
@@ -472,9 +466,9 @@ const Schedules = () =>
           <span className="schedules-deletion-item" onClick={handleDelete}>
             삭제
           </span>
-          <span className="schedules-deletion-item" onClick={handleSelectAll}>
+          {/* <span className="schedules-deletion-item" onClick={handleSelectAll}>
             일괄 선택
-          </span>
+          </span> */}
           <span
             className="schedules-deletion-item"
             onClick={() => setShowDelete(false)}

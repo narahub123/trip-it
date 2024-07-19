@@ -2,9 +2,26 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import "./postsCard.css";
 import { FaCalendar } from "react-icons/fa";
+import { metroName } from "../../../utils/metro";
 
-const PostsCard = () => {
+export interface PostsCardProps {
+  post: any;
+  setPostId: (value: number) => void;
+}
+
+const PostsCard = ({ post, setPostId }: PostsCardProps) => {
   let navigate = useNavigate();
+
+  const handleClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    e.stopPropagation();
+
+    console.log(e.currentTarget);
+
+    const postId = Number(e.currentTarget.dataset.postid);
+
+    setPostId(postId);
+  };
+  console.log(post);
 
   return (
     <section className="postsCard">
@@ -20,11 +37,13 @@ const PostsCard = () => {
               <img src={"/images/male-profile-image.jpg"} alt="profile"></img>
             </div>
             <div className="postsCard-profile-name">
-              <p className="postsCard-profile-name-font">닉네임</p>
+              <p className="postsCard-profile-name-font">{post.nickname}</p>
               <div className="postsCard-profile-name-spec">
                 <p className="postsCard-profile-name-spec-font">나이</p>
                 <div className="postsCard-profile-name-spec-dot"></div>
-                <p className="postsCard-profile-name-spec-font">성별</p>
+                <p className="postsCard-profile-name-spec-font">
+                  {post.gender}
+                </p>
               </div>
             </div>
           </div>
@@ -40,7 +59,9 @@ const PostsCard = () => {
             <div className="postsCard-duration-spec">
               <p className="postsCard-duration-spec-day">4일</p>
               <div className="postsCard-duration-spec-dot"></div>
-              <p className="postsCard-duration-spec-schedule">06/06 - 06/09</p>
+              <p className="postsCard-duration-spec-schedule">
+                {post.startDate} - {post.endDate}
+              </p>
             </div>
           </div>
         </div>
@@ -76,11 +97,13 @@ const PostsCard = () => {
                 ></ellipse>
               </svg>
             </div>
-            <p className="postsCard-location-font">장소</p>
+            <p className="postsCard-location-font">
+              {metroName(post.metroName)}
+            </p>
           </div>
           <div className="postsCard-hide">
             <div className="postsCard-hide-left">
-              <p className="postsCard-left-font">?명 모집중</p>
+              <p className="postsCard-left-font">{post.personnel}명 모집중</p>
             </div>
             <div className="postsCard-hide-right">
               <div className="postsCard-right-box">
@@ -89,7 +112,7 @@ const PostsCard = () => {
                   alt="icon"
                   className="postsCard-hide-imgfile"
                 ></img>
-                <p className="postsCard-right-font">25</p>
+                <p className="postsCard-right-font">{post.viewCount}</p>
               </div>
               <div className="postsCard-right-box">
                 <img
@@ -101,6 +124,13 @@ const PostsCard = () => {
               </div>
             </div>
           </div>
+        </div>
+        <div
+          className="postsCard-delete"
+          data-postId={post.postId}
+          onClick={(e) => handleClick(e)}
+        >
+          <input type="checkbox" />
         </div>
       </div>
     </section>

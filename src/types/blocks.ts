@@ -4,5 +4,6 @@ export interface BlockType {
   blockedId: any;
   blockedUserNickname?: string;
   userNickname?: string;
+  nickname?: string;
   blockDate: string;
 }
