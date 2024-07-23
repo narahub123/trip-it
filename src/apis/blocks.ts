@@ -13,8 +13,8 @@ export const fetchBlocksAPI = async (
   page?: number
 ) => {
   const blocks = axios.get(
-    `${baseURL}/block/user?sortKey=${sortKey}&sortValue=${sortValue}&page=${page}&size=${size}`, // 마이페이지
-    // `${baseURL}/block/all?sortKey=${sortKey}&sortValue=${sortValue}&page=${page}&size=${size}`, // 관리자 페이지
+    // `${baseURL}/block/user?sortKey=${sortKey}&sortValue=${sortValue}&page=${page}&size=${size}`, // 마이페이지
+    `${baseURL}/block/all?sortKey=${sortKey}&sortValue=${sortValue}&page=${page}&size=${size}`, // 관리자 페이지
     // `${baseURL}/blocks?sortKey=${sortKey}&sortValue=${sortValue}&keyword=${keyword}&search=${search}&limit=${limit}&page=${page}`,
     {
       headers: {
@@ -39,8 +39,8 @@ export const fetchBlockAPI = async (
   page?: number
 ) => {
   const blocks = axios.get(
-    `${baseURL}/block/user?sortKey=${sortKey}&sortValue=${sortValue}`, // 마이페이지
-    // `${baseURL}/block/all?sortKey=${sortKey}&sortValue=${sortValue}`, // 마이페이지
+    // `${baseURL}/block/user?sortKey=${sortKey}&sortValue=${sortValue}`, // 마이페이지
+    `${baseURL}/block/all?sortKey=${sortKey}&sortValue=${sortValue}`, // 마이페이지
     // `${baseURL}/blocks?sortKey=${sortKey}&sortValue=${sortValue}&keyword=${keyword}&search=${search}&limit=${limit}&page=${page}`,
     {
       headers: {

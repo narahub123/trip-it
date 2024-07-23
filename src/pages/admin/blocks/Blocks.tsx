@@ -21,6 +21,8 @@ const Blocks = () => {
   const [page, setPage] = useState(1);
   const [totalBlocks, setTotalBlocks] = useState(0);
 
+  console.log(size);
+
   const arrayLengthDefault = 5;
   const arrayLengthMax = 10;
   const arrayLengthMin = 1;
@@ -33,23 +35,11 @@ const Blocks = () => {
       .then((res) => {
         console.log(res);
 
-        const blocklist = res.data;
+        const blocks = res.data;
 
-        // const newBlockList = blocklist.map((block: any) => {
-        //   const newBlockDate = new Date(block.blockDate);
+        console.log(blocks);
 
-        //   const year = newBlockDate.getFullYear();
-        //   const month = (newBlockDate.getMonth() + 1)
-        //     .toString()
-        //     .padStart(2, "0");
-        //   const date = newBlockDate.getDate().toString().padStart(2, "0");
-
-        //   return { ...block, blockDate: `${year}.${month}.${date}.` };
-        // });
-
-        // setBlocks(newBlockList[0].blocks);
-
-        setBlocks(res.data);
+        setBlocks(blocks);
         // setTotalBlocks(newBlockList[0].totalBlocks[0].count);
         setLoading(false);
       })
@@ -201,11 +191,11 @@ const Blocks = () => {
             </tr>
           </thead>
           <tbody className="blocks-list-table-body">
-            {blocks.length === 0 && (
+            {/* {blocks.length === 0 && (
               <tr className="blocks-list-table-body-row">
                 <NoSearchData />
               </tr>
-            )}
+            )} */}
             {blocks.map((block, index) => (
               <tr className="blocks-list-table-body-row" key={block.blockId}>
                 <td className="blocks-list-table-body-cell">{index + 1}</td>
