@@ -4,8 +4,8 @@ export interface PaginationControllerFlexibleProps {
   arrayLengthMin: number;
   arrayLengthMax: number;
   arrayLengthDefault: number;
-  limit: number;
-  setLimit: (value: number) => void;
+  size: number;
+  setSize: (value: number) => void;
   UNIT_NAME: string;
 }
 
@@ -13,15 +13,15 @@ const PaginationControllerFlexible = ({
   arrayLengthMin,
   arrayLengthMax,
   arrayLengthDefault,
-  limit,
-  setLimit,
+  size,
+  setSize,
   UNIT_NAME,
 }: PaginationControllerFlexibleProps) => {
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.currentTarget.value;
 
     console.log(value);
-    setLimit(Number(value));
+    setSize(Number(value));
   };
   return (
     <div className="pagination-controller-flexible">
@@ -36,7 +36,7 @@ const PaginationControllerFlexible = ({
             defaultValue={arrayLengthDefault}
             onChange={(e) => handleInputChange(e)}
           />
-          <span>{limit}</span>
+          <span>{size}</span>
         </li>
       </ul>
     </div>

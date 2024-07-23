@@ -58,15 +58,15 @@ const Posts = () => {
     }[]
   >([]);
 
-  const limitArray = [1, 2, 3, 4];
+  const sizeArray = [1, 2, 3, 4];
 
   const arrayLengthMin = 1;
   const arrayLengthMax = 10;
   const arrayLengthDefault = 5;
 
-  const [limit, setLimit] = useState(arrayLengthDefault);
+  const [size, setLimit] = useState(arrayLengthDefault);
   const [page, setPage] = useState(1);
-  const offset = (page - 1) * limit;
+  const offset = (page - 1) * size;
 
   // 지역 코드 오름차순
   const areacodeSortIncl = () => {
@@ -296,17 +296,17 @@ const Posts = () => {
       <h3 className="posts-title">내 모집글</h3>
       <div className="posts-control">
         <div className="posts-pagination">
-          <p>페이지 당 모집글 수({limit})</p>
+          <p>페이지 당 모집글 수({size})</p>
           <ul className="posts-pagination-container">
             {/* 고정인 경우 */}
-            {limitArray.map((limit) => (
+            {sizeArray.map((size) => (
               <li
                 className="posts-pagination-item"
-                data-pageNum={limit}
-                key={limit}
+                data-pageNum={size}
+                key={size}
                 onClick={(e) => handlePagination(e)}
               >
-                {limit}
+                {size}
               </li>
             ))}
 
@@ -459,7 +459,7 @@ const Posts = () => {
               </div>
             </>
           )}
-          {posts.slice(offset, offset + limit).map((post, index) => (
+          {posts.slice(offset, offset + size).map((post, index) => (
             <PostsCard
               post={post}
               setPostId={setPostId}
@@ -493,7 +493,7 @@ const Posts = () => {
       <div className="posts-pagination-bottom">
         <Pagination
           total={posts.length}
-          limit={limit}
+          size={size}
           page={page}
           setPage={setPage}
         />

@@ -6,6 +6,7 @@ import NoSearchData from "../../../components/ui/NoSearchData";
 import { useLocation } from "react-router-dom";
 import { LuChevronDown, LuChevronUp } from "react-icons/lu";
 import TestPagination from "../test/TestPagination";
+import PaginationControllerFlexible from "../../../components/ui/PaginationControllerFlexible";
 
 const Blocks = () => {
   const { pathname } = useLocation();
@@ -16,14 +17,19 @@ const Blocks = () => {
   });
   const [keyword, setKeyword] = useState("userNickname");
   const [search, setSearch] = useState("");
-  const [limit, setLimit] = useState(5);
+  const [size, setSize] = useState(5);
   const [page, setPage] = useState(1);
   const [totalBlocks, setTotalBlocks] = useState(0);
+
+  const arrayLengthDefault = 5;
+  const arrayLengthMax = 10;
+  const arrayLengthMin = 1;
+  const UNIT_NAME = "신고";
 
   useEffect(() => {
     const sortKey = Object.keys(sorts)[0];
     const sortValue = Object.values(sorts)[0];
-    fetchBlocksAPI(sortKey, sortValue, keyword, search, limit, page)
+    fetchBlocksAPI(sortKey, sortValue, keyword, search, size, page)
       .then((res) => {
         console.log(res);
 
@@ -51,7 +57,7 @@ const Blocks = () => {
         console.log(err);
         setLoading(false);
       });
-  }, [sorts, keyword, search, limit, page]);
+  }, [sorts, keyword, search, size, page]);
 
   const handleRelease = async (blockId: string | number) => {
     if (!window.confirm(`차단을 해제하시겠습니까?`)) {
@@ -61,23 +67,9 @@ const Blocks = () => {
     setLoading(true);
     await unblockUserAPI(blockId)
       .then((res) => {
-        console.log(res.data);
+        const newBlocks = blocks.filter((block) => block.blockId === blockId);
 
-        const blocklist = res.data.blocks;
-
-        const newBlockList = blocklist.map((block: BlockType) => {
-          const newBlockDate = new Date(block.blockDate);
-
-          const year = newBlockDate.getFullYear();
-          const month = (newBlockDate.getMonth() + 1)
-            .toString()
-            .padStart(2, "0");
-          const date = newBlockDate.getDate().toString().padStart(2, "0");
-
-          return { ...block, blockDate: `${year}.${month}.${date}.` };
-        });
-
-        setBlocks(newBlockList);
+        setBlocks(newBlocks);
         setLoading(false);
       })
       .catch((err) => console.log(err));
@@ -119,7 +111,7 @@ const Blocks = () => {
 
   console.log("blocks", blocks);
   console.log("totalBlocks", totalBlocks);
-  console.log("limit", limit);
+  console.log("size", size);
   console.log("page", page);
 
   console.log(Object.keys(sorts)[0]);
@@ -129,7 +121,16 @@ const Blocks = () => {
     <div className="blocks">
       <h3 className="blocks-title">차단 목록</h3>
 
-      <div className="blocks-panels">패널</div>
+      <div className="blocks-panels">
+        <PaginationControllerFlexible
+          arrayLengthDefault={arrayLengthDefault}
+          arrayLengthMax={arrayLengthMax}
+          arrayLengthMin={arrayLengthMin}
+          size={size}
+          setSize={setSize}
+          UNIT_NAME={UNIT_NAME}
+        />
+      </div>
       <div className="blocks-list">
         <table className="blocks-list-table">
           <thead className="blocks-list-table-head">
@@ -145,7 +146,7 @@ const Blocks = () => {
               {/* {pathname !== "/mypage/blocks" && ( */}
               <th
                 className="blocks-list-table-head-cell"
-                id="userNickname"
+                id="userId"
                 data-sort="asc"
                 onClick={(e) => handleSort(e)}
               >
@@ -214,8 +215,8 @@ const Blocks = () => {
                   // id={`${block.userId._id}`}
                   id={`${block.userId}`}
                 >
-                  {block.userNickname}
-                  {/* {block.userId} */}
+                  {/* {block.userNickname} */}
+                  {block.userId.nickname}
                 </td>
                 {/* )} */}
                 <td
@@ -223,8 +224,8 @@ const Blocks = () => {
                   // id={`${block.blockedId}`}
                   id={`${block.nickname}`}
                 >
-                  {block.blockedUserNickname}
-                  {/* {block.nickname} */}
+                  {/* {block.blockedUserNickname} */}
+                  {block.nickname}
                 </td>
                 <td className="blocks-list-table-body-cell">
                   {block.blockDate}
@@ -257,7 +258,7 @@ const Blocks = () => {
       <div className="blocks-pagination">
         <TestPagination
           total={totalBlocks}
-          limit={limit}
+          size={size}
           page={page}
           setPage={setPage}
         />

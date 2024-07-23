@@ -8,13 +8,13 @@ import "./pagination.css";
 
 export interface PaginationProps {
   total: number;
-  limit: number;
+  size: number;
   page: number;
   setPage: (value: number) => void;
 }
 
-const Pagination = ({ total, limit, page, setPage }: PaginationProps) => {
-  const numPages = Math.ceil(total / limit);
+const Pagination = ({ total, size, page, setPage }: PaginationProps) => {
+  const numPages = Math.ceil(total / size);
   return (
     <nav className="pagination">
       <button

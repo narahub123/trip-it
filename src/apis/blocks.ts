@@ -9,12 +9,38 @@ export const fetchBlocksAPI = async (
   sortValue?: string,
   keyword?: string,
   search?: string,
+  size?: number,
+  page?: number
+) => {
+  const blocks = axios.get(
+    `${baseURL}/block/user?sortKey=${sortKey}&sortValue=${sortValue}&page=${page}&size=${size}`, // 마이페이지
+    // `${baseURL}/block/all?sortKey=${sortKey}&sortValue=${sortValue}&page=${page}&size=${size}`, // 관리자 페이지
+    // `${baseURL}/blocks?sortKey=${sortKey}&sortValue=${sortValue}&keyword=${keyword}&search=${search}&limit=${limit}&page=${page}`,
+    {
+      headers: {
+        "Content-Type": "application/json",
+        Access: `${localStorage.getItem("access")}`,
+        Refresh: `${getCookie("refresh")}`,
+      },
+      withCredentials: true,
+    }
+  );
+
+  return blocks;
+};
+
+// 사용자
+export const fetchBlockAPI = async (
+  sortKey?: string,
+  sortValue?: string,
+  keyword?: string,
+  search?: string,
   limit?: number,
   page?: number
 ) => {
   const blocks = axios.get(
-    // `${baseURL}/block/user?sortKey=${sortKey}&sortValue=${sortValue}`, // 마이페이지
-    `${baseURL}/block/all?sortKey=${sortKey}&sortValue=${sortValue}`, // 마이페이지
+    `${baseURL}/block/user?sortKey=${sortKey}&sortValue=${sortValue}`, // 마이페이지
+    // `${baseURL}/block/all?sortKey=${sortKey}&sortValue=${sortValue}`, // 마이페이지
     // `${baseURL}/blocks?sortKey=${sortKey}&sortValue=${sortValue}&keyword=${keyword}&search=${search}&limit=${limit}&page=${page}`,
     {
       headers: {
@@ -34,8 +60,8 @@ export const blockUserAPI = async (nickname: string) => {
   // export const blockUserAPI = async (blockedId: string) => {
   await axios
     .post(
-      // `${baseURL}/block/add`, // spring
-      `${baseURL}/blockedlist/add`, // nodejs
+      `${baseURL}/block/add`, // spring
+      // `${baseURL}/blockedlist/add`, // nodejs
       {
         nickname,
         // blockedId,
@@ -71,7 +97,7 @@ export const blockUserAPI = async (nickname: string) => {
 // 차단 해제 하기
 export const unblockUserAPI = async (blockId: string | number) => {
   const blocks = axios.post(
-    `${baseURL}/blockedlist/release`,
+    `${baseURL}/block/delete`,
     {
       blockId,
     },

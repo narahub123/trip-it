@@ -62,15 +62,15 @@ const Schedules = () =>
     console.log(deletions);
     const baseURL = process.env.REACT_APP_SERVER_URL;
 
-    const limitArray = [1, 2, 3, 4];
+    const sizeArray = [1, 2, 3, 4];
 
     const arrayLengthMin = 1;
     const arrayLengthMax = 10;
     const arrayLengthDefault = 5;
 
-    const [limit, setLimit] = useState(arrayLengthDefault);
+    const [size, setLimit] = useState(arrayLengthDefault);
     const [page, setPage] = useState(1);
-    const offset = (page - 1) * limit;
+    const offset = (page - 1) * size;
 
     const handleSort = (e: React.MouseEvent<HTMLLIElement, MouseEvent>) => {
       const id = e.currentTarget.id;
@@ -301,17 +301,17 @@ const Schedules = () =>
         <h3 className="schedules-title">내 여행 일정</h3>
         <div className="schedules-control">
           <div className="schedules-pagination">
-            <p>페이지 당 일정 수({limit})</p>
+            <p>페이지 당 일정 수({size})</p>
             <ul className="schedules-pagination-container">
               {/* 고정인 경우 */}
-              {/* {limitArray.map((limit) => (
+              {/* {sizeArray.map((size) => (
               <li
                 className="schedules-pagination-item"
-                data-pageNum={limit}
-                key={limit}
+                data-pageNum={size}
+                key={size}
                 onClick={(e) => handlePagination(e)}
               >
-                {limit}
+                {size}
               </li>
             ))} */}
 
@@ -486,7 +486,7 @@ const Schedules = () =>
                 </div>
               </>
             )}
-            {schedules.slice(offset, offset + limit).map((schedule, index) => (
+            {schedules.slice(offset, offset + size).map((schedule, index) => (
               <SchedulesCard
                 schedule={schedule}
                 key={index}
@@ -516,7 +516,7 @@ const Schedules = () =>
         <div className="schedules-pagination-bottom">
           <Pagination
             total={schedules.length}
-            limit={limit}
+            size={size}
             page={page}
             setPage={setPage}
           />

@@ -2,6 +2,7 @@ import axios from "axios";
 import "./bans.css";
 import { getCookie } from "../../../utils/Cookie";
 import { useEffect, useState } from "react";
+import { fetchBlockAPI } from "../../../apis/blocks";
 
 const baseURL = process.env.REACT_APP_SERVER_URL;
 
@@ -23,14 +24,7 @@ const Bans = () => {
   ]);
 
   useEffect(() => {
-    axios
-      .get(`${baseURL}/admin/blocks`, {
-        headers: {
-          "Content-Type": "application/json",
-          Access: `${localStorage.getItem("access")}`,
-          Refresh: `${getCookie("refresh")}`,
-        },
-      })
+    fetchBlockAPI()
       .then((response) => {
         console.log("응답", response.data);
         return setBans(response.data);

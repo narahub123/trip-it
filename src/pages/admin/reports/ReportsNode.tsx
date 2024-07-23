@@ -30,9 +30,9 @@ const ReportsNode = () => {
   const arrayLengthMax = 10;
   const arrayLengthMin = 1;
   const UNIT_NAME = "신고";
-  const [limit, setLimit] = useState(arrayLengthDefault);
+  const [size, setSize] = useState(arrayLengthDefault);
   const [page, setPage] = useState(1);
-  const offset = (page - 1) * limit;
+  const offset = (page - 1) * size;
 
   const [filteredReports, setFilteredReports] = useState<ReportTestType[]>([]);
 
@@ -229,8 +229,8 @@ const ReportsNode = () => {
             arrayLengthDefault={arrayLengthDefault}
             arrayLengthMax={arrayLengthMax}
             arrayLengthMin={arrayLengthMin}
-            limit={limit}
-            setLimit={setLimit}
+            size={size}
+            setSize={setSize}
             UNIT_NAME={UNIT_NAME}
           />
         </div>
@@ -283,7 +283,7 @@ const ReportsNode = () => {
                 </td>
               </tr>
             )}
-            {filteredReports.slice(offset, offset + limit).map((report) => (
+            {filteredReports.slice(offset, offset + size).map((report) => (
               <tr className="reports-main-table-body-row" key={report._id}>
                 <td
                   className="reports-main-table-body-cell selectable"
@@ -395,7 +395,7 @@ const ReportsNode = () => {
       <div className="reports-pagination-container">
         <Pagination
           total={filteredReports.length}
-          limit={limit}
+          size={size}
           page={page}
           setPage={setPage}
         />

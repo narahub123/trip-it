@@ -23,14 +23,14 @@ import { fetchUsersAPI } from "../../../apis/user";
 
 const Users = () => {
   const { hash } = useLocation();
-  const limitArray = [1, 2, 3, 4];
+  const sizeArray = [1, 2, 3, 4];
   const arrayLengthMin = 1;
   const arrayLengthMax = 10;
   const arrayLengthDefault = 5;
   const UNIT_NAME = "유저";
-  const [limit, setLimit] = useState(arrayLengthDefault);
+  const [size, setSize] = useState(arrayLengthDefault);
   const [page, setPage] = useState(1);
-  const offset = (page - 1) * limit;
+  const offset = (page - 1) * size;
   const [isOpen, setIsOpen] = useState(false);
   const [loading, setLoading] = useState(true);
   const [users, setUsers] = useState<UserType[]>([]);
@@ -129,7 +129,7 @@ const Users = () => {
     const value = e.currentTarget.value;
 
     console.log(value);
-    setLimit(Number(value));
+    setSize(Number(value));
   };
 
   if (loading) {
@@ -138,7 +138,7 @@ const Users = () => {
 
   console.log(users);
 
-  console.log(limit);
+  console.log(size);
 
   return (
     <div className="users">
@@ -172,8 +172,8 @@ const Users = () => {
               arrayLengthMin={arrayLengthMin}
               arrayLengthMax={arrayLengthMax}
               arrayLengthDefault={arrayLengthDefault}
-              limit={limit}
-              setLimit={setLimit}
+              size={size}
+              setSize={setSize}
               UNIT_NAME={UNIT_NAME}
             />
           </div>
@@ -274,13 +274,13 @@ const Users = () => {
               handleSort={handleSort}
               users={users}
               offset={offset}
-              limit={limit}
+              size={size}
             />
-            <UsersTableResponsive users={users} offset={offset} limit={limit} />
+            <UsersTableResponsive users={users} offset={offset} size={size} />
           </div>
         )}
         {hash === "#gallery" && (
-          <UsersGallery users={users} limit={limit} offset={offset} />
+          <UsersGallery users={users} size={size} offset={offset} />
         )}
       </main>
       <section className="user-search">
@@ -289,7 +289,7 @@ const Users = () => {
       <section>
         <Pagination
           total={users.length}
-          limit={limit}
+          size={size}
           page={page}
           setPage={setPage}
         />

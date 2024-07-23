@@ -20,7 +20,7 @@ const TestTemplate = () => {
   const { hash } = useLocation();
   const [items, setItems] = useState<any[]>([]);
   const [upperOn, setUpperOn] = useState(false);
-  const [limit, setLimit] = useState(5);
+  const [size, setLimit] = useState(5);
   const [page, setPage] = useState(1);
   const [totalPage, setTotalPage] = useState(0);
   const [openSort, setOpenSort] = useState(false);
@@ -43,7 +43,7 @@ const TestTemplate = () => {
     setLoading(true);
     GetAllReportsAPI(
       page,
-      limit,
+      size,
       Object.keys(sorts)[0],
       sorts[Object.keys(sorts)[0] as keyof typeof sorts],
       keyword,
@@ -64,7 +64,7 @@ const TestTemplate = () => {
       .catch((err) => {
         console.log(err.response.data.code);
       });
-  }, [page, limit, sorts, keyword, search]);
+  }, [page, size, sorts, keyword, search]);
 
   console.log(items);
   console.log(loading);
@@ -124,7 +124,7 @@ const TestTemplate = () => {
       <section className="template-pagination">
         <TestPagination
           total={totalPage}
-          limit={limit}
+          size={size}
           page={page}
           setPage={setPage}
         />

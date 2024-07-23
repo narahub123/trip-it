@@ -12,7 +12,11 @@ const MyPage = () => {
       .get(`${baseURL}/mypage`, { withCredentials: true })
       .then()
       .catch((err) => {
-        if (err.response.data.code === "logout") {
+        if (err.code === "ERR_NETWORK") {
+          window.alert("서버에 문제가 있습니다. 잠시 후에 다시 이용해주세요");
+          return;
+        }
+        if (err.response.data.code === 2) {
           window.alert("로그인을 해주세요");
           navigate("/login");
         }

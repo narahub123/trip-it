@@ -79,6 +79,11 @@ refreshAPI.interceptors.response.use(
       }
     } else {
       console.error("No response received:", error);
+      console.log(error.code);
+      if (error.code === "ERR_NETWORK") {
+        window.alert("서버에 문제가 있습니다. 잠시 후에 다시 이용해주세요");
+        return 
+      }
     }
     //   다른 모든 오류를 거부하고 처리
     //return Promise.reject(error);

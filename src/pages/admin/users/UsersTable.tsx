@@ -22,14 +22,14 @@ export interface UsersTableProps {
   ) => void;
   users: UserType[];
   offset: number;
-  limit: number;
+  size: number;
 }
 
 const UsersTable = ({
   sorts,
   handleSort,
   users,
-  limit,
+  size,
   offset,
 }: UsersTableProps) => {
   const navigate = useNavigate();
@@ -123,7 +123,7 @@ const UsersTable = ({
         </tr>
       </thead>
       <tbody className="users-table-body">
-        {users.slice(offset, offset + limit).map((user, index) => (
+        {users.slice(offset, offset + size).map((user, index) => (
           <tr
             className="users-table-row"
             key={`user${index}`}
