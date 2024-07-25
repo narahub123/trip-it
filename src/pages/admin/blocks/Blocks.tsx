@@ -37,7 +37,7 @@ const Blocks = () => {
 
         const blocks = res.data;
 
-        console.log(blocks);
+        console.log(blocks.content);
 
         setBlocks(blocks);
         // setTotalBlocks(newBlockList[0].totalBlocks[0].count);
@@ -49,6 +49,8 @@ const Blocks = () => {
       });
   }, [sorts, keyword, search, size, page]);
 
+
+  
   const handleRelease = async (blockId: string | number) => {
     if (!window.confirm(`차단을 해제하시겠습니까?`)) {
       return;
